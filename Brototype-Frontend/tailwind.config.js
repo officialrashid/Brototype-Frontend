@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  important:true,
+  important: true,
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       boxShadow: {
         BCCEFF: "var(--BCCEFF)",
-    },
+      },
       spacing: {
         '38rem': '38rem',
         '24rem': '24rem',
@@ -29,17 +29,27 @@ module.exports = {
         '10.6rem': '10.6rem',
         '4.2rem': '4.2rem',
         '11.2rem': '11.2rem',
-        '10.4rem': '10.4rem'
+        '10.4rem': '10.4rem',
+        '62rem': '62rem',
+        '13rem': '13rem',
+        '9rem': '9rem',
+        '42.5rem': '42.5rem',
+        '34rem': '34rem',
+        '36rem': '36rem',
+        '22.5rem': '22.5rem',
+        '28rem': '28rem'
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',
         'custom-pink': '#87B7C4',
         'custom-domain': '#00000015'
-      }, 
-      
+      },
 
-  },
-  plugins: [ ],
 
-}
+    },
+    plugins: {
+      'postcss-nesting': {},
+    }
+
+  }
 }

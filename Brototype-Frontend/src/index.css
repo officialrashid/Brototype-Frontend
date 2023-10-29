@@ -8,6 +8,41 @@
       all: unset;
     }
   }
-  :root {
-    --BCCEFF: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  
+  .triangle {
+    width: 0;
+    height: 0;
+    border-left: 30rem solid transparent; /* Change the size by adjusting this value */
+    border-right: 32rem solid transparent; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid #00000015; /* Change the size by adjusting this value */
   }
+  .triangle-rotate{
+    width:0;
+    height:0;
+    border-left: 30rem solid transparent; /* Change the size by adjusting this value */
+    border-right: 32rem solid transparent; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid #00000015; /* Change the size by adjusting this value */
+    transform: rotate(180deg);
+
+    
+  }
+  .small-traingle{
+    width:0;
+    height:0;
+    border-left:4rem solid transparent;
+    border-right: 4rem solid transparent;
+    border-bottom:2rem solid white;
+
+
+  }
+  .small-traingle-rotate{
+    width:0;
+    height:0;
+    border-left:4rem solid transparent;
+    border-right: 4rem solid transparent;
+    border-bottom:2rem solid white;
+    transform: rotate(180deg);
+  }
+
+
+  
