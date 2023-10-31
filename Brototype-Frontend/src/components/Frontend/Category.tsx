@@ -1,12 +1,39 @@
-import React from 'react';
-import Domains from './Domains';
+import React, { useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
+import Domains from "./Domains";
+
 const Category = () => {
   const containerStyles = {
     cursor: 'pointer', // Set the cursor to a pointer when hovering over the container
   };
 
+  const controls = useAnimation();
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    const triggerThreshold = 100;
+
+    if (scrollY > triggerThreshold) {
+      controls.start({ opacity: 1,y:0});
+    } else {
+      controls.start({ opacity: 0 ,y:100});
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="grid grid-rows-1 sm:grid-rows-3 grid-flow-col gap-4 s ml-auto relative mt-4.5rem h-38rem w-full">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={controls}
+      transition={{ duration: 0.5 }}
+      className="grid grid-rows-1 sm:grid-rows-3 grid-flow-col gap-4 s ml-auto relative mt-4.5rem h-38rem w-full"
+    >
       {/* Left-side content */}
       <div className="bg-white-700 w-full relative">
         <p className="text-black font-semibold text-2xl p-5 italic">Explore our Domains</p>
@@ -37,14 +64,13 @@ const Category = () => {
           Game Development
         </button>
       </div>
+      <div >
+      <div className="grid grid-cols-3 gap-8 ml-44 h-auto  mr-56">
 
-   <div >
-      <div className="grid grid-cols-3 gap-4 ml-44 h-auto  mr-56">
-
       <Domains/>
       <Domains/>
       <Domains/>
-      <Domains/>
+      <Domains />
       <Domains/>
       <Domains/>
       <Domains/>
@@ -54,10 +80,8 @@ const Category = () => {
      
       </div>
       </div>
-      
-</div>
-
-  
+    </motion.div>
+    
   );
 };
 
