@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PendingStudents from '../Fumigation/PendingStudents';
+import Batches from './Batches';
 type TableType = 'batches' | 'pendingStudents';
 const HomeNav = () => {
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ const HomeNav = () => {
                 <div>
                     <nav className="pt-2">
                         <ul className="max-w-screen-xl flex flex-wrap mx-auto justify-between ">
-                            <li><span className='text-2xl font-bold'> Hello invigilators,</span></li>
+                            <li><span className='text-2xl font-bold'> Hello Invigilators,</span></li>
                             <li><button onClick={() => {
                                 setShowModal(true)
                             }} className=" px-2 py-2 rounded-full bg-black text-white  flex items-center space-x-2 border-transparent hover:border-gray-300 sahdow-2xl"> <span className="text-3xl ">+</span> <span>Add invigilators</span></button></li>
@@ -30,11 +31,11 @@ const HomeNav = () => {
                 <nav className="pt-5 border-b border-gray-200  dark:border-gray-200 ">
                     <ul className="flex flex-wrap mx-auto align-items gap-[2vw] max-w-screen-xl ">
                         <li className='hover:text-gray-500 hover:border-gray-300 border-b-2 border-transparent'>
-                            <a href="http://">
-                                <span>
+                   
+                                <span onClick={() => switchTable("batches")}>
                                     Batches
                                 </span>
-                            </a>
+                          
                         </li>
                         <li className='hover:text-gray-500 hover:border-gray-300 hover:border-gray-300 border-b-2 border-transparent'>
                             <a href="http://">
@@ -51,11 +52,11 @@ const HomeNav = () => {
                             </a>
                         </li>
                         <li className='hover:text-gray-500 hover:border-gray-300 hover:border-gray-300 border-b-2 border-transparent'>
-                            {/* <a href=""> */}
+                     
                             <span onClick={() => switchTable("pendingStudents")}>
                                 Pending students
                             </span>
-                            {/* </a> */}
+                         
                         </li>
                     </ul>
                 </nav>
@@ -84,17 +85,11 @@ const HomeNav = () => {
                     </ul>
                 </nav>
                 {activeTable === 'pendingStudents' && (
-                    <>
-                        <PendingStudents />
-                    </>
+                    <PendingStudents />
                 )}
-
-
-
-
-
-
-
+                {activeTable === 'batches' && (
+                    <Batches />
+                )}
             </div>
         </>
     );
