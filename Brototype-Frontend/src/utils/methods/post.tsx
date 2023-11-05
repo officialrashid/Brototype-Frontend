@@ -12,6 +12,12 @@ interface EnquiryData {
   qualification: string;
   preferredLocation: string;
 }
+interface invigilatorData {
+  // Define the structure of the data parameter here
+  name: string;
+  email: string;
+}
+ 
  
 export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> => {
     console.log(data,"==========");
@@ -24,3 +30,15 @@ export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> =>
     throw error; // Rethrow the error for the caller to handle
   }
 };
+
+export const invigilatorLogin = async (data:invigilatorData): Promise<AxiosResponse> =>{
+   
+  try{
+
+    const response = await fumigationApi.post('/api/fumigation/invigilatorLogin',data);
+    return response
+  } catch(error){
+    console.log("Error in the invigilatorLogin",error);
+    throw error;  
+  }
+}
