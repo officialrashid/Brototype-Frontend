@@ -158,6 +158,11 @@ const navigate = useNavigate()
       </div>
       <div className="w-full h-fit flex justify-center items-center inex">
         <div className="triangle-rotate "></div>
+
+        
+      </div>
+      <div>
+        
       </div>
       </>
     );

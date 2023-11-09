@@ -32,10 +32,10 @@ const Domains = () => {
     >
       <div className="h-1/2 bg-custom-grey  absolute top-0 left-0 right-0 rounded-t-2xl">
         <div className="w-24 h-auto">
-          <p className="text-sm ml-5 mt-5">Full Stack</p>
+          <p className="text-sm ml-5 mt-5 font-roboto font-sm">Full Stack</p>
         </div>
         <div className="w-4/4 h-auto flex flex-wrap">
-          <h1 className="ml-5 mt-5 font-semibold">Mern Stack</h1>
+          <h1 className="ml-5 mt-5 font-roboto font-2xl text-md">Mern Stack</h1>
           <img src="/python png.svg" alt="" className="w-10 h-10 ml-24" />
         </div>
       </div>

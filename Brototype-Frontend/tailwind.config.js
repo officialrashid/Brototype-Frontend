@@ -44,7 +44,10 @@ module.exports = {
         'custom-pink': '#87B7C4',
         'custom-domain': '#00000015'
       },
-
+      fontFamily: {
+        poppins: ['Poppins', 'sans'],
+        roboto: ['Roboto', 'sans'],
+      },
 
     },
     plugins: {

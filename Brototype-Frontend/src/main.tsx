@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App.tsx';
+import App from './App.jsx';
 import './index.css';
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux-toolkit/store.tsx";
+import { Provider } from "react-redux";
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
+  <PersistGate loading={null} persistor={persistor}>
      <ToastContainer
         position="top-center"
         autoClose={5000}
@@ -18,8 +22,11 @@ ReactDOM.render(
         pauseOnHover
         theme="colored"
       />
-    <App />
-  </React.StrictMode>,
+
+    <App  />
+  </PersistGate>
+  </Provider>,
   document.getElementById("root")
+
 );
 
