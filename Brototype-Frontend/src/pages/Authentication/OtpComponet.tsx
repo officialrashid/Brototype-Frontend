@@ -1,10 +1,11 @@
-import OtpComponent from "../../components/Authentication/OtpComponent";
-import Navigation from "../../components/Fumigation/Navigation";
+// import OtpComponent from "../../components/Authentication/OtpComponent";
+import Navbar from '../../components/Frontend/Navbar';
+import OtpPage from '../../components/Authentication/otpTestDesign';
 const OtpComponet = () => {
     return (
         <div>
-            <Navigation/>
-            <OtpComponent/>
+        
+            <OtpPage/>
         </div>
     );
 }
