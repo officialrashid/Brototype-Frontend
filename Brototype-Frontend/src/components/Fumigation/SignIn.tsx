@@ -41,14 +41,17 @@ const navigate = useNavigate()
         const response: any = await invigilatorLogin(body);
 
         if (response) {
+          console.log(response,"::::::::::::::::::");
+          
           console.log(response.data.response.accessToken, 'custom token in response');
           console.log(response.data.response.customToken, 'custom token in front-end');
           console.log(response.data.response.verifyInvigilator.phone);
-
+          console.log(response.data.response.verifyInvigilator._id);
           // Parse the phone number from the response
           phone = parseInt(response?.data?.response?.verifyInvigilator?.phone);
       
           const otpData={
+            invigilatorId: response?.data?.response?.verifyInvigilator?._id,
             accessToken: response?.data?.response?.accessToken,
             customToken: response?.data?.response?.customToken,
             phone 
@@ -60,8 +63,9 @@ const navigate = useNavigate()
               const user = userCredential.user;
               console.log('Successfully signed in with custom token:', user);
               if (user) {
+
                 dispatch(setOtpData(otpData))
-                navigate('/otpLogin')
+                navigate('/otpTestLogin')
               }
              
             })

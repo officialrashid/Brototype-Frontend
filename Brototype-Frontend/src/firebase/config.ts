@@ -78,6 +78,39 @@
 // export {auth}
 
 // Import the functions you need from the SDKs you need
+// import { initializeApp } from "firebase/app";
+// import { getAnalytics } from "firebase/analytics";
+// import { getAuth } from "firebase/auth";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDx-seLaFZPHOt1mn48UoTSb6RdygaYoMc",
+//   authDomain: "nextjs-project-6651b.firebaseapp.com",
+//   projectId: "nextjs-project-6651b",
+//   storageBucket: "nextjs-project-6651b.appspot.com",
+//   messagingSenderId: "427346454448",
+//   appId: "1:427346454448:web:3a4797da84fdb417891875",
+//   measurementId: "G-WWJV8X55RF"
+// };
+
+// Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const auth = getAuth(app)
+// const analytics = getAnalytics(app);
+// export {auth}
+
+
+
+
+
+
+
+
+
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
@@ -87,13 +120,13 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDx-seLaFZPHOt1mn48UoTSb6RdygaYoMc",
-  authDomain: "nextjs-project-6651b.firebaseapp.com",
-  projectId: "nextjs-project-6651b",
-  storageBucket: "nextjs-project-6651b.appspot.com",
-  messagingSenderId: "427346454448",
-  appId: "1:427346454448:web:3a4797da84fdb417891875",
-  measurementId: "G-WWJV8X55RF"
+  apiKey: "AIzaSyCeELsCjx0bvg6fv8u1GCjB8oqVtc8ramA",
+  authDomain: "micro-service-project-8947b.firebaseapp.com",
+  projectId: "micro-service-project-8947b",
+  storageBucket: "micro-service-project-8947b.appspot.com",
+  messagingSenderId: "374532217631",
+  appId: "1:374532217631:web:3eaa27fd966e744a2f6e2a",
+  measurementId: "G-1N52WDC3Z2"
 };
 
 // Initialize Firebase
