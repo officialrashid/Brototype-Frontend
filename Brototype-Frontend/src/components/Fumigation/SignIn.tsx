@@ -1,5 +1,4 @@
 
-import { useEffect, useState } from 'react';
 import logo from '../../../public/brototype logo.png';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
@@ -13,6 +12,7 @@ import { signInWithCustomToken } from 'firebase/auth';
 import { auth } from '../../firebase/config';
 
 
+
 interface formValues {
   uniqueId: string;
 }
@@ -20,8 +20,6 @@ interface formValues {
 const SignIn = () => {
 
   let phone;
-  let accessToken;
-  let customToken;
 const dispatch = useDispatch()
 const navigate = useNavigate()
   // State to keep track of whether to show OtpComponent or not
@@ -41,15 +39,8 @@ const navigate = useNavigate()
         const response: any = await invigilatorLogin(body);
 
         if (response) {
-          console.log(response,"::::::::::::::::::");
-          
-          console.log(response.data.response.accessToken, 'custom token in response');
-          console.log(response.data.response.customToken, 'custom token in front-end');
-          console.log(response.data.response.verifyInvigilator.phone);
-          console.log(response.data.response.verifyInvigilator._id);
           // Parse the phone number from the response
           phone = parseInt(response?.data?.response?.verifyInvigilator?.phone);
-      
           const otpData={
             invigilatorId: response?.data?.response?.verifyInvigilator?._id,
             accessToken: response?.data?.response?.accessToken,
@@ -61,9 +52,7 @@ const navigate = useNavigate()
             .then((userCredential) => {
               // User signed in successfully
               const user = userCredential.user;
-              console.log('Successfully signed in with custom token:', user);
               if (user) {
-
                 dispatch(setOtpData(otpData))
                 navigate('/otpTestLogin')
               }
@@ -80,6 +69,8 @@ const navigate = useNavigate()
   });
 
   return (
+   
+
     <div>
    
         <div className="flex flex-col min-h-screen ">
@@ -186,6 +177,7 @@ const navigate = useNavigate()
 
 
     </div>
+
   );
 }
 

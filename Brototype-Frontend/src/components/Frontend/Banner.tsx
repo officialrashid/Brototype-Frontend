@@ -74,7 +74,7 @@ const Banner = () => {
 
       {/* The following empty div will be at the top of the parent div */}
       <motion.div
-        className={`bg-custom-grey h-0 absolute top-0 left-20rem w-48rem h-10rem mt-32.3125rem rounded-md shadow-xl border border-black ${isSmDevice ? 'w-full' : ''}`}
+        className={`bg-gray-200 h-0 absolute top-0 left-20rem w-48rem h-10rem mt-32.3125rem rounded-xl shadow-xl border border-gray-300 ${isSmDevice ? 'w-full' : ''}`}
         initial={{ x: -500 }} // Initial position, moves to the left
         animate={{ x: 0,transition:{duration:2} }}
       // whileHover={{rotate:180}}// Moves to the left when removed

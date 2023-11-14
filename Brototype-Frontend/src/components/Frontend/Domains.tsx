@@ -28,15 +28,15 @@ const Domains = () => {
       animate={controls}
       whileHover={{ scale: 1.1 }}
       transition={{ duration: 0.5 }}
-      className="relative rounded-2xl shadow-lg border border-black w-80 h-48"
+      className="relative rounded-xl shadow-lg border border-gray-200  hover hover:border-2 border-gray-300  h w-80 h-48"
     >
-      <div className="h-1/2 bg-custom-grey  absolute top-0 left-0 right-0 rounded-t-2xl">
+      <div className="h-1/2 bg-gray-200   absolute top-0 left-0 right-0 rounded-t-xl">
         <div className="w-24 h-auto">
           <p className="text-sm ml-5 mt-5 font-roboto font-sm">Full Stack</p>
         </div>
         <div className="w-4/4 h-auto flex flex-wrap">
           <h1 className="ml-5 mt-5 font-roboto font-2xl text-md">Mern Stack</h1>
-          <img src="/python png.svg" alt="" className="w-10 h-10 ml-24" />
+          <img src="/python png.svg" alt="" className="w-10 h-10 ml-10rem" />
         </div>
       </div>
       <div className="h-1/2 absolute bottom-0 left-0 w-full">
@@ -56,7 +56,7 @@ const Domains = () => {
             <img src="/star.png" alt="" className="w-14 h-4 ml-4" />
           </div>
           <div className="w-2/4 flex flex-wrap">
-            <p className="ml-4 text-sm"> (1 k+ students)</p>
+            <p className="ml-8 text-sm"> (1 k+ students)</p>
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ const persistedReducer = persistReducer(
    otp : otpReducer,
   })
 );
-
+export type RootState = ReturnType<typeof persistedReducer>;
 const store = configureStore({
   reducer: persistedReducer,
 });

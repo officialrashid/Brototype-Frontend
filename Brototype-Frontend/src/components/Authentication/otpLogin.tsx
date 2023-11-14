@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FunctionComponent, FormEvent, useRef } from 'react';
+import React, { useState, useEffect, FunctionComponent, useRef } from 'react';
 import { signInWithPhoneNumber } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,60 +8,53 @@ import otpLoginPng from "../../../public/otpLogin.png"
 import { setOtpData } from "../../redux-toolkit/otpReducer"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// Import your images and styles here
-// const otpLoginPng = require('path-to-your-image');
 
+interface OtpData {
+    otpData: any;
+    invigilatorId: string;
+    phone: number;
+    customToken: string;
+    accessToken: string;
+    // ... other properties
+}
+declare global {
+    interface Window {
+        recaptchaVerifier: any;
+        confirmationResult: any;
+    }
+}
+// Redux state structure
+interface RootState {
+    otp: OtpData;
+    // ... other slices of state
+}
 const OtpPage: FunctionComponent = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
-    const [phoneNumber, setPhoneNumber] = useState("");
-
-    const [isCodeSent, setIsCodeSent] = useState(false);
+    const [showResend, setShowResend] = useState(false);
+    const [timer, setTimer] = useState(60);
     const navigate = useNavigate();
     const dispatch = useDispatch()
-    const otpData = useSelector((state) => state.otp);
+    const otpData: OtpData = useSelector((state: RootState) => state.otp);
     let phone: React.SetStateAction<string>;
     const invigilatorIdRef = useRef<string | null>(null);
     const accessTokenRef = useRef<string | null>(null);
     const customTokenRef = useRef<string | null>(null);
-    function focusNext(e: FormEvent<HTMLInputElement>, nextInputID: string) {
-        const input = e.target as HTMLInputElement;
-        if (input.value.length === 1) {
-            const nextInput = document.getElementById(nextInputID) as HTMLInputElement | null;
-            if (nextInput) {
-                nextInput.focus();
-            }
-        }
-    }
+
 
     useEffect(() => {
-        invigilatorIdRef.current = otpData.otpData.invigilatorId
-        console.log(invigilatorIdRef,"invigilatorId comingggggg");
-        
+        localStorage.removeItem('otpSent')
+        invigilatorIdRef.current = otpData.otpData.invigilatorId;
         phone = otpData.otpData.phone;
-        console.log(phone,"phoneeeeeeeeeeeee");
-        
-        customTokenRef.current= otpData.otpData.customToken
-        console.log(customTokenRef,"cutommmmmmmmmm");
-        
-        accessTokenRef.current= otpData.otpData.accessToken
-        console.log(accessTokenRef,"acesssssssssssss");
-        
-        setPhoneNumber(phone);
-        dispatch((setOtpData(" ")))
-        setUpRecaptcha();
-        onSignup();
+        customTokenRef.current = otpData.otpData.customToken;
+        accessTokenRef.current = otpData.otpData.accessToken;
+        const hasOtpBeenSent = localStorage.getItem('otpSent');
+        if (!hasOtpBeenSent) {
+            setUpRecaptcha();
+            startCountdown();
+            onSignup();
+        }
 
-        const otpTimeout = setTimeout(() => {
-            // Show a warning toast
-            toast.warning("OTP has expired. Please resend.");
-
-            // Navigate to '/invigilator'
-            navigate('/invigilator');
-        }, 60000); // Set the timeout duration in milliseconds (60,000 milliseconds = 1 minute)
-
-        // Clear the timer on component unmount or when OTP is successfully verified
-        return () => clearTimeout(otpTimeout);
-    }, []);
+    }, [otpData.otpData.phone]);
 
     const setUpRecaptcha = () => {
         console.log('Setting up reCAPTCHA');
@@ -98,11 +91,13 @@ const OtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             console.log('Confirmation result:', confirmationResult);
             window.confirmationResult = confirmationResult;
-            setIsCodeSent(true);
             invigilatorIdRef.current = otpData.otpData.invigilatorId;
             customTokenRef.current = otpData.otpData.customToken;
             accessTokenRef.current = otpData.otpData.accessToken;
+            localStorage.setItem('otpSent', 'true');
+            toast.success("OTP SEND TO YOUR PHPNE NUMBER")
         } catch (error) {
+            toast.error("too many attempts,try sfter some time")
             console.error('Error in sending OTP', error);
             // navigate('/invigilator')
         }
@@ -110,16 +105,16 @@ const OtpPage: FunctionComponent = () => {
 
     const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         e.preventDefault();
-    
-        const isBackspace = e.nativeEvent.inputType === 'deleteContentBackward';
-    
+        const inputEvent = e.nativeEvent as InputEvent;
+        const isBackspace = inputEvent.inputType === 'deleteContentBackward';
+
         const newOtp = [...otp];
         newOtp[index] = e.target.value;
         setOtp(newOtp);
-    
+
         const nextInputID = `otp${index + 2}`;
         const prevInputID = `otp${index}`;
-    
+
         // If the entered digit is not empty and there is a next input field, focus on it
         if (e.target.value !== '' && index < 5 && !isBackspace) {
             const nextInput = document.getElementById(nextInputID) as HTMLInputElement | null;
@@ -134,45 +129,64 @@ const OtpPage: FunctionComponent = () => {
             }
         }
     };
-    
+
 
     const handleVerifyOtp = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const code = otp.join('');
         console.log(code, "76756567677");
-    
+
         try {
-            window.confirmationResult.confirm(code).then((result:any) => {
-
+            window.confirmationResult.confirm(code).then((result: any) => {
                 console.log("Success: OTP verified", result.user);
-            
-                console.log(invigilatorIdRef.current, "<<<<<<< invigilatorId");
-                console.log(accessTokenRef.current, ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-                console.log(customTokenRef.current, "<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>");
-                const invigilatorData:any={
-                    invigilatorId:invigilatorIdRef.current,
-                    accessToken:accessTokenRef.current,
-                    customToken:customTokenRef.current
+                const invigilatorData: any = {
+                    invigilatorId: invigilatorIdRef.current,
+                    accessToken: accessTokenRef.current,
+                    customToken: customTokenRef.current
                 }
-
-                localStorage.setItem("invigilatorAccessToken",invigilatorData?.accessToken)
-                localStorage.setItem("invigilatorCustomToken",invigilatorData?.customToken)
+                localStorage.setItem("invigilatorAccessToken", invigilatorData?.accessToken)
+                localStorage.setItem("invigilatorCustomToken", invigilatorData?.customToken)
                 dispatch(setOtpData(invigilatorData))
                 toast.success("OTP LOGIN SUCCESS")
                 navigate("/fumigation")
 
             }).catch((error: any) => {
                 console.error("Error in verifying OTP:", error);
+                toast.error("Incorrect OTP. Please try again.");
             });
         } catch (error) {
             console.error("Error in verifying OTP:", error);
         }
     };
+    const startCountdown = () => {
+        let seconds = 60;
+        setShowResend(false); // Hide the resend button initially
+        setTimer(seconds);
+
+        const countdownInterval = setInterval(() => {
+            seconds -= 1;
+            setTimer(seconds);
+
+            if (seconds === 0) {
+                setShowResend(true); // Show the resend button when the timer reaches 0
+                clearInterval(countdownInterval);
+            }
+        }, 1000);
+    };
+
+    const onResendClick = (e: any) => {
+        e.preventDefault()
+        setShowResend(false); // Hide the resend button again
+        setTimer(60); // Reset the timer to 60 seconds
+        setUpRecaptcha();
+        onSignup();
+        startCountdown(); // Start the countdown again after clicking resend
+    };
 
     return (
         <div>
             <div className="bg-white flex flex-row justify-center w-full">
-            <div id="recaptcha-container"></div>
+                <div id="recaptcha-container"></div>
                 <div className="bg-white overflow-hidden w-[1280px] h-[847px] relative">
                     <div className="absolute w-[1541px] h-[687px] top-[10px] left-[-112px]">
                         <img className="absolute w-[24px] h-[8px] top-0 left-[311px]" alt="Vector" src="" />
@@ -198,7 +212,7 @@ const OtpPage: FunctionComponent = () => {
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;you
                             new Nogard Account
                         </p>
-                        <form onSubmit={(e)=>handleVerifyOtp(e)}>
+                        <form onSubmit={(e) => handleVerifyOtp(e)}>
                             <input id="otp1" className="absolute w-[49px] h-[60px] top-[500px] left-[533px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 0)} />
                             <input id="otp2" className="absolute w-[49px] h-[60px] top-[500px] left-[598px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 1)} />
                             <input id="otp3" className="absolute w-[49px] h-[60px] top-[500px] left-[662px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 2)} />
@@ -207,19 +221,24 @@ const OtpPage: FunctionComponent = () => {
                             <input id="otp6" className="absolute w-[49px] h-[60px] top-[500px] left-[857px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 5)} />
 
                             <div className="absolute w-[222px] h-[47px] top-[590px] left-[603px] bg-black rounded-[5px]" />
-                            <button type='submit' className="absolute top-[605px] left-[661px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-white text-[13px] tracking-[0] leading-[normal]">
+                            <button type='submit' className="absolute top-[605px] left-[661px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-white text-[13px] tracking-[0] leading-[normal] hover hover:bg-grey-500">
                                 Verify &amp; Continue
                             </button>
                         </form>
-                        <div className="absolute top-[657px] left-[692px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-[#000000b5] text-[13px] tracking-[0] leading-[normal]">
-                            Resend
-                        </div>
+
+                        <button
+                            className={`absolute top-[657px] left-[692px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-${showResend ? 'black' : 'red'} text-[13px] tracking-[0] leading-[normal]`}
+                            onClick={(e) => {
+                                onResendClick(e); // Implement the function to handle resend button click
+                            }}
+                        >
+                            {showResend ? 'Resend' : `Resend (in ${timer} seconds)`}
+                        </button>
+
+
                     </div>
 
-                
-                    <div className="absolute top-[2961px] left-[872px] [font-family:'Mulish-Regular',Helvetica] font-normal text-white text-[27px] tracking-[0] leading-[normal]">
-                        Submit
-                    </div>
+
                 </div>
             </div>
         </div>

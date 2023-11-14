@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Enqueries from './Enqueries';
+
 const Details = () => {
+
   return (
     <div className=" h-auto mt-20rem grid grid-cols-1">
       <div className=" w-full h-fit flex justify-center items-center">
         <div className="triangle"></div>
       </div>
-      <div className='bg-custom-domain h-96 w-62rem ml-56 '>
+      <div className='bg-gray-200 h-96 w-62rem ml-56 '>
 
         <div className='w-full h-8rem flex gap-4' >
           <div className='w-3/5'>

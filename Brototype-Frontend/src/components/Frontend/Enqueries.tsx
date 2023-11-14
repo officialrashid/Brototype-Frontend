@@ -51,7 +51,7 @@ const navigate = useNavigate()
 
     return (
         <>
-        <div className='bg-custom-domain h-96 w-62rem ml-56 mt-12 '>
+        <div className='bg-gray-200 h-96 w-62rem ml-56 mt-12 '>
         <div className="w-full h-8rem flex gap-4">
           <div className='w-12rem h-auto gap-4 mt-10rem ml-8rem'>
             <div className='w-12rem h-8'>

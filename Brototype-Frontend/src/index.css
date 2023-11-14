@@ -14,14 +14,14 @@
     height: 0;
     border-left: 30rem solid transparent; /* Change the size by adjusting this value */
     border-right: 32rem solid transparent; /* Change the size by adjusting this value */
-    border-bottom: 15rem solid #00000015; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid rgb(229 231 235);/* Change the size by adjusting this value */
   }
   .triangle-rotate{
     width:0;
     height:0;
     border-left: 30rem solid transparent; /* Change the size by adjusting this value */
     border-right: 32rem solid transparent; /* Change the size by adjusting this value */
-    border-bottom: 15rem solid #00000015; /* Change the size by adjusting this value */
+    border-bottom: 15rem solid rgb(229 231 235); /* Change the size by adjusting this value */
     transform: rotate(180deg);
 
     
