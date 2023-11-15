@@ -8,6 +8,8 @@ import otpLoginPng from "../../../public/otpLogin.png"
 import { setOtpData } from "../../redux-toolkit/otpReducer"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 interface OtpData {
     otpData: any;
@@ -28,6 +30,7 @@ interface RootState {
     otp: OtpData;
     // ... other slices of state
 }
+
 const OtpPage: FunctionComponent = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [showResend, setShowResend] = useState(false);
@@ -97,7 +100,7 @@ const OtpPage: FunctionComponent = () => {
             localStorage.setItem('otpSent', 'true');
             toast.success("OTP SEND TO YOUR PHPNE NUMBER")
         } catch (error) {
-            toast.error("too many attempts,try sfter some time")
+     
             console.error('Error in sending OTP', error);
             // navigate('/invigilator')
         }
@@ -152,7 +155,7 @@ const OtpPage: FunctionComponent = () => {
 
             }).catch((error: any) => {
                 console.error("Error in verifying OTP:", error);
-                toast.error("Incorrect OTP. Please try again.");
+        
             });
         } catch (error) {
             console.error("Error in verifying OTP:", error);
@@ -213,26 +216,31 @@ const OtpPage: FunctionComponent = () => {
                             new Nogard Account
                         </p>
                         <form onSubmit={(e) => handleVerifyOtp(e)}>
-                            <input id="otp1" className="absolute w-[49px] h-[60px] top-[500px] left-[533px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 0)} />
-                            <input id="otp2" className="absolute w-[49px] h-[60px] top-[500px] left-[598px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 1)} />
-                            <input id="otp3" className="absolute w-[49px] h-[60px] top-[500px] left-[662px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 2)} />
-                            <input id="otp4" className="absolute w-[49px] h-[60px] top-[500px] left-[726px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 3)} />
-                            <input id="otp5" className="absolute w-[49px] h-[60px] top-[500px] left-[791px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 4)} />
-                            <input id="otp6" className="absolute w-[49px] h-[60px] top-[500px] left-[857px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 5)} />
+                            <input id="otp1" className="absolute w-[49px] h-[60px] top-[500px] left-[533px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 0)} required/>
+                            <input id="otp2" className="absolute w-[49px] h-[60px] top-[500px] left-[598px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 1)} required/>
+                            <input id="otp3" className="absolute w-[49px] h-[60px] top-[500px] left-[662px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 2)} required/>
+                            <input id="otp4" className="absolute w-[49px] h-[60px] top-[500px] left-[726px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 3)} required/>
+                            <input id="otp5" className="absolute w-[49px] h-[60px] top-[500px] left-[791px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 4)} required/>
+                            <input id="otp6" className="absolute w-[49px] h-[60px] top-[500px] left-[857px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 5)} required/>
 
-                            <div className="absolute w-[222px] h-[47px] top-[590px] left-[603px] bg-black rounded-[5px]" />
-                            <button type='submit' className="absolute top-[605px] left-[661px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-white text-[13px] tracking-[0] leading-[normal] hover hover:bg-grey-500">
+                            <div className="absolute w-[222px] h-[47px] top-[590px] left-[603px] bg-black rounded-[5px] hover hover:bg-gray-400" />
+                            <button type='submit' className="absolute top-[605px] left-[661px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-white text-[13px] tracking-[0] leading-[normal] ">
                                 Verify &amp; Continue
                             </button>
                         </form>
 
                         <button
-                            className={`absolute top-[657px] left-[692px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-${showResend ? 'black' : 'red'} text-[13px] tracking-[0] leading-[normal]`}
+                        style={{
+                            color: showResend ? 'black' : 'red',
+                            textDecoration: 'underline', 
+                            // Add any other styles you want
+                          }}
+                            className={`absolute top-[657px] left-[692px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-${showResend ? 'black' : 'red'} text-[13px] tracking-[0] leading-[normal] hover hover:text-gray-400`}
                             onClick={(e) => {
                                 onResendClick(e); // Implement the function to handle resend button click
                             }}
                         >
-                            {showResend ? 'Resend' : `Resend (in ${timer} seconds)`}
+                            {showResend ? 'Resend' : `${timer} seconds`}
                         </button>
 
 
@@ -245,4 +253,4 @@ const OtpPage: FunctionComponent = () => {
     );
 };
 
-export default OtpPage;
+export default OtpPage; 

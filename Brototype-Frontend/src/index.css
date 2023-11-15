@@ -43,6 +43,9 @@
     border-bottom:2rem solid white;
     transform: rotate(180deg);
   }
-
-
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
   

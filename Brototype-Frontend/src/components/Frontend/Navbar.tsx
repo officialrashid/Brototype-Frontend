@@ -48,7 +48,7 @@ const Navbar = () => {
                         href={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-7 py-2 text-sm font-medium shadow-xl hover:bg-red-700 ml-65rem'
+                          'rounded-md px-7 py-2 text-sm font-medium shadow-xl hover:bg-gray-700 ml-65rem'
                         )}
                         aria-current={item.current ? 'page' : undefined}
                       >
