@@ -147,8 +147,10 @@ const OtpPage: FunctionComponent = () => {
                     accessToken: accessTokenRef.current,
                     customToken: customTokenRef.current
                 }
-                localStorage.setItem("invigilatorAccessToken", invigilatorData?.accessToken)
+                let invigilator ="invigilator"
+                localStorage.setItem(`invigilatorAccessToken`, invigilatorData?.accessToken)
                 localStorage.setItem("invigilatorCustomToken", invigilatorData?.customToken)
+                localStorage.setItem('role',invigilator)
                 dispatch(setOtpData(invigilatorData))
                 toast.success("OTP LOGIN SUCCESS")
                 navigate("/fumigation")
@@ -185,6 +187,9 @@ const OtpPage: FunctionComponent = () => {
         onSignup();
         startCountdown(); // Start the countdown again after clicking resend
     };
+    const handleTokenStore = (role:string,token:string)=>{
+        localStorage.setItem(`${role}AccessToken`, token);
+    }
 
     return (
         <div>

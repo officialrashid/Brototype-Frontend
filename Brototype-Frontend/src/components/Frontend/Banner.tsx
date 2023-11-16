@@ -79,9 +79,15 @@ const Banner = () => {
         animate={{ x: 0,transition:{duration:2} }}
       // whileHover={{rotate:180}}// Moves to the left when removed
     >
-      <p className="text-gray-800 text-2xl italic font-bold  mt-5 ml-3 px-6 ">If you have the courage and the commitment to learn coding,</p>
-      <p className="text-gray-800 text-2xl italic font-bold  mt-1 ml-3 px-10rem "> then Brocamp will empower you.</p>
-      <img src={PracticalIcon} alt="" className="w-10 h-auto  mt-5 ml-6rem" />
+      <p className="text-gray-800 text-2xl italic font-semibold  mt-5 ml-3 px-6 ">If you have the courage and the commitment to learn coding,</p>
+      <p className="text-gray-800 text-2xl italic font-semibold  mt-1 ml-3 px-10rem "> then Brocamp will empower you.</p>
+      <div className='flex flex-wrap'>
+        <div className='w-auto ml-44'>
+        <img src={PracticalIcon} alt="" className=" h-auto  mt-3 px-3"/>
+        </div>
+      <p className="text-gray-800 text-sm italic font-semibold  mt-5">We are provided 80% practical training</p>
+      </div>
+
     </motion.div>
     </div>
   );

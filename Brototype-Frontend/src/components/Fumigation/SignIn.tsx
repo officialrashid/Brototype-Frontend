@@ -3,14 +3,15 @@ import logo from '../../../public/brototype logo.png';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { invigilatorLogin } from '../../utils/methods/post';
+import { invigilatorLogin,invigilatorGoogleLogin } from '../../utils/methods/post';
 
 import { setOtpData } from "../../redux-toolkit/otpReducer"
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signInWithCustomToken } from 'firebase/auth';
+import { signInWithCustomToken, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../firebase/config';
-
+import { GoogleAuthProvider } from "firebase/auth";
+import { string } from 'yup';
 
 
 interface formValues {
@@ -68,6 +69,37 @@ const navigate = useNavigate()
     },
   });
 
+  const handleGoogleSignIn = async (e: any) => {
+    e.preventDefault();
+  
+    const provider = new GoogleAuthProvider();
+  
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        console.log(result.user.email);
+        
+        if (result.user.email) {
+          let email: string = result.user.email;
+          const response:any = await invigilatorGoogleLogin(email);
+          console.log(response,"sbfshjgjsfhgjhguhd")
+          if(response?.data?.status===true){
+             toast.success("SUCCESSFULLY LOGIN ")
+             navigate('/fumigation')
+          }else{
+            toast.error("Eamil Not Found")
+          }
+          
+        } else {
+          // Handle the case where email is null or undefined
+          toast.error("Some Isuues In Google SignIn")
+        }
+      })
+      .catch((error) => {
+       console.log(error,"error in the google SignIn");
+       toast.error("Some Isuues In Google SignIn")
+      
+      });
+  };
   return (
    
 
@@ -136,6 +168,18 @@ const navigate = useNavigate()
                         className="flex w-full justify-center rounded-sm bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
                         Sign in
+                      </button>
+                    </div>
+                    <div>
+   
+                      <button
+                         onClick={handleGoogleSignIn}
+                        type="submit"
+                        className="flex w-full justify-center rounded-sm bg-black px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        
+                      >
+                       <img src="/google.png" alt="" className='w-4 mr-3 mt-1' />
+                        Google With Login
                       </button>
                     </div>
                     <div className='ml-2'>

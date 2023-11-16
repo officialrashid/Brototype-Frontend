@@ -9,7 +9,7 @@ interface formValues{
      email: string,
      phone: string,
      qualification: string,
-     preferredLocation: string
+     prefferredLocation: string
 }
 
 
@@ -21,7 +21,7 @@ const navigate = useNavigate()
       email: '',
       phone: '',
       qualification: '',
-      preferredLocation: '',
+      prefferredLocation: '',
     } as formValues,
     // Define your onSubmit handler here
     onSubmit: async (values) => {
@@ -32,13 +32,19 @@ const navigate = useNavigate()
           email: values.email,
           phone: values.phone,
           qualification: values.qualification,
-          preferredLocation: values.preferredLocation
+          prefferredLocation: values.prefferredLocation
         }
        const response = await EnquiriesApi(body) 
-        if(response){
-          toast.success('Enquerie message successful!');
-          window.location.reload()
-        }
+    console.log(response,"dsfhbshjsbhj");
+    
+       if (response.data.status === true) {
+        toast.success("Enquiry message successful!");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000); // Redirect after 3 seconds
+      }else{
+        toast.error("Email Or PhoneNumber already Exist")
+      }
         
 
       } catch(error){
@@ -55,13 +61,13 @@ const navigate = useNavigate()
         <div className="w-full h-8rem flex gap-4">
           <div className='w-12rem h-auto gap-4 mt-10rem ml-8rem'>
             <div className='w-12rem h-8'>
-              <p className='font-semibold text-2xl px-5 w-fit'>Have any queries?</p>
-              <p className='text-sm px-5 py-3 w-fit'>Get a free counseling session from our Team</p>
+              <p className='font-semibold text-2xl px-5 w-fit font-roboto'>Have any queries?</p>
+              <p className='text-sm px-5 py-3 w-fit font-roboto'>Get a free counseling session from our Team</p>
               <div className='w-16rem h-6rem mt-5 ml-3 flex'>
                 <img src="/PhoneIcon.svg" alt="" />
                 <div className='w-16rem h-5 bg-green-90 mt-3 ml-5'>
-                  <p>Call our team</p>
-                  <p className='text-2xl mt-3'>9526603573</p>
+                  <p className='font-roboto'>Call our team</p>
+                  <p className='text-2xl mt-3 font-roboto'>9526603573</p>
                 </div>
               </div>
             </div>
@@ -80,7 +86,7 @@ const navigate = useNavigate()
                     onChange={formik.handleChange}
                     autoComplete="name"
                     required
-                    className="block w-20rem rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600  sm:text-sm sm:leading-6 focus:outline-gray-600"
                     placeholder='Name'
                     style={{ padding: '3%' }}
                   />
@@ -94,7 +100,7 @@ const navigate = useNavigate()
                     onChange={formik.handleChange}
                     autoComplete="email"
                     required
-                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6 focus:outline-gray-600"
+                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600  sm:text-sm sm:leading-6 focus:outline-gray-600"
                     placeholder='Email'
                     style={{ padding: '3%' }}
                   />
@@ -108,7 +114,7 @@ const navigate = useNavigate()
                     onChange={formik.handleChange}
                     autoComplete="phone"
                     required
-                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600  sm:text-sm sm:leading-6 focus:outline-gray-600"
                     placeholder='Phone'
                     style={{ padding: '3%' }}
                   />
@@ -122,25 +128,26 @@ const navigate = useNavigate()
                     onChange={formik.handleChange}
                     autoComplete="qualification"
                     required
-                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600  sm:text-sm sm:leading-6 focus:outline-gray-600"
                     placeholder='Qualification'
                     style={{ padding: '3%' }}
                   />
                 </div>
                 <div className="mt-4 ml-8">
                   <select
-                    id="preferredLocation"
-                    name="preferredLocation"
-                    value={formik.values.preferredLocation}
+                    id="prefferredLocation"
+                    name="prefferredLocation"
+                    value={formik.values.prefferredLocation}
                     onChange={formik.handleChange}
-                    autoComplete="preferredLocation"
+                    autoComplete="prefferredLocation"
                     required
-                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    className="block w-20rem  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600  sm:text-sm sm:leading-6 focus:outline-gray-600"
                   >
                     <option value="" disabled selected>Preferred Location</option>
                     <option value="kochi">Kochi</option>
                     <option value="kozhikkod">Kozhikkod</option>
                     <option value="Bangalore">Bangalore</option>
+                    <option value="Bangalore">chennai</option>
                   </select>
                 </div>
                 <div className='mt-4 ml-8'>

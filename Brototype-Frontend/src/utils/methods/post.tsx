@@ -10,7 +10,7 @@ interface EnquiryData {
   email: string;
   phone: string;
   qualification: string;
-  preferredLocation: string;
+  prefferredLocation: string;
 }
 interface invigilatorData {
   // Define the structure of the data parameter here
@@ -41,4 +41,16 @@ export const invigilatorLogin = async (data:invigilatorData): Promise<AxiosRespo
     console.log("Error in the invigilatorLogin",error);
     throw error;  
   }
+
+}
+
+export const invigilatorGoogleLogin = async (email:string)=>{
+    try{
+      console.log(email,"email in function comig");
+      
+      const response= await fumigationApi.post('/api/fumigation/invigilator-google-login',email)
+      return response
+    } catch (err){
+      return {status:false,message:"Some issue in Google Sign in"}
+    }
 }

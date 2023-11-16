@@ -43,11 +43,11 @@ const Domains = () => {
         <div className="mt-5 w-4/4 flex flex-wrap">
           <div className="w-2/4 flex flex-wrap">
             <img src="/project img.svg" alt="" className="w-5 h-5 ml-4" />
-            <p className="ml-2 text-sm"> 2 Main Project</p>
+            <p className="ml-2 text-sm font-roboto"> 2 Main Project</p>
           </div>
           <div className="w-2/4 flex flex-wrap">
             <img src="/project img.svg" alt="" className="w-5 h-5 ml-4" />
-            <p className="ml-2 text-sm"> 6 + Mini  Project</p>
+            <p className="ml-2 text-sm font-roboto font-sm"> 6 + Mini  Project</p>
           </div>
         </div>
         <div className="mt-8 w-4/4 flex flex-wrap">
@@ -56,7 +56,7 @@ const Domains = () => {
             <img src="/star.png" alt="" className="w-14 h-4 ml-4" />
           </div>
           <div className="w-2/4 flex flex-wrap">
-            <p className="ml-8 text-sm"> (1 k+ students)</p>
+            <p className="ml-10 text-sm"> (1 k+ students)</p>
           </div>
         </div>
       </div>
