@@ -1,6 +1,6 @@
 import fumigationApi from "../baseUrl/baseUrl";
 
-////********   get fumigation methids  *****////
+////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
   
@@ -13,3 +13,7 @@ export const getEnquiryStudents = async () => {
     throw error; // Rethrow the error for the caller to handle
   }
 };
+// get enquirie methods end //
+
+
+//***** */ get invigilators methods *****//

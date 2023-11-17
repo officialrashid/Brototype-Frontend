@@ -8,8 +8,6 @@ import otpLoginPng from "../../../public/otpLogin.png"
 import { setOtpData } from "../../redux-toolkit/otpReducer"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
 
 interface OtpData {
     otpData: any;
@@ -34,6 +32,7 @@ interface RootState {
 const OtpPage: FunctionComponent = () => {
     const [otp, setOtp] = useState(['', '', '', '', '', '']);
     const [showResend, setShowResend] = useState(false);
+    const [error, setError] = useState("")
     const [timer, setTimer] = useState(60);
     const navigate = useNavigate();
     const dispatch = useDispatch()
@@ -45,6 +44,7 @@ const OtpPage: FunctionComponent = () => {
 
 
     useEffect(() => {
+
         localStorage.removeItem('otpSent')
         invigilatorIdRef.current = otpData.otpData.invigilatorId;
         phone = otpData.otpData.phone;
@@ -94,13 +94,14 @@ const OtpPage: FunctionComponent = () => {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
             console.log('Confirmation result:', confirmationResult);
             window.confirmationResult = confirmationResult;
-            invigilatorIdRef.current = otpData.otpData.invigilatorId;
-            customTokenRef.current = otpData.otpData.customToken;
-            accessTokenRef.current = otpData.otpData.accessToken;
+            invigilatorIdRef.current = otpData?.otpData?.invigilatorId;
+            customTokenRef.current = otpData?.otpData?.customToken;
+            accessTokenRef.current = otpData?.otpData?.accessToken;
             localStorage.setItem('otpSent', 'true');
-            toast.success("OTP SEND TO YOUR PHPNE NUMBER")
+            toast.success("OTP SEND SUCCESSFULLY")
         } catch (error) {
-     
+            // setError("too many attempts..please try after sime times")
+            clearErrorAfterTimeout();
             console.error('Error in sending OTP', error);
             // navigate('/invigilator')
         }
@@ -140,29 +141,39 @@ const OtpPage: FunctionComponent = () => {
         console.log(code, "76756567677");
 
         try {
-            window.confirmationResult.confirm(code).then((result: any) => {
-                console.log("Success: OTP verified", result.user);
-                const invigilatorData: any = {
-                    invigilatorId: invigilatorIdRef.current,
-                    accessToken: accessTokenRef.current,
-                    customToken: customTokenRef.current
-                }
-                let invigilator ="invigilator"
-                localStorage.setItem(`invigilatorAccessToken`, invigilatorData?.accessToken)
-                localStorage.setItem("invigilatorCustomToken", invigilatorData?.customToken)
-                localStorage.setItem('role',invigilator)
-                dispatch(setOtpData(invigilatorData))
-                toast.success("OTP LOGIN SUCCESS")
-                navigate("/fumigation")
+            if (code.length === 6) {
+                window.confirmationResult.confirm(code).then((result: any) => {
+                    console.log("Success: OTP verified", result?.user);
+                    const invigilatorData: any = {
+                        invigilatorId: invigilatorIdRef.current,
+                        accessToken: accessTokenRef.current,
+                        customToken: customTokenRef.current
+                    }
+                    let invigilator = "invigilator"
+                    localStorage.setItem(`invigilatorAccessToken`, invigilatorData?.accessToken)
+                    localStorage.setItem("invigilatorCustomToken", invigilatorData?.customToken)
+                    localStorage.setItem('role', invigilator)
+                    dispatch(setOtpData(invigilatorData))
+                    toast.success("OTP LOGIN SUCCESS")
+                    navigate("/fumigation")
 
-            }).catch((error: any) => {
-                console.error("Error in verifying OTP:", error);
-        
-            });
+                }).catch((error: any) => {
+                    if (error.code === 'auth/invalid-verification-code') {
+                        setError("Incorrect OTP. Please try again.");
+                    } else if (error.code === 'auth/code-expired') {
+                        setError("Otp expired.Resend it.")
+                    } else {
+                        setError("please Enter 6 degit otp code");
+                    }
+                    clearErrorAfterTimeout();
+                    console.error("Error in verifying OTP:", error);
+                });
+            }
         } catch (error) {
-            console.error("Error in verifying OTP:", error);
+            setError("Incorrect OTP. Please try again.");
+            clearErrorAfterTimeout();
         }
-    };
+    }
     const startCountdown = () => {
         let seconds = 60;
         setShowResend(false); // Hide the resend button initially
@@ -187,9 +198,11 @@ const OtpPage: FunctionComponent = () => {
         onSignup();
         startCountdown(); // Start the countdown again after clicking resend
     };
-    const handleTokenStore = (role:string,token:string)=>{
-        localStorage.setItem(`${role}AccessToken`, token);
-    }
+    const clearErrorAfterTimeout = () => {
+        setTimeout(() => {
+            setError("");
+        }, 5000); // 1000 milliseconds (1 second)
+    };
 
     return (
         <div>
@@ -221,25 +234,29 @@ const OtpPage: FunctionComponent = () => {
                             new Nogard Account
                         </p>
                         <form onSubmit={(e) => handleVerifyOtp(e)}>
-                            <input id="otp1" className="absolute w-[49px] h-[60px] top-[500px] left-[533px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 0)} required/>
-                            <input id="otp2" className="absolute w-[49px] h-[60px] top-[500px] left-[598px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 1)} required/>
-                            <input id="otp3" className="absolute w-[49px] h-[60px] top-[500px] left-[662px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 2)} required/>
-                            <input id="otp4" className="absolute w-[49px] h-[60px] top-[500px] left-[726px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 3)} required/>
-                            <input id="otp5" className="absolute w-[49px] h-[60px] top-[500px] left-[791px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 4)} required/>
-                            <input id="otp6" className="absolute w-[49px] h-[60px] top-[500px] left-[857px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 5)} required/>
+                            <input id="otp1" className="absolute w-[49px] h-[60px] top-[500px] left-[533px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 0)} required />
+                            <input id="otp2" className="absolute w-[49px] h-[60px] top-[500px] left-[598px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 1)} required />
+                            <input id="otp3" className="absolute w-[49px] h-[60px] top-[500px] left-[662px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 2)} required />
+                            <input id="otp4" className="absolute w-[49px] h-[60px] top-[500px] left-[726px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 3)} required />
+                            <input id="otp5" className="absolute w-[49px] h-[60px] top-[500px] left-[791px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 4)} required />
+                            <input id="otp6" className="absolute w-[49px] h-[60px] top-[500px] left-[857px] bg-[#0000000f] rounded-[5px] border border-solid border-[#00000033] text-center" maxLength={1} onChange={(e) => handleOtpChange(e, 5)} required />
+
 
                             <div className="absolute w-[222px] h-[47px] top-[590px] left-[603px] bg-black rounded-[5px] hover hover:bg-gray-400" />
+
                             <button type='submit' className="absolute top-[605px] left-[661px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-white text-[13px] tracking-[0] leading-[normal] ">
                                 Verify &amp; Continue
                             </button>
-                        </form>
 
+                        </form>
+                        {/* <p className='relative text-sm text-red-700 mt-35.4rem ml-38rem'>jdhgjhdgjhdjghdgdjgdhjghdjgdhjdj</p> */}
+                        {error !== "" && <p className='relative text-sm text-red-500 mt-35.4rem ml-38rem'>{error}</p>}
                         <button
-                        style={{
-                            color: showResend ? 'black' : 'red',
-                            textDecoration: 'underline', 
-                            // Add any other styles you want
-                          }}
+                            style={{
+                                color: showResend ? 'black' : 'red',
+                                textDecoration: 'underline',
+                                // Add any other styles you want
+                            }}
                             className={`absolute top-[657px] left-[692px] [font-family:'Poppins-SemiBold',Helvetica] font-semibold text-${showResend ? 'black' : 'red'} text-[13px] tracking-[0] leading-[normal] hover hover:text-gray-400`}
                             onClick={(e) => {
                                 onResendClick(e); // Implement the function to handle resend button click
@@ -253,8 +270,11 @@ const OtpPage: FunctionComponent = () => {
 
 
                 </div>
+
             </div>
+
         </div>
+
     );
 };
 

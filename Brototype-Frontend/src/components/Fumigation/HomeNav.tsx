@@ -6,8 +6,6 @@ import Batches from './Batches';
 type TableType = 'batches' | 'pendingStudents';
 const HomeNav = () => {
     const navigate = useNavigate()
-
-
     const [activeTable, setActiveTable] = useState < TableType > ()
     const switchTable = (tabletype: TableType) => {
         setActiveTable(tabletype)

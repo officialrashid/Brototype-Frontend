@@ -3,7 +3,7 @@ import { AxiosResponse, AxiosError } from "axios";
 
 
 //***********  fumigation service Api  **********/
-
+// Enquirie interface
 interface EnquiryData {
   // Define the structure of the data parameter here
   name: string;
@@ -12,16 +12,27 @@ interface EnquiryData {
   qualification: string;
   prefferredLocation: string;
 }
-interface invigilatorData {
+// invigilators Interface
+interface invigilatorLogin {
   // Define the structure of the data parameter here
-  name: string;
-  email: string;
+  uniqueId: string;
+
 }
- 
- 
+interface invigilatorData {
+   name: String,
+   email:String,
+   phone: Number,
+   batch: String
+}
+
+
+// batch interface
+ interface createBatch {
+   batchName: string,
+   hubLocation: string
+ }
+ //********* */ Enquirie Apis ***********////
 export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> => {
-    console.log(data,"==========");
-    
   try {
     const response = await fumigationApi.post('/api/fumigation/enquery', data);
     return response;
@@ -31,7 +42,11 @@ export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> =>
   }
 };
 
-export const invigilatorLogin = async (data:invigilatorData): Promise<AxiosResponse> =>{
+// End Enquirie Apis
+
+
+//***** */ Invigilator post Apis ******//
+export const invigilatorLogin = async (data:invigilatorLogin): Promise<AxiosResponse> =>{
    
   try{
 
@@ -46,11 +61,32 @@ export const invigilatorLogin = async (data:invigilatorData): Promise<AxiosRespo
 
 export const invigilatorGoogleLogin = async (email:string)=>{
     try{
-      console.log(email,"email in function comig");
-      
       const response= await fumigationApi.post('/api/fumigation/invigilator-google-login',email)
       return response
     } catch (err){
       return {status:false,message:"Some issue in Google Sign in"}
     }
+}
+export const createInvigilator = async (data:invigilatorData)=>{
+  try{
+    const response = await fumigationApi.post('/api/fumigation/create-invigilator',data)
+    return response;
+  } catch(err){
+    return {status:false,message:"Some issue in createInvigilator"}
+  }
+}
+//***// End INvigilator Api */
+
+
+///****** Batch Apis *****//
+
+export const createBatch = async (data:createBatch)=>{
+    
+  try{
+     const response = await fumigationApi.post('/api/fumigation/create-batch',data)
+     return response
+  } catch(err){
+    return {status:false,message:"Some isuues in Create Batch"}
+  }
+
 }

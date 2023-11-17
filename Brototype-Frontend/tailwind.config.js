@@ -6,6 +6,7 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
 
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       boxShadow: {
@@ -37,7 +38,8 @@ module.exports = {
         '34rem': '34rem',
         '36rem': '36rem',
         '22.5rem': '22.5rem',
-        '28rem': '28rem'
+        '28rem': '28rem',
+        "35.4rem": '35.4rem'
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',
