@@ -39,18 +39,33 @@ module.exports = {
         '36rem': '36rem',
         '22.5rem': '22.5rem',
         '28rem': '28rem',
-        "35.4rem": '35.4rem'
+        "35.4rem": '35.4rem',
+        '16.3rem': '16.3rem',
+        '34rem': '34rem',
+        '67.3rem':'67.3rem',
+        '21rem':'21rem',
+        '23.2rem': '23.2rem',
+        '37rem': '37rem'
+       
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',
         'custom-pink': '#87B7C4',
-        'custom-domain': '#00000015'
+        'custom-domain': '#00000015',
+        'custom-background': '#ECECF0',
+        'custom-profile': '#806189',
+        'custom-sidebar': '#090537',
+        
       },
       fontFamily: {
         poppins: ['Poppins', 'sans'],
         roboto: ['Roboto', 'sans'],
       },
-
+      colors:{
+        "dark-purple":"#081A51",
+        "light-white":"rgba(255,255,255,0.17)",
+        'view-more': "#715DA6"
+     },
     },
     plugins: {
       'postcss-nesting': {},

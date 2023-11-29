@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 axios.defaults.withCredentials = true;
 
 const fumigationApi: AxiosInstance = axios.create({
-  baseURL: "http://localhost:3002",
+  baseURL: "http://brototype.com",
 });
 
 // Add a request interceptor
