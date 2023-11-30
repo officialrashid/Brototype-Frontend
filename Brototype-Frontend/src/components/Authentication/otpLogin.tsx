@@ -225,7 +225,7 @@ const OtpPage: FunctionComponent = () => {
                             alt="Rectangle"
                             src={otpLoginPng} />
                         <div className="absolute top-[391px] left-[615px] [font-family:'Poppins-Medium',Helvetica] font-semibold text-black text-[20px] tracking-[0] leading-[normal]">
-                            Please Verify Account
+                            Please Verify Accounts
                         </div>
                         <p className="absolute w-[465px] top-[433px] left-[521px] [font-family:'Poppins-Light',Helvetica] font-light text-black text-[13px] tracking-[0] leading-[normal]">
                             please Enter six digit code we sent to your&nbsp;&nbsp;phone Number&nbsp;&nbsp;to Verify

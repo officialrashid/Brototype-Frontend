@@ -1,5 +1,5 @@
 import fumigationApi from "../baseUrl/baseUrl";
-import { AxiosResponse, AxiosError } from "axios";
+import { AxiosResponse } from "axios";
 
 
 //***********  fumigation service Api  **********/

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+
 import Enqueries from './Enqueries';
 
 const Details = () => {

@@ -1,18 +1,18 @@
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import  { useState } from 'react';
+
 import PendingStudents from '../Fumigation/PendingStudents';
 import Batches from './Batches';
 type TableType = 'batches' | 'pendingStudents';
 const HomeNav = () => {
-    const navigate = useNavigate()
+
     const [activeTable, setActiveTable] = useState < TableType > ()
     const switchTable = (tabletype: TableType) => {
         setActiveTable(tabletype)
     }
-    function setShowModal(arg0: boolean) {
-        throw new Error('Function not implemented.');
-    }
+    // function setShowModal(arg0: boolean) {
+    //     throw new Error('Function not implemented.');
+    // }
     return (
         <>
             <div className="bg-white-200 shadow-xl pt-20 " >
@@ -21,7 +21,7 @@ const HomeNav = () => {
                         <ul className="max-w-screen-xl flex flex-wrap mx-auto justify-between ">
                             <li><span className='text-2xl font-bold'> Hello Invigilators,</span></li>
                             <li><button onClick={() => {
-                                setShowModal(true)
+                                // setShowModal(true)
                             }} className=" px-2 py-2 rounded-full bg-black text-white  flex items-center space-x-2 border-transparent hover:border-gray-300 sahdow-2xl"> <span className="text-3xl ">+</span> <span>Add invigilators</span></button></li>
                         </ul>
                     </nav>

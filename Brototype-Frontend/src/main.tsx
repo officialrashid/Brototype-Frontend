@@ -1,8 +1,8 @@
-import React from 'react';
+
 import ReactDOM from 'react-dom';
 import App from './App.jsx';
 import './index.css';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux-toolkit/store.tsx";

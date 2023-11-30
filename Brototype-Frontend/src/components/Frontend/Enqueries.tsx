@@ -1,8 +1,8 @@
-import React from 'react';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { EnquiriesApi } from '../../utils/methods/post';
-import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -15,7 +15,7 @@ interface formValues {
 }
 
 const Enquiries = () => {
-  const navigate = useNavigate();
+
 
   const validationSchema = Yup.object({
     name: Yup.string().min(2,"Too Short")

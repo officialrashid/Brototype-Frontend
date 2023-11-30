@@ -1,5 +1,4 @@
-import React from 'react'; // Import React
-import logo from '../../../public/brototype logo.png'; // Import your logo
+
 
 const Batches = () => {
   return (

@@ -1,9 +1,9 @@
 
 import logo from "../../../public/brototype logo.png"
 const Navigation = () => {
-    function setShowModal(arg0: boolean) {
-        throw new Error('Function not implemented.');
-    }
+    // function setShowModal(arg0: boolean) {
+    //     throw new Error('Function not implemented.');
+    // }
 
     return (
         <>
