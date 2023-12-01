@@ -1,10 +1,10 @@
-import Sidebar from "../../components/Students/Sidebar"
+import StudentHome from "../../components/Students/StudentHome/StudentHome"
 import Navbar from "../../components/Frontend/Navbar";
 const Dashboard = () => {
     return (
         <div>
             <Navbar/>
-            <Sidebar/>
+            <StudentHome/>
         </div>
     );
 }

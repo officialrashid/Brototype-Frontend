@@ -43,10 +43,11 @@ module.exports = {
         '16.3rem': '16.3rem',
         '34rem': '34rem',
         '67.3rem':'67.3rem',
-        '21rem':'21rem',
-        '23.2rem': '23.2rem',
-        '37rem': '37rem'
-       
+        '20.6rem':'20.6rem',
+        '36.5rem': '36.5rem',
+        '46rem': '46rem',
+        '25.2rem': '25.2rem'
+        
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',
@@ -64,7 +65,8 @@ module.exports = {
       colors:{
         "dark-purple":"#081A51",
         "light-white":"rgba(255,255,255,0.17)",
-        'view-more': "#715DA6"
+        'view-more': "#715DA6",
+  
      },
     },
     plugins: {
