@@ -56,7 +56,7 @@ const StudentGraph = () => {
         },
       });
     return (
-        <div>
+ <>
              <div className="flex h-16rem">
             <div className="grid grid-rows-2 grid-flow-col gap-2 w-80 h-72 mt-3 ml-5 ">
               <div className="bg-white shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
@@ -103,7 +103,7 @@ const StudentGraph = () => {
             </div>
 
           </div>
-        </div>
+          </>
     );
 }
 

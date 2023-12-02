@@ -1,8 +1,8 @@
-import StudentTask from '../../../pages/Students/StudentTask';
+import StudentTask from '../../../pages/Students/ViewTask';
 
 const StudentManifest = () => {
   return (
-    <div className="bg-custom-background  h-auto">
+    <div className="bg-custom-background">
       <div className='bg-white h-auto m-8 rounded-xl w-67.3rem'>
         <h1 className='font-roboto font-sm ml-5 mt-5'>Your Manifest Details</h1>
         
@@ -181,9 +181,15 @@ const StudentManifest = () => {
   
   
 </div>
+<div className='w-24 h-16 ml-28rem'>
+<button className="bg-black hover:bg-gray-400 text-white font-roboto font-semibold m-3 h-8 w-28 h-18 rounded-full text-sm">
+  update
+</button>
+
+</div>
 
       </div>
-    </div>
+     </div>
   );
 }
 

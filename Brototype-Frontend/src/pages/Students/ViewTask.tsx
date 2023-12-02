@@ -1,13 +1,18 @@
 import StudentsTask from "../../components/Students/StudentTask/StudentTask";
-import SubTask from "../../components/Students/StudentTask/SubTask";
+
 
 const StudentTask = () => {
     return (
-        <div>
+        <div className="h-auto flex-1  bg-custom-background">
+        <div className='bg-white h-48rem m-8 rounded-xl w-67.3rem'>
+
+      
             <StudentsTask/>
-            <SubTask/>
+
 
         </div>
+        </div>
+
     );
 }
 

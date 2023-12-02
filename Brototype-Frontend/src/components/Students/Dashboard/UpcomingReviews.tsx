@@ -1,7 +1,7 @@
 
 const UpcomingReviews = () => {
     return (
-        <div>
+    
            <div className="border m-5 h-fit rounded-xl shadow-2xl bg-white">
             <div className="flex m-2 gap-2">
 
@@ -89,7 +89,7 @@ const UpcomingReviews = () => {
 
 
           </div> 
-        </div>
+
     );
 }
 

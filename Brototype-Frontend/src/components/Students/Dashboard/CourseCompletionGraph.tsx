@@ -1,5 +1,5 @@
 
-import { useEffect} from "react";
+import { useEffect } from "react";
 const CourseCompletionGraph = () => {
     useEffect(() => {
         // Chart options and configuration
@@ -64,14 +64,16 @@ const CourseCompletionGraph = () => {
         };
     }, []); // Empty dependency array ensures that this effect runs only once on mount
     return (
-        <div>
-            
 
+
+
+        <div className="w-22.5rem h-auto bg-white right-6 mb-48rem mt-20.6rem rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute">
             <div id="chart">
-          </div>
+            </div>
 
-          <h1 className="text-sm font-roboto ml-28 ">Course Completion Ratio</h1>
+            <h1 className="text-sm font-roboto ml-28 ">Course Completion Ratio</h1>
         </div>
+
     );
 }
 

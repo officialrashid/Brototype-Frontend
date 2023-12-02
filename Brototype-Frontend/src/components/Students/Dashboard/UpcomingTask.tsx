@@ -1,7 +1,7 @@
 
 const UpcomingTask = () => {
     return (
-        <div>
+      <div className="w-22.5rem h-72 bg-white right-6 mb-48rem mt-36.5rem rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute overflow-y-auto ">
             <h1 className="font-roboto text-sm ml-3">Upcoming Tasks</h1>
   <div className="mt-2">
     <h1 className="text-sm font-roboto font-sm text-gray-400 ml-5">Monday 22 September 2022</h1>
@@ -42,7 +42,7 @@ const UpcomingTask = () => {
       </div>
     </div>
   </div>
-        </div>
+ </div>
     );
 }
 

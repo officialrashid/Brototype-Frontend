@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 const StudentProfile = () => {
     return (
-        <div>
+       
                  <div className="w-46rem h-48 mt-5 ml-5 rounded-xl shadow-md bg-white relative border border-gray-300 hover hover:border-2 border-gray-300">
           
     
@@ -28,7 +28,7 @@ const StudentProfile = () => {
               <img src="/profile.jpeg" alt="" className="w-full h-full rounded-md" />
             </div>
             </div>
-        </div>
+      
     );
 }
 

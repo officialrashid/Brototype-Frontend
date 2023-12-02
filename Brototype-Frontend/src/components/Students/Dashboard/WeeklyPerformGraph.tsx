@@ -56,11 +56,11 @@ const WeeklyPerformGraph = () => {
         },
       });
     return (
-        <div>
+        <>
                 <div className="w-46rem mt-14 h-22rem bg-white ml-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 ">
             <div className="flex">
               <h1 className="text-md ml-5 font-roboto font-semibold mt-5">Performance</h1>
-              <div className="relative group ml-96 mt-3">
+              <div className="relative group ml-33rem mt-3">
                 {/* Dropdown button with dropdown icon */}
                 <button className="border border-gray-350 text-black px-2 py-2 rounded flex items-cente top-3 right-3r text-sm font-roboto font-semibold">
                   Weekly
@@ -83,7 +83,7 @@ const WeeklyPerformGraph = () => {
             </div>
 
           </div>
-        </div>
+          </>
     );
 }
 
