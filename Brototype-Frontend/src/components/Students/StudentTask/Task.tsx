@@ -1,16 +1,11 @@
-import React from 'react';
+
 import { useNavigate } from 'react-router-dom';
-
-
 const Task = () => {
 const navigate = useNavigate()
 const handleViewTask = ()=>{
   navigate('/viewTask')
 }
   return (
-
-
-
     <div className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
       <div onClick={(handleViewTask)}>
         <span className="font-roboto text-sm">Week-01</span>

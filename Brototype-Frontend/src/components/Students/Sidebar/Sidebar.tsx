@@ -9,10 +9,11 @@ const Sidebar = () => {
     const Menus = [
       { title: "Dashboard", src: "/dashboard (3).png" },
       { title: "Profile", src: "/profile-user.png" },
-      { title: "Review", src: "/job-interview (3).png", gap: true },
+      { title: "Review", src: "/job-interview (3).png"},
       { title: "Task", src: "/app (1).png" },
       { title: "Extend", src: "/expired.png" },
       { title: "Chat", src: "/chat (2).png" },
+      { title: "Todo", src: "" },
     ];
   
     const handleChangeSideBar = (title: string) => {
@@ -26,6 +27,12 @@ const Sidebar = () => {
       }
       if(title==='Task'){
         navigate('/task')
+      }
+      if(title==='Todo'){
+        navigate('/todolist')
+      }
+      if(title==='Extend'){
+        navigate('/extendDetails')
       }
     };
   

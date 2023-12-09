@@ -1,6 +1,6 @@
 // import OtpComponent from "../../components/Authentication/OtpComponent";
 
-import OtpPage from '../../components/Authentication/otpLogin';
+import OtpPage from '../../components/Authentication/OtpLogin';
 const OtpComponet = () => {
     return (
         <div>

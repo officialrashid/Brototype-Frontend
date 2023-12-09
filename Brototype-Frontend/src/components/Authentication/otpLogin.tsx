@@ -30,8 +30,8 @@ interface RootState {
 }
 
 const OtpPage: FunctionComponent = () => {
-    const [otp, setOtp] = useState(['', '', '', '', '', '']);
-    const [showResend, setShowResend] = useState(false);
+    const [otp, setOtp] = useState(['', '', '', '', '', '']);//otp state
+    const [showResend, setShowResend] = useState(false); //resend otp
     const [error, setError] = useState("")
     const [timer, setTimer] = useState(60);
     const navigate = useNavigate();
@@ -85,14 +85,11 @@ const OtpPage: FunctionComponent = () => {
     };
 
     const onSignup = async () => {
-        console.log('Sending OTP');
+        //send the otp to user phone number
         const appVerifier = window.recaptchaVerifier;
         const formatPh = '+91' + phone;
-        console.log(formatPh, "Phone Number for OTP");
-
         try {
             const confirmationResult = await signInWithPhoneNumber(auth, formatPh, appVerifier);
-            console.log('Confirmation result:', confirmationResult);
             window.confirmationResult = confirmationResult;
             invigilatorIdRef.current = otpData?.otpData?.invigilatorId;
             customTokenRef.current = otpData?.otpData?.customToken;
@@ -100,14 +97,12 @@ const OtpPage: FunctionComponent = () => {
             localStorage.setItem('otpSent', 'true');
             toast.success("OTP SEND SUCCESSFULLY")
         } catch (error) {
-            // setError("too many attempts..please try after sime times")
             clearErrorAfterTimeout();
-            console.error('Error in sending OTP', error);
-            // navigate('/invigilator')
         }
     };
 
     const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    //hansdle chnage otp input function
         e.preventDefault();
         const inputEvent = e.nativeEvent as InputEvent;
         const isBackspace = inputEvent.inputType === 'deleteContentBackward';
@@ -136,10 +131,9 @@ const OtpPage: FunctionComponent = () => {
 
 
     const handleVerifyOtp = (e: React.FormEvent<HTMLFormElement>) => {
+        //verify otp function
         e.preventDefault();
         const code = otp.join('');
-        console.log(code, "76756567677");
-
         try {
             if (code.length === 6) {
                 window.confirmationResult.confirm(code).then((result: any) => {
@@ -189,7 +183,7 @@ const OtpPage: FunctionComponent = () => {
             }
         }, 1000);
     };
-
+// resend otp function
     const onResendClick = (e: any) => {
         e.preventDefault()
         setShowResend(false); // Hide the resend button again

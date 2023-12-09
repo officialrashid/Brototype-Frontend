@@ -117,7 +117,7 @@ const SignIn = () => {
         <div className='flex justify-center items-center h-screen bg-gray-200'>
           <div className="border border-solid  shadow-2xl bg-white p-4 mt-4 w-1/4" >
             <div className="  flex-1 flex-col ">
-              <div >
+              <div>
                 <img
                   className=" mx-auto mt-4 h-10 w-auto "
                   src={logo}

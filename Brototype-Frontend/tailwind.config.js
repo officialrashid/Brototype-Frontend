@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   important: true,
   content: [
@@ -56,21 +57,25 @@ module.exports = {
         'custom-background': '#ECECF0',
         'custom-profile': '#806189',
         'custom-sidebar': '#090537',
-        
+        "custom-indigo": "#4b0082"
       },
       fontFamily: {
         poppins: ['Poppins', 'sans'],
         roboto: ['Roboto', 'sans'],
+        sans: ["Open Sans"]
+      },
+      gridTemplateColumns:{
+        "1/5" : "1fr 5fr"
       },
       colors:{
         "dark-purple":"#081A51",
         "light-white":"rgba(255,255,255,0.17)",
         'view-more': "#715DA6",
-  
      },
     },
     plugins: {
       'postcss-nesting': {},
+    '@tailwindcss/forms': {}
     }
 
   }

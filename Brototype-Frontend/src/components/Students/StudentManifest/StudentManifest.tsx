@@ -1,7 +1,11 @@
-import StudentTask from '../../../pages/Students/ViewTask';
-
+import ProfileUpdateModal from "./ProfileUpdateModal";
+import PersonalInfoModal from "./PersonalInfoModal";
+import React,{useState} from "react";
 const StudentManifest = () => {
+  const [setProfile,setProfileUpdate]=useState(false)
+  const [setPersonalInfo,setPersonalInfoUpdate]=useState(false)
   return (
+    <>
     <div className="bg-custom-background">
       <div className='bg-white h-auto m-8 rounded-xl w-67.3rem'>
         <h1 className='font-roboto font-sm ml-5 mt-5'>Your Manifest Details</h1>
@@ -17,7 +21,7 @@ const StudentManifest = () => {
         <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Remote</span>
       </div>
     </div>
-    <span className="absolute top-12 right-5 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer">
+    <span className="absolute top-12 right-5 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={()=>{setProfileUpdate(true)}}>
       <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
       Request Edit
     </span>
@@ -28,7 +32,7 @@ const StudentManifest = () => {
 
         <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
   <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Personal Information</h1>
-  <span className="absolute  mr-24 right-3 mt-28 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer">
+  <span className="absolute  mr-24 right-3 mt-28 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={()=>{setPersonalInfoUpdate(true)}} >
     <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
     Request Edit
   </span>
@@ -136,7 +140,7 @@ const StudentManifest = () => {
 
 <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
   <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Educational Details</h1>
-  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer">
+  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={()=>{setPersonalInfoUpdate(true)}}>
     <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
     Request Edit
   </span>
@@ -190,6 +194,9 @@ const StudentManifest = () => {
 
       </div>
      </div>
+     <ProfileUpdateModal isVisible={setProfile} onClose={()=>{setProfileUpdate(false)}}/>
+     <PersonalInfoModal isVisible={setPersonalInfo} onClose={()=>{setPersonalInfoUpdate(false)}}/>
+     </>
   );
 }
 
