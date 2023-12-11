@@ -7,7 +7,7 @@ function Sidebar() {
     const [sidebar, setSidebar] = useState('Dashboard');
     const Menus = [
         { title: "Dashboard", src: "/dashboard (3).png" },
-        { title: "Profile", src: "/profile-user.png" },
+        { title: "Schedule", src: "/profile-user.png" },
         { title: "Review", src: "/job-interview (3).png"},
         { title: "Task", src: "/app (1).png" },
         { title: "Extend", src: "/expired.png" },
@@ -18,10 +18,10 @@ function Sidebar() {
         setSidebar(title);
       
         if(title=='Dashboard'){
-          navigate('/student')
+          navigate('/reviewer')
         }
-        if(title==='Profile'){
-          navigate('/profile')
+        if(title==='Schedule'){
+          navigate('/schedule')
         }
         if(title==='Task'){
           navigate('/task')

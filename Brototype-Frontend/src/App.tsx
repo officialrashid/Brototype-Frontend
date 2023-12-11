@@ -13,10 +13,9 @@ import ViewTask from "./pages/Students/ViewTask";
 import TodoList from './pages/Students/TodoList';
 import ExtendDetails from './pages/Students/ExtendDetails';
 import ReactGA from 'react-ga';
-import ReviewerHome from './pages/Reviewer/ReviewerHome';
 import Calender from './pages/Reviewer/Calender';
-import {getMonth} from "./components/Reviewer/Dashboard/Utils"
-import Event from './pages/Reviewer/Event';
+import {getMonth} from "./components/Reviewer/ScheduleTime/Utils"
+import ReviewerDashboard from './pages/Reviewer/reviewerDashboard';
 function App() {
   // const TRACK_ID = 'UA-295189522-1'
   // ReactGA.initialize(TRACK_ID);
@@ -44,7 +43,8 @@ function App() {
               <Route path="/otpLogin" element={<OtpComponet />} />
               <Route path="/otpTestLogin" element={<OtpComponet />} />
               {/* Reviewer */}
-              <Route path="/reviewer" element={<Calender/>} />
+              <Route path="/reviewer" element={<ReviewerDashboard/>} />
+              <Route path="/schedule" element={<Calender/>} />
             </Routes>
           </div>
         </div>

@@ -14,10 +14,6 @@ import ContextWrapper from './context/ContextWrapper.tsx';
 // ReactGA.initialize(TRACK_ID);
 const MESUREMENT_ID = 'G-E5NH4HH45W';
 ReactGA.initialize(MESUREMENT_ID);
-
-
-
-
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>

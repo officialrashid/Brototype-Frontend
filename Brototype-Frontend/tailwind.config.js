@@ -57,7 +57,15 @@ module.exports = {
         'custom-background': '#ECECF0',
         'custom-profile': '#806189',
         'custom-sidebar': '#090537',
-        "custom-indigo": "#4b0082"
+        "custom-indigo": "#4b0082",
+        "dark-purple":"#081A51",
+         "reviewDetails1": "#FFE2E6",
+         "reviewDetails2":"#FFF4DE",
+         "reviewDetails3":"#DCFCE7",
+         "reviewDetails4":"#F4E8FF",
+         "reviewSmall1":"#F9597D",
+         "timeLineUp":"#E6EFFB"
+         
       },
       fontFamily: {
         poppins: ['Poppins', 'sans'],

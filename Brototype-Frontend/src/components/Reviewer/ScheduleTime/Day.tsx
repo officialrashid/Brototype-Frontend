@@ -11,7 +11,7 @@ interface DayProps {
 
 const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
-  const { setDaySelected, setShowEventModal, savedEvents } = useContext(GlobalContext);
+  const { setDaySelected, setShowEventModal, savedEvents,setSelectedEvent } = useContext(GlobalContext);
 
   useEffect(() => {
     const events = savedEvents.filter(evt => dayjs(evt.day).format("DD-MM-YY") === day.format("DD-MM-YY"));
@@ -21,13 +21,14 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
   const getCurrentDayClass = () => {
     return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY") ? 'bg-blue-600 text-white rounded-full w-7' : '';
   };
-
+ 
   return (
-    <div className='border border-custom-background flex flex-col font-roboto'>
+    <div className='border border-custom-background flex flex-col font-roboto h-48'>
+      
       <header className='flex flex-col items-center'>
-        {rowIdx === 0 && (
+   
           <p className='text-sm mt-1'>{day.format("ddd").toUpperCase()}</p>
-        )}
+ 
         <p className={`text-sm p-1 mt-1 text-center ${getCurrentDayClass()}`}>{day.format("DD")}</p>
       </header>
       <div className='flex-1 cursor-pointer' onClick={() => {
@@ -38,9 +39,11 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
           {dayEvents.map((evt, idx) => (
             <div
               key={idx}
-              className={`bg-${evt.label}-200 p-1 mr-2 text-gray-600 text-sm rounded mb-1 truncate`}
+              onClick={()=>setSelectedEvent(evt)}
+              className={`bg-${evt.label}-100 p-1 mr-2 text-gray-600 text-sm rounded mb-1 truncate`}
+
             >
-              {evt.title}
+              {evt.startTime} - {evt.endTime}
             </div>
           ))}
         </div>
