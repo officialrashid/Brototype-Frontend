@@ -1,52 +1,81 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 import { getMonth } from "../ScheduleTime/Utils";
 import GlobalContext from "../../../context/GlobalContext";
-const TimeLineUp = () => {
 
-    const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month())
-    const [currentMonth, setCurrentMonth] = useState(getMonth())
-    const [selectedDate, setSelectedDate] = useState(dayjs());
-    const { monthIndex, setSmallCalendarMonth, daySelected, setDaySelected } = useContext(GlobalContext)
-    const events = [
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: true,date:"11/12/2023" },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: true,date:"11/12/2023"  },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false ,date:"11/12/2023" },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false ,date:"11/12/2023" },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false,date:"11/12/2023"  },
+interface Event {
+  startTime: string;
+  endTime: string;
+  advisor: string;
+  status: boolean;
+  date: string;
+}
 
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false ,date:"12/12/2023" },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false ,date:"13/12/2023" },
-        { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false,date:"14/12/2023"  },
-    ]
-    const handlePrevMonth = () => {
-        setCurrentMonthIndex(currentMonthIndex - 1)
+const TimeLineUp: React.FC = () => {
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
+  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
+  const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
+
+  const { monthIndex, setSmallCalendarMonth, daySelected, setDaySelected } =
+    useContext(GlobalContext);
+
+  const events: Event[] = [
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: true, date: "12-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "12-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "12-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "12-12-2023" },
+
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "11-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "11-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: false, date: "13-12-2023" },
+    { startTime: "9:00am", endTime: "10:00am", advisor: "event booking for Yen", status: true, date: "14-12-2023" },
+    // ... (your other events)
+  ];
+
+  const handleSelectedDate = (e: React.MouseEvent<HTMLButtonElement>, day: Dayjs) => {
+    e.preventDefault();
+    setSelectedDate(day);
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentMonthIndex(currentMonthIndex - 1);
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonthIndex(currentMonthIndex + 1);
+  };
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(currentMonthIndex));
+  }, [currentMonthIndex]);
+
+  useEffect(() => {
+    setCurrentMonthIndex(monthIndex);
+  }, [monthIndex]);
+
+  useEffect(() => {
+    console.log("sv snvnbvsnbv ");
+    
+    const formattedDate = selectedDate.format("DD-MM-YYYY");
+    const filteredEvents = events.filter((event) => event.date === formattedDate);
+    setFilteredEvents(filteredEvents);
+  }, [selectedDate]);
+
+  const getDayClass = (day: Dayjs) => {
+    const format = "DD-MM-YY";
+    const nowDay = dayjs().format(format);
+    const currDay = day.format(format);
+    const slcDay = daySelected && daySelected.format(format);
+    if (nowDay === currDay) {
+      return 'bg-blue-500 rounded-full text-white';
+    } else if (currDay === slcDay) {
+      return 'bg-blue-100 rounded-full text-blue-600 font-bold';
+    } else {
+      return '';
     }
-    const handleNextMonth = () => {
-        setCurrentMonthIndex(currentMonthIndex + 1)
-    }
-    useEffect(() => {
-        setCurrentMonth(getMonth(currentMonthIndex))
-    }, [currentMonthIndex])
-    useEffect(() => {
-        setCurrentMonthIndex(monthIndex)
-    }, [monthIndex])
-    const getDayClass = (day: any) => {
-        const format = "DD-MM-YY"
-        const nowDay = dayjs().format(format)
-        const currDay = day.format(format)
-        const slcDay = daySelected && daySelected.format(format)
-        if (nowDay === currDay) {
-            return 'bg-blue-500 rounded-full text-white'
-        } else if (currDay === slcDay) {
-            return 'bg-blue-100 rounded-full text-blue-600 font-bold'
-        } else {
-            return "";
-        }
-    }
-    const todayEvents = events.filter((event) => {
-        return dayjs(event.date, "DD/MM/YYYY").isSame(selectedDate, "day");
-      });
+  };
+  
     return (
         <>
             <div className="w-46rem  h-24rem bg-white ml-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300  ">
@@ -67,9 +96,9 @@ const TimeLineUp = () => {
                                 <h1 className="text-md  font-roboto font-semibold text-balck- ml-5">Today's Lineup</h1>
                             </div>
 
-                            {events.map((evt, index) => (
-                                <div key={index} className={`w-72 h-18 border ${evt.status ? 'border-blue-100' : 'border-gray-100'} ml-4 mt-3 rounded-xl`}>
-                                    <ol className={`absolute ml-2  border-s  ${evt.status ? 'border-green-500' : 'border-red-500'} dark:border-blue-700 ${events.length === 0 ? 'h-0' : (index === events.length - 1 ? 'h-10' : '')}`}>
+                            {filteredEvents.map((evt, index) => (
+                                <div key={index} className={`w-72 h-18 border ${evt.status ? 'border-blue-100' : 'border-blue-100'} ml-4 mt-3 rounded-xl`}>
+                                    <ol className={`absolute ml-2  border-s  ${evt.status ? 'border-green-500' : 'border-red-500'} dark:border-blue-700 ${filteredEvents.length === 0 ? 'h-0' : (index === filteredEvents.length - 1 ? 'h-10' : '')}`}>
                                         <li className="mb-16 ms-4 ">
                                             <div className={`absolute -start-1.5 mt-7 h-3 w-3 rounded-full border ${evt.status ? 'border-white bg-green-500 dark:border-blue-900 dark:bg-blue-700' : 'border-white bg-red-500 dark:border-gray-900 dark:bg-gray-700'}`}></div>
                                             <a href="#" className="inline-flex items-center px-4 py-2 text-sm"> </a>
@@ -126,8 +155,9 @@ const TimeLineUp = () => {
                                     <button key={idx} className={`py-3 w-full ${getDayClass(day)}`} onClick={() => {
                                         setSmallCalendarMonth(currentMonthIndex)
                                         setDaySelected(day)
+                            
                                     }}>
-                                        <span className="text-sm">{day.format('D')}</span>
+                                        <span className="text-sm" onClick={(e)=>handleSelectedDate(e,day)}>{day.format('D')}</span>
                                     </button>
                                 ))}
                             </React.Fragment>

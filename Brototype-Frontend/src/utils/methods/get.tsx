@@ -1,4 +1,4 @@
-import fumigationApi from "../baseUrl/baseUrl";
+import Api from "../baseUrl/baseUrl";
 
 ////********   get enquirie methods  *****////
 
@@ -6,7 +6,7 @@ export const getEnquiryStudents = async () => {
   
     
   try {
-    const response = await fumigationApi.get('/api/fumigation/getEnquery');
+    const response = await Api.get('/api/fumigation/getEnquery');
     return response;
   } catch (error) {
     console.error("Error in getEnquiriesApi:", error);
@@ -16,4 +16,14 @@ export const getEnquiryStudents = async () => {
 // get enquirie methods end //
 
 
-//***** */ get invigilators methods *****//
+//***** */ get Students methods *****//
+
+export const getProfile = async (studentId: string) => {
+  try {
+    const response = await Api.get(`/api/student/get-profile/${studentId}`);
+    console.log(response,"response i api fetch place");
+    return response;
+  } catch (err) {
+    return { status: false, message: "There is some issue in fetching the profile" };
+  }
+};

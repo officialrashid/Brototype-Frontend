@@ -24,11 +24,11 @@ function App() {
  console.table(getMonth())
   return (
     <Router>
-      <Navbars />
+      {/* <Navbars /> */}
       <div className="bg-custom-background">
         <div className="bg-white">
           <div className="flex">
-            {/* <Sidebar /> */}
+            <Sidebar />
             <Routes>
               <Route path="/student" element={<Dashboard />} />
               <Route path="/profile" element={<StudentManifest />} />

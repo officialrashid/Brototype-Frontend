@@ -1,9 +1,37 @@
 import ProfileUpdateModal from "./ProfileUpdateModal";
 import PersonalInfoModal from "./PersonalInfoModal";
-import React,{useState} from "react";
+import AddressModal from "./AddressModal";
+import EducationModal from "./EducationModal";
+import React,{useEffect, useState} from "react";
+import { getProfile } from "../../../utils/methods/get";
 const StudentManifest = () => {
-  const [setProfile,setProfileUpdate]=useState(false)
-  const [setPersonalInfo,setPersonalInfoUpdate]=useState(false)
+  const [setProfile, setProfileUpdate] = useState(false);
+  const [setPersonalInfo, setPersonalInfoUpdate] = useState(false);
+  const [setAddress, setAddressUpdate] = useState(false);
+  const [setEducation, setEducationUpdate] = useState(false);
+  const [profileInfo, setProfileInfo] = useState({});
+  const studentId = "6554ebfd54c3fe96a75c7752";
+
+  useEffect(() => {
+    fetchStudentProfile();
+  }, []);
+
+  const fetchStudentProfile = async () => {
+    try {
+      const response = await getProfile(studentId);
+      if (response.data.status) {
+        // Assuming 'response.data.response' is an array
+        const [profileData] = response.data.response;
+        setProfileInfo(profileData);
+      } else {
+        console.error("Failed to get profile data:", response.data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
   return (
     <>
     <div className="bg-custom-background">
@@ -12,12 +40,12 @@ const StudentManifest = () => {
         
         <div className='ml-10 mt-5 w-62rem h-28 rounded-md border border-gray-300 relative'>
   <div className='flex'>
-    <img src="/profile.jpeg" alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
+    <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />
     <div className='flex flex-1 flex-col ml-8 mt-5'>
-      <h1 className='text-sm font-semibold font-roboto'>Muhammed Rashid.K</h1>
-      <h1 className='text-sm text-gray-500 font-roboto mt-1 ml-5'>Mern Stack</h1>
+      <h1 className='text-sm font-semibold font-roboto'>{profileInfo.firstName} {profileInfo.lastName}</h1>
+      <h1 className='text-sm text-gray-500 font-roboto mt-1 ml-5'>{profileInfo.domain}</h1>
       <div className="flex gap-3 mt-1">
-        <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">BCE55</span>
+        <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">{profileInfo.batch}</span>
         <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Remote</span>
       </div>
     </div>
@@ -101,7 +129,7 @@ const StudentManifest = () => {
 
 <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
   <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Address</h1>
-  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer">
+  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={()=>{setAddressUpdate(true)}}  >
     <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
     Request Edit
   </span>
@@ -140,7 +168,7 @@ const StudentManifest = () => {
 
 <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
   <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Educational Details</h1>
-  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={()=>{setPersonalInfoUpdate(true)}}>
+  <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={()=>{setEducationUpdate(true)}}>
     <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
     Request Edit
   </span>
@@ -196,6 +224,8 @@ const StudentManifest = () => {
      </div>
      <ProfileUpdateModal isVisible={setProfile} onClose={()=>{setProfileUpdate(false)}}/>
      <PersonalInfoModal isVisible={setPersonalInfo} onClose={()=>{setPersonalInfoUpdate(false)}}/>
+     <AddressModal isVisible={setAddress} onClose={()=>{setAddressUpdate(false)}}/>
+     <EducationModal isVisible={setEducation} onClose={()=>{setEducationUpdate(false)}}/>
      </>
   );
 }

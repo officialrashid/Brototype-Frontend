@@ -1,7 +1,9 @@
-const PersonalInfoModal = ({ isVisible, onClose }) => {
-  if (!isVisible) return null
-  return (
-    <>
+import React from 'react';
+
+const AddressModal = ({ isVisible, onClose }) => {
+    if (!isVisible) return null
+    return (
+        <>
       <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
         <div className="border border-2px  m-10 w-1/2 bg-white">
           <div className="flex justify-between m-4 mb-">
@@ -19,7 +21,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
 
           </div>
           <div className="text-center mb-6">
-            <span className="font-semibold font-roboto">Update your  Personal Information</span>
+            <span className="font-semibold font-roboto">Update your Address</span>
           </div>
           <div className="m-2 mt-0">
             <div className="flex gap-5">
@@ -32,7 +34,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
                 <div className=" ">
                   <div className="m-1">
                     <div className="mb-3 ">
-                      <span className="text-sm font-roboto">FirstName</span>
+                      <span className="text-sm font-roboto">House Name</span>
                     </div>
 
                     <input type="text" className="w-full border border-2px py-1" />
@@ -41,7 +43,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
                   <div className="">
                     <div className="m-1">
                       <div className="mb-3 mt-3">
-                        <span className="text-sm font-roboto">LastName</span>
+                        <span className="text-sm font-roboto">Taluk</span>
                       </div>
 
                       <input type="text" className="w-full border border-2px py-1" />
@@ -62,7 +64,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
                   <div className=" mr-2 mb-3">
                     <div className="mr-3 m-1 ml-0">
                       <div className="mb-3 ">
-                        <span className="text-sm font-roboto">MiddleName</span>
+                        <span className="text-sm font-roboto">Village</span>
                       </div>
 
                       <input type="text" className="w-full border border-2px py-1" />
@@ -71,7 +73,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
                     <div className="">
                       <div className="mr-3  m-1 ml-0">
                         <div className="mb-3 mt-3">
-                          <span className="text-sm font-roboto">DateOfBirth</span>
+                          <span className="text-sm font-roboto">District</span>
                         </div>
 
                         <input type="text" className="w-full border border-2px py-1" />
@@ -101,25 +103,13 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
   <div className=" ">
     <div className="m-1">
       <div className="mb-3 ">
-        <span className="text-sm font-roboto">Age</span>
+        <span className="text-sm font-roboto">State</span>
       </div>
 
       <input type="text" className="w-full border border-2px py-1" />
 
     </div>
-    <div className="">
-      <div className="m-1">
-        <div className="mb-3 mt-3">
-        <span className="text-sm font-roboto">Email</span>
-        </div>
-
-        <input type="text" className="w-full border border-2px py-1" />
-
-      </div>
-
-
-
-    </div>
+ 
 
 
   </div>
@@ -132,25 +122,13 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
       <div className="mr-3 m-1 ml-0">
         <div className="mb-3 ">
 
-          <span className="text-sm font-roboto">Gender</span>
+          <span className="text-sm font-roboto">Pincode</span>
         </div>
 
         <input type="text" className="w-full border border-2px py-1" />
 
       </div>
-      <div className="">
-        <div className="mr-3  m-1 ml-0">
-          <div className="mb-3 mt-3">
-            <span className="text-sm font-roboto">Phone</span>
-          </div>
-
-          <input type="text" className="w-full border border-2px py-1" />
-
-        </div>
-
-
-
-      </div>
+   
 
 
     </div>
@@ -161,76 +139,8 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
 
 
 </div>
-<div className="flex gap-5">
 
 
-<div >
-
-</div>
-<div className="w-full">
-  <div className=" ">
-    <div className="m-1">
-      <div className="mb-3 ">
-        <span className="text-sm font-roboto">Father's Name</span>
-      </div>
-
-      <input type="text" className="w-full border border-2px py-1" />
-
-    </div>
-    <div className="">
-      <div className="m-1">
-        <div className="mb-3 mt-3">
-        <span className="text-sm font-roboto">Father's Contact</span>
-        </div>
-
-        <input type="text" className="w-full border border-2px py-1" />
-
-      </div>
-
-
-
-    </div>
-
-
-  </div>
-</div>
-
-<div className="w-full">
-
-  <div className="w-full">
-    <div className=" mr-2 mb-3">
-      <div className="mr-3 m-1 ml-0">
-        <div className="mb-3 ">
-
-          <span className="text-sm font-roboto">Mother's Name</span>
-        </div>
-
-        <input type="text" className="w-full border border-2px py-1" />
-
-      </div>
-      <div className="">
-        <div className="mr-3  m-1 ml-0">
-          <div className="mb-3 mt-3">
-            <span className="text-sm font-roboto">Monther's Contact</span>
-          </div>
-
-          <input type="text" className="w-full border border-2px py-1" />
-
-        </div>
-
-
-
-      </div>
-
-
-    </div>
-  </div>
-
-</div>
-
-
-
-</div>
 
           </div>
 
@@ -253,11 +163,7 @@ const PersonalInfoModal = ({ isVisible, onClose }) => {
 
 
     </>
-  )
-
-
-
-
+    );
 }
 
-export default PersonalInfoModal
+export default AddressModal;

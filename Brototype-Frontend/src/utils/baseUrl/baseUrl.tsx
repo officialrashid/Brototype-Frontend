@@ -2,12 +2,13 @@ import axios, { AxiosInstance } from "axios";
 
 axios.defaults.withCredentials = true;
 
-const fumigationApi: AxiosInstance = axios.create({
-  baseURL: "http://brototype.com",
+const Api: AxiosInstance = axios.create({
+  // baseURL: "http://brototype.com",
+  baseURL: "http://localhost:4000",
 });
 
 // Add a request interceptor
-fumigationApi.interceptors.request.use(
+Api.interceptors.request.use(
   function (config) {
     // Retrieve the user role from local storage
     const userRole = localStorage.getItem('role');
@@ -27,7 +28,7 @@ fumigationApi.interceptors.request.use(
 );
 
 // Add a response interceptor
-fumigationApi.interceptors.response.use(
+Api.interceptors.response.use(
   function (response) {
     return response;
   },
@@ -41,5 +42,5 @@ fumigationApi.interceptors.response.use(
   }
 );
 
-export default fumigationApi;
+export default Api;
 
