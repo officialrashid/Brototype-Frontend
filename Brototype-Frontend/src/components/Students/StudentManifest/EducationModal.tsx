@@ -1,6 +1,58 @@
+import * as Yup from 'yup';
+import { useFormik } from 'formik';
+import { updateEducationDetails } from '../../../utils/methods/post';
 
+interface FormValues {
+    highestQualification: string;
+    yearOfPassing: string;
+    passPercentage: string;
+    schoolOrCollegeOrInstituteName: string;
+
+}
+
+const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <p className="text-sm font-roboto text-red-700 mt-3 ml-3">
+        {children}
+    </p>
+);
 
 const EducationModal = ({ isVisible, onClose }) => {
+    const studentId = '657aaa012a15acfff364bb5a'
+    const validationSchema = Yup.object({
+        highestQualification: Yup.string().trim().required('highestQualification Name is required'),
+        yearOfPassing: Yup.number()
+            .required('Year of Passing is required')
+            .integer('Year must be an integer')
+            .min(1900, 'Year must be greater than or equal to 1900') // Adjust the minimum year as needed
+            .max(new Date().getFullYear(), 'Year cannot be in the future'),
+            passPercentage: Yup.string()
+            .required('Pass Percentage is required')
+            .transform((value) => (value ? value.replace('%', '') : value)) // Remove percentage symbol if present
+            .matches(/^100$|^\d{1,2}(\.\d{1,2})?$/, 'Invalid percentage format'),
+        schoolOrCollegeOrInstituteName: Yup.string().required('school/college/intstitute name is required'),
+
+
+    });
+
+    const formik = useFormik({
+        initialValues: {
+            highestQualification: '',
+            yearOfPassing: '',
+            passPercentage: '',
+            schoolOrCollegeOrInstituteName: '',
+        } as FormValues,
+        validationSchema: validationSchema,
+        onSubmit: async (values) => {
+            try {
+                console.log(values, 'Form values submitted address');
+                const response = await updateEducationDetails(values, studentId)
+                console.log(response, "response coming to the frontend update Address");
+
+            } catch (error) {
+                console.error(error, 'error in the formik data');
+            }
+        },
+    });
     if (!isVisible) return null
     return (
         <>
@@ -37,8 +89,17 @@ const EducationModal = ({ isVisible, onClose }) => {
                                             <span className="text-sm font-roboto">Hihest Qualification</span>
                                         </div>
 
-                                        <input type="text" className="w-full border border-2px py-1" />
-
+                                        <input type="text"
+                                            id='highestQualification'
+                                            name='highestQualification'
+                                            value={formik.values.highestQualification}
+                                            onChange={formik.handleChange}
+                                            autoComplete='highestQualification'
+                                            required
+                                            className="w-full border border-2px py-1" />
+                                        {formik.touched.highestQualification && formik.errors.highestQualification && (
+                                            <ErrorText>{formik?.errors?.highestQualification}</ErrorText>
+                                        )}
                                     </div>
                                     <div className="">
                                         <div className="m-1">
@@ -46,8 +107,17 @@ const EducationModal = ({ isVisible, onClose }) => {
                                                 <span className="text-sm font-roboto">Pass Percentage %</span>
                                             </div>
 
-                                            <input type="text" className="w-full border border-2px py-1" />
-
+                                            <input type="text"
+                                                id='passPercentage'
+                                                name='passPercentage'
+                                                value={formik.values.passPercentage}
+                                                onChange={formik.handleChange}
+                                                autoComplete='passPercentage'
+                                                required
+                                                className="w-full border border-2px py-1" />
+                                            {formik.touched.passPercentage && formik.errors.passPercentage && (
+                                                <ErrorText>{formik?.errors?.passPercentage}</ErrorText>
+                                            )}
                                         </div>
 
 
@@ -67,8 +137,17 @@ const EducationModal = ({ isVisible, onClose }) => {
                                                 <span className="text-sm font-roboto">Year of Passing</span>
                                             </div>
 
-                                            <input type="text" className="w-full border border-2px py-1" />
-
+                                            <input type="text"
+                                                id='yearOfPassing'
+                                                name='yearOfPassing'
+                                                value={formik.values.yearOfPassing}
+                                                onChange={formik.handleChange}
+                                                autoComplete='yearOfPassing'
+                                                required
+                                                className="w-full border border-2px py-1" />
+                                            {formik.touched.yearOfPassing && formik.errors.yearOfPassing && (
+                                                <ErrorText>{formik?.errors?.yearOfPassing}</ErrorText>
+                                            )}
                                         </div>
                                         <div className="">
                                             <div className="mr-3  m-1 ml-0">
@@ -76,8 +155,17 @@ const EducationModal = ({ isVisible, onClose }) => {
                                                     <span className="text-sm font-roboto">School/College/InstitutionName</span>
                                                 </div>
 
-                                                <input type="text" className="w-full border border-2px py-1" />
-
+                                                <input type="text"
+                                                    id='schoolOrCollegeOrInstituteName'
+                                                    name='schoolOrCollegeOrInstituteName'
+                                                    value={formik.values.schoolOrCollegeOrInstituteName}
+                                                    onChange={formik.handleChange}
+                                                    autoComplete='schoolOrCollegeOrInstituteName'
+                                                    required
+                                                    className="w-full border border-2px py-1" />
+                                                {formik.touched.schoolOrCollegeOrInstituteName && formik.errors.schoolOrCollegeOrInstituteName && (
+                                                    <ErrorText>{formik?.errors?.schoolOrCollegeOrInstituteName}</ErrorText>
+                                                )}
                                             </div>
 
 
@@ -104,7 +192,13 @@ const EducationModal = ({ isVisible, onClose }) => {
 
                         </div>
                         <div>
-                            <button className="bg-black rounded-md px-4 py-1 text-white text-md font-roboto">Submit</button>
+                            <button
+                                type="button"
+                                className="bg-black rounded-md px-4 py-1 text-white text-md font-roboto hover:bg-gray-400"
+                                onClick={() => formik.handleSubmit()}
+                            >
+                                Submit
+                            </button>
 
                         </div>
 

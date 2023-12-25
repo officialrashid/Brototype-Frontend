@@ -15,7 +15,7 @@ import ExtendDetails from './pages/Students/ExtendDetails';
 import ReactGA from 'react-ga';
 import Calender from './pages/Reviewer/Calender';
 import {getMonth} from "./components/Reviewer/ScheduleTime/Utils"
-import ReviewerDashboard from './pages/Reviewer/reviewerDashboard';
+import ReviewerDashboard from './pages/Reviewer/ReviewerDashboard';
 function App() {
   // const TRACK_ID = 'UA-295189522-1'
   // ReactGA.initialize(TRACK_ID);

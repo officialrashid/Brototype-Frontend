@@ -1,79 +1,85 @@
+import { useEffect, useState } from "react";
+import { getCourseCompletion } from "../../../utils/methods/get";
+import ApexCharts from 'react-apexcharts';
 
-import { useEffect } from "react";
 const CourseCompletionGraph = () => {
+    const [courseCompletion, setCourseCompletion] = useState(0);
+
     useEffect(() => {
-        // Chart options and configuration
-        const options = {
-            series: [67],
-            chart: {
-                height: 230,
-                type: 'radialBar',
-                offsetY: -5,
-                // offsetX: -50,
-            },
-            plotOptions: {
-                radialBar: {
-                    startAngle: -135,
-                    endAngle: 135,
-                    dataLabels: {
-                        name: {
-                            fontSize: '16px',
-                            color: undefined,
-                            offsetY: 120,
-                        },
-                        value: {
-                            offsetY: 76,
-                            fontSize: '13px',
-                            color: '#715DA6',
-                            formatter: function (val: string) {
-                                return val + '%';
-                            },
+        const fetchCourseCompletion = async () => {
+            const batchId = "657aa5093476c843c28a377d";
+            const studentId = "657aaa012a15acfff364bb5a";
+            const data = {
+                batchId,
+                studentId,
+            };
+
+            try {
+                const response = await getCourseCompletion(data);
+                const percentage = parseInt(response.response.percentageCompleted);
+                setCourseCompletion(percentage);
+            } catch (error) {
+                console.error('Error fetching course completion:', error);
+            }
+        };
+
+        fetchCourseCompletion();
+    }, []); // Empty dependency array to run the effect only once on component mount
+
+    const chartOptions = {
+        series: [courseCompletion],
+        chart: {
+            height: 230,
+            type: 'radialBar',
+            offsetY: -5,
+        },
+        plotOptions: {
+            radialBar: {
+                startAngle: -135,
+                endAngle: 135,
+                dataLabels: {
+                    name: {
+                        fontSize: '16px',
+                        color: undefined,
+                        offsetY: 120,
+                    },
+                    value: {
+                        offsetY: 76,
+                        fontSize: '13px',
+                        color: '#715DA6',
+                        formatter: function (val) {
+                            return val + '%';
                         },
                     },
                 },
             },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shade: 'dark',
-                    shadeIntensity: 0.15,
-                    inverseColors: false,
-                    opacityFrom: 1,
-                    opacityTo: 1,
-                    stops: [0, 50, 65, 91],
-                    colorStops: [{
-                        offset: 0,
-                        color: '#715DA6' // Set the color to red (#FF0000)
-                    }]
-                },
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'dark',
+                shadeIntensity: 0.15,
+                inverseColors: false,
+                opacityFrom: 1,
+                opacityTo: 1,
+                stops: [0, 50, 65, 91],
+                colorStops: [{
+                    offset: 0,
+                    color: '#715DA6'
+                }]
             },
-            stroke: {
-                dashArray: 1,
-            },
-            labels: ['']
+        },
+        stroke: {
+            dashArray: 1,
+        },
+        labels: ['']
+    };
 
-        };
-
-        // Initialize and render the chart
-        const chart = new ApexCharts(document.querySelector('#chart'), options);
-        chart.render();
-
-        // Cleanup the chart on component unmount
-        return () => {
-            chart.destroy();
-        };
-    }, []); // Empty dependency array ensures that this effect runs only once on mount
     return (
-
-
-
         <div className="w-22.5rem h-auto bg-white right-6 mb-48rem mt-20.6rem rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute">
-            <div id="chart">
-            </div>
-
+            <ApexCharts options={chartOptions} series={chartOptions.series} type="radialBar" height={230} />
             <h1 className="text-sm font-roboto ml-28 ">Course Completion Ratio</h1>
         </div>
-
     );
 }
 

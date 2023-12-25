@@ -27,9 +27,9 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
     firstName: Yup.string()
       .required('First Name is required')
       .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
-      // .test('capitalize-first', 'First letter must be capital', (value) => {
-      //   return /^[A-Z]/.test(value || ''); // Check if the first letter is capital
-      // })
+      .test('capitalize-first', 'First letter must be capital', (value) => {
+        return /^[A-Z]/.test(value || ''); // Check if the first letter is capital
+      })
       ,
     lastName: Yup.string()
       .required('Last Name is required')
@@ -158,7 +158,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.firstName && formik.errors.firstName && (
-                  <ErrorText>{formik.errors.firstName}</ErrorText>
+                  <ErrorText>{formik?.errors?.firstName}</ErrorText>
                 )}
               </div>
               <div>

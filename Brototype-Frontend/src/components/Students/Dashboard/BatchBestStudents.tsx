@@ -1,5 +1,9 @@
+import { useEffect, useState } from "react";
+import { getBestFiveStudents } from "../../../utils/methods/get";
+import { index } from "d3";
 
 const BatchBestStudents = () => {
+  const [bestStudents, setBestStudents] = useState([]);
   const students = [
     { id: 1, name: 'Rashid', profileImage: '/profile.jpeg', progress: 80, week: 28 },
     { id: 2, name: 'Ashish', profileImage: '/secondStudent.jpg', progress: 10, week: 20 },
@@ -7,6 +11,24 @@ const BatchBestStudents = () => {
     { id: 4, name: 'shaheem', profileImage: '/profile.jpeg', progress: 45, week: 28 },
     { id: 5, name: 'abdu', profileImage: '/profile.jpeg', progress: 65, week: 24 },
   ];
+  useEffect(() => {
+    const fetchBestStudents = async () => {
+      try {
+        const batchId = "657aa5093476c843c28a377d";
+        const response = await getBestFiveStudents(batchId);
+        setBestStudents(response?.data.topStudents || []);
+        console.log(response?.data.topStudents, "cbvhjvd");
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchBestStudents();
+  }, []);
+
+  useEffect(() => {
+    console.log(bestStudents, "Updated bestStudents");
+  }, [bestStudents]);
   return (
 
 
@@ -25,45 +47,60 @@ const BatchBestStudents = () => {
 
         <div className="">
           <h1 className="text-sm text-gray-400 font-roboto">Progress</h1>
-          {students.map((student) => (
-            <div key={student.id} className="w-48 flex">
-              <div className="w-36 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-8  ">
-                <div
-                  className={`h-1.5 rounded-full ${student.progress >= 80
-                    ? 'bg-green-400'
-                    : student.progress >= 60
-                      ? 'bg-yellow-500'
-                      : student.progress >= 40
-                        ? 'bg-orange-500'
-                        : student.progress >= 20
-                          ? 'bg-red-500'
-                          : student.progress >= 0 && student.progress <= 19
-                            ? 'bg-blue-500'
-                            : ''
-                    }`}
-                  style={{ width: `${student.progress}%` }}
-                ></div>
+          {bestStudents.map((student: string, index: number) => {
+            const totalScore = parseFloat(student.split(':')[1]);
 
-              </div>
-              <span
-                className={`text-xs font-roboto ml-3 mt-6 ${student.progress >= 80
-                  ? 'text-green-400'
-                  : student.progress >= 60
-                    ? 'text-yellow-500'
-                    : student.progress >= 40
-                      ? 'text-orange-500'
-                      : student.progress >= 20
-                        ? 'text-red-500'
-                        : student.progress >= 0 && student.progress <= 19
-                          ? 'text-blue-500'
-                          : '' // Set a default color or leave empty if needed
-                  }`}
-              >
-                {student.progress}%
-              </span>
-            </div>
-          ))}
+            if (!isNaN(totalScore) && totalScore >= 0 && totalScore <= 100) {
+              return (
+                <div key={index} className="w-48 flex">
+                  <div className="w-36 bg-gray-200 rounded-full h-1.5 dark:bg-gray-700 mt-8">
+                    <div
+                      className={`h-1.5 rounded-full ${totalScore >= 80
+                        ? 'bg-green-400'
+                        : totalScore >= 60
+                          ? 'bg-yellow-500'
+                          : totalScore >= 40
+                            ? 'bg-orange-500'
+                            : totalScore >= 20
+                              ? 'bg-red-500'
+                              : totalScore >= 0 && totalScore <= 19
+                                ? 'bg-blue-500'
+                                : ''
+                        }`}
+                      style={{ width: `${totalScore}%` }}
+                    ></div>
+                  </div>
+                  <span
+                    className={`text-xs font-roboto ml-3 mt-6 ${totalScore >= 80
+                      ? 'text-green-400'
+                      : totalScore >= 60
+                        ? 'text-yellow-500'
+                        : totalScore >= 40
+                          ? 'text-orange-500'
+                          : totalScore >= 20
+                            ? 'text-red-500'
+                            : totalScore >= 0 && totalScore <= 19
+                              ? 'text-blue-500'
+                              : '' // Set a default color or leave empty if needed
+                      }`}
+                  >
+                    {totalScore}%
+                  </span>
+                </div>
+              );
+            } else {
+              // Handle the case where the totalScore is NaN or out of range
+              return (
+                <div key={index}>
+                  <p>Error: Invalid TotalScore</p>
+                </div>
+              );
+            }
+          })}
         </div>
+
+
+
 
         <div>
           <h1 className="text-sm text-gray-400 font-roboto">Week</h1>

@@ -1,12 +1,20 @@
+# Use a specific version of Node.js
 FROM node:18.16.1
 
+# Set the working directory in the container
 WORKDIR /app
 
 # Copy only the package.json and package-lock.json to leverage Docker cache
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Set environment variables for npm
+ENV NPM_CONFIG_LOGLEVEL warn
+ENV NPM_CONFIG_PROGRESS false
+ENV NPM_CONFIG_COLOR false
+ENV NPM_CONFIG_REGISTRY https://registry.npmjs.org/
+
+# Install dependencies using Yarn
+RUN yarn install --force
 
 # Copy the entire project files to the working directory
 COPY . .

@@ -1,8 +1,29 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactApexChart from 'react-apexcharts'
+import { getAllPerformance } from "../../../utils/methods/get";
 
 const StudentGraph = () => {
+const [studentDetails,setStudentDetails] = useState("")
+  useEffect(()=>{
+
+      const fetchAllPerformance= async()=>{
+        try {
+          const batchId = "657aa5093476c843c28a377d";
+          const studentId = "657aaa012a15acfff364bb5a";
+          const data = {
+              batchId,
+              studentId,
+          };
+          const response = await getAllPerformance(data)
+          setStudentDetails(response.data)
+          
+        } catch (err){
+          return {status:false,message:"not get details"}
+        }
+    } 
+    fetchAllPerformance()
+  },[])
     const [state, setState] = useState({
         series: [
           {
@@ -62,7 +83,7 @@ const StudentGraph = () => {
               <div className="bg-white shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                 <div className="bg-custom-background w-12 h-10 ml-8 mt-5 rounded-md shadow-sm flex ">
                   <img src="/success.png" alt="" className="h-10 ml-1 " />
-                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">28</h1>
+                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">{studentDetails.weekCompleted}</h1>
                 </div>
 
                 <h1 className="font-roboto text-sm ml-4 font-medium mt-7 text-gray-400 absolute">Total Week Completed</h1>
@@ -71,7 +92,7 @@ const StudentGraph = () => {
               <div className="bg-white shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                 <div className="bg-custom-background w-12 h-10 ml-8 mt-5 rounded-md shadow-sm flex ">
                   <img src="weekPerformance.png" alt="" className="h-10 ml-1 " />
-                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">28</h1>
+                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">{studentDetails.lastWeekToatalMark}</h1>
                 </div>
 
                 <h1 className="font-roboto text-sm ml-4 font-medium mt-7 text-gray-400 absolute">Weekly Performance</h1>
@@ -80,7 +101,7 @@ const StudentGraph = () => {
               <div className="bg-white shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                 <div className="bg-custom-background w-12 h-10 ml-8 mt-5 rounded-md shadow-sm flex ">
                   <img src="/performance (1).png" alt="" className="h-10 ml-1 " />
-                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">28</h1>
+                  <h1 className="font-roboto text-2xl ml-6 font-medium mt-1 ">{parseInt(studentDetails.overallPerformance, 10)}%</h1>
                 </div>
 
                 <h1 className="font-roboto text-sm ml-4 font-medium mt-7 text-gray-400 absolute">Overall Performance</h1>
@@ -89,7 +110,7 @@ const StudentGraph = () => {
               <div className="bg-white shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                 <div className="bg-custom-background w-12 h-10 ml-8 mt-5 rounded-md shadow-sm flex ">
                   <img src="/failure.png" alt="" className="h-10 ml-1 " />
-                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">28</h1>
+                  <h1 className="font-roboto text-2xl ml-8 font-medium mt-1 ">{studentDetails.repeatCount}</h1>
                 </div>
 
                 <h1 className="font-roboto text-sm ml-4 font-medium mt-7 text-gray-400 absolute">Total Repeat</h1>

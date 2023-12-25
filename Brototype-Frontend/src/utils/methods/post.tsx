@@ -1,4 +1,4 @@
-import fumigationApi from "../baseUrl/baseUrl";
+import Api from "../baseUrl/baseUrl";
 import { AxiosResponse } from "axios";
 
 
@@ -31,10 +31,42 @@ interface invigilatorData {
    batchName: string,
    hubLocation: string
  }
+
+ //student interface
+ interface updatePersonalDetails{
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  dateOfBirth: string;
+  age: string;
+  email: string;
+  gender: string;
+  phone: string;
+  fathersName: string;
+  fathersContact: string;
+  mothersName: string;
+  mothersContact: string;
+
+ }
+ interface updateAddressDetails{
+  houseName: string;
+  village: string;
+  taluk: string;
+  district: string;
+  state: string;
+  pincode: string;
+ }
+ interface updateEducationDetails{
+  highestQualification: string;
+  yearOfPassing: string;
+  passPercentage: string;
+  schoolOrCollegeOrInstituteName: string;
+
+ }
  //********* */ Enquirie Apis ***********////
 export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> => {
   try {
-    const response = await fumigationApi.post('/api/fumigation/enquery', data);
+    const response = await Api.post('/api/fumigation/enquery', data);
     return response;
   } catch (error) {
     console.error("Error in EnquiriesApi:", error);
@@ -50,7 +82,7 @@ export const invigilatorLogin = async (data:invigilatorLogin): Promise<AxiosResp
    
   try{
 
-    const response = await fumigationApi.post('/api/fumigation/invigilator-login',data);
+    const response = await Api.post('/api/fumigation/invigilator-login',data);
     return response
   } catch(error){
     console.log("Error in the invigilatorLogin",error);
@@ -61,7 +93,7 @@ export const invigilatorLogin = async (data:invigilatorLogin): Promise<AxiosResp
 
 export const invigilatorGoogleLogin = async (email:string)=>{
     try{
-      const response= await fumigationApi.post('/api/fumigation/invigilator-google-login',email)
+      const response= await Api.post('/api/fumigation/invigilator-google-login',email)
       return response
     } catch (err){
       return {status:false,message:"Some issue in Google Sign in"}
@@ -69,7 +101,7 @@ export const invigilatorGoogleLogin = async (email:string)=>{
 }
 export const createInvigilator = async (data:invigilatorData)=>{
   try{
-    const response = await fumigationApi.post('/api/fumigation/create-invigilator',data)
+    const response = await Api.post('/api/fumigation/create-invigilator',data)
     return response;
   } catch(err){
     return {status:false,message:"Some issue in createInvigilator"}
@@ -83,10 +115,63 @@ export const createInvigilator = async (data:invigilatorData)=>{
 export const createBatch = async (data:createBatch)=>{
     
   try{
-     const response = await fumigationApi.post('/api/fumigation/create-batch',data)
+     const response = await Api.post('/api/fumigation/create-batch',data)
      return response
   } catch(err){
     return {status:false,message:"Some isuues in Create Batch"}
+  }
+
+}
+
+///***Student-servcie Post Apis */
+
+export const updatePersonalDetails = async (data:updatePersonalDetails,studentId:string)=>{
+    try {
+      const personalData = {
+         data,
+         studentId
+      }
+      console.log(personalData,"personalData");
+      
+      const resposne = await Api.post('/api/student/update-personal-details',personalData)
+      return resposne;
+    } catch(err){
+      return {status:false,message:"some issue in personal deatils update"}
+    }
+}
+
+export const updateAddressDetails = async (data:updateAddressDetails,studentId:string)=>{
+  try {
+    const addressData = {
+         data,
+         studentId
+    }
+   const resposne = await Api.post('/api/student/update-address-details',addressData)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+}
+export const updateEducationDetails = async (data:updateEducationDetails,studentId:string)=>{
+  try {
+    const educationData = {
+         data,
+         studentId
+    }
+   const resposne = await Api.post('/api/student/update-education-details',educationData)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+}
+export const requestExtention = async (data:any)=>{
+  try {
+   const resposne = await Api.post('/api/student/request-extention',data)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
   }
 
 }
