@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { getExtendDetails } from "../../../utils/methods/get";
 import { useFormik } from "formik";
 import { batch } from "react-redux";
-
+import { requestExtention } from "../../../utils/methods/post";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 interface FormValues {
   fullName: string;
   batch: string;
+  domain: string;
   currentWeek: string;
   extendDays: string;
   extendReason: string;
@@ -42,6 +45,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
     initialValues: {
       fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
       batch: extend.batch || '',
+      domain: extend.domain || '',
       currentWeek: extend.currentWeek || '',
       extendDays: '',
       extendReason: '',
@@ -56,13 +60,19 @@ const ExtendModal = ({ isVisible, isClose }) => {
           extendReason: formik.values.extendReason,
           fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
           batch : extend.batch || '',
+          domain : extend.domain || '',
           currentWeek : extend.currentWeek
         };
         const response = await requestExtention(body)
-        console.log("Form data submitted:", body);
+         if(response.status===201){
+          console.log(response,"reposne extend request");
+          
+          toast.success("Your Request have been successfully")
+          isClose();
+         }
     
         // After submitting, you might want to close the modal
-        isClose();
+ 
       } catch (err) {
         console.error('Error submitting form:', err);
         // Handle the error, e.g., set an error state
@@ -94,7 +104,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
             <div>
               <input
                 type="text"
-                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7"
+                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter Full Name"
                 id="fullName"
                 name="fullName"
@@ -102,7 +112,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
               />
               <input
                 type="text"
-                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7"
+                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter your Batch"
                 id="batch"
                 name="batch"
@@ -110,7 +120,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
               />
               <input
                 type="text"
-                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7"
+                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter your current week"
                 id="currentWeek"
                 name="currentWeek"
@@ -118,7 +128,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
               />
               <input
                 type="text"
-                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7"
+                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter extension need days"
                 id="extendDays"  // Corrected typo here
                 name="extendDays"
@@ -133,7 +143,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
                 onChange={formik.handleChange}
                 cols={30}
                 rows={10}
-                className="w-full px-2 py-2 border-gray-200 shadow-xl outline-black"
+                className="w-full px-5 py-2 border-gray-200 shadow-xl outline-black font-roboto"
                 placeholder="Enter your reason for extension"
               ></textarea>
             </div>
@@ -141,10 +151,10 @@ const ExtendModal = ({ isVisible, isClose }) => {
           <div className="flex justify-between m-6">
             <div></div>
             <div>
-              <button className="border px-4 py-1 rounded-md bg-black text-white " onClick={isClose}>
+              <button className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={isClose}>
                 Cancel
               </button>
-              <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white" onClick={formik.handleSubmit}>
+              <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={formik.handleSubmit}>
                 Submit
               </button>
 
