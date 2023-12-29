@@ -175,3 +175,14 @@ export const requestExtention = async (data:any)=>{
   }
 
 }
+///// ****** reviewer-sevice post datas api section /////
+export const createEvents = async (data:any)=>{
+  try {
+   const resposne = await Api.post('/api/reviewer/schedule-event',data)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+}
+

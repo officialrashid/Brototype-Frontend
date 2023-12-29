@@ -38,8 +38,8 @@ const StudentManifest = () => {
     <>
     <div className="bg-custom-background">
       <div className='bg-white h-auto m-8 rounded-xl w-67.3rem'>
-        <h1 className='font-roboto font-sm ml-5 mt-5'>Your Manifest Details</h1>
-        
+        <h1 className='font-roboto font-sm ml-5 mt-5 text-white'>he</h1>
+        <h1 className='font-roboto font-sm ml-5 mt-'>Your Manifest Details</h1>
         <div className='ml-10 mt-5 w-62rem h-28 rounded-md border border-gray-300 relative'>
   <div className='flex'>
     <img src={profileInfo.imageUrl} alt="" className='rounded-full w-16 h-16 ml-5 mt-5' />

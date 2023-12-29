@@ -8,11 +8,8 @@ function Sidebar() {
     const Menus = [
         { title: "Dashboard", src: "/dashboard (3).png" },
         { title: "Schedule", src: "/profile-user.png" },
-        { title: "Review", src: "/job-interview (3).png"},
-        { title: "Task", src: "/app (1).png" },
-        { title: "Extend", src: "/expired.png" },
         { title: "Chat", src: "/chat (2).png" },
-        { title: "Todo", src: "" },
+
       ];
       const handleChangeSideBar = (title: string) => {
         setSidebar(title);
@@ -36,7 +33,7 @@ function Sidebar() {
  const navigate=useNavigate()
     const dispatch=useDispatch()
   return (
-<div className="h-screen w-14 md:w-72 text-white flex flex-col  transition-width duration-300 shadow-xl border">
+    <div className="h-screen w-14 md:w-72 text-white flex flex-col  duration-300 shadow-xl border">
   <div className="py-4 px-4">
     <div>
 

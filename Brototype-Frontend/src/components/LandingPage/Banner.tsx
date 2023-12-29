@@ -59,7 +59,7 @@ const Banner = () => {
         </div>
       </motion.div>
 
-      <div className="row-span-3 bg-white-700 h-38rem relative">
+      <div className="row-span-3 bg-white-700 h-38rem l relative">
         <motion.div
           className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 ${isSmDevice ? 'grid-cols-1' : ''}`}
           initial={{ y: 0, }}
@@ -79,7 +79,7 @@ const Banner = () => {
         animate={{ x: 0,transition:{duration:2} }}
       // whileHover={{rotate:180}}// Moves to the left when removed
     >
-      <p className="text-gray-800 text-2xl italic font-semibold  mt-5 ml-3 px-6 ">If you have the courage and the commitment to learn coding,</p>
+      <p className="text-gray-800 text-xl italic font-semibold  mt-5 ml-3 px-6 ">If you have the courage and the commitment to learn coding,</p>
       <p className="text-gray-800 text-2xl italic font-semibold  mt-1 ml-3 px-10rem "> then Brocamp will empower you.</p>
       <div className='flex flex-wrap'>
         <div className='w-auto ml-44'>

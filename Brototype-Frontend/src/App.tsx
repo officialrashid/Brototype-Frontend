@@ -16,6 +16,7 @@ import ReactGA from 'react-ga';
 import Calender from './pages/Reviewer/Calender';
 import {getMonth} from "./components/Reviewer/ScheduleTime/Utils"
 import ReviewerDashboard from './pages/Reviewer/ReviewerDashboard';
+import ReviewResult from './pages/Students/reviewDetails';
 function App() {
   // const TRACK_ID = 'UA-295189522-1'
   // ReactGA.initialize(TRACK_ID);
@@ -24,11 +25,11 @@ function App() {
  console.table(getMonth())
   return (
     <Router>
-      {/* <Navbars /> */}
+      <Navbars />
       <div className="bg-custom-background">
         <div className="bg-white">
           <div className="flex">
-            {/* <Sidebar /> */}
+            <Sidebar />
             <Routes>
               <Route path="/student" element={<Dashboard />} />
               <Route path="/profile" element={<StudentManifest />} />
@@ -36,6 +37,7 @@ function App() {
               <Route path="/viewTask" element={<ViewTask />} />
               <Route path="/todolist" element={<TodoList />} />
               <Route path="/extendDetails" element={<ExtendDetails />} />
+              <Route path="/review" element={<ReviewResult />} />
               {/* Other routes */}
               <Route path="/" element={<Navbar />} />
               <Route path="/invigilator" element={<Login />} />

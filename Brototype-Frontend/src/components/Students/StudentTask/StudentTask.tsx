@@ -6,8 +6,10 @@ const StudentTask = () => {
 
   return (
     <>
-      <div className="m-4 mt-2 border border-gray-300 rounded-md shadow-lg ">
-        <div className="flex justify-between items-center m-4">
+     <h1 className='text-white'>hello</h1>
+      <div className="m-4 bg-white  border border-gray-300 rounded-md shadow-lg personal-workout relative">
+       
+        <div className="flex justify-between items-center m-4 ">
           <div>
             <span className="font-bold">Personal workouts</span>
           </div>
@@ -45,9 +47,10 @@ const StudentTask = () => {
             </div>
           </div>
         </div>
+        </div>
         {activeSubTask === 1 ? <SubTask /> : ''}
-      </div>
-      <div className="m-4 mt-2 border border-gray-300 rounded-md shadow-lg ">
+
+      <div className="m-4 bg-white mt-2 border border-gray-300 rounded-md shadow-lg ">
   <div className="flex  justify-between items-center m-4">
 
 
@@ -72,7 +75,7 @@ const StudentTask = () => {
    activeSubTask===2?<SubTask/>:""
 
   }
-  <div className="m-4 mt-2 border border-gray-300 rounded-md shadow-lg ">
+  <div className="m-4 bg-white mt-2 border border-gray-300 rounded-md shadow-lg ">
   <div className="flex  justify-between items-center m-4">
 
 

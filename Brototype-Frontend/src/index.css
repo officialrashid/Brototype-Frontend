@@ -68,3 +68,34 @@
     }
 }
 
+ /* Add these styles to your global or component stylesheet */
+
+/* Fixed Header */
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #ffffff; /* Add your desired background color */
+  z-index: 1;
+}
+
+/* Fixed Sidebar */
+.fixed-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 72px; /* Adjust based on your sidebar width */
+  padding-top: 8px; /* To align with the top of the page */
+  background-color: #ffffff; /* Add your desired background color */
+  z-index: 1;
+}
+
+/* Scrollable Content */
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+/* Adjust the width of the table container to allow horizontal scrolling */
+.table-container {
+  min-width: 800px; /* Set a minimum width based on your content */
+}

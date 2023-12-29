@@ -86,7 +86,50 @@ export const getAllPerformance = async (data: {batchId: string; studentId: strin
         return { status: false, message: "There is some issue" };
       }
       }
-  
-  
-
+      export const getReviewDetails = async (data: {batchId: string; studentId: string;}) => {
+        try {
+      
+         const response = await Api.get(`/api/student/get-review-details`,{params:data});
+          return response.data; // Assuming your API response has a 'data' property
+        } catch (err) {
+          return { status: false, message: "There is some issue" };
+        }
+        }
     
+ 
+////****** get methods for reviewer sectiob */
+export const getScheduleEvents = async (reviewerId:string) => {
+  try {
+
+   const response = await Api.get(`/api/reviewer/get-schedule-events/${reviewerId}`);
+    return response.data; // Assuming your API response has a 'data' property
+  } catch (err) {
+    return { status: false, message: "There is some issue" };
+  }
+  }
+  export const  getTimeLineUp = async (data:{reviewerId:string;dayTimeLine:string;}) => {
+    try {
+  
+     const response = await Api.get(`/api/reviewer/get-day-timeLine`,{params:data});
+     console.log(response,"resposne get metho");
+      if(response.data.sortedResponse){
+        return response.data.sortedResponse;
+      }else{
+        return response.data
+      }
+      // Assuming your API response has a 'data' property
+    } catch (err) {
+      return { status: false, message: "There is some issue" };
+    }
+    }
+    export const getReviewerDetails = async (reviewerId:string) => {
+      try {
+    
+       const response = await Api.get(`/api/reviewer/get-reviewer-details/${reviewerId}`);
+        return response.data; // Assuming your API response has a 'data' property
+      } catch (err) {
+        return { status: false, message: "There is some issue" };
+      }
+      }
+
+      

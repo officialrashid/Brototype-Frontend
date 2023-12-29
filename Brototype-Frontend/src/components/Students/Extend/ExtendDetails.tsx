@@ -80,7 +80,7 @@ const ExtendDetails = () => {
                                         {data?.currentWeek}
                                     </td>
                                     <td className="w-1/4 px-4 py-6 text-center">
-                                        {/* Advisor information */}
+                                        yen
                                     </td>
                                     <td className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
                                         <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openReasonModal(data?._id)}>view</span>
