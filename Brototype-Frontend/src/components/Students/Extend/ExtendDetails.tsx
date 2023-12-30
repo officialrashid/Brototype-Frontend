@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { getRequestExtendDetails } from "../../../utils/methods/get";
-import ReasonViewModal from "./reasonViewModal";
+import ReasonViewModal from "./ReasonViewModal";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 // ... (other imports)
 
@@ -10,10 +11,9 @@ const ExtendDetails = () => {
     const [extendRequests, setExtendRequests] = useState([]);
     const [viewReason, setViewReason] = useState(false);
     const [selectedExtendId, setSelectedExtendId] = useState("");
-
+    const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
     useEffect(() => {
         const fetchExtendDetails = async () => {
-            const studentId = "657aaa012a15acfff364bb5a";
             try {
                 const response = await getRequestExtendDetails(studentId);
                 if (response) {

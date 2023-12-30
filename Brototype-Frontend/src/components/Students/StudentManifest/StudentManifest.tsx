@@ -4,13 +4,14 @@ import AddressModal from "./AddressModal";
 import EducationModal from "./EducationModal";
 import React,{useEffect, useState} from "react";
 import { getProfile } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
 const StudentManifest = () => {
   const [setProfile, setProfileUpdate] = useState(false);
   const [setPersonalInfo, setPersonalInfoUpdate] = useState(false);
   const [setAddress, setAddressUpdate] = useState(false);
   const [setEducation, setEducationUpdate] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
-  const studentId = "657aaa012a15acfff364bb5a";
+  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
 
   useEffect(() => {
     fetchStudentProfile();

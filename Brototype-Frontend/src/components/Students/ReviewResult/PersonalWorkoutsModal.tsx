@@ -57,7 +57,7 @@ console.log(response,"pending topics modal compngg");
                         </div>
                     </div>
                     <div className="text-center">
-                        <div><span className="font-semibold font-roboto text-md mb-2">Pending Topics</span></div>
+                        <div><span className="font-semibold font-roboto text-md mb-2">Personal Workouts Reviews</span></div>
                     </div>
                     <div className="m-5 mt-6">
                         <div className="">

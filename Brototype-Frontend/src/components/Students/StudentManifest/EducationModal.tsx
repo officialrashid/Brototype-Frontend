@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { updateEducationDetails } from '../../../utils/methods/post';
+import { useSelector } from 'react-redux';
 
 interface FormValues {
     highestQualification: string;
@@ -17,7 +18,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const EducationModal = ({ isVisible, onClose }) => {
-    const studentId = '657aaa012a15acfff364bb5a'
+    const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
     const validationSchema = Yup.object({
         highestQualification: Yup.string().trim().required('highestQualification Name is required'),
         yearOfPassing: Yup.number()

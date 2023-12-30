@@ -3,6 +3,8 @@ import ReactApexChart from 'react-apexcharts';
 import ReactGA from 'react-ga';
 import mixpanel from 'mixpanel-browser';
 import { getWeeklyPerformance } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux-toolkit/store";
 
 mixpanel.init("0cd6a51299618727d669eb86cb89d77d", {
   debug: true
@@ -12,14 +14,13 @@ const WeeklyPerformGraph = () => {
   const [selectWeek, setSelectWeek] = useState("1-7");
   const [reviewPerformance, setReviewPerformance] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
   useEffect(() => {
     fetchData();
   }, [selectWeek]);
 
   const fetchData = async () => {
     const batchId = "657aa5093476c843c28a377d";
-    const studentId = "657aaa012a15acfff364bb5a";
     const data = {
       batchId,
       studentId,
@@ -114,57 +115,59 @@ const WeeklyPerformGraph = () => {
 
   return (
     <>
-      <div className="w-46rem mt-14 h-22rem bg-white ml-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300">
-        <div className="flex">
-          <h1 className="text-md ml-5 font-roboto font-semibold mt-5">Performance</h1>
-          <div className="relative group ml-33rem mt-3">
-            <button
-              className="border border-gray-350 text-black px-2 py-2 rounded flex items-center top-3 right-3 text-sm font-roboto font-semibold"
+    <div className="w-46rem mt-14 h-22rem bg-white ml-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300">
+      <div className="flex">
+        <h1 className="text-md ml-5 font-roboto font-semibold mt-5">Performance</h1>
+        <div className="relative group ml-33rem mt-3">
+          <button
+            className="border border-gray-350 text-black px-2 py-2 rounded flex items-center top-3 right-3 text-sm font-roboto font-semibold"
+          >
+            Weekly
+            <svg
+              className="ml-2 w-4 h-4 fill-current text-gray-600 mt-1"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
             >
-              Weekly
-              <svg
-                className="ml-2 w-4 h-4 fill-current text-gray-600 mt-1"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 12l-5-5 1.5-1.5L10 9l3.5-3.5L16 7z" />
-              </svg>
-            </button>
+              <path d="M10 12l-5-5 1.5-1.5L10 9l3.5-3.5L16 7z" />
+            </svg>
+          </button>
 
-            <div className="absolute hidden bg-white shadow-md rounded-md group-hover:block z-10">
-              {weekOptions.map((option) => (
-                <a
-                  key={option.value}
-                  href=""
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200 "
-                  onClick={(e) => {
-                    setSelectWeek(option.value);
-                    trackWeekSelection(e, option.label);
-                  }}
-                >
-                  {option.label}
-                </a>
-              ))}
-            </div>
+          <div className="absolute hidden bg-white shadow-md rounded-md group-hover:block z-10">
+            {weekOptions.map((option) => (
+              <a
+                key={option.value}
+                href=""
+                className="block px-4 py-2 text-gray-800 hover:bg-gray-200 "
+                onClick={(e) => {
+                  setSelectWeek(option.value);
+                  trackWeekSelection(e, option.label);
+                }}
+              >
+                {option.label}
+              </a>
+            ))}
           </div>
         </div>
-        <div className="mt-8">
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <ReactApexChart
-              options={weekChartOptions}
-              series={[
-                { name: 'ReviewPerformance', data: reviewPerformance.map((element: { reviewScore: any; }) => element.reviewScore) },
-                { name: 'TaskPerformance', data: reviewPerformance.map((element: { reviewScore: any, communicationScore: any, miscellaneousWorkouts: any, personalWorkoutsScore: any }) => element.communicationScore + element.miscellaneousWorkouts + element.personalWorkoutsScore) }
-              ]}
-              type="area"
-              height={250}
-            />
-          )}
-        </div>
       </div>
-    </>
+      <div className="mt-8">
+        {loading ? (
+          <p>Loading...</p>
+        ) : reviewPerformance.length > 0 ? (
+          <ReactApexChart
+            options={weekChartOptions}
+            series={[
+              { name: 'ReviewPerformance', data: reviewPerformance.map((element: { reviewScore: any; }) => element.reviewScore) },
+              { name: 'TaskPerformance', data: reviewPerformance.map((element: { reviewScore: any, communicationScore: any, miscellaneousWorkouts: any, personalWorkoutsScore: any }) => element.communicationScore + element.miscellaneousWorkouts + element.personalWorkoutsScore) }
+            ]}
+            type="area"
+            height={250}
+          />
+        ) : (
+          <p>Data not found.</p>
+        )}
+      </div>
+    </div>
+  </>
   );
 };
 

@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { getRequestExtendDetails } from "../../../utils/methods/get";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector } from "react-redux";
 
 const ReasonViewModal = ({ isVisible, isClose, extendId }) => {
   const [viewReason, setViewReason] = useState({});
-
+  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   useEffect(() => {
     const fetchExtendDetails = async () => {
-      const studentId = "657aaa012a15acfff364bb5a";
       try {
         const response = await getRequestExtendDetails(studentId);
         if (response) {

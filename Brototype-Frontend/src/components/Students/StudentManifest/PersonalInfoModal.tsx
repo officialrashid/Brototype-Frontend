@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { updatePersonalDetails } from '../../../utils/methods/post';
+import { useSelector } from 'react-redux';
 
 interface FormValues {
   firstName: string;
@@ -24,7 +25,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
-  const studentId = '657aaa012a15acfff364bb5a'
+  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object({
     firstName: Yup.string().transform((value) => value.trim()).required('First Name is required'),
     lastName: Yup.string().transform((value) => value.trim()).required('Last Name is required'),

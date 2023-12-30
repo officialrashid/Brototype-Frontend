@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getExtendDetails } from "../../../utils/methods/get";
 import { useFormik } from "formik";
-import { batch } from "react-redux";
+import { batch, useSelector } from "react-redux";
 import { requestExtention } from "../../../utils/methods/post";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,12 +17,11 @@ interface FormValues {
 const ExtendModal = ({ isVisible, isClose }) => {
   const [extend, setExtend] = useState({});
   const advisorId = "657aa5093476c843c28a377b";
-  const studentId = "657aaa012a15acfff364bb5a";
+  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   useEffect(() => {
     const fetchExtendDetails = async () => {
       try {
         const batchId = "657aa5093476c843c28a377d";
-        const studentId = "657aaa012a15acfff364bb5a";
         const data = {
           batchId,
           studentId,

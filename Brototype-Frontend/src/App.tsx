@@ -17,6 +17,10 @@ import Calender from './pages/Reviewer/Calender';
 import {getMonth} from "./components/Reviewer/ScheduleTime/Utils"
 import ReviewerDashboard from './pages/Reviewer/ReviewerDashboard';
 import ReviewResult from './pages/Students/reviewDetails';
+import StudentSignIn from "./pages/Students/SignIn"
+import StudentOtp from "./pages/Students/StudentOtp";
+import ReviewerSignIn from "./pages/Reviewer/SignIn";
+import ReviewerOtp from "./pages/Reviewer/ReviewerOtp"
 function App() {
   // const TRACK_ID = 'UA-295189522-1'
   // ReactGA.initialize(TRACK_ID);
@@ -25,12 +29,14 @@ function App() {
  console.table(getMonth())
   return (
     <Router>
-      <Navbars />
-      <div className="bg-custom-background">
+      {/* <Navbars /> */}
+      {/* <div className="bg-custom-background">
         <div className="bg-white">
-          <div className="flex">
-            <Sidebar />
+          <div className="flex">  */}
+             {/* <Sidebar /> */}
             <Routes>
+            <Route path="/studentIn" element={<StudentSignIn />} />
+            <Route path="/studentOtp" element={<StudentOtp />} />
               <Route path="/student" element={<Dashboard />} />
               <Route path="/profile" element={<StudentManifest />} />
               <Route path="/task" element={<WeeklyTask />} />
@@ -45,12 +51,14 @@ function App() {
               <Route path="/otpLogin" element={<OtpComponet />} />
               <Route path="/otpTestLogin" element={<OtpComponet />} />
               {/* Reviewer */}
+              <Route path="/reviewerIn" element={<ReviewerSignIn/>} />
+              <Route path="/reviewerOtp" element={<ReviewerOtp/>} />
               <Route path="/reviewer" element={<ReviewerDashboard/>} />
               <Route path="/schedule" element={<Calender/>} />
             </Routes>
-          </div>
-        </div>
-      </div>
+          {/* </div>
+        </div> 
+       </div> */}
     </Router>
   );
 }

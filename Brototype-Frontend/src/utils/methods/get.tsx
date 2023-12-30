@@ -1,5 +1,5 @@
 import Api from "../baseUrl/baseUrl";
-
+import studentApi from "../baseUrl/studentBaseUrl"
 ////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
@@ -20,7 +20,7 @@ export const getEnquiryStudents = async () => {
 
 export const getProfile = async (studentId: string) => {
   try {
-    const response = await Api.get(`/api/student/get-profile/${studentId}`);
+    const response = await studentApi.get(`/api/student/get-profile/${studentId}`);
     console.log(response,"response i api fetch place");
     return response;
   } catch (err) {
@@ -30,7 +30,7 @@ export const getProfile = async (studentId: string) => {
 };
 export const getBestFiveStudents = async (batchId:string)=>{
   try {
-     const response = await Api.get(`/api/student/get-best-students/${batchId}`);
+     const response = await studentApi.get(`/api/student/get-best-students/${batchId}`);
      return response;
   } catch(err){
     return {status:false,message:"There is some issue in "}
@@ -44,7 +44,7 @@ export const getWeeklyPerformance = async (data: {
   }) => {
   try {
     console.log(data, "::::::;;;;;;;;");
-   const response = await Api.get(`/api/student/get-weekly-performance`, { params: data });
+   const response = await studentApi.get(`/api/student/get-weekly-performance`, { params: data });
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -53,7 +53,7 @@ export const getWeeklyPerformance = async (data: {
 export const getCourseCompletion = async (data: {batchId: string; studentId: string;}) => {
 try {
   console.log(data, "::::::;;;;;;;;");
- const response = await Api.get(`/api/student/get-course-completion`, { params: data });
+ const response = await studentApi.get(`/api/student/get-course-completion`, { params: data });
   return response.data; // Assuming your API response has a 'data' property
 } catch (err) {
   return { status: false, message: "There is some issue" };
@@ -62,7 +62,7 @@ try {
 export const getAllPerformance = async (data: {batchId: string; studentId: string;}) => {
   try {
     console.log(data, "::::::;;;;;;;;");
-   const response = await Api.get(`/api/student/get-all-performance`, { params: data });
+   const response = await studentApi.get(`/api/student/get-all-performance`, { params: data });
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -71,7 +71,7 @@ export const getAllPerformance = async (data: {batchId: string; studentId: strin
   export const getExtendDetails = async (data: {batchId: string; studentId: string;}) => {
     try {
       console.log(data, "::::::;;;;;;;;");
-     const response = await Api.get(`/api/student/get-extend-details`, { params: data });
+     const response = await studentApi.get(`/api/student/get-extend-details`, { params: data });
       return response.data; // Assuming your API response has a 'data' property
     } catch (err) {
       return { status: false, message: "There is some issue" };
@@ -80,7 +80,7 @@ export const getAllPerformance = async (data: {batchId: string; studentId: strin
     export const getRequestExtendDetails = async (studentId:string) => {
       try {
 
-       const response = await Api.get(`/api/student/get-request-extend/${studentId}`);
+       const response = await studentApi.get(`/api/student/get-request-extend/${studentId}`);
         return response.data; // Assuming your API response has a 'data' property
       } catch (err) {
         return { status: false, message: "There is some issue" };
@@ -89,7 +89,7 @@ export const getAllPerformance = async (data: {batchId: string; studentId: strin
       export const getReviewDetails = async (data: {batchId: string; studentId: string;}) => {
         try {
       
-         const response = await Api.get(`/api/student/get-review-details`,{params:data});
+         const response = await studentApi.get(`/api/student/get-review-details`,{params:data});
           return response.data; // Assuming your API response has a 'data' property
         } catch (err) {
           return { status: false, message: "There is some issue" };

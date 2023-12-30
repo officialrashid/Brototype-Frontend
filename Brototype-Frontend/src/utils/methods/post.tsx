@@ -18,6 +18,12 @@ interface invigilatorLogin {
   uniqueId: string;
 
 }
+interface studentLogin {
+  // Define the structure of the data parameter here
+  uniqueId: string;
+
+}
+
 interface invigilatorData {
    name: String,
    email:String,
@@ -175,6 +181,19 @@ export const requestExtention = async (data:any)=>{
   }
 
 }
+export const studentLogin = async (data:studentLogin) :Promise<AxiosResponse> =>{
+   console.log(data,"dATAAAA");
+   
+  try{
+
+    const response = await Api.post('/api/auth/student-login',data);
+    return response
+  } catch(error){
+    console.log("Error in the Student Login",error);
+    throw error;  
+  }
+
+}
 ///// ****** reviewer-sevice post datas api section /////
 export const createEvents = async (data:any)=>{
   try {
@@ -183,6 +202,17 @@ export const createEvents = async (data:any)=>{
   } catch(err){
     return {status:false,message:"some issue in the Address details update"}
   }
+
+
+}
+export const reviewerLogin = async (data:any)=>{
+  try {
+   const resposne = await Api.post('/api/auth/reviewer-login',data)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
 
 }
 

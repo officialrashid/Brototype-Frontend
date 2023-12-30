@@ -1,6 +1,7 @@
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { updateAddressDetails } from '../../../utils/methods/post';
+import { useSelector } from 'react-redux';
 
 interface FormValues {
   houseName: string;
@@ -18,7 +19,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 const AddressModal = ({ isVisible, onClose }) => {
-  const studentId = '657aaa012a15acfff364bb5a'
+  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object({
     houseName: Yup.string().trim().required('house Name is required'),
     village: Yup.string().required('village Name is required'),

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { getCourseCompletion } from "../../../utils/methods/get";
 import ApexCharts from 'react-apexcharts';
-
+import { setStudentData } from "../../../redux-toolkit/studentReducer"
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux-toolkit/store";
 const CourseCompletionGraph = () => {
     const [courseCompletion, setCourseCompletion] = useState(0);
-
+    const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     useEffect(() => {
         const fetchCourseCompletion = async () => {
             const batchId = "657aa5093476c843c28a377d";
-            const studentId = "657aaa012a15acfff364bb5a";
+      console.log(studentId,"stduentId coming in redux stire");
+      
             const data = {
                 batchId,
                 studentId,
@@ -27,7 +30,7 @@ const CourseCompletionGraph = () => {
     }, []); // Empty dependency array to run the effect only once on component mount
 
     const chartOptions = {
-        series: [courseCompletion],
+        series: [courseCompletion ?? 0], // Using nullish coalescing operator for conditional rendering
         chart: {
             height: 230,
             type: 'radialBar',
