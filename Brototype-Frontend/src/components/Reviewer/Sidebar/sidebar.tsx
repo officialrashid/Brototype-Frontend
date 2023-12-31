@@ -8,6 +8,7 @@ function Sidebar() {
     const Menus = [
         { title: "Dashboard", src: "/dashboard (3).png" },
         { title: "Schedule", src: "/profile-user.png" },
+        { title: "Profile", src: "/profile-user.png" },
         { title: "Chat", src: "/chat (2).png" },
 
       ];

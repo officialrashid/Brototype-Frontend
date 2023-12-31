@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
+import { useSelector } from "react-redux";
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -17,6 +18,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+  const studentId:any = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object().shape({
     selectedFile: Yup.mixed()
       .required('Please select an image')
@@ -91,7 +93,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         formData.append('lastName', formik.values.lastName);
         formData.append('domain', formik.values.domain);
         formData.append('batch', formik.values.batch);
-
+        formData.append('studentId', studentId);
         const response = await uploadImage(formData);
 
         console.log('Response from server:', response);

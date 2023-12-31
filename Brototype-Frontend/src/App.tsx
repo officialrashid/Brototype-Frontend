@@ -30,10 +30,10 @@ function App() {
   return (
     <Router>
       {/* <Navbars /> */}
-      {/* <div className="bg-custom-background">
+      <div className="bg-custom-background">
         <div className="bg-white">
-          <div className="flex">  */}
-             {/* <Sidebar /> */}
+          <div className="flex">  
+             <Sidebar />
             <Routes>
             <Route path="/studentIn" element={<StudentSignIn />} />
             <Route path="/studentOtp" element={<StudentOtp />} />
@@ -56,9 +56,9 @@ function App() {
               <Route path="/reviewer" element={<ReviewerDashboard/>} />
               <Route path="/schedule" element={<Calender/>} />
             </Routes>
-          {/* </div>
+          </div>
         </div> 
-       </div> */}
+       </div>
     </Router>
   );
 }
