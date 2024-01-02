@@ -1,9 +1,15 @@
 import { useState } from 'react';
 import SubTask from './SubTask';
+import { useLocation } from 'react-router-dom';
 
 const StudentTask = () => {
   const [activeSubTask, setActiveSubTask] = useState(0);
-
+  const location = useLocation();
+  const weekName = location.state && location.state.weekName;
+  if(weekName){
+    console.log(weekName,"weekname comigggg");
+    
+  }
   return (
     <>
      <h1 className='text-white'>hello</h1>
@@ -48,7 +54,7 @@ const StudentTask = () => {
           </div>
         </div>
         </div>
-        {activeSubTask === 1 ? <SubTask /> : ''}
+        {activeSubTask === 1 ? <SubTask weekName={weekName} /> : ''}
 
       <div className="m-4 bg-white mt-2 border border-gray-300 rounded-md shadow-lg ">
   <div className="flex  justify-between items-center m-4">

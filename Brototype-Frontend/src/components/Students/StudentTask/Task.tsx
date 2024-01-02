@@ -1,17 +1,23 @@
-
 import { useNavigate } from 'react-router-dom';
+
 const Task = () => {
-const navigate = useNavigate()
-const handleViewTask = ()=>{
-  navigate('/viewTask')
-}
+  const navigate = useNavigate();
+
+  const handleViewTask = (weekName: string) => {
+    navigate('/viewTask', { state: { weekName } });
+  };
+
   return (
     <div className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
-      <div onClick={(handleViewTask)}>
+      <div onClick={() => handleViewTask('week1')}>
         <span className="font-roboto text-sm">Week-01</span>
       </div>
       <div>
-        <img src="/padlock.png" alt="" className="w-5 h-5 item item-center ml-5" />
+        <img
+          src="/padlock.png"
+          alt=""
+          className="w-5 h-5 item item-center ml-5"
+        />
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -19,7 +25,6 @@ const handleViewTask = ()=>{
         />
       </div>
     </div>
-
   );
 };
 
