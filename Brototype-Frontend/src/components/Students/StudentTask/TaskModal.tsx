@@ -2,6 +2,8 @@
 import { useFormik } from 'formik';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { updatePersonalWorkout } from '../../../utils/methods/post';
+import { toast } from 'react-toastify';
 
 
 interface TaskModalProps {
@@ -30,22 +32,29 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
         console.log('Form values:', values);
  
         // Extract question numbers and answers
-        const questionAnswers = Object.entries(values.answers).map(([nestedQuestionNumber, answer]) => ({
+        const personalWorkouts = Object.entries(values.answers).map(([nestedQuestionNumber, answer]) => ({
           nestedQuestionNumber,
           answer,
         }));
     
-        console.log('Question and Answer pairs:', questionAnswers);
+        console.log('Question and Answer pairs:', personalWorkouts);
         const body = {
           studentId,
           batchId,
           weekName,
           mainQuestionNumber,
-          questionAnswers
+          personalWorkouts
         }
         console.log(body,"body log comingggggggggggg");
-        
-
+        const response = await updatePersonalWorkout(body)
+       console.log(response,"personal update task responsee");
+       if(response && response?.response?.status===true){
+         toast.success("task updated successfully")
+         onclose()
+       }else{
+         toast.error("some issue found task updated,please try again")
+         onclose()
+       }
         // After submitting, you might want to close the modal
 
       } catch (err) {

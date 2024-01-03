@@ -4,7 +4,7 @@ axios.defaults.withCredentials = true;
 
 const Api: AxiosInstance = axios.create({
   // baseURL: "http://brototype.com",
-  baseURL: "http://localhost:6001",
+  baseURL: "http://localhost:7001",
 });
 
 // Add a request interceptor
