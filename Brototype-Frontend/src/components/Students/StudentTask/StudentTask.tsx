@@ -99,7 +99,7 @@ const StudentTask = () => {
 
         <div className="flex justify-between items-center m-4 ">
           <div>
-            <span className="font-bold">Personal workouts</span>
+            <span className="font-bold font-roboto">Personal workouts</span>
           </div>
           <div className="flex gap-3">
             {personalWorkoutCompleted ? (
@@ -151,7 +151,7 @@ const StudentTask = () => {
         <div className="flex  justify-between items-center m-4">
 
 
-          <div> <span className="font-bold ">Technical Workouts</span> </div>
+          <div> <span className="font-bold font-roboto">Technical Workouts</span> </div>
           <div className="flex gap-3">
           {technicalWorkoutCompleted ? (
               <div>
@@ -193,7 +193,7 @@ const StudentTask = () => {
         <div className="flex  justify-between items-center m-4">
 
 
-          <div> <span className="font-bold ">Miscellaneous Workouts</span> </div>
+          <div> <span className="font-bold font-roboto">Miscellaneous Workouts</span> </div>
           <div className="flex gap-3">
           {miscellaneousWorkoutCompleted ? (
               <div>

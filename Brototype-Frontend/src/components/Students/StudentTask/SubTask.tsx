@@ -9,6 +9,10 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
   const [selectedQuestion, setSelectedQuestion] = useState<{ Number: number; question: string } | null>(null);
   const [mainQuestionNumber, setMainQuestionNumber] = useState(0);
   const [personalWorkoutCompleted, setPersonalWorkoutCompleted] = useState(false);
+  const [answerCount, setAnswerCount] = useState<any[]>([]);
+  let personalWorkoutsArray;
+  let technicalWorkoutsArray;
+  let miscellaneousWorkoutsArray
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
 
   const TechnicalWorkouts = [
@@ -53,7 +57,7 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
   ];
 
-  const openModal = (questions: any, questionNumber: React.SetStateAction<number>) => {
+  const openModal = (questions: any, questionNumber: React.SetStateAction<number>,personal:stringx) => {
     if (questions.length > 0) {
       setSelectedQuestion(questions);
       setMainQuestionNumber(questionNumber);
@@ -65,57 +69,97 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     const fetchUpdateTask = async () => {
       try {
         const response = await getUpdateTask(studentId);
+         personalWorkoutsArray = response.response[0].personalWorkouts;
+         technicalWorkoutsArray = response.response[0].technicalWorkouts;
+         miscellaneousWorkoutsArray = response.response[0].miscellaneousWorkouts;
+         if (taskNumber === 1) {
+          setAnswerCount(personalWorkoutsArray);
+        } else if (taskNumber === 2) {
+          setAnswerCount(technicalWorkoutsArray);
+        } else if(taskNumber === 3){
+          setAnswerCount(miscellaneousWorkoutsArray)
+        }
 
-        const mainQuestionCompleted = (mainQuestionNumber: number, workoutsArray: any[]) => {
-          const mainQuestionWorkouts = workoutsArray.filter(workout => workout.mainQuestionNumber === mainQuestionNumber);
-          return mainQuestionWorkouts.length === PersonalWorkouts.length;
-        };
-        console.log(mainQuestionCompleted,"pppppppppppppp");
-        
-        const personalWorkoutsArray = response.response[0]?.personalWorkouts || [];
-        const technicalWorkoutsArray = response.response[0]?.technicalWorkouts || [];
-        const miscellaneousWorkoutsArray = response.response[0]?.miscellaneousWorkouts || [];
-
-        setPersonalWorkoutCompleted(PersonalWorkouts.length === personalWorkoutsArray.length && mainQuestionCompleted(1, personalWorkoutsArray));
-        // Update the mainQuestionCompleted argument for technical and miscellaneous workouts
-        setTechnicalWorkoutCompleted(TechnicalWorkouts.length === technicalWorkoutsArray.length && mainQuestionCompleted(2, technicalWorkoutsArray));
-        setMiscellaneousWorkoutCompleted(MiscellaneousWorkouts.length === miscellaneousWorkoutsArray.length && mainQuestionCompleted(1, miscellaneousWorkoutsArray));
+  
       } catch (err) {
         // Handle errors
       }
     };
-
+  
     fetchUpdateTask();
-  }, []);
+  }, [studentId,taskNumber]);
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[]) => {
     return (
       <div>
-        {workouts.map((question) => (
-          <div key={question.Number} className="border border-2px m-9 border-b rounded-md shadow-xl data-collapse=collapse-1">
-            <div className="m-7 border border-1px rounded-md shadow-xl border-black">
-              <div className="flex justify-between m-2 items-center py-2">
-                <div>
-                  <span>
-                    {question.Number}. {question.question}
-                  </span>
-                </div>
-                <div>
-                  <button className={`bg-${personalWorkoutCompleted ? 'blue' : 'red'}-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(nestedQuestions, question.Number)}>
-                    {personalWorkoutCompleted ? 'Edit' : 'Complete'}
-                  </button>
+        {workouts.map((question) => {
+          // Find the corresponding nested questions for the current main question
+          const currentNestedQuestions = nestedQuestions.filter(nested => nested.mainQuestionNumber === question.Number);
+             
+          // Find the answers for the current main question
+          const currentAnswers = answerCount.find(answer => answer.mainQuestionNumber === question.Number);
+          
+          // Count the number of nested questions for the current main question
+          const currentNestedQuestionCount = currentNestedQuestions.length;
+          
+          // Count the number of answers for the current main question
+          const currentAnswerCount = currentAnswers ? currentAnswers.questionNumbersAndAnswers.length : 0;
+          console.log(currentNestedQuestionCount,"nestedQuestionCount");
+          console.log(currentAnswerCount,"ansercount");
+          const mainQuestionNumberFromAnswers = currentAnswers?.mainQuestionNumber;
+          console.log(mainQuestionNumberFromAnswers,"ppp");
+         if(mainQuestionNumberFromAnswers===question.Number&&currentNestedQuestionCount > 0 && currentNestedQuestionCount === currentAnswerCount){
+                console.log(mainQuestionNumberFromAnswers,"mainQuestionumner");
+                console.log(question.Number,"question.Number");
+                console.log(currentNestedQuestionCount,"currentNestedQuestionCount");
+                console.log(currentAnswerCount,"currentAnswerCount");
+                console.log("edit");
+                
+         }else{
+          console.log(mainQuestionNumberFromAnswers,"mainQuestionumnerElse");
+          console.log(question.Number,"question.NumberElse");
+          console.log(currentNestedQuestionCount,"currentNestedQuestionCountElse");
+          console.log(currentAnswerCount,"currentAnswerCountElse");
+  
+          console.log("complete");
+          
+         }
+          return (
+            <div key={question.Number} className="border border-2px m-9 border-b rounded-md shadow-xl data-collapse=collapse-1 font-roboto">
+              <div className="m-7 border border-1px rounded-md shadow-xl border-black">
+                <div className="flex justify-between m-2 items-center py-2">
+                  <div>
+                    <span className='font-roboto"'>
+                      {question.Number}. {question.question}
+                    </span>
+                  </div>
+                  <div>
+                    { currentNestedQuestionCount === currentAnswerCount ? (
+                      <button className={`bg-blue-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number)}>
+                        Edit
+                      </button>
+                    ) : (
+                      <button className={`bg-red-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number)}>
+                      Complete
+                    </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-        <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={[selectedQuestion]} mainQuestionNumber={mainQuestionNumber} weekName={weekName} taskNumber={taskNumber} />
+          );
+        })}
+        <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={selectedQuestion ? [selectedQuestion] : []} mainQuestionNumber={mainQuestionNumber} weekName={weekName} taskNumber={taskNumber} />
       </div>
     );
   };
-
+  
+  
+  
+  
   return (
     <div>
+      
       {taskNumber === 1 && renderWorkouts(PersonalWorkouts, personalWorkoutsNestedQuestion)}
       {taskNumber === 2 && renderWorkouts(TechnicalWorkouts, technicalWorkoutsNestedQuestion)}
       {taskNumber === 3 && renderWorkouts(MiscellaneousWorkouts, MiscellaneousWorkoutssNestedQuestion)}
@@ -123,4 +167,6 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
   );
 };
 
-export  default  SubTask ;
+export default SubTask;
+
+

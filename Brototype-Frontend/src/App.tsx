@@ -29,7 +29,7 @@ function App() {
  console.table(getMonth())
   return (
     <Router>
-      {/* <Navbars /> */}
+      <Navbars />
       <div className="bg-custom-background">
         <div className="bg-white">
           <div className="flex">  
