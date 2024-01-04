@@ -227,5 +227,24 @@ export const updatePersonalWorkout = async (data:any)=>{
 
 
 }
+export const updateTechnicalWorkout = async (data:any)=>{
+  try {
+   const resposne = await Api.post('/api/task/update-technical-workout',data)
+   return resposne.data
+  } catch(err){
+    return {status:false,message:"some issue in task  pdate"}
+  }
 
+
+}
+export const updateMiscellaneousWorkout = async (data:any)=>{
+  try {
+   const resposne = await Api.post('/api/task/update-miscellaneous-workout',data)
+   return resposne.data
+  } catch(err){
+    return {status:false,message:"some issue in task  pdate"}
+  }
+
+
+}
 

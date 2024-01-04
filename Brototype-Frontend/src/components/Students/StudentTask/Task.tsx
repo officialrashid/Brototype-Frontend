@@ -1,30 +1,98 @@
 import { useNavigate } from 'react-router-dom';
+import { getReviewDetails } from '../../../utils/methods/get';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Task = () => {
+  const studentId:any = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const batchId = "657aa5093476c843c28a377d";
   const navigate = useNavigate();
+ const [taskView,setTaskView] = useState(false)
+ useEffect(()=>{
+  const fetchReviewDetails =async  ()=>{
+    try {
+      const data = {
+        studentId,
+        batchId
+      };
+      const response = await getReviewDetails(data);
+      console.log(response,"response coming yarrr");
+      
+      if(response.status===true){
+        setTaskView(response.response)
+      }else{
 
-  const handleViewTask = (weekName: string) => {
+      }
+    } catch (error) {
+      console.error("Error fetching review details:", error);
+      // Handle the error, show a message, or take appropriate action
+    }
+  }
+ fetchReviewDetails()
+},[])
+
+const handleViewTask = async (weekName: string) => {
+  console.log(taskView);
+  console.log(weekName);
+  
+  const foundWeek = taskView.find((data:any) => data.week === weekName);
+   
+  if (foundWeek && foundWeek.status === true && foundWeek.week !== 'week1') {
     navigate('/viewTask', { state: { weekName } });
-  };
+  } else if (foundWeek && foundWeek.week === 'week1') {
+    navigate('/viewTask', { state: { weekName } });
+  } else {
+    toast.warn("You're not eligible for this task");
+  }
+};
+
+
+
+  const Mernstack = [
+    {
+      week1: [],
+      week2: [],
+      week3: [],
+      week4: [],
+      week5: [],
+      week6: [],
+      week7: [],
+      week8: [],
+      week9: [],
+      week10: [],
+      // Add more weeks as needed
+    },
+  ];
 
   return (
-    <div className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
-      <div onClick={() => handleViewTask('week1')}>
-        <span className="font-roboto text-sm">Week-01</span>
-      </div>
-      <div>
-        <img
-          src="/padlock.png"
-          alt=""
-          className="w-5 h-5 item item-center ml-5"
-        />
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M13.5 10.5V6.75a4.5 4.5 0 119 0v3.75M3.75 21.75h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H3.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-        />
-      </div>
-    </div>
+    <>
+    {Mernstack.map((weeksObject, index) => (
+      Object.keys(weeksObject).map((weekName, weekIndex) => {
+        const isStatusTrue = Array.isArray(taskView) && (
+          // For the first week, consider it as unlocked by default
+          (weekIndex === 0) ||
+          // For other weeks, check if there is a status for the current week
+          taskView.some((item) => item.week === weekName && item.status)
+        );
+
+        return (
+          <div key={index} className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
+            <div onClick={() => handleViewTask(weekName)}>
+              <span className="font-roboto text-sm">{weekName}</span>
+            </div>
+            <div>
+              {isStatusTrue ? (
+                <img src="/padlock.png" alt="" className="w-5 h-5 item item-center ml-5" />
+              ) : (
+                <img src="/lock.png" alt="" className="w-5 h-5 item item-center ml-5" />
+              )}
+            </div>
+          </div>
+        );
+      })
+    ))}
+  </>
   );
 };
 
