@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { batch, useSelector } from "react-redux";
 import { requestExtention } from "../../../utils/methods/post";
 import { toast } from 'react-toastify';
+import * as Yup from 'yup'; // Import yup
 import 'react-toastify/dist/ReactToastify.css';
 interface FormValues {
   fullName: string;
@@ -13,6 +14,17 @@ interface FormValues {
   extendDays: string;
   extendReason: string;
 }
+const validationSchema = Yup.object().shape({
+  // Define validation rules
+  extendDays: Yup.string()
+    .trim()
+    .required('Extend days is required')
+    .oneOf(['2', '7'], 'Extend days must be either 2 or 7'),
+  extendReason: Yup.string()
+    .trim()
+    .required('Extend reason is required'),
+});
+
 
 const ExtendModal = ({ isVisible, isClose }) => {
   const [extend, setExtend] = useState({});
@@ -49,7 +61,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
       extendDays: '',
       extendReason: '',
     } as FormValues,
-
+    validationSchema: validationSchema,
     onSubmit: async () => {
       try {
         const body = {
@@ -127,14 +139,16 @@ const ExtendModal = ({ isVisible, isClose }) => {
               />
               <input
                 type="text"
-                className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
+                className={`px-5 py-4 shadow-xl border ${formik.touched.extendDays && formik.errors.extendDays ? 'border-red' : 'border-gray-200'} focus:outline-black w-full rounded-lg mb-7 font-roboto`}
                 placeholder="Enter extension need days"
-                id="extendDays"  // Corrected typo here
+                id="extendDays"
                 name="extendDays"
-                value={formik.values.extendDays}  // Use formik.values.extendDays
+                value={formik.values.extendDays}
                 onChange={formik.handleChange}
               />
-
+              {formik.touched.extendDays && formik.errors.extendDays ? (
+                <div className="text-red-700 text-sm ml-2">{formik.errors.extendDays}</div>
+              ) : null}
               <textarea
                 name="extendReason"
                 id="extendReason"
@@ -142,9 +156,12 @@ const ExtendModal = ({ isVisible, isClose }) => {
                 onChange={formik.handleChange}
                 cols={30}
                 rows={10}
-                className="w-full px-5 py-2 border-gray-200 shadow-xl outline-black font-roboto"
+                className={`w-full px- py- border ${formik.touched.extendReason && formik.errors.extendReason ? 'border-red' : 'border-gray-200'} shadow-xl outline-black font-roboto`}
                 placeholder="Enter your reason for extension"
               ></textarea>
+              {formik.touched.extendReason && formik.errors.extendReason ? (
+                <div className="text-red-700 text-sm ml-2">{formik.errors.extendReason}</div>
+              ) : null}
             </div>
           </div>
           <div className="flex justify-between m-6">

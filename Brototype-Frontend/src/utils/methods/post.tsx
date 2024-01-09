@@ -194,6 +194,21 @@ export const studentLogin = async (data:studentLogin) :Promise<AxiosResponse> =>
   }
 
 }
+export const secondExtendRequest = async (extendId:string)=>{
+
+ try{
+   
+
+   const response = await Api.post(`/api/student/second-extend-request/${extendId}`,);
+
+   return response
+ } catch(error){
+   console.log("Error in the Student Login",error);
+   throw error;  
+ }
+
+}
+
 ///// ****** reviewer-sevice post datas api section /////
 export const createEvents = async (data:any)=>{
   try {

@@ -8,7 +8,7 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
   const [activeModal, setActiveModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<{ Number: number; question: string } | null>(null);
   const [mainQuestionNumber, setMainQuestionNumber] = useState(0);
-  const [personalWorkoutCompleted, setPersonalWorkoutCompleted] = useState(false);
+  const [modalType,setModalType] = useState("")
   const [answerCount, setAnswerCount] = useState<any[]>([]);
   let personalWorkoutsArray;
   let technicalWorkoutsArray;
@@ -57,10 +57,11 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
   ];
 
-  const openModal = (questions: any, questionNumber: React.SetStateAction<number>,personal:stringx) => {
+  const openModal = (questions: any, questionNumber: React.SetStateAction<number>, modalType:string ) => {
     if (questions.length > 0) {
       setSelectedQuestion(questions);
       setMainQuestionNumber(questionNumber);
+      setModalType(modalType)
       setActiveModal(true);
     }
   };
@@ -69,61 +70,45 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     const fetchUpdateTask = async () => {
       try {
         const response = await getUpdateTask(studentId);
-         personalWorkoutsArray = response.response[0].personalWorkouts;
-         technicalWorkoutsArray = response.response[0].technicalWorkouts;
-         miscellaneousWorkoutsArray = response.response[0].miscellaneousWorkouts;
-         if (taskNumber === 1) {
+        personalWorkoutsArray = response.response[0].personalWorkouts;
+        technicalWorkoutsArray = response.response[0].technicalWorkouts;
+        miscellaneousWorkoutsArray = response.response[0].miscellaneousWorkouts;
+        if (taskNumber === 1) {
           setAnswerCount(personalWorkoutsArray);
         } else if (taskNumber === 2) {
           setAnswerCount(technicalWorkoutsArray);
-        } else if(taskNumber === 3){
+        } else if (taskNumber === 3) {
           setAnswerCount(miscellaneousWorkoutsArray)
         }
 
-  
+
       } catch (err) {
         // Handle errors
       }
     };
-  
-    fetchUpdateTask();
-  }, [studentId,taskNumber]);
 
-  const renderWorkouts = (workouts: any[], nestedQuestions: any[]) => {
+    fetchUpdateTask();
+  }, [studentId, taskNumber]);
+
+  const renderWorkouts = (workouts: any[], nestedQuestions: any[],taskType:string) => {
     return (
       <div>
         {workouts.map((question) => {
           // Find the corresponding nested questions for the current main question
           const currentNestedQuestions = nestedQuestions.filter(nested => nested.mainQuestionNumber === question.Number);
-             
+
           // Find the answers for the current main question
           const currentAnswers = answerCount.find(answer => answer.mainQuestionNumber === question.Number);
-          
+
           // Count the number of nested questions for the current main question
           const currentNestedQuestionCount = currentNestedQuestions.length;
-          
+
           // Count the number of answers for the current main question
           const currentAnswerCount = currentAnswers ? currentAnswers.questionNumbersAndAnswers.length : 0;
-          console.log(currentNestedQuestionCount,"nestedQuestionCount");
-          console.log(currentAnswerCount,"ansercount");
+          console.log(currentNestedQuestionCount, "nestedQuestionCount");
+          console.log(currentAnswerCount, "ansercount");
           const mainQuestionNumberFromAnswers = currentAnswers?.mainQuestionNumber;
-          console.log(mainQuestionNumberFromAnswers,"ppp");
-         if(mainQuestionNumberFromAnswers===question.Number&&currentNestedQuestionCount > 0 && currentNestedQuestionCount === currentAnswerCount){
-                console.log(mainQuestionNumberFromAnswers,"mainQuestionumner");
-                console.log(question.Number,"question.Number");
-                console.log(currentNestedQuestionCount,"currentNestedQuestionCount");
-                console.log(currentAnswerCount,"currentAnswerCount");
-                console.log("edit");
-                
-         }else{
-          console.log(mainQuestionNumberFromAnswers,"mainQuestionumnerElse");
-          console.log(question.Number,"question.NumberElse");
-          console.log(currentNestedQuestionCount,"currentNestedQuestionCountElse");
-          console.log(currentAnswerCount,"currentAnswerCountElse");
-  
-          console.log("complete");
-          
-         }
+      
           return (
             <div key={question.Number} className="border border-2px m-9 border-b rounded-md shadow-xl data-collapse=collapse-1 font-roboto">
               <div className="m-7 border border-1px rounded-md shadow-xl border-black">
@@ -134,14 +119,14 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
                     </span>
                   </div>
                   <div>
-                    { currentNestedQuestionCount === currentAnswerCount ? (
-                      <button className={`bg-blue-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number)}>
+                    {currentNestedQuestionCount === currentAnswerCount ? (
+                      <button className={`bg-blue-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number,'Edit')}>
                         Edit
                       </button>
                     ) : (
-                      <button className={`bg-red-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number)}>
-                      Complete
-                    </button>
+                      <button className={`bg-red-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number,'Complete')}>
+                        Complete
+                      </button>
                     )}
                   </div>
                 </div>
@@ -149,20 +134,20 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
             </div>
           );
         })}
-        <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={selectedQuestion ? [selectedQuestion] : []} mainQuestionNumber={mainQuestionNumber} weekName={weekName} taskNumber={taskNumber} />
+        <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={selectedQuestion ? [selectedQuestion] : []} mainQuestionNumber={mainQuestionNumber} weekName={weekName} taskNumber={taskNumber} modalType={modalType} taskType={taskType} />
       </div>
     );
   };
-  
-  
-  
-  
+
+
+
+
   return (
     <div>
-      
-      {taskNumber === 1 && renderWorkouts(PersonalWorkouts, personalWorkoutsNestedQuestion)}
-      {taskNumber === 2 && renderWorkouts(TechnicalWorkouts, technicalWorkoutsNestedQuestion)}
-      {taskNumber === 3 && renderWorkouts(MiscellaneousWorkouts, MiscellaneousWorkoutssNestedQuestion)}
+
+      {taskNumber === 1 && renderWorkouts(PersonalWorkouts, personalWorkoutsNestedQuestion,'personal')}
+      {taskNumber === 2 && renderWorkouts(TechnicalWorkouts, technicalWorkoutsNestedQuestion,'technical')}
+      {taskNumber === 3 && renderWorkouts(MiscellaneousWorkouts, MiscellaneousWorkoutssNestedQuestion,'miscellaneous')}
     </div>
   );
 };

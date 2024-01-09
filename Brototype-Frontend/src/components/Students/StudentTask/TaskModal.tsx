@@ -1,9 +1,10 @@
 // TaskModal.js
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { updateMiscellaneousWorkout, updatePersonalWorkout, updateTechnicalWorkout } from '../../../utils/methods/post';
 import { toast } from 'react-toastify';
+import { getEditTaskDetails } from '../../../utils/methods/get';
 
 interface TaskModalProps {
   isVisible: boolean;
@@ -12,17 +13,50 @@ interface TaskModalProps {
   mainQuestionNumber: number;
   weekName: string;
   taskNumber: number;
+  modalType:string;
+  taskType:string
 }
 
 interface FormValues {
   answers: Record<string, any>;
 }
 
-const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, mainQuestionNumber, weekName, taskNumber }) => {
+const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, mainQuestionNumber, weekName, taskNumber,modalType,taskType }) => {
   if (!isVisible || !questions || questions.length === 0) return null;
-
+  const [editData,setEditData] = useState([])
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
   const batchId = "657aa5093476c843c28a377d";
+  useEffect(() => {
+    const fetchEditTaskDetails = async () => {
+      console.log(taskType, "task coming useEffect");
+      console.log(modalType, "modal type useEffect");
+  
+      try {
+        if (modalType === 'Edit') {
+          const data = {
+            studentId,
+            mainQuestionNumber,
+            taskType,
+            weekName,
+          };
+          const response = await getEditTaskDetails(data);
+          console.log(response.data[0]);
+          if(response){
+            setEditData(response.data[0])
+          }else{
+            setEditData([])
+          }
+         
+        }
+      } catch (error) {
+        console.error("Error fetching edit task details:", error);
+      }
+    };
+  
+    // Invoke the function here
+    fetchEditTaskDetails();
+  }, []);  // <-- Make sure to pass an empty dependency array if you want it to run once on mount
+  
 
   const updateWorkout = async (workoutType: any, workoutData: any) => {
     try {
@@ -101,49 +135,64 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
           </div>
         </div>
 
-        <form onSubmit={formik.handleSubmit}>
-       
-    {questions[0].map((question: any) =>
-      question.mainQuestionNumber === mainQuestionNumber && (
-        <div key={question.Number} className="m-5 mt-6">
-          <div className="m-7 border border-black rounded-md shadow-2xl">
-            <div className="flex justify-between items-center m-4">
-              <div>
-                <span className="font-bold font-roboto">
-                  {question.Number}.{question.question}
-                </span>
-              </div>
+
+<form onSubmit={formik.handleSubmit}>
+  {questions[0].map((question: any, index: number) =>
+    question.mainQuestionNumber === mainQuestionNumber && (
+      <div key={question.Number} className="m-5 mt-6">
+        <div className="m-7 border border-black rounded-md shadow-2xl">
+          <div className="flex justify-between items-center m-4">
+            <div>
+              <span className="font-bold font-roboto">
+                {question.Number}.{question.question}
+              </span>
             </div>
           </div>
-          <div className="m-7 mt-6">
+        </div>
+        <div className="m-7 mt-6">
+          {editData && editData.length > index ? (
             <input
               type="text"
               id={question.Number}
               name={question.Number}
               onChange={(e) => handleQuestionChange(e, question.Number)}
               onBlur={formik.handleBlur}
-              value={formik.values.answers[question.Number]}
+              value={editData[index].answer || ''}
               className="border border-2px rounded-lg text-sm font-roboto pl-3 outline-none shadow-lg w-full py-5"
               placeholder={`Enter your answer for Question ${question.Number}`}
             />
-          </div>
+          ) : (
+            <input
+              type="text"
+              id={question.Number}
+              name={question.Number}
+              onChange={(e) => handleQuestionChange(e, question.Number)}
+              onBlur={formik.handleBlur}
+              value={formik.values.answers[question.Number] || ''}
+              className="border border-2px rounded-lg text-sm font-roboto pl-3 outline-none shadow-lg w-full py-5"
+              placeholder={`Enter your answer for Question ${question.Number}`}
+            />
+          )}
         </div>
-      )
-    )}
-  
+      </div>
+    )
+  )}
 
-          <div className="flex justify-between mr-12 m-6 gap ">
-            <div></div>
-            <div>
-              <button className="border px-4 py-1 rounded-md bg-black text-white font-robot" onClick={onclose}>
-                Cancel
-              </button>
-              <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto">
-                Submit
-              </button>
-            </div>
-          </div>
-        </form>
+  <div className="flex justify-between mr-12 m-6 gap">
+    <div></div>
+    <div>
+      <button className="border px-4 py-1 rounded-md bg-black text-white font-robot" onClick={onclose}>
+        Cancel
+      </button>
+      <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto">
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
+
+
+
       </div>
     </div>
   );

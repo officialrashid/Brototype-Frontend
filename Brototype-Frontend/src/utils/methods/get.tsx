@@ -145,4 +145,15 @@ export const getScheduleEvents = async (reviewerId:string) => {
           return { status: false, message: "There is some issue" };
         }
         }
-      getUpdateTask
+        export const getEditTaskDetails = async (data:{studentId:string,mainQuestionNumber:number,taskType:string,weekName:string}) => {
+     
+        
+          try {
+        
+           const response = await Api.get(`/api/task/get-edit-task-details`,{params:data});
+            return response?.data?.response; // Assuming your API response has a 'data' property
+          } catch (err) {
+            return { status: false, message: "There is some issue" };
+          }
+          }
+        
