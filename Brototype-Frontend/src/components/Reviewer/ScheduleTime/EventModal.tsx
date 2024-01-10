@@ -108,7 +108,7 @@ const EventModal = () => {
         } catch (error) {
             // Set validation error
             setValidationError(error.message);
-            toast.error(error.message);
+            // toast.error(error.message);
         }
     };
 
@@ -271,7 +271,7 @@ const EventModal = () => {
                     </div>
                     {/* Add this block to display the validation error */}
                     {validationError && (
-                        <div className="text-red-500">{validationError}</div>
+                        <div className="text-red-500 font-roboto text-s mt-3">{validationError}</div>
                     )}
                 </div>
                 <footer className='flex justify-end w-100 border-t p-3 mt-5'>
