@@ -33,7 +33,7 @@ function App() {
       <div className="bg-custom-background">
         <div className="bg-white">
           <div className="flex">  
-             <Sidebar />
+             {/* <Sidebar /> */}
             <Routes>
             <Route path="/studentIn" element={<StudentSignIn />} />
             <Route path="/studentOtp" element={<StudentOtp />} />
