@@ -21,6 +21,7 @@ import StudentSignIn from "./pages/Students/SignIn"
 import StudentOtp from "./pages/Students/StudentOtp";
 import ReviewerSignIn from "./pages/Reviewer/SignIn";
 import ReviewerOtp from "./pages/Reviewer/ReviewerOtp"
+import ReviewerProfile from './pages/Reviewer/ReviewerProfile';
 function App() {
   // const TRACK_ID = 'UA-295189522-1'
   // ReactGA.initialize(TRACK_ID);
@@ -55,6 +56,7 @@ function App() {
               <Route path="/reviewerOtp" element={<ReviewerOtp/>} />
               <Route path="/reviewer" element={<ReviewerDashboard/>} />
               <Route path="/schedule" element={<Calender/>} />
+              <Route path="/reviewerProfile" element={<ReviewerProfile/>} />
             </Routes>
           </div>
         </div> 

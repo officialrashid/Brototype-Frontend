@@ -21,15 +21,10 @@ function Sidebar() {
         if(title==='Schedule'){
           navigate('/schedule')
         }
-        if(title==='Task'){
-          navigate('/task')
+        if(title==='Profile'){
+          navigate('/reviewerProfile')
         }
-        if(title==='Todo'){
-          navigate('/todolist')
-        }
-        if(title==='Extend'){
-          navigate('/extendDetails')
-        }
+       
       };
  const navigate=useNavigate()
     const dispatch=useDispatch()

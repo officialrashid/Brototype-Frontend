@@ -92,7 +92,7 @@ const BatchBestStudents = () => {
                 // Handle the case where the totalScore is NaN or out of range
                 return (
                   <div key={index}>
-                    <p>Error: Invalid TotalScore</p>
+                    <p className="text-sm font-roboto">Error: Invalid TotalScore</p>
                   </div>
                 );
               }

@@ -131,7 +131,16 @@ export const getScheduleEvents = async (reviewerId:string) => {
         return { status: false, message: "There is some issue" };
       }
       }
-
+      export const getReviewerProfile = async (reviewerId:string) => {
+        try {
+      
+         const response = await Api.get(`/api/reviewer/get-reviewer-profile/${reviewerId}`);
+          return response.data; // Assuming your API response has a 'data' property
+        } catch (err) {
+          return { status: false, message: "There is some issue" };
+        }
+        }
+      
       //// **** Get Method for Task Service ///
 
       export const getUpdateTask = async (studentId:string) => {

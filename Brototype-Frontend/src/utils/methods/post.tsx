@@ -230,6 +230,20 @@ export const reviewerLogin = async (data:any)=>{
 
 
 }
+export const updateReviewerWorkDetails = async (data:any,reviewerId:string)=>{
+  try {
+    const workData = {
+      data,
+      reviewerId
+ }
+   const resposne = await Api.post('/api/reviewer/update-work-details',workData)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+
+}
 
 //// ******* task service ********///
 export const updatePersonalWorkout = async (data:any)=>{
