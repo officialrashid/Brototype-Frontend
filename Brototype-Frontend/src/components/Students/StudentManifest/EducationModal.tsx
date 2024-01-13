@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { updateEducationDetails } from '../../../utils/methods/post';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface FormValues {
     highestQualification: string;
@@ -48,7 +49,12 @@ const EducationModal = ({ isVisible, onClose }) => {
                 console.log(values, 'Form values submitted address');
                 const response = await updateEducationDetails(values, studentId)
                 console.log(response, "response coming to the frontend update Address");
-
+                 if(response.data.status===true){
+                    toast.success("education details update successfully")
+                 }else{
+                    toast.error("education details update not done,something went wrong")
+                 }
+                 onClose()
             } catch (error) {
                 console.error(error, 'error in the formik data');
             }

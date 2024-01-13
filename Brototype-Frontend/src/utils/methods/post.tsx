@@ -40,9 +40,7 @@ interface invigilatorData {
 
  //student interface
  interface updatePersonalDetails{
-  firstName: string;
-  lastName: string;
-  middleName: string;
+
   dateOfBirth: string;
   age: string;
   email: string;

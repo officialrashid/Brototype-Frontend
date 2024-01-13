@@ -39,9 +39,9 @@ const handleViewTask = async (weekName: string) => {
   const foundWeek = taskView.find((data:any) => data.week === weekName);
    
   if (foundWeek && foundWeek.status === true && foundWeek.week !== 'week1') {
-    navigate('/viewTask', { state: { weekName } });
+    navigate('/student/viewTask', { state: { weekName } });
   } else if (foundWeek && foundWeek.week === 'week1') {
-    navigate('/viewTask', { state: { weekName } });
+    navigate('/student/viewTask', { state: { weekName } });
   } else {
     toast.warn("You're not eligible for this task");
   }

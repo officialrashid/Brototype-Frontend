@@ -2,11 +2,9 @@ import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { updatePersonalDetails } from '../../../utils/methods/post';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 interface FormValues {
-  firstName: string;
-  lastName: string;
-  middleName: string;
   dateOfBirth: string;
   age: string;
   email: string;
@@ -27,19 +25,16 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object({
-    firstName: Yup.string().transform((value) => value.trim()).required('First Name is required'),
-    lastName: Yup.string().transform((value) => value.trim()).required('Last Name is required'),
-    middleName: Yup.string().transform((value) => value.trim()).required('Middle Name is required'),
     dateOfBirth: Yup.string().required('Date of Birth is required').test('valid-date', 'Invalid date', function (value) {
       const currentDate = new Date();
-      const birthDate = new Date(value);
+      const birthDate:any = new Date(value);
 
       return !isNaN(birthDate) && birthDate < currentDate;
     }),
     age: Yup.number().required('Age is required').test('valid-age', 'Invalid age', function (value) {
       const { dateOfBirth } = this.parent;
       const currentDate = new Date();
-      const birthDate = new Date(dateOfBirth);
+      const birthDate:any = new Date(dateOfBirth);
 
       return !isNaN(birthDate) && value === currentDate.getFullYear() - birthDate.getFullYear();
     }),
@@ -55,9 +50,6 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      middleName: '',
       dateOfBirth: '',
       age: '',
       email: '',
@@ -74,7 +66,12 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
         console.log(values, 'Form values submitted');
         const response = await updatePersonalDetails(values, studentId)
         console.log(response, "response coming to the frontend");
-
+         if(response.data.status===true){
+          toast.success("personal details update successfully")
+         }else{
+          toast.error("personal details update not done,something went wrong")
+         }
+         onClose()
       } catch (error) {
         console.error(error, 'error in the formik data');
       }
@@ -110,7 +107,7 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
               <div >
 
               </div>
-              <div className="w-full">
+              {/* <div className="w-full">
                 <div className=" ">
                   <div className="m-1">
                     <div className="mb-3 ">
@@ -151,13 +148,13 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
 
 
                 </div>
-              </div>
+              </div> */}
 
-              <div className="w-full">
+               <div className="w-full">
 
                 <div className="w-full">
                   <div className=" mr-2 mb-3">
-                    <div className="mr-3 m-1 ml-0">
+                    {/* <div className="mr-3 m-1 ml-0">
                       <div className="mb-3 ">
                         <span className="text-sm font-roboto">MiddleName</span>
                       </div>
@@ -171,7 +168,7 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
                       {formik.touched.middleName && formik.errors.middleName && (
                         <ErrorText>{formik?.errors?.middleName}</ErrorText>
                       )}
-                    </div>
+                    </div> */}
                     <div className="">
                       <div className="mr-3  m-1 ml-0">
                         <div className="mb-3 mt-3">
@@ -197,7 +194,7 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
                   </div>
                 </div>
 
-              </div>
+              </div> 
 
 
 

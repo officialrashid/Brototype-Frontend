@@ -3,6 +3,7 @@ import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -95,9 +96,13 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         formData.append('batch', formik.values.batch);
         formData.append('studentId', studentId);
         const response = await uploadImage(formData);
-
-        console.log('Response from server:', response);
-        onClose();
+        if(response?.data?.status===true){
+           toast.success("profile updated successfully")
+           onClose();
+        }else{
+          toast.error("profile updated not done,something went wrong")
+          onClose();
+        }
       } catch (error) {
         console.error('Error uploading data:', error);
       }
@@ -165,7 +170,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
               </div>
               <div>
                 <div>
-                  <span className="text-sm font-roboto">Last Name</span>
+                  <span className="text-sm font-roboto">Middle Name & Last Name</span>
                 </div>
                 <input type="text" className="border border-2px mr-4 outline-black py-1 rounded-sm "
                   name="lastName"
