@@ -6,6 +6,7 @@ import { updateEvents } from '../../../utils/methods/patch';
 import { deleteEvents } from '../../../utils/methods/delete';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
+import dayjs from 'dayjs';
 
 const EventModal = () => {
     const navigate = useNavigate();
@@ -82,8 +83,10 @@ const EventModal = () => {
                 label: selectedLabel,
                 day: daySelected?.valueOf(),
                 id: selectedEvent ? selectedEvent.id : Date.now(),
-            };
-
+                date: daySelected ? dayjs(daySelected).format("DD-MM-YYYY") : "", // Format the date
+              };
+              console.log(calendarEvent,"dnbcdbhcdbhvdhcdhgc");
+              
             if (selectedEvent) {
                 const response = await updateEvents(calendarEvent);
                 if (response.status === true) {

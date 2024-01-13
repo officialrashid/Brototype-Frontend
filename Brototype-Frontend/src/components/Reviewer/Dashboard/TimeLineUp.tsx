@@ -117,7 +117,7 @@ const TimeLineUp: React.FC = () => {
                         <p className="mb-2 ml-4 text-sm font-roboto text-blue-600">{evt.endTime}</p>
                       </div>
                       <div className="flex flex-col ml-2 mt-5">
-                        <h1 className={`font-roboto text-sm mt-2 text-black`}>{evt?.advisorId}</h1>
+                        <h1 className={`font-roboto text-sm mt-2 text-black`}>event booking for Yen</h1>
                       </div>
                     </div>
                   </div>
