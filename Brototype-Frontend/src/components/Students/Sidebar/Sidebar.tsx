@@ -23,19 +23,19 @@ const Sidebar = () => {
       navigate('/student');
     }
     if (title === 'Profile') {
-      navigate('/profile');
+      navigate('/student/profile');
     }
     if (title === 'Task') {
-      navigate('/task');
+      navigate('/student/task');
     }
     if (title === 'Todo') {
-      navigate('/todolist');
+      navigate('/student/todolist');
     }
     if (title === 'Extend') {
-      navigate('/extendDetails');
+      navigate('/student/extendDetails');
     }
     if (title === 'Review') {
-      navigate('/review');
+      navigate('/student/review');
     }
   };
 

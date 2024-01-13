@@ -61,7 +61,7 @@ const SignIn = () => {
 
                 if (user) {
                   dispatch(setStudentData(otpData))
-                  navigate('/studentOtp')
+                  navigate('/studentIn/studentOtp')
                 }
               })
               .catch((err) => {

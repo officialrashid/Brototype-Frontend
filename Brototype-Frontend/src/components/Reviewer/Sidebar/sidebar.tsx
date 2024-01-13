@@ -19,10 +19,10 @@ function Sidebar() {
           navigate('/reviewer')
         }
         if(title==='Schedule'){
-          navigate('/schedule')
+          navigate('/reviewer/schedule')
         }
         if(title==='Profile'){
-          navigate('/reviewerProfile')
+          navigate('/reviewer/reviewerProfile')
         }
        
       };

@@ -4,14 +4,16 @@ import ApexCharts from 'react-apexcharts';
 import { setStudentData } from "../../../redux-toolkit/studentReducer"
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux-toolkit/store";
+import { useNavigate } from "react-router-dom";
 const CourseCompletionGraph = () => {
     const [courseCompletion, setCourseCompletion] = useState(0);
+    const navigate = useNavigate()
     const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     useEffect(() => {
         const fetchCourseCompletion = async () => {
             const batchId = "657aa5093476c843c28a377d";
       console.log(studentId,"stduentId coming in redux stire");
-      
+           
             const data = {
                 batchId,
                 studentId,

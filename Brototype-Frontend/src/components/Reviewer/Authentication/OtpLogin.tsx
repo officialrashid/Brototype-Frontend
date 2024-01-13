@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { auth } from '../../../firebase/config';
 import { RecaptchaVerifier } from 'firebase/auth';
 import otpLoginPng from "../../../../public/otpLogin.png"
-import { setStudentData } from "../../../redux-toolkit/studentReducer"
+import { setReviewerData } from "../../../redux-toolkit/reviewerReducer"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -150,7 +150,7 @@ const ReviewerOtpPage: FunctionComponent = () => {
                     localStorage.setItem(`reviewerAccessToken`, reviewerData?.accessToken)
                     localStorage.setItem("reviewerCustomToken", reviewerData?.customToken)
                     localStorage.setItem('role', reviewer)
-                    dispatch(setStudentData(reviewerData))
+                    dispatch(setReviewerData(reviewerData))
                     toast.success("OTP LOGIN SUCCESS")
                     navigate("/reviewer")
 

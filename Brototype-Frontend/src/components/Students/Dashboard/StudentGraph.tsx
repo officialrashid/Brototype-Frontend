@@ -18,6 +18,8 @@ const studentId:any = useSelector((state: RootState) => state?.student?.studentD
               studentId,
           };
           const response = await getAllPerformance(data)
+          console.log(response,"responseeee fect");
+          
           setStudentDetails(response.data)
           
         } catch (err){

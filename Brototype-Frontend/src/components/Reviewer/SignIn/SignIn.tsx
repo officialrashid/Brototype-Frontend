@@ -61,7 +61,7 @@ const SignIn = () => {
 
                 if (user) {
                   dispatch(setReviewerData(otpData))
-                  navigate('/reviewerOtp')
+                  navigate('/reviewerIn/reviewerOtp')
                 }
               })
               .catch((err) => {
@@ -135,7 +135,7 @@ const SignIn = () => {
                     </label>
                     <div className="mt-2">
                       <input
-                        placeholder='Enter your student id'
+                        placeholder='Enter your UniqueId'
                         id="uniqueId"
                         name="uniqueId"
                         type="uniqueId"
