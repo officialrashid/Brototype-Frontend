@@ -16,6 +16,8 @@ const BatchBestStudents = () => {
       try {
         const batchId = "657aa5093476c843c28a377d";
         const response = await getBestFiveStudents(batchId);
+        console.log(response,"batch student cominggg in frontenddd");
+        
         setBestStudents(response?.data.topStudents || []);
         console.log(response?.data.topStudents, "cbvhjvd");
       } catch (error) {

@@ -77,7 +77,7 @@ const Banner = () => {
         className={`bg-gray-200 h-0 absolute top-0 left-20rem w-48rem h-10rem mt-32.3125rem rounded-xl shadow-xl border border-gray-300 ${isSmDevice ? 'w-full' : ''}`}
         initial={{ x: -500 }} // Initial position, moves to the left
         animate={{ x: 0,transition:{duration:2} }}
-      // whileHover={{rotate:180}}// Moves to the left when removed
+      //whileHover={{rotate:180}}// Moves to the left when removed
     >
       <p className="text-gray-800 text-xl italic font-semibold  mt-5 ml-3 px-6 ">If you have the courage and the commitment to learn coding,</p>
       <p className="text-gray-800 text-2xl italic font-semibold  mt-1 ml-3 px-10rem "> then Brocamp will empower you.</p>
