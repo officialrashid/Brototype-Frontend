@@ -16,10 +16,10 @@ const BatchBestStudents = () => {
       try {
         const batchId = "657aa5093476c843c28a377d";
         const response = await getBestFiveStudents(batchId);
-        console.log(response,"batch student cominggg in frontenddd");
+        console.log(response, "cbvhjvd");
         
-        setBestStudents(response?.data.topStudents || []);
-        console.log(response?.data.topStudents, "cbvhjvd");
+        setBestStudents(response?.data?.topStudents || []);
+    
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -36,15 +36,30 @@ const BatchBestStudents = () => {
     <div className="w-22.5rem h-auto bg-white right-6 mb-48rem mt-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute">
       <h1 className="ml-3 mt-2 text-sm font-poppins font-medium">Your Batch Best Students</h1>
       <div className="flex flex-row justify-between p-2 border-b mt-3">
-        <div className="w-28">
-          <h1 className="text-sm text-gray-400 font-roboto">Names</h1>
-          {students.map((student) => (
-            <div key={student.id} className="flex items-center">
-              <img src={student.profileImage} alt={student.name} className="w-8 h-8 rounded-full mt-3" />
-              <p className="text-sm text-gray-400 font-roboto ml-3 mt-3">{student.name}</p>
-            </div>
-          ))}
+      <div className="w-28">
+  <h1 className="text-sm text-gray-400 font-roboto">Names</h1>
+  {bestStudents && bestStudents.length > 0 ? (
+    bestStudents.map((student: any, index: number) => {
+      const [, totalScore, imageUrl, studentName] = student.match(/TotalScore: (\d+\.\d+), imageUrl: (.+),studentName: (.+),studentCurrentWeek: (.+)/);
+      
+    
+      return (
+        <div key={index} className="flex items-center">
+          <img src={imageUrl} alt="" className="w-8 h-8 rounded-full mt-3" />
+          <p className="text-sm text-gray-400 font-roboto ml-3 mt-3">{studentName}</p>
         </div>
+      );
+    })
+  ) : (
+    <p>No best students found.</p>
+  )}
+</div>
+
+
+
+
+
+
 
         <div className="">
           <h1 className="text-sm text-gray-400 font-roboto">Progress</h1>
@@ -105,13 +120,33 @@ const BatchBestStudents = () => {
         </div>
 
         <div>
-          <h1 className="text-sm text-gray-400 font-roboto">Week</h1>
-          {students.map((student) => (
-            <div key={student.id} className="flex flex-col items-center mt-5">
-              <p className="text-sm text-gray-400 font-roboto">{student.week}</p>
-            </div>
-          ))}
+  <h1 className="text-sm text-gray-400 font-roboto">Week</h1>
+  {bestStudents && bestStudents.length > 0 ? (
+    bestStudents.map((student: any, index: number) => {
+      // Split each student string into parts
+      const studentParts = student.split(',');
+
+      // Find the part that contains studentCurrentWeek
+      const weekPart = studentParts.find((part: string | string[]) =>
+        part.includes('studentCurrentWeek')
+      );
+
+      // Extract the value of studentCurrentWeek
+      const currentWeek = weekPart ? parseInt(weekPart.split(':')[1]) : null;
+
+      return (
+        <div key={index} className="flex flex-col items-center mt-5">
+          <p className="text-sm text-gray-400 font-roboto">
+            {currentWeek !== null ? currentWeek : 'Week not available'}
+          </p>
         </div>
+      );
+    })
+  ) : (
+    <p>No best students found.</p>
+  )}
+</div>
+
       </div>
     </div>
   );
