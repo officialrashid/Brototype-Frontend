@@ -95,6 +95,8 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         formData.append('domain', formik.values.domain);
         formData.append('batch', formik.values.batch);
         formData.append('studentId', studentId);
+        console.log(formData,"forData comingggggggggggggggggggggggggggggg");
+        
         const response = await uploadImage(formData);
         if(response?.data?.status===true){
            toast.success("profile updated successfully")
