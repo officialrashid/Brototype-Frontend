@@ -106,7 +106,7 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
+    <div className="fixed inset-0 bg-black/60  flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
       <div className="border border- shadow-md w-fit m-10 rounded-md bg-white ">
         <div className="flex justify-between mt-4 mr-4">
           <div></div>

@@ -206,6 +206,17 @@ export const secondExtendRequest = async (extendId:string)=>{
  }
 
 }
+export const updateGovernmentApprovedId = async (data:any)=>{
+  try {
+    console.log(data,"gevernmrntId comngggg");
+  
+   const resposne = await Api.post('/api/student/update-governmentId',data)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+}
 
 ///// ****** reviewer-sevice post datas api section /////
 export const createEvents = async (data:any)=>{

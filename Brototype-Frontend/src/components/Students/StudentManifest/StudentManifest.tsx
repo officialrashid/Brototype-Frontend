@@ -2,6 +2,7 @@ import ProfileUpdateModal from "./ProfileUpdateModal";
 import PersonalInfoModal from "./PersonalInfoModal";
 import AddressModal from "./AddressModal";
 import EducationModal from "./EducationModal";
+import GovernmentApprovelIdModal from "./GovernmentApprovelIdModal";
 import React, { useEffect, useState } from "react";
 import { getProfile } from "../../../utils/methods/get";
 import { useSelector } from "react-redux";
@@ -10,6 +11,7 @@ const StudentManifest = () => {
   const [setPersonalInfo, setPersonalInfoUpdate] = useState(false);
   const [setAddress, setAddressUpdate] = useState(false);
   const [setEducation, setEducationUpdate] = useState(false);
+  const [setGovernmentId, setGevernmentIdUpdate] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
 
@@ -309,18 +311,23 @@ const StudentManifest = () => {
 
           <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
             <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Government Approved Id Card</h1>
-            <span className="absolute  mr-24 right-3 mt-16 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">
+            <span className="absolute  mr-24 right-3 mt-16 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { setGevernmentIdUpdate(true) }}>
               <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
               Request Edit
             </span>
             <div className='grid grid-cols-3 ml-5 mt-3 gap-x-5'>
               <div className='flex flex-col'>
                 <p className='text-sm text-gray-400 font-roboto'>Your Id Card</p>
-                <img src="https://aadhaarkyc.io/wp-content/uploads/2018/09/aadhaar_cc_926a3223b45c31aa2cfbeca9ea6028d6.png" alt="" className='w-72 h-36 mt-3' />
+                {profileInfo?.governmentIdImageUrl ? (
+                <img src={profileInfo?.governmentIdImageUrl} alt="" className='w-72 h-36 mt-3' />
+                ) : (
+                  <img src="https://aadhaarkyc.io/wp-content/uploads/2018/09/aadhaar_cc_926a3223b45c31aa2cfbeca9ea6028d6.png" alt="" className='w-72 h-36 mt-3' />
+                )}
+
               </div>
+   
             </div>
-
-
+            <p className="text-sm font-roboto text-white">gevernmrntIdEnd</p>
 
           </div>
           <div className='w-24 h-16 ml-28rem'>
@@ -336,6 +343,7 @@ const StudentManifest = () => {
       <PersonalInfoModal isVisible={setPersonalInfo} onClose={() => { setPersonalInfoUpdate(false) }} />
       <AddressModal isVisible={setAddress} onClose={() => { setAddressUpdate(false) }} />
       <EducationModal isVisible={setEducation} onClose={() => { setEducationUpdate(false) }} />
+      <GovernmentApprovelIdModal isVisible={setGovernmentId} onClose={() => { setGevernmentIdUpdate(false) }} />
     </>
   );
 }
