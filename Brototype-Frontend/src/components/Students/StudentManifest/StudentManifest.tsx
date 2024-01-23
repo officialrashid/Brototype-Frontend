@@ -5,7 +5,11 @@ import EducationModal from "./EducationModal";
 import GovernmentApprovelIdModal from "./GovernmentApprovelIdModal";
 import React, { useEffect, useState } from "react";
 import { getProfile } from "../../../utils/methods/get";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { signInWithCustomToken, signInWithPopup } from 'firebase/auth';
+import { auth } from '../../../firebase/config';
+// import { GoogleAuthProvider } from "firebase/auth";
+
 const StudentManifest = () => {
   const [setProfile, setProfileUpdate] = useState(false);
   const [setPersonalInfo, setPersonalInfoUpdate] = useState(false);
@@ -14,6 +18,7 @@ const StudentManifest = () => {
   const [setGovernmentId, setGevernmentIdUpdate] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
+
 
   useEffect(() => {
     fetchStudentProfile();

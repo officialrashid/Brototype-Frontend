@@ -55,10 +55,16 @@ const SignIn = () => {
               phone: phone
             }
 
-            signInWithCustomToken(auth, otpData?.customToken)
-              .then((userCredential) => {
-                const user = userCredential.user;
-
+             signInWithCustomToken(auth, otpData?.customToken)
+              .then(async (userCredential) => {
+                console.log(userCredential,"bcdbfdvfdfgdhfgdhfhdfhdhdfnhdfdhfhg");
+                
+                const user = await userCredential.user;
+                console.log(user,"usr comingggggg");
+                const idToken = await user.getIdToken()
+                console.log(idToken,"id Token comuing  tatadsdgs");
+                localStorage.setItem('idToken',idToken)
+                
                 if (user) {
                   dispatch(setStudentData(otpData))
                   navigate('/studentIn/studentOtp')
