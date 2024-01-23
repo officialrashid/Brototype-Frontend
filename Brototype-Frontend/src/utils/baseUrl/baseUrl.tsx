@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 axios.defaults.withCredentials = true;
 
 const Api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "http://localhost:6001",
 });
 
 let userRole: string | null; // V6riable to store user role globally
@@ -22,7 +22,7 @@ Api.interceptors.request.use(
       }
     }
     if (userRole === 'student') {
-      const studentToken = localStorage.getItem("studentAccessToken");
+      const studentToken = localStorage.getItem("studentCustomToken");
       if (studentToken) {
         console.log(studentToken, "student token coming axios");
         config.headers.Authorization = `${studentToken}`;

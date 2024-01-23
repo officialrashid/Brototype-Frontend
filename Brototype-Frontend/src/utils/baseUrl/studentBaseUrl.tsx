@@ -22,7 +22,7 @@ Api.interceptors.request.use(
       }
     }
     if (userRole === 'student') {
-      const studentToken = localStorage.getItem("studentAccessToken");
+      const studentToken = localStorage.getItem("studentCustomToken");
       if (studentToken) {
         console.log(studentToken, "student token coming axios");
         config.headers.Authorization = `${studentToken}`;
