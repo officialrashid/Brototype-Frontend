@@ -15,17 +15,21 @@ Api.interceptors.request.use(
     userRole = localStorage.getItem('role');
 
     // Set headers based on the user's role
-    if (userRole === 'invigilator') {
-      const invigilatorToken = localStorage.getItem("invigilatorAccessToken");
-      if (invigilatorToken) {
-        config.headers.Authorization = `${invigilatorToken}`;
-      }
-    }
+    // if (userRole === 'invigilator') {
+    //   const invigilatorToken = localStorage.getItem("invigilatorAccessToken");
+    //   if (invigilatorToken) {
+    //     config.headers.Authorization = `${invigilatorToken}`;
+    //   }
+    // }
     if (userRole === 'student') {
-      const studentToken = localStorage.getItem("idToken");
-      if (studentToken) {
-        console.log(studentToken, "student token coming axios");
-        config.headers.Authorization = `${studentToken}`;
+      const studentJwtToken = localStorage.getItem("studentAccessToken");
+      const studentCustomToken = localStorage.getItem("idToken");
+      if (studentJwtToken && studentCustomToken) {
+        console.log(studentJwtToken, "student token coming axios");
+        console.log(studentCustomToken, "student Custom token coming axios");
+        // config.headers.Authorization = `${studentToken}`;
+        config.headers['Authorization']=`bearer ${studentJwtToken}`
+        config.headers['Authorization-CustomToken'] = `${studentCustomToken}`;
       }
     }
 

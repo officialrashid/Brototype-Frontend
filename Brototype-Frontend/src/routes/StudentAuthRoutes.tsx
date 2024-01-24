@@ -16,10 +16,10 @@ function AuthenticationRoutes() {
     <Routes>
       <Route
         path="/"
-        element={studentAccessToken ? <Navigate to="/student" /> : <StudentSignIn />}
+        element={  <StudentSignIn />}
       />
 
-      <Route path="/studentOtp" element={studentAccessToken ? <Dashboard /> : <StudentOtp />} />
+      <Route path="/studentOtp" element={ <StudentOtp />} />
     </Routes>
   );
 }

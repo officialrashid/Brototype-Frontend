@@ -48,7 +48,8 @@ module.exports = {
         '46rem': '46rem',
         '25.2rem': '25.2rem',
         '33rem': '33rem',
-        '14.9rem': '14.9rem'
+        '14.9rem': '14.9rem',
+        '21.5rem':'21.5rem'
         
       },
       backgroundColor: {
@@ -71,7 +72,7 @@ module.exports = {
       fontFamily: {
         poppins: ['Poppins', 'sans'],
         roboto: ['Roboto', 'sans'],
-        sans: ["Open Sans"]
+        sans: ["Open Sans"],
       },
       gridTemplateColumns:{
         "1/5" : "1fr 5fr"
