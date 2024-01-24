@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from "axios";
 axios.defaults.withCredentials = true;
 
 const Api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:4000",
+  baseURL: "http://localhost:5001",
 });
 
 let userRole: string | null; // V6riable to store user role globally
@@ -23,7 +23,7 @@ Api.interceptors.request.use(
     // }
     if (userRole === 'student') {
       const studentJwtToken = localStorage.getItem("studentAccessToken");
-      const studentCustomToken = localStorage.getItem("idToken");
+      const studentCustomToken = localStorage.getItem("studentIdToken");
       if (studentJwtToken && studentCustomToken) {
         console.log(studentJwtToken, "student token coming axios");
         console.log(studentCustomToken, "student token coming axios");
@@ -32,7 +32,17 @@ Api.interceptors.request.use(
         config.headers.Authorization = `${studentCustomToken}`;
       }
     }
-
+    if (userRole === 'reviewer') {
+      const reviwerJwtToken = localStorage.getItem("reviewerAccessToken");
+      const reviewerCustomToken = localStorage.getItem("reviewerIdToken");
+      if (reviwerJwtToken && reviewerCustomToken) {
+        console.log(reviwerJwtToken, "student token coming axios");
+        console.log(reviewerCustomToken, "student Custom token coming axios");
+        // config.headers.Authorization = `${studentToken}`;
+        config.headers['Authorization']=`bearer ${reviwerJwtToken}`
+        config.headers['Authorization-CustomToken'] = `${reviewerCustomToken}`;
+      }
+    }
     return config;
   },
   function (error) {

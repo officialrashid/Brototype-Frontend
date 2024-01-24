@@ -20,7 +20,7 @@ const Calender = () => {
       <div className="h-auto flex-1 bg-custom-background ">
         {showEventModal &&<EventModal />}
      
-        <div className="h-screen w-full sm:w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1100px] flex flex-col ml-5 bg-white mt-5 ">
+        <div className="h-auto w-full sm:w-[600px] md:w-[800px] lg:w-[1000px] xl:w-[1100px] flex flex-col ml-5 bg-white mt-5 ">
           <Calendar />
           <div className="flex flex-1 bg-white ">
             <SidebarCalender />

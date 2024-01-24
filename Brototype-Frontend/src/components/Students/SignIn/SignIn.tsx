@@ -63,7 +63,7 @@ const SignIn = () => {
                 console.log(user,"usr comingggggg");
                 const idToken = await user.getIdToken()
                 console.log(idToken,"id Token comuing  tatadsdgs");
-                localStorage.setItem('idToken',idToken)
+                localStorage.setItem('studentIdToken',idToken)
                 
                 if (user) {
                   dispatch(setStudentData(otpData))

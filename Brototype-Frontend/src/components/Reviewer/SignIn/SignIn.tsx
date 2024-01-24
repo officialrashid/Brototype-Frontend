@@ -56,8 +56,12 @@ const SignIn = () => {
             }
 
             signInWithCustomToken(auth, otpData?.customToken)
-              .then((userCredential) => {
-                const user = userCredential.user;
+              .then(async(userCredential) => {
+                const user = await userCredential.user;
+                console.log(user,"usr comingggggg");
+                const idToken = await user.getIdToken()
+                console.log(idToken,"id Token comuing  tatadsdgs");
+                localStorage.setItem('reviewerIdToken',idToken)
 
                 if (user) {
                   dispatch(setReviewerData(otpData))

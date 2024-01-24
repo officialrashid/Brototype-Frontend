@@ -23,7 +23,7 @@ Api.interceptors.request.use(
     // }
     if (userRole === 'student') {
       const studentJwtToken = localStorage.getItem("studentAccessToken");
-      const studentCustomToken = localStorage.getItem("idToken");
+      const studentCustomToken = localStorage.getItem("studentIdToken");
       if (studentJwtToken && studentCustomToken) {
         console.log(studentJwtToken, "student token coming axios");
         console.log(studentCustomToken, "student Custom token coming axios");
@@ -32,6 +32,7 @@ Api.interceptors.request.use(
         config.headers['Authorization-CustomToken'] = `${studentCustomToken}`;
       }
     }
+
 
     return config;
   },

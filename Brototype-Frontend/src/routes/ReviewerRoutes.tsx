@@ -24,7 +24,7 @@ function ReviewerRoutes() {
           </Routes>
         </div>
       </div>
-    // </div>
+    </div>
   );
 }
 
