@@ -4,7 +4,7 @@ import ReviewerDashboard from '../pages/Reviewer/ReviewerDashboard';
 import Calender from '../pages/Reviewer/Calender';
 import ReviewerProfile from '../pages/Reviewer/ReviewerProfile';
 import ReviewerSignIn from "../pages/Reviewer/SignIn";
-
+import Navigationbar from '../components/LandingPage/Navbar';
 function ReviewerRoutes() {
   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
 
@@ -14,6 +14,8 @@ function ReviewerRoutes() {
   }, []);
 
   return (
+    <>
+    <Navigationbar/>
     <div className="bg-custom-background">
       <div className="bg-white">
         <div className="flex">
@@ -25,6 +27,7 @@ function ReviewerRoutes() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

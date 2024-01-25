@@ -10,7 +10,7 @@ import ExtendDetails from '../pages/Students/ExtendDetails';
 import ReviewResult from '../pages/Students/reviewDetails';
 import StudentSignIn from "../pages/Students/SignIn"
 import StudentOtp from "../pages/Students/StudentOtp";
-
+import Navigationbar from '../components/LandingPage/Navbar';
 function StudentRoutes() {
     const [studentAccessToken,setStudentAccessToken] = useState("")
     useEffect(()=>{
@@ -18,10 +18,13 @@ function StudentRoutes() {
       setStudentAccessToken(studentJwt)
     },[])
   return (
+    <>
+    <Navigationbar/>
     <div className="bg-custom-background">
       <div className="bg-white">
         <div className="flex">  
           <Sidebar />
+         
           <Routes>
          
             <Route path="/" element={studentAccessToken ? <Dashboard />:<StudentSignIn/>} />
@@ -35,6 +38,7 @@ function StudentRoutes() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

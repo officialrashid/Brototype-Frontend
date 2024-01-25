@@ -64,7 +64,7 @@ const ReviewerProfile = () => {
                 </div>
               </div>
               <span className="absolute top-12 right-5 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto" onClick={() => { setProfileUpdate(true) }}>
-                <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
+                <img src='/edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
                 Add Details
               </span>
             </div>
@@ -73,7 +73,7 @@ const ReviewerProfile = () => {
           <div className='ml-10 mt-5 w-62rem h-auto rounded-md border border-gray-300'>
             <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Work Information</h1>
             <span className="absolute  mr-24 right-3 mt-8 inline-flex items-center rounded-md bg-pink-50 px-3 py-1 text-xs font-medium text-pink-600 ring-1 ring-inset ring-pink-700/10 cursor-pointer font-roboto" onClick={() => { setPersonalInfoUpdate(true) }} >
-              <img src='./edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
+              <img src='/edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
               Add Details
             </span>
             <div className='grid grid-cols-2 ml-5 mt-3 gap-x-5'>

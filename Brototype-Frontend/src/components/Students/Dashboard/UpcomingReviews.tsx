@@ -46,7 +46,7 @@ const UpcomingReviews = () => {
   const [newRequest, setNewRequets] = useState(false)
   return (
     <>
-      <div className="border m-5 h-fit rounded-xl shadow-2xl bg-white">
+      <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
         <div className="flex m-2 gap-2">
 
           <div className="px-4  border border-2px rounded-md hover:bg-custom-background py-1 cursor-pointer font-roboto"><span className="text-center

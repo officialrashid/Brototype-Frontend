@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-
+import TokenValidCheck from "../../tokenValidCheck/tokenValidCheck";
 axios.defaults.withCredentials = true;
 
 const Api: AxiosInstance = axios.create({
@@ -56,14 +56,12 @@ Api.interceptors.response.use(
     return response;
   },
   function (error) {
+    console.log(error,"errorororr");
+    
     if (error.response && error.response.status === 401) {
       // Redirect to the login page or handle as needed
-      if(userRole === 'student'){
-        window.location.href = '/studentIn';
-      }
-      if (userRole === 'invigilator') {
-        window.location.href = '/invigilator';
-      }
+      console.log("error keriii");
+      TokenValidCheck(userRole)
    
     }
     return Promise.reject(error);
@@ -71,3 +69,5 @@ Api.interceptors.response.use(
 );
 
 export default Api;
+
+
