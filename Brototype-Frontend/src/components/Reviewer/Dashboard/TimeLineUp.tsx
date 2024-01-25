@@ -92,7 +92,7 @@ const TimeLineUp: React.FC = () => {
           <div className="relative group ml-33rem mt-1">
             {/* Dropdown button with dropdown icon */}
             <span
-              className="text-blue-500 px-2 py-2 rounded-full flex items-cente top-3 right-3r text-sm font-roboto font-"
+              className="text-white px-2 py-2 rounded-full flex items-cente top-3 right-3r text-sm font-roboto font-"
             >
               RequestLeave
             </span>

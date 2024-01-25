@@ -1,7 +1,12 @@
 
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import ReactApexChart from "react-apexcharts";
 const Graph = () => {
+    
+  useEffect(()=>{
+    //  fetchReviewCount()
+  },[])
+
     const [week, setWeek] = useState({
         series: [
           {
@@ -29,6 +34,7 @@ const Graph = () => {
                 selection: false,
                 pan: false,
                 reset: '',
+      
               },
             },
           },
