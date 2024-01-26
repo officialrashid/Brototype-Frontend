@@ -47,7 +47,11 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
           const response = await getEditTaskDetails(data);
           console.log(response.data[0]);
           if (response) {
-            setEditData(response.data[0]);
+            response.data[0].map((editData: any, index: number) => {
+              formik.setFieldValue(`answers.${editData.nestedQuestionNumber}`, editData.answer);
+              setEditData(response.data[0]);
+            })
+
           } else {
             setEditData([]);
           }
@@ -129,11 +133,15 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
     },
   });
 
-  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>, questionNumber: string) => {
-    console.log(e.target.value,"question anser cominggg");
-    
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>, questionNumber: string, index: number) => {
+    if (modalType === 'Edit') {
+      const updatedEditData = [...editData];  // Create a new array
+      updatedEditData[index].answer = e.target.value;  // Update the specific element
+      setEditData(updatedEditData);  // Set the state with the updated array
+    }
     formik.setFieldValue(`answers.${questionNumber}`, e.target.value);
   };
+
 
   return (
     <div className="fixed inset-0 bg-opacity-10 bg-black/60 flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
@@ -158,8 +166,9 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
                         type="text"
                         id={question.Number}
                         name={question.Number}
-                        onChange={(e) => handleQuestionChange(e, question?.Number)}
-                        value={editData[index]?.answer}
+                        onChange={(e) => handleQuestionChange(e, question?.Number, index)}
+                        onBlur={formik.handleBlur}
+                        value={editData[index]?.answer || ''}
                         className="border border-2px rounded-lg text-sm font-roboto pl-3 outline-none shadow-lg w-full py-5"
                         placeholder={`Enter your answer for Question ${question?.Number}`}
                       />
@@ -174,7 +183,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
                         type="text"
                         id={question.Number}
                         name={question.Number}
-                        onChange={(e) => handleQuestionChange(e, question.Number)}
+                        onChange={(e) => handleQuestionChange(e, question.Number, index)}
                         onBlur={formik.handleBlur}
                         value={formik.values.answers[question.Number] || ''}
                         className="border border-2px rounded-lg text-sm font-roboto pl-3 outline-none shadow-lg w-full py-5"
