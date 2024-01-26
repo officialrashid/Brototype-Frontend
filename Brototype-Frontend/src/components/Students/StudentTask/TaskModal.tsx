@@ -138,8 +138,12 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
       const updatedEditData = [...editData];  // Create a new array
       updatedEditData[index].answer = e.target.value;  // Update the specific element
       setEditData(updatedEditData);  // Set the state with the updated array
+    }else{
+      console.log(e.target.value,"e.target.value");
+      
+      formik.setFieldValue(`answers.${questionNumber}`, e.target.value);
     }
-    formik.setFieldValue(`answers.${questionNumber}`, e.target.value);
+  
   };
 
 

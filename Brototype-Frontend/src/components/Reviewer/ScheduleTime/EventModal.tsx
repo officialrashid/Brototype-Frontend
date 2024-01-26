@@ -24,43 +24,53 @@ const EventModal = () => {
     const [validationError, setValidationError] = useState(null);
     const validationSchema = Yup.object().shape({
         startTime: Yup.string()
-            .required('Start time is required')
-            .matches(
-                /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
-                'Invalid time format (e.g., 11:30am)'
-            ),
+          .required('Start time is required')
+          .matches(
+            /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
+            'Invalid time format (e.g., 11:30am)'
+          ),
         endTime: Yup.string()
-            .required('End time is required')
-            .matches(
-                /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
-                'Invalid time format (e.g., 11:30am)'
-            )
-            .test({
-                name: 'startEndTimeOrder',
-                message: 'End time must be greater than start time',
-                test: function (endTime) {
-                    const { startTime } = this.parent;
-                    if (startTime && endTime) {
-                        const [startHour, startMinute, startPeriod] = startTime.match(
-                            /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
-                        ).slice(1);
-                        const [endHour, endMinute, endPeriod] = endTime.match(
-                            /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
-                        ).slice(1);
-    
-                        if (startPeriod === 'am' && endPeriod === 'pm') {
-                            return true;
-                        }
-    
-                        if (startPeriod === endPeriod) {
-                            return startHour * 60 + parseInt(startMinute) <
-                                endHour * 60 + parseInt(endMinute);
-                        }
-                    }
-                    return false;
-                },
-            }),
-    });
+          .required('End time is required')
+          .matches(
+            /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
+            'Invalid time format (e.g., 11:30am)'
+          )
+          .test({
+            name: 'startEndTimeOrder',
+            message: 'End time must be greater than start time',
+            test: function (endTime) {
+              const { startTime } = this.parent;
+          
+              if (startTime && endTime) {
+                const [startHour, startMinute, startPeriod] = startTime.match(
+                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
+                ).slice(1);
+          
+                const [endHour, endMinute, endPeriod] = endTime.match(
+                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
+                ).slice(1);
+          
+                if (startPeriod === 'am' && endPeriod === 'pm') {
+                  return true;
+                }
+          
+                if (startPeriod === 'pm' && endPeriod === 'am') {
+                  return false;
+                }
+          
+                // Compare hours and minutes
+                const startTotalMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
+                const endTotalMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
+          
+                return startTotalMinutes < endTotalMinutes;
+              }
+          
+              return false;
+            },
+          }),
+          
+      });
+      
     
     
     

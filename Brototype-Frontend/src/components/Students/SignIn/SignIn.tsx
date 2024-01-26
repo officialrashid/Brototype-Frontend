@@ -50,6 +50,7 @@ const SignIn = () => {
 
             const otpData = {
               studentId: response?.data?.response?.student?.studentId,
+              batchId : response?.data?.response?.student?.batchId,
               accessToken: response?.data?.response?.accessToken,
               customToken: response?.data?.response?.customToken,
               phone: phone

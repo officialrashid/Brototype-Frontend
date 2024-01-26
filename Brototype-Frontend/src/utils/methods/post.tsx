@@ -256,6 +256,8 @@ export const updateReviewerWorkDetails = async (data:any,reviewerId:string)=>{
 
 //// ******* task service ********///
 export const updatePersonalWorkout = async (data:any)=>{
+  console.log(data,"datasssssssss234343433");
+  
   try {
    const resposne = await Api.post('/api/task/update-personal-workout',data)
    return resposne.data
