@@ -174,3 +174,22 @@ export const getPersonalWorkout = async (week: string) => {
     return { status: false, message: "There is some issue" };
   }
 }
+export const getmiscellaneousWorkout = async (week: string) => {
+  try {
+    const response = await Api.get(`/api/task/get-miscellaneousWorkout-task/${week}`);
+    return response?.data?.response; // Assuming your API response has a 'data' property
+  } catch (err) {
+    return { status: false, message: "There is some issue" };
+  }
+}
+
+export const getTechnicalWorkout = async (data:any) => {
+  console.log(data,"opp987686877======");
+  
+  try {
+    const response = await Api.get(`/api/task/get-technicalWorkout-task`,{ params: data });
+    return response?.data?.response; // Assuming your API response has a 'data' property
+  } catch (err) {
+    return { status: false, message: "There is some issue" };
+  }
+}
