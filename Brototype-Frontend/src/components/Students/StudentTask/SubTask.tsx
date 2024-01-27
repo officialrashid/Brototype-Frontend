@@ -1,10 +1,12 @@
 // SubTask.js
 import React, { useState, useEffect } from 'react';
 import TaskModal from './TaskModal';
-import { getUpdateTask } from '../../../utils/methods/get';
+import { getPersonalWorkout, getUpdateTask } from '../../../utils/methods/get';
 import { useSelector } from 'react-redux';
 
 const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Number }) => {
+  const [PersonalWorkouts,setPersonalWorkouts] = useState([])
+  const [personalWorkoutsNestedQuestion,setPersonalWorkoutsNestedQuestion] = useState([])
   const [activeModal, setActiveModal] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState<{ Number: number; question: string } | null>(null);
   const [mainQuestionNumber, setMainQuestionNumber] = useState(0);
@@ -14,7 +16,6 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
   let technicalWorkoutsArray;
   let miscellaneousWorkoutsArray
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
-
   const TechnicalWorkouts = [
     { Number: 1, question: 'Learn HTML, CSS by the end of this week.?' },
     { Number: 2, question: 'Design at least two public website’s home page using HTML & CSS with maximum components.(For Eg: Home page of LinkedIn)' },
@@ -29,19 +30,19 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
   ];
 
-  const PersonalWorkouts = [
-    { Number: 1, question: 'create vision board.?' },
-    { Number: 2, question: 'Design at least two public website’s home page using HTML & CSS with maximum components.(For Eg: Home page of LinkedIn)' },
-  ];
+  // const PersonalWorkouts = [
+  //   { Number: 1, question: 'create vision board.?' },
+  //   { Number: 2, question: 'Design at least two public website’s home page using HTML & CSS with maximum components.(For Eg: Home page of LinkedIn)' },
+  // ];
 
-  const personalWorkoutsNestedQuestion: any[] = [
-    { Number: 1, question: 'write a short description in vision board?', mainQuestionNumber: 1 },
-    { Number: 2, question: 'Design at least two public websites home page using HTML & CSS with maximum components.(For Eg: Home page of LinkedIn)', mainQuestionNumber: 1 },
-    { Number: 3, question: 'how was the first week?', mainQuestionNumber: 1 },
-    { Number: 1, question: 'write a short description in  html css?', mainQuestionNumber: 2 },
-    { Number: 2, question: 'Design at least two public websites home page ', mainQuestionNumber: 2 },
-    { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
-  ];
+  // const personalWorkoutsNestedQuestion: any[] = [
+  //   { Number: 1, question: 'write a short description in vision board?', mainQuestionNumber: 1 },
+  //   { Number: 2, question: 'Design at least two public websites home page using HTML & CSS with maximum components.(For Eg: Home page of LinkedIn)', mainQuestionNumber: 1 },
+  //   { Number: 3, question: 'how was the first week?', mainQuestionNumber: 1 },
+  //   { Number: 1, question: 'write a short description in  html css?', mainQuestionNumber: 2 },
+  //   { Number: 2, question: 'Design at least two public websites home page ', mainQuestionNumber: 2 },
+  //   { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
+  // ];
 
   const MiscellaneousWorkouts = [
     { Number: 1, question: 'typing task complete 10 .?' },
@@ -56,8 +57,20 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
     { Number: 2, question: 'Design at least two public websites home page ', mainQuestionNumber: 2 },
     { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
   ];
-
+useEffect(()=>{
+  const fetchTasks = async  ()=>{
+    if(taskNumber===1){
+     const personalWorkout = await getPersonalWorkout(weekName)
+     console.log(personalWorkout?.response?.personalWorkoutNestedQuestions,"personalWorkout Task comingg");
+     setPersonalWorkouts(personalWorkout?.response?.personalWorkouts)
+     setPersonalWorkoutsNestedQuestion(personalWorkout?.response?.personalWorkoutNestedQuestions)
+    }
+  }
+  fetchTasks()
+},[])
   const openModal = (questions: any, questionNumber: React.SetStateAction<number>, modalType:string ) => {
+    console.log(questions,"questionsssssssssss");
+ console.log(questionNumber,"questionsssssssssss11111")
     if (questions.length > 0) {
       setSelectedQuestion(questions);
       setMainQuestionNumber(questionNumber);
@@ -91,6 +104,8 @@ const SubTask = ({ weekName, taskNumber }: { weekName: string, taskNumber: Numbe
   }, [studentId, taskNumber]);
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[],taskType:string) => {
+    console.log(workouts,"render personal Workouts");
+    console.log(nestedQuestions,"render nested Personal Workouts");
     return (
       <div>
         {workouts.map((question) => {

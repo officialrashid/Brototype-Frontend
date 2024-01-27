@@ -5,6 +5,8 @@ import { getUpdateTask } from '../../../utils/methods/get';
 import { useSelector } from 'react-redux';
 
 const StudentTask = () => {
+  console.log("1111111");
+  
   const [personalWorkoutCompleted, setpersonalWorkoutCompleted] = useState(false)
   const [technicalWorkoutCompleted, setTechnicalWorkoutCompleted] = useState(false)
   const [miscellaneousWorkoutCompleted, setMiscellaneousWorkoutCompleted] = useState(false)
@@ -49,6 +51,7 @@ const StudentTask = () => {
     { Number: 2, question: 'Design at least two public websites home page ', mainQuestionNumber: 2 },
     { Number: 3, question: 'how was the first week?', mainQuestionNumber: 2 },
   ]
+
   useEffect(() => {
     const fetchUpdateTask = async () => {
       try {

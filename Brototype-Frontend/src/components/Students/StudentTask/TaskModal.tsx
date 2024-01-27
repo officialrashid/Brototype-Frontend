@@ -29,7 +29,8 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 
 const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, mainQuestionNumber, weekName, taskNumber, modalType, taskType }) => {
   if (!isVisible || !questions || questions.length === 0) return null;
-
+console.log(questions,"modalQuestionsss");
+console.log(mainQuestionNumber,"modal MainQuestions");
   const [editData, setEditData] = useState([]);
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
   const batchId = "657aa5093476c843c28a377d";
@@ -158,7 +159,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, ma
                   <div className="flex justify-between items-center m-4">
                     <div>
                       <span className="font-bold font-roboto">
-                        {question.Number}.{question.question}
+                        {question.Number}.{question.Question}
                       </span>
                     </div>
                   </div>
