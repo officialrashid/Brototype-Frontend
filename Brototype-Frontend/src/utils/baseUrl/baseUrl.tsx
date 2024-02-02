@@ -25,8 +25,6 @@ Api.interceptors.request.use(
       const studentJwtToken = localStorage.getItem("studentAccessToken");
       const studentCustomToken = localStorage.getItem("studentIdToken");
       if (studentJwtToken && studentCustomToken) {
-        console.log(studentJwtToken, "student token coming axios");
-        console.log(studentCustomToken, "student token coming axios");
         // config.headers.Authorization = `${studentToken}`;
         config.headers['Authorization']=`bearer ${studentJwtToken}`
         config.headers.Authorization = `${studentCustomToken}`;
@@ -36,8 +34,6 @@ Api.interceptors.request.use(
       const reviwerJwtToken = localStorage.getItem("reviewerAccessToken");
       const reviewerCustomToken = localStorage.getItem("reviewerIdToken");
       if (reviwerJwtToken && reviewerCustomToken) {
-        console.log(reviwerJwtToken, "student token coming axios");
-        console.log(reviewerCustomToken, "student Custom token coming axios");
         // config.headers.Authorization = `${studentToken}`;
         config.headers['Authorization']=`bearer ${reviwerJwtToken}`
         config.headers['Authorization-CustomToken'] = `${reviewerCustomToken}`;
