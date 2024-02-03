@@ -99,8 +99,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const questionCountChange = () => {
      questionCount ++;
-     console.log(questionCount,"questionCount");
-     console.log(PersonalWorkouts.length,"questionCount111@@@");
+  
      if(taskNumber===1){
       if(PersonalWorkouts.length === questionCount){
         showStatus()
@@ -120,8 +119,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[], taskType: string) => {
 
-console.log(nestedQuestions,"c dfdjfjdf");
-console.log(workouts,"c ----dfdjfjdf");
+
 
 return (
   <div>
@@ -137,7 +135,7 @@ return (
       const currentNestedQuestionCount = currentNestedQuestions.length;
 
       if (currentNestedQuestionCount === answersLength && answersLength !== 0) {
-        console.log(answersLength, "{{}{}{}{})((()))))))++++++======");
+
         questionCountChange();
       }
 

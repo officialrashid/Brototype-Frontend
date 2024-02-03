@@ -107,14 +107,7 @@ const StudentTask = () => {
           }
         });
   
-        console.log(totalTechnicalQuestionNumbersAndAnswersLength, "totalTechnicalQuestionNumbersAndAnswersLength lenght 0000)(");
-        console.log(technicalWorkoutsNestedQuestion.length, "technicalWorkoutsNestedQuestion lenght 00001111)(");
-
-        console.log(totalMiscellaneousQuestionNumbersAndAnswersLength, "miscekllenous lenght 0000)(");
-        console.log(MiscellaneousWorkoutssNestedQuestion.length, "miscekllenous lenght 00001111)(");
-  
-        console.log(totalQuestionNumbersAndAnswersLength, "personal lenght 0000)(");
-        console.log(personalWorkoutsNestedQuestion.length, "personal lenght 00001111)(");
+    
   
         if (
           PersonalWorkouts.length === response.response[0]?.personalWorkouts.length &&
