@@ -273,6 +273,7 @@ const StudentTask = () => {
         </div>
       </div>
       {activeSubTask === 3 ? <SubTask weekName={weekName} taskNumber={activeSubTask} showStatus={handleShowMiscellaneousWorkoutStatus} /> : ''}
+      <p className='text-white'>View Task</p>
     </>
   );
 };

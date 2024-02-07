@@ -5,50 +5,48 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 const Task = () => {
-  const studentId:any = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const studentId = useSelector((state) => state?.student?.studentData?.studentId);
   const batchId = "657aa5093476c843c28a377d";
   const navigate = useNavigate();
- const [taskView,setTaskView] = useState(false)
- useEffect(()=>{
-  const fetchReviewDetails =async  ()=>{
-    try {
-      const data = {
-        studentId,
-        batchId
-      };
-      const response = await getReviewDetails(data);
-      console.log(response,"response coming yarrr");
-      
-      if(response.status===true){
-        setTaskView(response.response)
-      }else{
+  const [taskView, setTaskView] = useState([]);
 
+  useEffect(() => {
+    const fetchReviewDetails = async () => {
+      try {
+        const data = { studentId, batchId };
+        const response = await getReviewDetails(data);
+        if (response.status === true) {
+          setTaskView(response.response);
+        } else {
+          // Handle the case where response status is false
+        }
+      } catch (error) {
+        console.error("Error fetching review details:", error);
+        // Handle the error, show a message, or take appropriate action
       }
-    } catch (error) {
-      console.error("Error fetching review details:", error);
-      // Handle the error, show a message, or take appropriate action
+    };
+    fetchReviewDetails();
+  }, [studentId, batchId]);
+
+  const handleViewTask = (weekName:string) => {
+    const currentIndex = Object.keys(Mernstack[0]).indexOf(weekName);
+    const previousWeekName = Object.keys(Mernstack[0])[currentIndex - 1];
+    
+    if (currentIndex === 0) {
+      // If the current week is the first week, navigate to viewTask directly
+      navigate('/student/viewTask', { state: { weekName } });
+    } else {
+      const foundWeek = taskView.find((data) => data.week === previousWeekName && data.status === true);
+      if (foundWeek && foundWeek.status === true) {
+        // If the previous week has been completed, navigate to viewTask
+        navigate('/student/viewTask', { state: { weekName } });
+      } else {
+        // If the previous week hasn't been completed, show a warning message
+        toast.warn(`Please complete ${previousWeekName} before accessing ${weekName}`);
+      }
     }
-  }
- fetchReviewDetails()
-},[])
-
-const handleViewTask = async (weekName: string) => {
-  console.log(taskView);
-  console.log(weekName);
+  };
   
-  const foundWeek = taskView.find((data:any) => data.week === weekName);
-   
-  if (foundWeek && foundWeek.status === true && foundWeek.week !== 'week1') {
-    navigate('/student/viewTask', { state: { weekName } });
-  } else if (foundWeek && foundWeek.week === 'week1') {
-    navigate('/student/viewTask', { state: { weekName } });
-  } else {
-    toast.warn("You're not eligible for this task");
-  }
-};
-
-
-
   const Mernstack = [
     {
       week1: [],
@@ -64,35 +62,57 @@ const handleViewTask = async (weekName: string) => {
       // Add more weeks as needed
     },
   ];
-
+  let lastWeekName: string;
   return (
     <>
-    {Mernstack.map((weeksObject, index) => (
-      Object.keys(weeksObject).map((weekName, weekIndex) => {
-        const isStatusTrue = Array.isArray(taskView) && (
-          // For the first week, consider it as unlocked by default
-          (weekIndex === 0) ||
-          // For other weeks, check if there is a status for the current week
-          taskView.some((item) => item.week === weekName && item.status)
-        );
+      {Mernstack.map((weeksObject, index) => (
+        Object.keys(weeksObject).map((weekName, weekIndex) => {
+          console.log(weekIndex,"weekIndex")
+          const isStatusTrue = Array.isArray(taskView) && (
+            // For the first week, consider it as unlocked by default
 
-        return (
-          <div key={index} className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
-            <div onClick={() => handleViewTask(weekName)}>
-              <span className="font-roboto text-sm">{weekName}</span>
+
+            taskView.some((item, index) => {
+          
+              if (item.week === weekName && item.status===true) {
+                console.log(index,"indexxxx");
+                
+                lastWeekName = weekName; // Update the last week name
+                console.log(lastWeekName,"lastWeekN");
+                
+                return true;
+              }
+              return false;
+            })
+
+          );
+          let nextWeekName = null;
+          if (lastWeekName) {
+            const lastWeekIndex = parseInt(lastWeekName.match(/\d+/)[0]); // Extract the week number
+            console.log(lastWeekIndex,"lastWeekIndex");
+            
+            const nextWeekIndex = lastWeekIndex + 1;
+            nextWeekName = `week${nextWeekIndex}`;
+          }
+
+          return (
+            <div key={`${index}-${weekName}`} className="ml-5 mr-5 mt-5 border border-gray-300 flex gap-4 h-fit rounded-2xl px-8 py-2 bg-white shadow-md">
+              <div onClick={() => handleViewTask(weekName)}>
+                <span className="font-roboto text-sm">{weekName}</span>
+              </div>
+              <div>
+                {isStatusTrue || weekName === nextWeekName|| weekName === 'week1'  ? (
+                  <img src="/padlock.png" alt="" className="w-5 h-5 item item-center ml-5" />
+                ) : (
+                  <img src="/lock.png" alt="" className="w-5 h-5 item item-center ml-5" />
+                )}
+              </div>
+
             </div>
-            <div>
-              {isStatusTrue ? (
-                <img src="/padlock.png" alt="" className="w-5 h-5 item item-center ml-5" />
-              ) : (
-                <img src="/lock.png" alt="" className="w-5 h-5 item item-center ml-5" />
-              )}
-            </div>
-          </div>
-        );
-      })
-    ))}
-  </>
+          );
+        })
+      ))}
+    </>
   );
 };
 
