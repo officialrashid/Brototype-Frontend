@@ -67,7 +67,7 @@ const Task = () => {
     <>
       {Mernstack.map((weeksObject, index) => (
         Object.keys(weeksObject).map((weekName, weekIndex) => {
-          console.log(weekIndex,"weekIndex")
+      
           const isStatusTrue = Array.isArray(taskView) && (
             // For the first week, consider it as unlocked by default
 
@@ -75,10 +75,10 @@ const Task = () => {
             taskView.some((item, index) => {
           
               if (item.week === weekName && item.status===true) {
-                console.log(index,"indexxxx");
+               
                 
                 lastWeekName = weekName; // Update the last week name
-                console.log(lastWeekName,"lastWeekN");
+          
                 
                 return true;
               }
@@ -89,7 +89,7 @@ const Task = () => {
           let nextWeekName = null;
           if (lastWeekName) {
             const lastWeekIndex = parseInt(lastWeekName.match(/\d+/)[0]); // Extract the week number
-            console.log(lastWeekIndex,"lastWeekIndex");
+       
             
             const nextWeekIndex = lastWeekIndex + 1;
             nextWeekName = `week${nextWeekIndex}`;

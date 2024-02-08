@@ -17,6 +17,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
   const [selectedQuestion, setSelectedQuestion] = useState<{ Number: number; question: string } | null>(null);
   const [mainQuestionNumber, setMainQuestionNumber] = useState(0);
   const [modalType, setModalType] = useState("");
+  const [noTaskMessage,setNoTaskMessage] = useState("")
   const [answerCount, setAnswerCount] = useState<any[]>([]);
   let personalWorkoutsArray;
   let technicalWorkoutsArray;
@@ -47,6 +48,9 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
                 weekName
               };
               const response = await getTechnicalWorkout(data);
+              if(!response){
+                setNoTaskMessage("No workouts available.beacause your techLead not update task")
+              }
               setTechnicalWorkouts(response.response[0].technicalWorkouts);
               setTechnicalWorkoutsNestedQuestion(response.response[0].technicalWorkoutNestedQuestions);
             }
@@ -119,8 +123,12 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[], taskType: string) => {
 
-
-
+    if (!Array.isArray(workouts)) {
+      return <p className='text-center font-roboto text-red-700'>No workouts available.beacause your techLead not update task</p>;
+    }
+    if(noTaskMessage){
+      return <p className='text-center font-roboto text-red-700'>{noTaskMessage}</p>;
+    }
 return (
   <div>
     {workouts.map((question) => {

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { getPersonalWorkout, getProfile, getTechnicalWorkout, getUpdateTask, getmiscellaneousWorkout } from '../../../utils/methods/get';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { count } from 'd3';
 
 const StudentTask = () => {
   const [PersonalWorkouts, setPersonalWorkouts] = useState([]);
@@ -23,6 +24,10 @@ const StudentTask = () => {
   const [showPersonalWorkoutStatus, setShowPersonalWorkoutStatus] = useState(false);
   const [showTechnicalWorkoutStatus, setShowTechnicalWorkoutStatus] = useState(false);
   const [showMiscellaneousWorkoutStatus, setShowMiscellaneousWorkoutStatus] = useState(false);
+
+  let studentPersonalTaskUpdateCount = 0;
+  let studentTechnicalTaskUpdateCount = 0;
+  let studentMiscellaneousTaskUpdateCount = 0;
   const location = useLocation();
   const weekName = location.state && location.state.weekName;
 
@@ -30,6 +35,8 @@ const StudentTask = () => {
     const fetchTasks = async () => {
       if (weekName) {
         const personalWorkout = await getPersonalWorkout(weekName);
+      
+        
         setPersonalWorkouts(personalWorkout?.response?.personalWorkouts);
         setPersonalWorkoutsNestedQuestion(personalWorkout?.response?.personalWorkoutNestedQuestions);
       }
@@ -68,17 +75,21 @@ const StudentTask = () => {
     };
     fetchTasks();
   }, []);
-
+  let studentUpdateTaskount=0;
   useEffect(() => {
     const fetchUpdateTask = async () => {
       try {
         const response = await getUpdateTask(studentId);
-  
+
        const personalWorkoutsArray = await response.response[0]?.personalWorkouts || [];
         let totalQuestionNumbersAndAnswersLength = 0;
   
         await personalWorkoutsArray.forEach((personalWorkout: { week: string, questionNumbersAndAnswers: { length: number }[] }) => {
+      
+
           if (personalWorkout.week === weekName) {
+             studentPersonalTaskUpdateCount++;
+            
             const questionNumbersAndAnswersArray =  personalWorkout?.questionNumbersAndAnswers || [];
             const questionNumbersAndAnswersLength = questionNumbersAndAnswersArray.length;
             totalQuestionNumbersAndAnswersLength += questionNumbersAndAnswersLength;
@@ -90,6 +101,7 @@ const StudentTask = () => {
   
         await technicalWorkoutsArray.forEach(async (technicalWorkout: { week: string, questionNumbersAndAnswers: { length: number }[] }) => {
           if (technicalWorkout.week === weekName) {
+            studentTechnicalTaskUpdateCount++
             const questionNumbersAndAnswersArray = technicalWorkout?.questionNumbersAndAnswers || [];
             const questionNumbersAndAnswersLength =questionNumbersAndAnswersArray.length;
             totalTechnicalQuestionNumbersAndAnswersLength += questionNumbersAndAnswersLength;
@@ -101,44 +113,51 @@ const StudentTask = () => {
   
         await miscellaneousWorkoutsArray.forEach((miscellaneousWorkout: { week: string, questionNumbersAndAnswers: { length: number }[] }) => {
           if (miscellaneousWorkout.week === weekName) {
+            studentMiscellaneousTaskUpdateCount++
             const questionNumbersAndAnswersArray = miscellaneousWorkout?.questionNumbersAndAnswers || [];
             const questionNumbersAndAnswersLength = questionNumbersAndAnswersArray.length;
             totalMiscellaneousQuestionNumbersAndAnswersLength += questionNumbersAndAnswersLength;
           }
         });
   
+   
+
+
     
-  
         if (
-          PersonalWorkouts.length === response.response[0]?.personalWorkouts.length &&
+          PersonalWorkouts.length === studentPersonalTaskUpdateCount &&
           PersonalWorkouts.length !== 0 &&
           response.response[0]?.personalWorkouts.length !== 0 &&
           personalWorkoutsNestedQuestion.length === totalQuestionNumbersAndAnswersLength &&
           personalWorkoutsNestedQuestion.length !== 0 &&
           totalQuestionNumbersAndAnswersLength !== 0
         ) {
+
+          
           setpersonalWorkoutCompleted(true);
         }
   
         if (
-          MiscellaneousWorkouts.length === response.response[0]?.miscellaneousWorkouts.length &&
+          MiscellaneousWorkouts.length === studentMiscellaneousTaskUpdateCount&&
           MiscellaneousWorkouts.length !== 0 &&
           response.response[0]?.miscellaneousWorkouts.length !== 0 &&
           MiscellaneousWorkoutssNestedQuestion.length === totalMiscellaneousQuestionNumbersAndAnswersLength &&
           MiscellaneousWorkoutssNestedQuestion.length !== 0 &&
           totalMiscellaneousQuestionNumbersAndAnswersLength !== 0
         ) {
+
           setMiscellaneousWorkoutCompleted(true);
         }
   
         if (
-          TechnicalWorkouts.length === response.response[0]?.technicalWorkouts.length &&
+          TechnicalWorkouts.length === studentTechnicalTaskUpdateCount &&
           TechnicalWorkouts.length !== 0 &&
           response.response[0]?.technicalWorkouts.length !== 0 &&
           technicalWorkoutsNestedQuestion.length === totalTechnicalQuestionNumbersAndAnswersLength &&
           technicalWorkoutsNestedQuestion.length !== 0 &&
           totalTechnicalQuestionNumbersAndAnswersLength !== 0
         ) {
+
           setTechnicalWorkoutCompleted(true);
         }
       } catch (err) {
