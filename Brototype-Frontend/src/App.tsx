@@ -8,6 +8,7 @@ import StudentRoutes from './routes/StudentRoutes'; // Import StudentRoutes
 import ReviewerRoutes from './routes/ReviewerRoutes';
 import AuthenticationRoutes from './routes/StudentAuthRoutes';
 import ReviewerAuthRoutes from './routes/ReviewerAuthRoutes';
+import AdvisorRoutes from './routes/AdvisorRoutes';
 
 function App() {
   return (
@@ -21,10 +22,14 @@ function App() {
               <Route path="/otpTestLogin" element={<OtpComponet />} />
               <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes/>} />
               <Route path="/studentIn/*" element={<AuthenticationRoutes/>} />
+              <Route path="/advisorIn/*" element={<AuthenticationRoutes/>} />
+
+
               <Route path="/reviewer/*" element={<ReviewerRoutes />} />
           
               {/* Nested StudentRoutes */}
               <Route path="/student/*" element={<StudentRoutes />} />
+              <Route path="/advisor/*" element={<AdvisorRoutes />} />
             </Routes>
   
     </Router>

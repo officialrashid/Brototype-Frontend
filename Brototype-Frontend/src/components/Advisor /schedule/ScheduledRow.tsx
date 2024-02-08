@@ -32,7 +32,7 @@ haiiii
         <button className="bg-black text-white px-6 rounded-md  py-1">View</button>
         </th>
         <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
-        <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{navigate('/schedule/doamin-reviewer/')}}>Schedule</button>
+        <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{navigate('/advisor/schedule/doamin-reviewer/')}}>Schedule</button>
         </th>
        
       </tr>

@@ -10,36 +10,36 @@ const SideNav=()=>{
     const handleTabClick=(tabIndex:any)=>{
       setActiveTab(tabIndex)
       if(tabIndex==1){
-        navigate('/dashboard/')
+        navigate('/advisor/')
     }
       if(tabIndex==2){
-          navigate('/reviews/')
+          navigate('/advisor/reviews/')
       }
   
     
       if(tabIndex==3){
-          navigate('/rescheduled-review/')
+          navigate('/advisor/rescheduled-review/')
       }
       if(tabIndex==4){
-          navigate('/cancelled-reviews/')
+          navigate('/advisor/cancelled-reviews/')
       }
       if(tabIndex==5){
-        navigate('/extend-requests/')
+        navigate('/advisor/extend-requests/')
     }
     if(tabIndex==6){
-      navigate('/events/')
+      navigate('/advisor/events/')
   }
     if(tabIndex==7){
-      navigate('/reviewers/')
+      navigate('/advisor/reviewers/')
   }
   if(tabIndex==8){
-    navigate('/students/')
+    navigate('/advisor/students/')
 }
 if(tabIndex==9){
-  navigate('/chat/')
+  navigate('/advisor/chat/')
 }
 if(tabIndex==10){
-  navigate('/account/')
+  navigate('/advisor/account/')
 }
 
   
@@ -114,7 +114,7 @@ if(tabIndex==10){
    
     
    
-   <div className="bg-white ">
+   <div className="bg-white">
     <div className="flex justify-center mt-5">
     <div className="h-24 w-24 rounded-full border ">
 

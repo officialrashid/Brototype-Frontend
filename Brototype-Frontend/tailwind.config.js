@@ -66,7 +66,8 @@ module.exports = {
          "reviewDetails3":"#DCFCE7",
          "reviewDetails4":"#F4E8FF",
          "reviewSmall1":"#F9597D",
-         "timeLineUp":"#E6EFFB"
+         "timeLineUp":"#E6EFFB",
+         
          
       },
       fontFamily: {
@@ -81,6 +82,7 @@ module.exports = {
         "dark-purple":"#081A51",
         "light-white":"rgba(255,255,255,0.17)",
         'view-more': "#715DA6",
+        darkBlue:"#347dc1"
      },
     },
     plugins: {

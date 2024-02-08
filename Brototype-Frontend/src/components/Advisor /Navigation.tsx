@@ -1,5 +1,5 @@
 
-import logo from '../src/assets/images/logo-black.png'
+import logo from '../Advisor /assets/images/logo-black.png'
 
 const Navigation=()=>{
 
