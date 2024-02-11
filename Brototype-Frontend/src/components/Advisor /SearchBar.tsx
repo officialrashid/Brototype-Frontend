@@ -19,7 +19,7 @@ const SearchBar=()=>{
 </svg>
 </div>
 <div>
-  <input type="search" className="     py-2 px-10 rounded-md border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... "/>
+  <input type="search" className="     py-2 px-10 rounded-md border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black font-roboto" placeholder="hello search....... "/>
 </div>
   </div>
 </div>

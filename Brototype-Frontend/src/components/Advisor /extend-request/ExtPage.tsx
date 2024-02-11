@@ -9,7 +9,7 @@ const ExtPage=()=>{
             
            
         <div className="m-4 mt-0">
-            <span className="font-bold text-xl">Extend requests</span>
+            <span className="font-semibold font-roboto  text-lg font-roboto ">Extend requests</span>
         </div>
         <div className="m-2 mt-6 ">
         <ExtHead/>

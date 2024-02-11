@@ -8,7 +8,7 @@ const TopPerformers=()=>{
          
  <div className="sticky top-0 z-10    bg-white top-fixed">
   <div className=' mt-2 sticky '>
-  <span className='ml-2 mt-0  '>Top Performers</span>
+  <span className='ml-2 mt-0  font-roboto'>Top Performers</span>
  
   
 
@@ -22,10 +22,10 @@ const TopPerformers=()=>{
  <div className="border border-2px rounded-md m-2 flex justify-between mt-1">
  <div  className="m-2 flex gap-2">
       
-      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src={profile} alt="" /></div>
-       <div className="m-2  ml-0"><span className='text-sm'>John Doe</span></div>
+      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src='/profile.jpeg' alt="" /></div>
+       <div className="m-2  ml-0"><span className='text-sm font-roboto '>John Doe</span></div>
        <div className='flex'>
-       <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400'>83% </span> 
+       <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400 font-roboto '>83% </span> 
        </div>
        
        <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f97316" className="w-5 h-5">
@@ -55,10 +55,10 @@ const TopPerformers=()=>{
    <div className="border border-2px rounded-md m-2 flex justify-between ">
    <div  className="m-2 flex gap-2">
       
-      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src={profile} alt="" /></div>
-       <div className="m-2  ml-0"><span className='text-sm'>John Doe</span></div>
+      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src='/profile.jpeg' alt="" /></div>
+       <div className="m-2  ml-0"><span className='text-sm font-roboto '>John Doe</span></div>
        <div className='flex'>
-       <div className="m-2  ml-0"><span className='text-sm font-bold'>83% </span> 
+       <div className="m-2  ml-0"><span className='text-sm font-bold font-roboto '>83% </span> 
        </div>
        
        <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#3b82f6" className="w-5 h-5">
@@ -88,10 +88,10 @@ const TopPerformers=()=>{
    <div className="border border-2px rounded-md m-2 flex justify-between ">
    <div  className="m-2 flex gap-2">
       
-      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src={profile} alt="" /></div>
-       <div className="m-2  ml-0"><span className='text-sm'>John Doe</span></div>
+      <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src='/profile.jpeg' alt="" /></div>
+       <div className="m-2  ml-0"><span className='text-sm font-roboto '>John Doe</span></div>
        <div className='flex'>
-       <div className="m-2  ml-0"><span className='text-sm font-bold'>83% </span> 
+       <div className="m-2  ml-0"><span className='text-sm font-bold font-roboto '>83% </span> 
        </div>
        
        <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#4ade80" className="w-5 h-5">
@@ -122,9 +122,9 @@ const TopPerformers=()=>{
      <div  className="m-2 flex gap-2">
       
        <div className="border border-2px px-6 py-6"></div>
-        <div className="m-2 ml-0"><span>John Doe</span></div>
+        <div className="m-2 ml-0 font-roboto "><span>John Doe</span></div>
         <div className='flex'>
-       <div className="m-2  ml-0"><span className='text-sm font-bold'>83% </span> 
+       <div className="m-2  ml-0"><span className='text-sm font-bold font-roboto '>83% </span> 
        </div>
        
        <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#3b82f6" className="w-5 h-5">

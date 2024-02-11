@@ -14,16 +14,17 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+    <img src="/profile.jpeg" alt="" />
+   {/* <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg> */}
       
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -70,16 +71,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -126,16 +126,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -182,16 +181,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -238,16 +236,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -294,16 +291,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -350,16 +346,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  
@@ -405,16 +400,15 @@ const ReviewerComp=()=>{
 
   </div>
   <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+ <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 text-center">
-    <div><span>Muhammed Riyas</span></div>
+    <div><span className="font-roboto ">Muhammed Riyas</span></div>
     
     <div>
-         <span>MERN Stack developer</span>
+         <span className="font-roboto ">MERN Stack developer</span>
 
     </div>
  

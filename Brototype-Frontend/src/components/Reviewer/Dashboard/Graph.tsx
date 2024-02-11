@@ -20,7 +20,7 @@ const Graph = () => {
         ],
         options: {
           chart: {
-            height: 350,
+            height: 150,
             type: 'area',
             toolbar: {
               show: true,
@@ -59,13 +59,13 @@ const Graph = () => {
       });
     return (
         <>
-       <div className="w-22.5rem h-96 bg-white right-6 mb-48rem mt-14.9rem rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute">
+       <div className="w-46rem  h-22rem bg-white ml-5 rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 mt-5 ">
      
        <div className="flex">
           <h1 className="text-md ml-5 font-roboto font-semibold mt-5">ReviewCount</h1>
           <div className="relative group ml-36 mt-3">
 
-            <button
+            {/* <button
               className="border border-gray-350 text-black px-2 py-2 rounded flex items-cente top-3 right-3r text-sm font-roboto font-semibold"
            
             >
@@ -73,7 +73,7 @@ const Graph = () => {
               <svg className="ml-2 w-4 h-4 fill-current text-gray-600 mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path d="M10 12l-5-5 1.5-1.5L10 9l3.5-3.5L16 7z" />
               </svg>
-            </button>
+            </button> */}
 
 
             <div className="absolute hidden bg-white shadow-md  rounded-md  group-hover:block">
@@ -90,7 +90,7 @@ const Graph = () => {
           </div>
         </div>
         <div className="mt-8">
-          <ReactApexChart options={week.options} series={week.series} type="area" height={250} />
+          <ReactApexChart options={week.options} series={week.series} type="area" height={385} />
         </div>
     
       </div>

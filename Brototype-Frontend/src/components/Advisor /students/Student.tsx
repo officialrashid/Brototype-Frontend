@@ -15,24 +15,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -77,24 +76,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto "> Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -139,24 +137,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -201,24 +198,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -263,24 +259,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -325,24 +320,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto "> Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -386,24 +380,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">
@@ -447,24 +440,23 @@ const Student=()=>{
 
   </div>
    <div className=" h-24 w-24  border  rounded-full -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-   <svg className=" h-32 w-32 text-gray-400 absolute -top-1 -left-4  " fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
-      
+   <img src="/profile.jpeg" alt="" />
      
 
   </div>
   <div className="m-3 mb-0 text-center">
-    <div><span>Anas Rahman </span></div>
+    <div><span className="font-roboto ">Anas Rahman </span></div>
     
     
  
   </div>
  <div className="flex justify-center m-1.5 gap-1">
-   <div><span>BCE-55</span></div>
+   <div><span className="font-roboto ">BCE-55</span></div>
      <div className=""><span className="">|</span></div>
 
-    <div><span>Cyber security</span></div>
+    <div><span className="font-roboto ">Cyber security</span></div>
     <div className=""><span className="">|</span></div>
-    <div><span>Regular</span></div>
+    <div><span className="font-roboto ">Regular</span></div>
 
 </div>
   <div className="border-t rounded-b-lg ">

@@ -1,0 +1,108 @@
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { getReviewerDetails } from "../../../utils/methods/get";
+
+
+
+
+const ReviewerProfile = () => {
+    const [data,setData] = useState("")
+  useEffect(()=>{
+    const fetchReviewerDetails = async ()=>{
+      const reviewerId = "658b2fcbc4e61a5bab23060f";
+       const response = await getReviewerDetails(reviewerId)
+       console.log(response,"review all detailas");
+       setData(response)
+    }
+    fetchReviewerDetails()
+  },[])
+  const containerVariants = {
+    hover: {
+      y: -10, // Adjust the value as needed to move the div up on hover
+    },
+  };
+    return (
+        <div className="w-22.5rem h-auto bg-white right-6 mb-48rem mt-6 rounded-xl  absolute" >
+              
+        <div className="border border-2px  rounded-lg w-full mb-2 bg-white ">
+<div className=" border-b  h-20 bg-slate-200  rounded-t-lg">
+
+
+</div>
+<div className=" h-24 w-24  border  rounded -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
+<img src="/profile.jpeg" alt="" />
+
+  
+ 
+
+</div>
+<div className="m-3 text-center">
+<div><span className="font-roboto ">Muhammed Riyas</span></div>
+
+<div>
+     <span className="font-roboto ">MERN Stack developer</span>
+
+</div>
+
+</div>
+<div className="border-t rounded-b-lg m-5">
+  <div className="flex flex-row">
+    <div className="flex-1">
+      <motion.div className="bg-  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 h-26  m-4" whileHover={{ scale: 1.1 }}>
+        <div className="bg-custom-background w-10 h-8 ml-4 mt-5 rounded-md shadow-sm flex">
+          <img src="/success.png" alt="" className="h-8 ml-1 " />
+          <h1 className="font-roboto text-2xl ml-8 font-medium ">{data?.dayReviewCount}</h1>
+        </div>
+        <h1 className="font-roboto text-sm ml-1 font-medium mt-3 text-gray-400 absolute">Today Review Count</h1>
+        <img src="/success.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
+      </motion.div>
+    </div>
+    <div className="flex-1">
+      <motion.div className="bg-  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 h-26  m-4" whileHover={{ scale: 1.1 }}>
+        <div className="bg-custom-background w-10 h-8 ml-4 mt-5 rounded-md shadow-sm flex">
+          <img src="weekPerformance.png" alt="" className="h-8 ml-1 " />
+          <h1 className="font-roboto text-2xl ml-8 font-medium  ">{data.dayTakeReviewCount}</h1>
+        </div>
+        <h1 className="font-roboto text-sm ml- font-medium mt-3 text-gray-400 absolute">Review Took Oneday</h1>
+        <img src="/weekPerformance.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
+      </motion.div>
+    </div>
+
+  </div>
+  <div className="flex flex-row">
+    <div className="flex-1">
+      <motion.div className="bg-  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 h-26  ml-4 mr-4 " whileHover={{ scale: 1.1 }}>
+        <div className="bg-custom-background w-10 h-8 ml-4 mt-5 rounded-md shadow-sm flex">
+          <img src="/performance (1).png" alt="" className="h-8 ml-1 " />
+          <h1 className="font-roboto text-2xl ml-8 font-medium ">{data?.oneMonthReviewCount}</h1>
+        </div>
+        <h1 className="font-roboto text-sm ml-1 font-medium mt-3 text-gray-400 absolute">Today Review Count</h1>
+        <img src="/performance (1).png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
+      </motion.div>
+    </div>
+    <div className="flex-1">
+      <motion.div className="rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 h-26 ml-4 mr-4 " whileHover={{ scale: 1.1 }}>
+        <div className="bg-custom-background w-10 h-8 ml-4 mt-5 rounded-md shadow-sm flex">
+          <img src="/failure.png" alt="" className="h-8 ml-1 " />
+          <h1 className="font-roboto text-2xl ml-8 font-medium  ">{data.totalReviewCount}</h1>
+        </div>
+        <h1 className="font-roboto text-sm ml- font-medium mt-3 text-gray-400 absolute">Review Took Oneday</h1>
+        <img src="/failure.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
+      </motion.div>
+    </div>
+
+  </div>
+  <p className="text-white">hello reviewer</p>
+</div>
+
+</div>
+
+
+
+</div>
+
+
+    );
+}
+
+export default ReviewerProfile;

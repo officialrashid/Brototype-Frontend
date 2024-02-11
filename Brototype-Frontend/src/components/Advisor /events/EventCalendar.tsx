@@ -104,17 +104,17 @@ const EventCalendar=()=>{
         <div className="border   flex rounded-md justify-between bg-white">
   <div className="m-4 ">
     <div>
-      <span className="text-2xl font-semibold">December 20, 2023</span>
+      <span className="text-2xl font-semibold font-roboto ">December 20, 2023</span>
 
     </div>
      <div className='mt-2'>
-      <span>Today You have 4 upcoming events</span>
+      <span className='font-roboto '>Today You have 4 upcoming events</span>
 
     </div>
 
   </div>
   <div className="mt-8 mr-4"> 
-    <span className="text-2xl">8:20 pm</span>
+    <span className="text-2xl font-roboto ">8:20 pm</span>
 
   </div>
 </div>
@@ -134,22 +134,22 @@ const EventCalendar=()=>{
   </div>
 
   <div className='w-full '>
-  <button className="py-2 bg-white  w-full rounded-md shadow-sm " onClick={()=>{setModal(true)}}> <span className='text-xl'>+</span> <span className='font-semibold'>Add New Event</span> </button>
+  <button className="py-2 bg-white  w-full rounded-md shadow-sm " onClick={()=>{setModal(true)}}> <span className='text-lg'>+</span> <span className='font-semibold font-roboto '>Add New Event</span> </button>
  
   <div className="border-l-4 border-l-gray-400  border rounded-md   mt-4 bg-white ">
     <div className='m-2 '>
 
    
   <div className="flex justify-between  mb-0">
-    <div><span className='text-md'>Onlne-meeting</span></div>
-  <div><span className='text-xs'>December 23, 2023</span></div>
+    <div><span className='text-md font-roboto ' >Onlne-meeting</span></div>
+  <div><span className='text-xs font-roboto '>December 23, 2023</span></div>
 
   </div>
   <div className=" mt-0 mb-0">
-    <span className='text-sm'>Your online meeting with your </span>
+    <span className='text-sm font-roboto '>Your online meeting with your </span>
   </div>
    <div className=" mt-0">
-    <span className='text-sm'>Maradu, Kochi</span>
+    <span className='text-sm font-roboto '>Maradu, Kochi</span>
   </div>
   
 </div>
@@ -159,15 +159,15 @@ const EventCalendar=()=>{
 
    
   <div className="flex justify-between  mb-0">
-    <div><span className='text-md'>Onlne-meeting</span></div>
-  <div><span className='text-xs'>December 23, 2023</span></div>
+    <div><span className='text-md font-roboto '>Onlne-meeting</span></div>
+  <div><span className='text-xs font-roboto ' >December 23, 2023</span></div>
 
   </div>
   <div className=" mt-0 mb-0">
-    <span className='text-sm'>Your online meeting with your </span>
+    <span className='text-sm font-roboto '>Your online meeting with your </span>
   </div>
    <div className=" mt-0">
-    <span className='text-sm'>Maradu, Kochi</span>
+    <span className='text-sm font-roboto '>Maradu, Kochi</span>
   </div>
   
 </div>
@@ -177,15 +177,15 @@ const EventCalendar=()=>{
 
    
   <div className="flex justify-between  mb-0">
-    <div><span className='text-md'>Onlne-meeting</span></div>
-  <div><span className='text-xs'>December 23, 2023</span></div>
+    <div><span className='text-md font-roboto '>Onlne-meeting</span></div>
+  <div><span className='text-xs font-roboto '>December 23, 2023</span></div>
 
   </div>
   <div className=" mt-0 mb-0">
-    <span className='text-sm'>Your online meeting with your </span>
+    <span className='text-sm font-roboto '>Your online meeting with your </span>
   </div>
    <div className=" mt-0">
-    <span className='text-sm'>Maradu, Kochi</span>
+    <span className='text-sm font-roboto '>Maradu, Kochi</span>
   </div>
   
 </div>

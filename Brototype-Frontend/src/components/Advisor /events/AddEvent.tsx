@@ -17,7 +17,7 @@ const AddEvent=({isVisible,onClose})=>{
         <div className="border border-2px rounded-md w-1/2 m-10 bg-white  ">
   <div className="flex justify-between m-7 mt-5 ml-6 mb-3">
      <div className="">
-     <span className="text-xl"> New Event</span>
+     <span className="text-xl font-roboto font-roboto "> New Event</span>
    </div>
   
    <div onClick={()=>{onClose()}} className="cursor-pointer   items-center flex justify-center">
@@ -35,22 +35,22 @@ const AddEvent=({isVisible,onClose})=>{
   <div className="m-3 ml-6">
     <div className="mt-2">
       <div className="mb-2">
-        <span className="text-gray-500">Event Type</span>
+        <span className="text-gray-500 font-roboto font-roboto ">Event Type</span>
 
       </div>
        
 
-<input type="text " className=" w-full mb-2 border border-2px py-3 px-2 rounded-md outline-black" placeholder="Enter your event type...."/>
+<input type="text " className=" w-full mb-2 border border-2px py-3 px-2 rounded-md outline-black font-roboto font-roboto " placeholder="Enter your event type...."/>
 
     </div>
     <div className="mt-2">
       <div className="mb-2">
-        <span className="text-gray-500">Event Platform</span>
+        <span className="text-gray-500 font-roboto font-roboto ">Event Platform</span>
 
       </div>
        
 
-<input type="text " className=" w-full mb-2 border border-2px py-3  px-2 rounded-md outline-black" placeholder="Enter your event platform...."/>
+<input type="text " className=" w-full mb-2 border border-2px py-3  px-2 rounded-md outline-black font-roboto font-roboto " placeholder="Enter your event platform...."/>
 
     </div>
     <div className="mt-2  ">
@@ -63,7 +63,7 @@ const AddEvent=({isVisible,onClose})=>{
   <div className="flex gap-2">
   <div>
     <div>
-    <span className="text-gray-500 ">Start Date</span>
+    <span className="text-gray-500 font-roboto font-roboto ">Start Date</span>
     </div>
     
 <DatePicker selected={startDate} dateFormat='yyyy/MM/dd' onChange={(date) => setStartDate(date)}  />
@@ -73,14 +73,14 @@ const AddEvent=({isVisible,onClose})=>{
 
 <div>
 <div>
-    <span className="text-gray-500 ">End Date</span>
+    <span className="text-gray-500 font-roboto font-roboto ">End Date</span>
     </div>
 <DatePicker selected={startDate} dateFormat='yyyy/MM/dd' onChange={(date) => setStartDate(date)}  />
 
 </div>
 <div>
 <div>
-    <span className="text-gray-500 ">Time</span>
+    <span className="text-gray-500 font-roboto  ">Time</span>
     </div>
     <div>
       <TimePicker onChange={onChange} value={value} />
@@ -96,21 +96,21 @@ const AddEvent=({isVisible,onClose})=>{
     
     <div className="mt-2">
       <div className="mb-2">
-        <span className="text-gray-500">Event location</span>
+        <span className="text-gray-500 font-roboto ">Event location</span>
 
       </div>
        
 
-<input type="text " className=" w-full mb-2 border border-2px py-3  px-2 rounded-md outline-black" placeholder="Enter your event location...."/>
+<input type="text " className=" w-full mb-2 border border-2px py-3  px-2 rounded-md outline-black font-roboto " placeholder="Enter your event location...."/>
 
     </div>
     <div className="mt-2">
       <div className="mb-2">
-        <span className="text-gray-500">Event Description</span>
+        <span className="text-gray-500 font-roboto ">Event Description</span>
 
       </div>
        
-<textarea name="" id=""  rows={5} placeholder="Add description......" className="border w-full rounded-md outline-black px-2 py-2" ></textarea>
+<textarea name="" id=""  rows={5} placeholder="Add description......" className="border w-full rounded-md outline-black px-2 py-2 font-roboto " ></textarea>
 
 
 
@@ -120,11 +120,11 @@ const AddEvent=({isVisible,onClose})=>{
     <div className="flex gap-2 justify-end mt-3" >
 
       <div >
-        <button className="px-4 bg-black text-white rounded-md py-1" onClick={()=>{onClose()}}>Cancel</button>
+        <button className="px-4 bg-black text-white rounded-md py-1 font-roboto " onClick={()=>{onClose()}}>Cancel</button>
 
       </div>
       <div>
-         <button className="px-4 bg-black text-white rounded-md py-1">Submit</button>
+         <button className="px-4 bg-black text-white rounded-md py-1 font-roboto ">Submit</button>
         
       </div>
 

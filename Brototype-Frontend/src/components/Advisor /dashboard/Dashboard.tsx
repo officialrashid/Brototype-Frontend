@@ -13,6 +13,7 @@ import profile from '../assets/images/profile.webp'
 const Dashboard=()=>{
     const series = [70]; //70 percent
     const options = {
+      
       labels: [], //label of this diagram
       plotOptions: {
         radialBar: {
@@ -21,11 +22,14 @@ const Dashboard=()=>{
             name: {
               show: false, // Set to true if you want to display the category (name) labels
             },
+     
             value: {
               show: false, // Set to true if you want to display the value labels
-            }
+            },
+            
           }
-        }
+        },
+        
       },
       colors:['#347dc1']
     }
@@ -37,13 +41,13 @@ const Dashboard=()=>{
             <div className=" border   rounded-lg  m-4 mt-0  mb-0 h-fit bg-white  ">
   <div className="flex justify-between m-4 ">
       <div>
-<span>Helloo advisor!!!!!</span>
+<span className="font-roboto">Helloo advisor!!!!!</span>
 <div>
-  <span>Complete your task</span>
+  <span className="font-roboto">Complete your task</span>
 </div>
   </div>
-    <div className="border border-gray-400  h-20 w-20  flex  items-center justify-center"  >
-    <img src={profile} className=" h-20 w-20" alt="" />
+    <div className=" border-gray-400  h-20 w-20  flex  items-center justify-center"  >
+    <img src="/profile.jpeg" className=" h-20 w-20" alt="" />
   
   </div>
 
@@ -58,9 +62,9 @@ const Dashboard=()=>{
             <Box/>
             <div className="border border-2px  m-2 mx-auto rounded-md  bg-white " >
   <div className="flex m-2 ">
-    <div> <span  className="font-bold"> Shared Reviews</span>
+    <div> <span  className="font-semibold font-roboto"> Shared Reviews</span>
  <div className="mt-6">
-   <span className="text-4xl">18</span>
+   <span className="text-3xl font-roboto">18</span>
  </div>
     </div>
     <div className=" mt-4  border-darkBlue w-20 h-20 rounded-full border-4 "  > 
@@ -75,9 +79,9 @@ const Dashboard=()=>{
 </div>
 <div className="border border-2px  m-2 mx-auto rounded-md  bg-white " >
   <div className="flex m-2 ">
-    <div> <span className="font-bold">  Weekly Tasks</span>
+    <div> <span className="font-semibold font-roboto">  Weekly Tasks</span>
  <div className="mt-3">
-   <span className="text-4xl">12</span>
+   <span className="text-3xl font-roboto">12</span>
  </div>
     </div>
     <div className=" mt-4 ml-6 border-darkBlue w-20 h-20 rounded-full border-4 "  > 
@@ -89,9 +93,9 @@ const Dashboard=()=>{
 </div>
 <div className="border border-2px  m-2 mx-auto rounded-md  bg-white " >
   <div className="flex m-2  ">
-    <div> <span className="font-bold"> Total reviews </span>
+    <div> <span className="font-semibold font-roboto"> Total reviews </span>
  <div className="mt-3">
-   <span className="text-4xl">17</span>
+   <span className="text-3xl font-roboto">17</span>
  </div>
     </div>
     <div className=" mt-4 ml-6 border-darkBlue w-20 h-20 rounded-full border-4 "  > 
@@ -108,11 +112,11 @@ const Dashboard=()=>{
 
         <div className="border   rounded-md  x  m-2 mt-4 mb-4 bg-white ">
         <div className="ml-2 mt-4 text-center">
-                <span className="font-bold">Task completion</span>
+                <span className="font-semibold font-roboto">Task completion</span>
             </div>
         <ReactApexChart options={options} series={series}  type="radialBar" width={200} height={200}  />
         <div className="text-center">
-            <span className="text-4xl ">87%</span>
+            <span className="text-3xl font-roboto">87%</span>
         </div>
 
         </div>
@@ -121,14 +125,14 @@ const Dashboard=()=>{
         
            <div className="border m-4   rounded-md bg-white ">
             <div className="m-2">
-                <span className="font-semibold">Weekly summary</span>
+                <span className="font-semibold font-roboto">Weekly summary</span>
             </div>
          <WeeklySummary/>  
         </div>
            
         <div className="border m-4 mt-6 rounded-md bg-white ">
             <div className="m-2">
-                <span className="font-semibold">Performance Graph</span>
+                <span className="font-semibold font-roboto">Performance Graph</span>
             </div>
         <PerformanceGraph graphHeight={206}/>
         </div>

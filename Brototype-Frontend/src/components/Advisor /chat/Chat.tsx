@@ -14,12 +14,13 @@ const Chat=()=>{
   <div className="border-r w-1/2 bg-white">
     <div className="m-2">
   <div className="relative">
-    <div className="absolute m-3"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 stroke-slate-400">
+    <div className="absolute m-3">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 stroke-slate-400">
   <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
 </div>
 <div>
-  <input type="search" className="    w-full py-2.5 px-10 rounded-md border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... "/>
+  <input type="search" className=" font-roboto   w-full py-2.5 px-10 rounded-md border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... "/>
 </div>
   </div>
 </div>
@@ -28,33 +29,37 @@ const Chat=()=>{
   <div className="flex justify-between ">
     <div className="flex gap-2 m-2 mt-4">
       
-     <div className="border h-10 w-10 rounded-full "></div>
-  <div className="mt-2"><span className="text-md  font-semibold">John Doe</span>
+     <div className="border h-10 w-10 rounded-full ">
+      <img src="/profile.jpeg" alt="" className="rounded-full" />
+     </div>
+  <div className="mt-2"><span className="text-md  font-semibold font-roboto">John Doe</span>
   <div>
-    <span className="text-gray-600">Hello good mrng</span>
+    <span className="text-gray-600 font-roboto">Hello good mrng</span>
   </div>
   </div>
 
 
   </div>
   <div className="m-4">
-    <span className="text-gray-600 text-sm">6m</span>
+    <span className="text-gray-600 text-sm font-roboto">6m</span>
   </div>
 
   </div>
   <div className="flex justify-between">
     <div className="flex gap-2 m-2">
-     <div className="border h-10 w-10 rounded-full "></div>
-  <div className="mt-2"><span className="text-md  font-semibold">John Doe</span>
+     <div className="border h-10 w-10 rounded-full ">
+     <img src="/profile.jpeg" alt="" className="rounded-full" />
+     </div>
+  <div className="mt-2"><span className="text-md  font-semibold font-roboto">John Doe</span>
   <div>
-    <span className="text-gray-600">Hello good mrng</span>
+    <span className="text-gray-600 font-roboto">Hello good mrng</span>
   </div>
   </div>
 
 
   </div>
   <div className="m-4">
-    <span className="text-gray-600 text-sm">6m</span>
+    <span className="text-gray-600 text-sm font-roboto">6m</span>
   </div>
 
   
@@ -71,10 +76,12 @@ const Chat=()=>{
     <div className="border-b ">
   <div className="flex justify-between">
     <div className="flex gap-2 m-2 ">
-     <div className="border h-12 w-12 rounded-full  mt-3"></div>
-  <div className="mt-5"><span className="text-md  font-semibold">John Doe</span>
+     <div className="border h-12 w-12 rounded-full  mt-3">
+     <img src="/profile.jpeg" alt="" className="rounded-full" />
+     </div>
+  <div className="mt-5"><span className="text-md  font-semibold font-roboto">John Doe</span>
   <div>
-    <span className="text-gray-600 text-sm">last seen 8:98 pm</span>
+    <span className="text-gray-600 text-sm font-roboto">last seen 8:98 pm</span>
   </div>
   </div>
 
@@ -112,7 +119,7 @@ const Chat=()=>{
   
      
   <textarea
-    className="border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40  absolute bottom-0 rounded-md w-full"
+    className=" font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40  absolute bottom-0 rounded-md w-full"
     
     placeholder="Type a message.."
   ></textarea>
@@ -157,18 +164,18 @@ const Chat=()=>{
  <div className=" bg-white">
   <div className="flex justify-center m-14 mb-4">
     <div className="border w-36 h-36 rounded-full mt-14 ">
-
+    <img src="/profile.jpeg" alt="" className="rounded-full" />
   </div>
 
   </div>
   
   <div className="flex justify-center">
-    <span>Sachin K siby</span>
+    <span className="font-roboto">Sachin K siby</span>
    
 
   </div>
    <div className="flex justify-center">
-      <span className="text-gray-400">+918921974845</span>
+      <span className="text-gray-400 font-roboto">+918921974845</span>
     </div>
      <div className="flex justify-center gap-3">
      <div>

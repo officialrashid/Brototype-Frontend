@@ -49,7 +49,8 @@ module.exports = {
         '25.2rem': '25.2rem',
         '33rem': '33rem',
         '14.9rem': '14.9rem',
-        '21.5rem':'21.5rem'
+        '21.5rem':'21.5rem',
+        '47rem' : '47rem'
         
       },
       backgroundColor: {
@@ -82,6 +83,7 @@ module.exports = {
         "dark-purple":"#081A51",
         "light-white":"rgba(255,255,255,0.17)",
         'view-more': "#715DA6",
+        'light-blue':"#66D3FA",
         darkBlue:"#347dc1"
      },
     },

@@ -86,7 +86,7 @@ const TimeLineUp: React.FC = () => {
 
   return (
     <>
-      <div className="w-46rem  h-24rem bg-white ml-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300  ">
+      <div className="w-46rem  h-24rem bg-white ml-5 rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 mt-5 ">
         <div className="flex">
           <h1 className="text-md ml-8 font-roboto font-semibold mt-3">Schedule</h1>
           <div className="relative group ml-33rem mt-1">

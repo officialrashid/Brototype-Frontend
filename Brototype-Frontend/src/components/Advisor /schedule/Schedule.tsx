@@ -9,13 +9,13 @@ const Scheduled=()=>{
       
          <div className="bg-white rounded-md max-h-full"> 
          
-<div>
+<div className="text-white">
     jojfojejif
 </div>
          
         <div className="ml-3  ">
             <div className="mb-3">
-            <span className="font-bold text-xl mt-8">Reviews </span>
+            <span className="font-bold text-xl mt-8 font-roboto">Reviews </span>
             </div>
         </div>
 

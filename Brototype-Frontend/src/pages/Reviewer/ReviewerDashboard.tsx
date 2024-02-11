@@ -5,20 +5,28 @@ import Graph from "../../components/Reviewer/Dashboard/Graph";
 import Rating from "../../components/Reviewer/Dashboard/Rating";
 import UpcomingReviews from "../../components/Students/Dashboard/UpcomingReviews";
 import ScheduleTimeCard from "../../components/Reviewer/ScheduleTimeCard/ScheduleTimeCard";
+import ReviewerDetails from "../../components/Reviewer/Dashboard/ReviewerDetails"
+import ReviewerProfile from "../../components/Reviewer/Dashboard/ReviewerProfile";
+import Notification from "../../components/Reviewer/Dashboard/Notification";
 const ReviewerDashboard = () => {
     return (
         <>
         <Sidebar/>
         <div className="h-auto flex-1  bg-custom-background">
-        <ReviewDetails/>
+        <ReviewerDetails/>
+        <Graph/>
             <TimeLineUp/>
-            <UpcomingReviews/>
+       
+         
             <ScheduleTimeCard />
-            
+            <UpcomingReviews/>
 
         </div>
+        
+        <ReviewerProfile/>
         <Rating/>
-        <Graph/>
+        <Notification/>
+   
         </>
     );
 }

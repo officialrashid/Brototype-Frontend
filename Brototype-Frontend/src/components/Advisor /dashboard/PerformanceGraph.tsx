@@ -14,7 +14,7 @@ const PerformanceGraph=({graphHeight})=>{
        
         chart: {
         
-          type: 'line',
+          type: 'area',
           toolbar: {
             show: false,
           }
@@ -23,7 +23,8 @@ const PerformanceGraph=({graphHeight})=>{
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          curve: 'smooth',
+          width: 2,
         },
         xaxis: {
           type: 'datetime',

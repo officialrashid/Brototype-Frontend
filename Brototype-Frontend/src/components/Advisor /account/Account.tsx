@@ -14,7 +14,7 @@ const Account=()=>{
       
   <div className="">
     <div className="ml-4 mt-2">
-    <span className="font-bold text-">Your Details</span>
+    <span className="font-bold text- font-roboto">Your Details</span>
     </div>
 
  
@@ -22,16 +22,16 @@ const Account=()=>{
   <div className="flex ml-4  gap-20">
     <div >
       <div className="mt-4">
-         <span className="font-bold text-xl">John Doe</span>
+         <span className="font-bold text-xl font-roboto">John Doe</span>
 
       </div>
       <div>
-         <span className="text-gray-400 text-sm">Review Coordinator</span><br />
-         <span className="text-gray-400 text-sm">review@gmail.com</span>
+         <span className="text-gray-400 text-sm font-roboto">Review Coordinator</span><br />
+         <span className="text-gray-400 text-sm font-roboto">review@gmail.com</span>
 
       </div>
       <div className="border w-fit rounded-md mt-4  bg-darkBlue">
-        <span className="m-2 px-1 text-white text-sm font-bold py-1 ">Edit Profile</span>
+        <span className="m-2 px-1 text-white text-sm font-bold py-1 font-roboto">Edit Profile</span>
       </div>
      
       
@@ -64,36 +64,36 @@ const Account=()=>{
 <div className="grid grid-cols-2 gap-3 m-4 mt-4 max-h-96 " >
     <div className="border h-20 w-36 rounded-md " >
       <div className="m-2">
-        <div><span>197</span></div>
+        <div><span className="font-roboto">197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold font-roboto">Total reviews</span>
       </div>
       </div>
 
     </div>
      <div className="border h-20 w-36 rounded-md " >
       <div className="m-2">
-        <div><span>197</span></div>
+        <div><span className="font-roboto">197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold font-roboto">Total reviews</span>
       </div>
       </div>
 
     </div>
      <div className="border h-20 w-36 rounded-md " >
       <div className="m-2">
-        <div><span>197</span></div>
+        <div><span className="font-roboto">197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold font-roboto">Total reviews</span>
       </div>
       </div>
 
     </div>
      <div className="border h-20 w-36 rounded-md " >
       <div className="m-2">
-        <div><span>197</span></div>
+        <div><span className="font-roboto">197</span></div>
       <div>
-        <span className="font-bold">Total reviews</span>
+        <span className="font-bold font-roboto">Total reviews</span>
       </div>
       </div>
 
@@ -106,7 +106,7 @@ const Account=()=>{
 </div>
 <div className="border border-2px     rounded-md bg-white h-96 ">
   <div className="m-2">
-    <span className="font-bold">Performance Graph</span>
+    <span className="font-bold font-roboto">Performance Graph</span>
   </div>
   <PerformanceGraph graphHeight={340}/>
   
@@ -115,43 +115,23 @@ const Account=()=>{
   <div className=" ">
   <div className="m-2">
   <div className="">
-    <span className="font-bold">Works available</span>
+    <span className="font-bold font-roboto">Works available</span>
   </div>
   <div className="border rounded-md m-2">
    <div className="m-2">
    <div className="flex justify-between gap-6 ">
    <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
+   <span className="text-sm font-bold font-roboto">Rashid </span><br />
+   <span className="text-sm font-bold font-roboto">Riyas </span><br />
 
    </div>
    <div>
-    <span className="text-sm">2:30pm</span>
+    <span className="text-sm font-roboto">2:30pm</span>
    </div>
     </div>
     <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
-    </div>
-   </div>
-
-
-  </div>
-  <div className="border rounded-md m-2">
-   <div className="m-2">
-   <div className="flex justify-between gap-6 ">
-   <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
-
-   </div>
-   <div>
-    <span  className="text-sm">2:30pm</span>
-   </div>
-    </div>
-    <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white font-roboto">Start</button>
+      <button className="border  rounded-md text-sm px-2 text-black font-roboto">Re-schedule</button>
     </div>
    </div>
 
@@ -161,17 +141,17 @@ const Account=()=>{
    <div className="m-2">
    <div className="flex justify-between gap-6 ">
    <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
+   <span className="text-sm font-bold font-roboto">Rashid </span><br />
+   <span className="text-sm font-bold font-roboto">Riyas </span><br />
 
    </div>
    <div>
-    <span className="text-sm">2:30pm</span>
+    <span  className="text-sm font-roboto">2:30pm</span>
    </div>
     </div>
     <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white font-roboto">Start</button>
+      <button className="border  rounded-md text-sm px-2 text-black font-roboto">Re-schedule</button>
     </div>
    </div>
 
@@ -181,17 +161,37 @@ const Account=()=>{
    <div className="m-2">
    <div className="flex justify-between gap-6 ">
    <div>
-   <span className="text-sm font-bold">Rashid </span><br />
-   <span className="text-sm font-bold">Riyas </span><br />
+   <span className="text-sm font-bold font-roboto">Rashid </span><br />
+   <span className="text-sm font-bold font-roboto">Riyas </span><br />
 
    </div>
    <div>
-    <span className="text-sm">2:30pm</span>
+    <span className="text-sm font-roboto">2:30pm</span>
    </div>
     </div>
     <div className="flex gap-4">
-      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white font-roboto">Start</button>
+      <button className="border  rounded-md text-sm px-2 text-black font-roboto">Re-schedule</button>
+    </div>
+   </div>
+
+
+  </div>
+  <div className="border rounded-md m-2">
+   <div className="m-2">
+   <div className="flex justify-between gap-6 ">
+   <div>
+   <span className="text-sm font-bold font-roboto">Rashid </span><br />
+   <span className="text-sm font-bold font-roboto">Riyas </span><br />
+
+   </div>
+   <div>
+    <span className="text-sm font-roboto">2:30pm</span>
+   </div>
+    </div>
+    <div className="flex gap-4">
+      <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white font-roboto">Start</button>
+      <button className="border  rounded-md text-sm px-2 text-black font-roboto">Re-schedule</button>
     </div>
    </div>
 
@@ -215,7 +215,7 @@ const Account=()=>{
        
      <div className="h-136 bg-white overflow-y-auto rounded-md mt-4">
      <div className=" mt-2 ml-2 ">
-          <span className="font-bold">Your scheduled events</span>
+          <span className="font-bold font-roboto">Your scheduled events</span>
         </div>
 <div className="m-2 mt-2">
 
@@ -280,7 +280,7 @@ const Account=()=>{
    </div>
     </div>
    <div className
-  ="m-2"><span>Team meeting</span></div>
+  ="m-2"><span className="font-roboto">Team meeting</span></div>
 
   </div>
  <div className
@@ -289,7 +289,7 @@ const Account=()=>{
  <div className
 ="mt-6 ">
    <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
+  ="text-gray-400 text-sm font-roboto">18-04-2024</span>
  </div>
  </div>
  <span></span>
@@ -298,13 +298,13 @@ const Account=()=>{
     ="flex m-5 gap-3 mt-6">
     <div >
       <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
+    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1 font-roboto">Edit</button>
 
     </div>
      <div className
     ="">
       <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
+    ="px-4 border rounded-md text-black text-sm font-bold py-1 font-roboto">Delete</button>
 
     </div>
   </div>
@@ -371,7 +371,7 @@ const Account=()=>{
    </div>
     </div>
    <div className
-  ="m-2"><span>Team meeting</span></div>
+  ="m-2"><span className="font-roboto">Team meeting</span></div>
 
   </div>
  <div className
@@ -380,7 +380,7 @@ const Account=()=>{
  <div className
 ="mt-6 ">
    <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
+  ="text-gray-400 text-sm font-roboto">18-04-2024</span>
  </div>
  </div>
  <span></span>
@@ -389,13 +389,13 @@ const Account=()=>{
     ="flex m-5 gap-3 mt-6">
     <div >
       <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
+    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1 font-roboto">Edit</button>
 
     </div>
      <div className
     ="">
       <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
+    ="px-4 border rounded-md text-black text-sm font-bold py-1 font-roboto">Delete</button>
 
     </div>
   </div>
@@ -461,7 +461,7 @@ const Account=()=>{
    </div>
     </div>
    <div className
-  ="m-2"><span>Team meeting</span></div>
+  ="m-2"><span className="font-roboto">Team meeting</span></div>
 
   </div>
  <div className
@@ -470,7 +470,7 @@ const Account=()=>{
  <div className
 ="mt-6 ">
    <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
+  ="text-gray-400 text-sm font-roboto">18-04-2024</span>
  </div>
  </div>
  <span></span>
@@ -479,13 +479,13 @@ const Account=()=>{
     ="flex m-5 gap-3 mt-6">
     <div >
       <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
+    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1 font-roboto">Edit</button>
 
     </div>
      <div className
     ="">
       <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
+    ="px-4 border rounded-md text-black text-sm font-bold py-1 font-roboto">Delete</button>
 
     </div>
   </div>
@@ -550,7 +550,7 @@ const Account=()=>{
    </div>
     </div>
    <div className
-  ="m-2"><span>Team meeting</span></div>
+  ="m-2"><span className="font-roboto">Team meeting</span></div>
 
   </div>
  <div className
@@ -559,7 +559,7 @@ const Account=()=>{
  <div className
 ="mt-6 ">
    <span className
-  ="text-gray-400 text-sm">18-04-2024</span>
+  ="text-gray-400 text-sm font-roboto">18-04-2024</span>
  </div>
  </div>
  <span></span>
@@ -568,13 +568,13 @@ const Account=()=>{
     ="flex m-5 gap-3 mt-6">
     <div >
       <button className
-    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1">Edit</button>
+    ="px-6 border rounded-md  bg-darkBlue text-white font-bold text-sm py-1 font-roboto">Edit</button>
 
     </div>
      <div className
     ="">
       <button className
-    ="px-4 border rounded-md text-black text-sm font-bold py-1">Delete</button>
+    ="px-4 border rounded-md text-black text-sm font-bold py-1 font-roboto">Delete</button>
 
     </div>
   </div>
