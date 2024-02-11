@@ -183,7 +183,7 @@ const EventModal = () => {
                                     className='pl-2 border-0 text-gray-600 text-sm font-roboto pb-2 w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500'
                                     onChange={(e) => setStartTime(e.target.value)}
                                 />
-                                <select
+                                {/* <select
                                     className="absolute inset-0 opacity-0 cursor-pointer w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500 font-roboto text-sm "
                                     onChange={(e) => setStartTime(e.target.value)}
                                     value={startTime}
@@ -214,8 +214,8 @@ const EventModal = () => {
                                     <option value="8:30pm">8:30pm</option>
                                     <option value="9:00pm">9:00pm</option>
                                     <option value="9:30pm">9:30pm</option>
-                                    {/* Add more options as needed */}
-                                </select>
+                            
+                                </select> */}
                             </div>
                             <div className="relative">
                                 <input
@@ -227,7 +227,7 @@ const EventModal = () => {
                                     className='pl-2 border-0 text-gray-600 text-sm font-roboto pb-2 w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500 '
                                     onChange={(e) => setEndTime(e.target.value)}
                                 />
-                                <select
+                                {/* <select
                                     className="absolute inset-0 opacity-0 cursor-pointer w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
                                     onChange={(e) => setEndTime(e.target.value)}
                                     value={endTime}
@@ -258,8 +258,8 @@ const EventModal = () => {
                                     <option value="8:30pm">8:30pm</option>
                                     <option value="9:00pm">9:00pm</option>
                                     <option value="9:30pm">9:30pm</option>
-                                    {/* Add more options as needed */}
-                                </select>
+          
+                                </select> */}
                             </div>
                         </div>
                         <span></span>

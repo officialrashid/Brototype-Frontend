@@ -53,7 +53,7 @@ const TimeLineUp: React.FC = () => {
         dayTimeLine,
       };
       const events = await getTimeLineUp(data);
-      console.log(events, "response vannu makkaleee");
+      console.log(events, "response vannu makkaleee ev");
       if(events.length>0){
         console.log("set aaayannuu");
         

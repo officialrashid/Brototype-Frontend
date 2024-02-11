@@ -14,10 +14,10 @@ const ReviewerDashboard = () => {
         <Sidebar/>
         <div className="h-auto flex-1  bg-custom-background">
         <ReviewerDetails/>
-        <Graph/>
+
             <TimeLineUp/>
        
-         
+            <Graph/>
             <ScheduleTimeCard />
             <UpcomingReviews/>
 
