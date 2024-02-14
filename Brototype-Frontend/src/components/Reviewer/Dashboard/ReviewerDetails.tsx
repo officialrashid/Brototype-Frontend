@@ -1,9 +1,35 @@
-
-
-
-
+import { useEffect, useState } from "react";
+import { getReviewerProfile } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
 
 const ReviewerDetails=()=>{
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
+  const [profileInfo, setProfileInfo] = useState({});
+  useEffect(() => {
+    fetchReviewerProfile();
+  }, []);
+
+  const fetchReviewerProfile = async () => {
+    try {
+      const response = await getReviewerProfile(reviewerId);
+      console.log(response, "PPppp");
+
+      if (response?.status===true) {
+        // Assuming 'response.data.response' is an array
+        const [profileData] = response.response;
+
+        // Set the profile details in the state
+        setProfileInfo({
+          imageUrl : profileData.imageUrl,
+          // Add other properties as needed
+        });
+      } else {
+        console.error("Failed to get profile data:", response?.data?.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
     const series = [70]; //70 percent
     const options = {
       
@@ -40,7 +66,7 @@ const ReviewerDetails=()=>{
 </div>
   </div>
     <div className=" border-gray-400  h-20 w-20  flex  items-center justify-center"  >
-    <img src="/profile.jpeg" className=" h-20 w-20" alt="" />
+    <img src={profileInfo.imageUrl} className=" h-20 w-20" alt="" />
   
   </div>
 

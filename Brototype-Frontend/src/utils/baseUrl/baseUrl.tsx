@@ -6,6 +6,8 @@ const Api: AxiosInstance = axios.create({
   baseURL: "http://localhost:5001",
 });
 
+
+
 let userRole: string | null; // V6riable to store user role globally
 
 // Add a request interceptor

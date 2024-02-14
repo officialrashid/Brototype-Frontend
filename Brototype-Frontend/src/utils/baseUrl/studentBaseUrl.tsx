@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from "axios";
 import TokenValidCheck from "../../tokenValidCheck/tokenValidCheck";
 
 axios.defaults.withCredentials = true;
-
 const Api: AxiosInstance = axios.create({
   baseURL: "http://localhost:4000", 
 });

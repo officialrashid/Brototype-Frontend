@@ -140,6 +140,15 @@ export const getReviewerProfile = async (reviewerId: string) => {
     return { status: false, message: "There is some issue" };
   }
 }
+export const getReviewTakeCount = async (reviewerId: string) => {
+  try {
+
+    const response = await Api.get(`/api/reviewer/review-take-count/${reviewerId}`);
+    return response?.data?.response; // Assuming your API response has a 'data' property
+  } catch (err) {
+    return { status: false, message: "There is some issue" };
+  }
+}
 
 //// **** Get Method for Task Service ///
 

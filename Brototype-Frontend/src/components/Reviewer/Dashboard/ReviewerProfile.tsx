@@ -1,12 +1,44 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { getReviewerDetails } from "../../../utils/methods/get";
+import { getReviewerDetails, getReviewerProfile } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
 
 
 
 
 const ReviewerProfile = () => {
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const [data,setData] = useState("")
+    const [profileInfo, setProfileInfo] = useState({});
+    useEffect(() => {
+      fetchReviewerProfile();
+    }, []);
+  
+    const fetchReviewerProfile = async () => {
+      try {
+        const response = await getReviewerProfile(reviewerId);
+        console.log(response, "PPppp");
+  
+        if (response?.status===true) {
+          // Assuming 'response.data.response' is an array
+          const [profileData] = response.response;
+  
+          // Set the profile details in the state
+          setProfileInfo({
+            imageUrl : profileData.imageUrl,
+            firstName: profileData.firstName,
+            lastName: profileData.lastName,
+         
+            // Add other properties as needed
+          });
+        } else {
+          console.error("Failed to get profile data:", response?.data?.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
   useEffect(()=>{
     const fetchReviewerDetails = async ()=>{
       const reviewerId = "658b2fcbc4e61a5bab23060f";
@@ -30,17 +62,17 @@ const ReviewerProfile = () => {
 
 </div>
 <div className=" h-24 w-24  border  rounded -mt-12 mx-auto   bg-white relative dark:bg-slate-200  overflow-hidden">
-<img src="/profile.jpeg" alt="" />
+<img src={profileInfo.imageUrl} alt="" className="h-24 2-24"/>
 
   
  
 
 </div>
 <div className="m-3 text-center">
-<div><span className="font-roboto ">Muhammed Riyas</span></div>
+<div><span className="font-roboto ">{profileInfo.firstName} {profileInfo.lastName}</span></div>
 
 <div>
-     <span className="font-roboto ">MERN Stack developer</span>
+<span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer mt-3">Reviewer @Brototype</span>
 
 </div>
 
