@@ -9,7 +9,7 @@ import ReviewerRoutes from './routes/ReviewerRoutes';
 import AuthenticationRoutes from './routes/StudentAuthRoutes';
 import ReviewerAuthRoutes from './routes/ReviewerAuthRoutes';
 import AdvisorRoutes from './routes/AdvisorRoutes';
-
+import SuperLeadRoutes from "./routes/SuperLeadRoutes"
 function App() {
   return (
     <Router>
@@ -30,6 +30,7 @@ function App() {
               {/* Nested StudentRoutes */}
               <Route path="/student/*" element={<StudentRoutes />} />
               <Route path="/advisor/*" element={<AdvisorRoutes />} />
+              <Route path="/superlead/*" element={<SuperLeadRoutes />} />
             </Routes>
   
     </Router>

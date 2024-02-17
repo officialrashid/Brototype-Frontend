@@ -124,7 +124,9 @@ const ScheduleTimeCard = () => {
 
           return (
             <div key={index} className="shadow-md border border-blue-200 border-2xl rounded-lg w-full mb-2 bg-white">
-              <div className="border-b h-32 bg-blue-200 rounded-md m-4 relative">
+            <div className="border-b-2 h-32 rounded-md m-4 relative" style={{ background: 'linear-gradient(45deg, #66D3FA, #437EE3)' }}>
+  {/* Content */}
+
                 {/* Format the date */}
                 {(() => {
                   const [day, month, year] = event.date.split('-');

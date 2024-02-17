@@ -4,7 +4,7 @@ const Notification=()=>{
     return (
         <>
        
-<div className="border border-2px  rounded-md h-72 overflow-y-auto mt-5 bg-white ">
+<div className="border border-2px  rounded-md h-72 overflow-y-auto mt-2 bg-white ">
     <div className="m-2 sticky top-3">
         <span className="font-semi-bold font-roboto ">Notifications</span>
     </div>

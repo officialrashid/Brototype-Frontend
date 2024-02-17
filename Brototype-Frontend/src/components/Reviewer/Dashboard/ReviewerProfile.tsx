@@ -72,7 +72,7 @@ const ReviewerProfile = () => {
 <div><span className="font-roboto ">{profileInfo.firstName} {profileInfo.lastName}</span></div>
 
 <div>
-<span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer mt-3">Reviewer @Brototype</span>
+<span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer mt-3 font-roboto">Reviewer @Brototype</span>
 
 </div>
 

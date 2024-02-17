@@ -33,7 +33,7 @@ const Graph = () => {
         height: 250,
         type: 'area',
         toolbar: {
-          show: true,
+          show: false,
           offsetX: 0,
           offsetY: 0,
           tools: {

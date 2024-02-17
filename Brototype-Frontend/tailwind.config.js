@@ -50,7 +50,10 @@ module.exports = {
         '33rem': '33rem',
         '14.9rem': '14.9rem',
         '21.5rem':'21.5rem',
-        '47rem' : '47rem'
+        '47rem' : '47rem',
+        '4.6rem': '4.6rem',
+        '6.8rem': '6.8rem',
+        '19rem': '19rem'
         
       },
       backgroundColor: {
@@ -68,7 +71,7 @@ module.exports = {
          "reviewDetails4":"#F4E8FF",
          "reviewSmall1":"#F9597D",
          "timeLineUp":"#E6EFFB",
-         
+         "bgsuperLead":'#E7E7FF'
          
       },
       fontFamily: {
@@ -84,7 +87,12 @@ module.exports = {
         "light-white":"rgba(255,255,255,0.17)",
         'view-more': "#715DA6",
         'light-blue':"#66D3FA",
-        darkBlue:"#347dc1"
+        'dark-highBlue':'#8082FF',
+        darkBlue:"#347dc1",
+        'Good':'#70DD38',
+        "Average":"#8082FF",
+        "Poor":"#03c3ec",
+        "Outstanding":"#8492A3"
      },
     },
     plugins: {
