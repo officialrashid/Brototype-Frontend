@@ -16,6 +16,8 @@ import BestEmployeeGraph from "./BestEmployeeGraph"
 import TableNav from "../../Advisor /dashboard/TableNav"
 import NewTask from "../../Advisor /dashboard/NewTask"
 import SideSections from "./SideSections"
+import ActivityTimeLinup from "./ActivityTimeLinup"
+import AdvisorsReviewTarget from "./AdvisorsReviewTarget"
 
 
 
@@ -82,7 +84,7 @@ const Dashboard = () => {
                     <div className="border m-4 mr-0 rounded-md bg-white w-2/4 ">
                   
                         <div className="m-2 mb-0 ">
-                            <span className="font-semibold font-roboto">Best 5 Advisor</span>
+                            <span className="font-semibold font-roboto">Best 5 Advisors</span>
                             <BestEmployeeGraph/>
                         </div>
                         
@@ -93,7 +95,7 @@ const Dashboard = () => {
                         <div className="border m-4 ml-0  rounded-md bg-white w-2/4 ">
                   
                   <div className="m-2 mb-0">
-                      <span className="font-semibold font-roboto">Best 5 Reviewer</span>
+                      <span className="font-semibold font-roboto">Best 5 Reviewers</span>
                       <BestEmployeeGraph/>
                   </div>
                  <BestEmployees/>
@@ -116,26 +118,24 @@ const Dashboard = () => {
 
             </div>
 
-            <div className="flex  gap-6  mt-0  h-48 ">
-                    <div className="  bg-red-200 w-1/2  ml-52 rounded-md">
-                        fefw
-                
-            
-            </div>
-            <div className=" bg-red-400 w-1/2 h-48 mr-40  rounded-md">
-                
-  frfw
-             </div> 
-                    </div>
-
+            <div className="flex gap-6 mt-0">
+    <div className="bg-white w-1/2 ml-52 rounded-md overflow-y-auto" style={{ maxHeight: "400px" }}>
+        <div className="m-2 mb-0">
+            <span className="font-semibold font-roboto">Activity TimeLineup</span>
+            <ActivityTimeLinup />
         </div>
+    </div>
+    <div className="bg-white w-1/2 h-auto mr-40 rounded-md overflow-y-auto" style={{ maxHeight: "400px" }}>
+        <div className="m-2 mb-0">
+            <span className="font-semibold font-roboto">Advisors Review Target</span>
+            <AdvisorsReviewTarget />
+        </div>
+    </div> 
+</div>
+
+
+   </div>
             
-         
-            
-
-
-
-
 
 
         </>
