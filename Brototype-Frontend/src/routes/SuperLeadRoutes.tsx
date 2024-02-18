@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+
 import { Routes, Route } from 'react-router-dom';
 import Dashboard from '../pages/SuperLead/Dashboard';
-import Nav from '../components/SuperLead/Nav/Nav'
 import Navigation from '../components/SuperLead/Navigation/Navigation';
-
+import Students from "../pages/SuperLead/StudentList"
+import Advisors from '../pages/SuperLead/AdvisorsList';
+import Reviewrs from "../pages/SuperLead/ReviewersList"
+import FumigationStudentsList from '../pages/SuperLead/FumigationStudentsList';
 function SuperLeadRoutes() {
     //   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
 
@@ -22,7 +24,10 @@ function SuperLeadRoutes() {
                         {/* <Nav /> */}
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
-                
+                            <Route path="/students" element={<Students />} />
+                            <Route path="/advisors" element={<Advisors />} />
+                            <Route path="/reviewers" element={<Reviewrs />} />
+                            <Route path="/fumigation" element={<FumigationStudentsList />} />
                         </Routes>
                         </div>
                         {/* </div> */}

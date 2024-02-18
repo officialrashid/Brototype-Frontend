@@ -118,9 +118,9 @@ const Dashboard = () => {
 
             </div>
 
-            <div className="flex gap-6 mt-0">
-    <div className="bg-white w-1/2 ml-52 rounded-md overflow-y-auto" style={{ maxHeight: "400px" }}>
-        <div className="m-2 mb-0">
+            <div className="flex gap-6 mt-0 ">
+    <div className="bg-white w-1/2 ml-52 rounded-md ">
+        <div className="m-2 mb-0 ">
             <span className="font-semibold font-roboto">Activity TimeLineup</span>
             <ActivityTimeLinup />
         </div>
@@ -129,7 +129,7 @@ const Dashboard = () => {
         <div className="m-2 mb-0">
             <span className="font-semibold font-roboto">Advisors Review Target</span>
             <AdvisorsReviewTarget />
-        </div>
+        </div>  
     </div> 
 </div>
 
