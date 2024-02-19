@@ -8,7 +8,7 @@ function AuthenticationRoutes() {
   const [studentAccessToken, setStudentAccessToken] = useState('');
 
   useEffect(() => {
-    const studentJwt = localStorage.getItem('studentAccessToken');
+    const studentJwt:any = localStorage.getItem('studentAccessToken');
     setStudentAccessToken(studentJwt);
   }, []);
 
@@ -18,7 +18,6 @@ function AuthenticationRoutes() {
         path="/"
         element={  <StudentSignIn />}
       />
-
       <Route path="/studentOtp" element={ <StudentOtp />} />
     </Routes>
   );

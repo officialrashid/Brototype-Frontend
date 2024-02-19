@@ -8,7 +8,7 @@ function ReviewerAuthRoutes() {
   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
 
   useEffect(() => {
-    const reviewerJwt = localStorage.getItem('reviewerAccessToken');
+    const reviewerJwt:any = localStorage.getItem('reviewerAccessToken');
     setReviewerAccessToken(reviewerJwt);
   }, []);
 

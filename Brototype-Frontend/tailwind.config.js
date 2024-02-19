@@ -71,8 +71,8 @@ module.exports = {
          "reviewDetails4":"#F4E8FF",
          "reviewSmall1":"#F9597D",
          "timeLineUp":"#E6EFFB",
-         "bgsuperLead":'#E7E7FF'
-         
+         "bgsuperLead":'#E7E7FF',
+         "superLeadBackground":"#F5F5F9"
       },
       fontFamily: {
         poppins: ['Poppins', 'sans'],

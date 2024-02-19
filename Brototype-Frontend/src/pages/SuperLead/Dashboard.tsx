@@ -3,7 +3,7 @@ import Graph from "../../components/SuperLead/Dashboard/Graph";
 const Dashboard = () => {
     return (
       <>
-             <div className="h-auto flex-1  bg-custom-background">
+             <div className="h-auto flex-1  bg-superLeadBackground">
       <Dashboards/>
 {/* <Graph/> */}
    

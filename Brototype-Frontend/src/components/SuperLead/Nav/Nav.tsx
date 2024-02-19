@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Notification from '../Notification/Notification';
 const Nav = () => {
-  const [selectedMenu, setSelectedMenu] = useState("Dashboard"); // State to track selected menu item
+  const [selectedMenu, setSelectedMenu] = useState("Dashboard");
+  const [notification,setNotification] =useState() // State to track selected menu item
   const navigate = useNavigate()
   const Menus = [
     { title: "Dashboard", src: "/dashboard (3).png" },
@@ -14,7 +15,7 @@ const Nav = () => {
     { title: "Notification", src: "" },
   ];
 const handleChangeSideBar = (title:string) =>{
-  console.log("handleChangeSideBar il keriii",title);
+
   
    try {
     setSelectedMenu(title);
@@ -38,11 +39,21 @@ const handleChangeSideBar = (title:string) =>{
         
         navigate('/superlead/fumigation')
       }
+      if(title==='Chat'){
+        
+        navigate('/superlead/chat')
+      }
+      if(title==='Notification'){
+        setNotification(false)
+
+      }
+ 
    } catch (err){
 
    }
 }
   return (
+    <>
     <nav className="fixed mt-4.6rem z-30 w-full border-gray-200 bg-white shadow-md h-12  border-t-gray-20">
       <div className="m-2 mx-auto max-w-screen-xl">
         <ul className="flex items-center justify-between">
@@ -65,7 +76,10 @@ const handleChangeSideBar = (title:string) =>{
           </li>
         </ul>
       </div>
+      {notification ?  <Notification />:""}
+    
     </nav>
+    </>
   );
 }
 

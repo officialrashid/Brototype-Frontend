@@ -3,7 +3,9 @@ import FumigationStudentList from "../../components/SuperLead/FumigationStudents
 const FumigationStudentsList = () =>{
     return (
         <>
+         <div className="h-auto flex-1  bg-custom-background">
         <FumigationStudentList/>
+        </div>
         </>
     )
 
