@@ -44,7 +44,7 @@ const handleChangeSideBar = (title:string) =>{
         navigate('/superlead/chat')
       }
       if(title==='Notification'){
-        setNotification(false)
+        setNotification(true)
 
       }
  
