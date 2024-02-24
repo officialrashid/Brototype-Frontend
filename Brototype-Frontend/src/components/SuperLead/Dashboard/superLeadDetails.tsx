@@ -11,8 +11,8 @@ const SuperLeadDetails = () => {
         <div className="grid grid-rows-3 grid-flow-col gap-2 w- h-21/4 mt-36   top-0  fit">
                 <div className="bg-white l rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                        <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                        <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                        <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Students</p>
+                        <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">250</h1>
                  
 
                     <div className="m-3 ml-6  ">
@@ -31,8 +31,8 @@ const SuperLeadDetails = () => {
                 </div>
                 <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                   <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                   <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Advisors</p>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">100</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -51,8 +51,8 @@ const SuperLeadDetails = () => {
            </div>
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                   <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                   <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Reviewers</p>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">120</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -71,8 +71,8 @@ const SuperLeadDetails = () => {
            </div>
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                   <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                   <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Terminate</p>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">106</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -91,8 +91,8 @@ const SuperLeadDetails = () => {
            </div>
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                   <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                   <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Quit</p>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">110</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -111,8 +111,8 @@ const SuperLeadDetails = () => {
            </div>
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
-                   <p className='font-roboto ml-6 mt-4 text-sm text-gray-500'>student of this  Year</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">265k</h1>
+                   <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Pending</p>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">220</h1>
             
 
                <div className="m-3 ml-6  ">

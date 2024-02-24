@@ -74,7 +74,7 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
             <div
               key={idx}
               onClick={() => setSelectedEvent(evt)}
-              className={`bg-${evt.label}-500 p-1 mr-2 text-white text-sm rounded mb-1 truncate`}
+              className={`bg-${evt.label}-500 p-1 mr-2 text-white text-xs rounded mb-1 truncate`}
             >
               {evt.startTime} - {evt.endTime}
             </div>

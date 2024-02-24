@@ -22,7 +22,7 @@ const Notification = () => {
                                 <img src="https://s3.ap-south-1.amazonaws.com/brototype-students-profile/657aaa012a15acfff364bb5a/7154d64c-72ee-43a9-abf8-7c071ff2bffd" alt="" className="h-10 w-14 rounded-full" />
                             </div>
                             <div>
-                                <p className="text-xs ml-3 mt-3">Congratulation Lettie 🎉 Won the monthly best seller gold badge 1h ago</p>
+                                <p className="text-xs ml-3 mt-3">Congratulation SuperLead 🎉 Today Your Work completed </p>
                             </div>
                             <div className="">
                                 <div className="rounded-full w-2 h-2 bg-green-400 mt-6 ml-0.5 "></div>
@@ -50,7 +50,7 @@ const Notification = () => {
                                 <img src="https://s3.ap-south-1.amazonaws.com/brototype-students-profile/657aaa012a15acfff364bb5a/7154d64c-72ee-43a9-abf8-7c071ff2bffd" alt="" className="h-10 w-14 rounded-full" />
                             </div>
                             <div>
-                                <p className="text-xs ml-3 mt-3">Congratulation Lettie 🎉 Won the monthly best seller gold badge 1h ago</p>
+                                <p className="text-xs ml-3 mt-3">Rashid BCE55 Student 2 week not conducted the Review</p>
                             </div>
                             <div className="">
                                 <div className="rounded-full w-2 h-2 bg-green-400 mt-6 ml-0.5 "></div>
@@ -77,7 +77,7 @@ const Notification = () => {
                                 <img src="https://s3.ap-south-1.amazonaws.com/brototype-students-profile/657aaa012a15acfff364bb5a/7154d64c-72ee-43a9-abf8-7c071ff2bffd" alt="" className="h-10 w-14 rounded-full" />
                             </div>
                             <div>
-                                <p className="text-xs ml-3 mt-3">Congratulation Lettie 🎉 Won the monthly best seller gold badge 1h ago</p>
+                                <p className="text-xs ml-3 mt-3">Reeja Grace Sabu BCE66 Student Send Request</p>
                             </div>
                             <div className="">
                                 <div className="rounded-full w-2 h-2 bg-green-400 mt-6 ml-0.5 "></div>

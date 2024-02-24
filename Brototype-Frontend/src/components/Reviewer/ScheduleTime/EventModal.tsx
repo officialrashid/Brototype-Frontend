@@ -26,51 +26,53 @@ const EventModal = () => {
         startTime: Yup.string()
           .required('Start time is required')
           .matches(
-            /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
-            'Invalid time format (e.g., 11:30am)'
+            /^(0[1-9]|1[0-2]):[0-5][0-9](am|pm)$/,
+            'Invalid start time format. Valid examples: 09:00am, 01:00pm'
           ),
         endTime: Yup.string()
           .required('End time is required')
           .matches(
-            /^(1[0-2]|0?[1-9]):[0-5][0-9][APMapm]{2}$/,
-            'Invalid time format (e.g., 11:30am)'
+            /^(0[1-9]|1[0-2]):[0-5][0-9](am|pm)$/,
+            'Invalid end time format. Valid examples: 09:00am, 01:00pm'
           )
           .test({
             name: 'startEndTimeOrder',
-            message: 'End time must be greater than start time',
+            message: 'End time must be greater than start time and have a 30-minute gap',
             test: function (endTime) {
               const { startTime } = this.parent;
-          
+      
               if (startTime && endTime) {
                 const [startHour, startMinute, startPeriod] = startTime.match(
-                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
+                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([ap]m)$/
                 ).slice(1);
-          
+      
                 const [endHour, endMinute, endPeriod] = endTime.match(
-                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([APMapm]{2})$/
+                  /^(1[0-2]|0?[1-9]):([0-5][0-9])([ap]m)$/
                 ).slice(1);
-          
+      
                 if (startPeriod === 'am' && endPeriod === 'pm') {
                   return true;
                 }
-          
+      
                 if (startPeriod === 'pm' && endPeriod === 'am') {
                   return false;
                 }
-          
+      
                 // Compare hours and minutes
                 const startTotalMinutes = parseInt(startHour) * 60 + parseInt(startMinute);
                 const endTotalMinutes = parseInt(endHour) * 60 + parseInt(endMinute);
-          
-                return startTotalMinutes < endTotalMinutes;
+      
+                // Check if there is a 30-minute gap
+                return endTotalMinutes - startTotalMinutes >= 30;
               }
-          
+      
               return false;
             },
           }),
-          
       });
       
+    
+    
     
     
     

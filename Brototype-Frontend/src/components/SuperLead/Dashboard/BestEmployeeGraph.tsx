@@ -60,7 +60,7 @@ const BestEmployeeGraph = () => {
             <div className="chart-wrap ">
                 <div id="chart" className="flex flex-row justify-between  ">
                     <div className="m-2 mt-5">
-                        <span className="text-2xl font-roboto ">8,258</span><br></br>
+                        <span className="text-2xl font-roboto ">500</span><br></br>
                         <span className="text-sm font-roboto text-gray-500">Advisors</span>
                     </div>
                     <ReactApexChart options={options} series={series} type="donut" width={180} />

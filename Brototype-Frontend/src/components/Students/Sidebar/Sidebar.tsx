@@ -44,7 +44,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed ${open ? "w-72" : "w-20"} h-screen p-5 pt-8 relative duration-300 border shadow-xl`}
+      className={`fixed ${open ? "w-72" : "w-20"} h-screen p-5 pt-8 relative duration-300 border  border-b-0`}
     >
       {/* Apply the body class here */}
       <ul className={`pt-6 ${bodyClass}`}>

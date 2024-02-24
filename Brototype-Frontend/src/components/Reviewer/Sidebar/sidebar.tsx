@@ -29,7 +29,7 @@ function Sidebar() {
  const navigate=useNavigate()
     const dispatch=useDispatch()
   return (
-    <div className="h-screen w-14 md:w-72 text-white flex flex-col  duration-300 shadow-xl border">
+    <div className="h-screen w-14 md:w-72 text-white flex flex-col  duration-300  border border-b-0">
   <div className="py-4 px-4">
     <div>
 

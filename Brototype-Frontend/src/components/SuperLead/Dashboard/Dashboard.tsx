@@ -39,7 +39,7 @@ const Dashboard = () => {
                         <div className=" border   rounded-lg  m-4 mt-0  mb-0 h-fit bg-white  ">
                             <div className="flex justify-between m-4 h-28">
                                 <div className="mt-3">
-                                    <span className="font-roboto ">Helloo advisor!!!!!</span>
+                                    <span className="font-roboto ">Helloo Super Lead!!!!!</span>
                                     <div className="mt-2">
                                         <span className="font-roboto ">Complete your task</span>
                                     </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
 
                         <div className="border m-4 mb-0 rounded-md bg-white ">
                             <div className="m-2">
-                                <span className="font-semibold font-roboto">Weekly summary</span>
+                                <span className="font-semibold font-roboto">Year Growth</span>
                             </div>
                             <Graph />
                         </div>

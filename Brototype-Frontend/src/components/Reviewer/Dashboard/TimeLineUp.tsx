@@ -86,7 +86,7 @@ const TimeLineUp: React.FC = () => {
 
   return (
     <>
-      <div className="w-46rem  h-24rem bg-white ml-5 rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 mt-5 ">
+      <div className="w-46rem  h-24rem bg-white ml-4 rounded-xl border border-gray-300 hover hover:border-2 border-gray-300 mt-3 ">
         <div className="flex">
           <h1 className="text-md ml-8 font-roboto font-semibold mt-3">Schedule</h1>
           <div className="relative group ml-33rem mt-1">
@@ -123,7 +123,15 @@ const TimeLineUp: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <div className="text-center mt-4 text-gray-500">No events for the selected date</div>
+                <div className=" mb-0 mt-0 mr-0 ml-24 mt-4  flex flex-col ">
+                  <div className="ml-4">
+                  <img src="https://assets.calendly.com/assets/frontend/media/empty_image-f1d91552a38a1ee7e843.svg" alt="" className="w-36 h-36" />
+                  </div>
+                  <div className=" mr-8 ">
+                    <p className="font-roboto text-sm ">No events scheduled for this date</p>
+                  </div>
+                 
+                </div>
               )}
             </div>
           </div>

@@ -2,8 +2,8 @@ import React from 'react';
 
 const Notification = () => {
     return (
-        <div className="w-22.5rem h-72 bg-white right-6  mt-47rem rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute overflow-y-auto ">
-        <h1 className="font-roboto text-sm ml-3">Notofications</h1>
+        <div className="w-22.5rem h-64 bg-white right-6  mt-46.8rem mb-0 rounded-xl  border border-gray-300 hover hover:border-2 border-gray-300 absolute overflow-y-auto ">
+        <h1 className="font-roboto text-sm ml-3 mt-3">Notofications</h1>
 <div className="mt-2">
 <h1 className="text-sm font-roboto font-sm text-gray-400 ml-5">Monday 22 September 2022</h1>
 </div>

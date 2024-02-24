@@ -10,7 +10,7 @@ const Rating = () => {
     ];
     return (
         <div className="w-22.5rem h-auto bg-white right-6  mt-34rem rounded-xl  border border-gray-300 hover hover:border-2 border-gray-300 absolute">
-            <h1 className="ml-3 mt-2 text-sm font-poppins font-medium">Your Rating</h1>
+            <h1 className="ml-3 mt-3 text-sm font-poppins font-medium">Your Rating</h1>
             <div className="flex flex-row justify-between p- border-b ">
                 <div className="w-28">
                 

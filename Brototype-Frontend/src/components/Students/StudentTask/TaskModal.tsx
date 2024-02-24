@@ -121,9 +121,11 @@ console.log(mainQuestionNumber,"modal MainQuestions");
         console.log(body, "body log");
 
         if (taskNumber === 1) {
+          console.log(body,"bosy from Edit datataaa");
+          
           updateWorkout(updatePersonalWorkout, body);
         } else if (taskNumber === 2) {
-          console.log("fbhvbcxhbvhx");
+       
           updateWorkout(updateTechnicalWorkout, body);
         } else if (taskNumber === 3) {
           updateWorkout(updateMiscellaneousWorkout, body);
@@ -138,7 +140,12 @@ console.log(mainQuestionNumber,"modal MainQuestions");
     if (modalType === 'Edit') {
       const updatedEditData = [...editData];  // Create a new array
       updatedEditData[index].answer = e.target.value;  // Update the specific element
-      setEditData(updatedEditData);  // Set the state with the updated array
+      setEditData(updatedEditData);  
+      console.log(`answers.${questionNumber}`,"edit data not updated dbdd");
+      console.log(e.target.value,"edit data notupdated db");
+      
+           
+      formik.setFieldValue(`answers.${questionNumber}`, e.target.value); // Set the state with the updated array
     }else{
       console.log(e.target.value,"e.target.value");
       

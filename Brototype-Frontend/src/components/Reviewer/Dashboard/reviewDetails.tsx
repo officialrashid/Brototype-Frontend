@@ -24,7 +24,7 @@ const [data,setData] = useState("")
         className="flex"
 
       >
-            <div className="flex gap-6 ml-5 mt-2 h-36">
+            <div className="flex gap-6 ml-5 mt- h-36">
               <motion.div className="bg- shadow-xl rounded-xl border border-gray-300 hover hover:border-2 border-gray-300"
                 whileHover={{ scale: 1.1 }}
               >

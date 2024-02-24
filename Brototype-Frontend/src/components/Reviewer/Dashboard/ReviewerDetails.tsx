@@ -55,10 +55,10 @@ const ReviewerDetails=()=>{
 
     return (
         <>
-        <div className="flex justify-between ">
+        <div className="flex justify-between mb-0">
             <div className="w-4/6 "> 
             <div className=" border   rounded-lg  m-4 mt-6  mb-0 h-fit bg-white  ">
-  <div className="flex justify-between m-4 ">
+  <div className="flex justify-between m-4 mb-">
       <div>
 <span className="font-roboto">Helloo reviewer!!!!!</span>
 <div>

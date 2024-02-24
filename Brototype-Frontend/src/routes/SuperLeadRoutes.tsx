@@ -7,7 +7,8 @@ import Advisors from '../pages/SuperLead/AdvisorsList';
 import Reviewrs from "../pages/SuperLead/ReviewersList"
 import FumigationStudentsList from '../pages/SuperLead/FumigationStudentsList';
 import Chat from "../pages/SuperLead/Chat"
-import ViewStudent from '../pages/SuperLead/ViewStudent';
+import ViewStudent from '../pages/SuperLead/ViewStudent';;
+import ProfileUpdateForm from '../pages/SuperLead/ProfileUpdateForm';
 function SuperLeadRoutes() {
     //   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
 
@@ -32,7 +33,7 @@ function SuperLeadRoutes() {
                             <Route path="/fumigation" element={<FumigationStudentsList />} />
                             <Route path="/chat" element={<Chat />} />
                             <Route path="/viewStudent" element={<ViewStudent />} />
-                      
+                            <Route path="/profileUpdate" element={<ProfileUpdateForm />} />
                         </Routes>
                         </div>
                         {/* </div> */}

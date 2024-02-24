@@ -56,7 +56,7 @@ const ReviewerProfile = () => {
     return (
         <div className="w-22.5rem h-auto bg-white right-6 mb-48rem mt-6 rounded-xl  absolute" >
               
-        <div className="border border-2px  rounded-lg w-full mb-2 bg-white ">
+        <div className="  rounded-lg w-full mb-2 bg-white ">
 <div className=" border-b  h-20 bg-slate-200  rounded-t-lg">
 
 
@@ -124,7 +124,8 @@ const ReviewerProfile = () => {
     </div>
 
   </div>
-  <p className="text-white">hello reviewer</p>
+  <p className="text-white h-7">hello reviewer</p>
+  
 </div>
 
 </div>

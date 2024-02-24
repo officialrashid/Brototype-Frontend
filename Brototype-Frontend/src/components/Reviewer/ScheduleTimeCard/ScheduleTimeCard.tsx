@@ -123,7 +123,7 @@ const ScheduleTimeCard = () => {
 
 
           return (
-            <div key={index} className="shadow-md border border-blue-200 border-2xl rounded-lg w-full mb-2 bg-white">
+            <div key={index} className="shadow-sm border border-blue-200 border-2xl rounded-lg w-full mb-1 bg-white">
             <div className="border-b-2 h-32 rounded-md m-4 relative bg-blue-100" >
   {/* Content */}
 
@@ -144,7 +144,7 @@ const ScheduleTimeCard = () => {
                   );
                 })()}
               </div>
-              <div className="m-4">
+              <div className="m-4 mb-0">
                 <div className="flex gap-3">
                   <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

@@ -130,9 +130,10 @@ const AdvisorList = () => {
                         <thead className="text-xs font-roboto text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ">
                             <tr className=''>
                                 <th scope="col" className="px-4 py-3 ">Name</th>
-                                <th scope="col" className="px-4 py-3 item text-center">Batch</th>
-                                <th scope="col" className="px-4 py-3 item text-center">Domain</th>
-                                <th scope="col" className="px-4 py-3 item text-center">Current Week</th>
+                                <th scope="col" className="px-4 py-3 item text-center">HubLocation/Remote</th>
+                                <th scope="col" className="px-4 py-3 item text-center">Qualification</th>
+                                <th scope="col" className="px-4 py-3 item text-center">Mobile</th>
+                              
                                 <th scope="col" className="px-4 py-3 item text-center">Status</th>
                                 <th scope="col" className="px-4 py-3 item text-center ">Action</th>
                             </tr>
@@ -143,9 +144,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -175,9 +176,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -207,9 +208,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -239,9 +240,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -271,9 +272,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -303,9 +304,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -335,9 +336,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -367,9 +368,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -399,9 +400,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
@@ -431,9 +432,9 @@ const AdvisorList = () => {
                                     <img src="/profile.jpeg" alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
                                     Rashid
                                 </th>
-                                <td className="px-4 py-3 text-ms font-roboto">BCE55</td>
-                                <td className="px-4 py-3 text-sm font-roboto">Mern Stack</td>
-                                <td className="px-4 py-3 text-sm font-roboto">28</td>
+                                <td className="px-4 py-3 text-ms font-roboto">Kochi</td>
+                                <td className="px-4 py-3 text-sm font-roboto">Btech</td>
+                                <td className="px-4 py-3 text-sm font-roboto">9526603473</td>
                                 <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span></td>
 
 
