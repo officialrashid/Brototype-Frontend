@@ -288,3 +288,16 @@ export const updateMiscellaneousWorkout = async (data:any)=>{
 
 }
 
+/// ******* superlead post method section *****///
+export const superleadLogin = async (data:any)=>{
+  console.log(data,"data uniqueId in superlEadsss");
+  
+  try {
+   const resposne = await Api.post('/api/auth/superlead-login',data)
+   return resposne
+  } catch(err){
+    return {status:false,message:"some issue in the Address details update"}
+  }
+
+
+}

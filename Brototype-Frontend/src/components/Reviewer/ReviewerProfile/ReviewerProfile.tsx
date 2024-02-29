@@ -12,7 +12,7 @@ const ReviewerProfile = () => {
  
   useEffect(() => {
     fetchReviewerProfile();
-  }, []);
+  }, [profileInfo, setProfileInfo]);
 
   const fetchReviewerProfile = async () => {
     try {

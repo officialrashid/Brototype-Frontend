@@ -13,8 +13,8 @@ const EventModal = () => {
     const labelsClasses = ["yellow", "orange", "blue", "red"];
     const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
     const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
-    const [startTime, setStartTime] = useState(selectedEvent ? selectedEvent.startTime || "9:00am" : "9:00am");
-    const [endTime, setEndTime] = useState(selectedEvent ? selectedEvent.endTime || "9:30am" : "9:30am");
+    const [startTime, setStartTime] = useState(selectedEvent ? selectedEvent.startTime || "09:00am" : "09:00am");
+    const [endTime, setEndTime] = useState(selectedEvent ? selectedEvent.endTime || "09:30am" : "09:30am");
     const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
     const [selectedLabel, setSelctedLabel] = useState(
         selectedEvent
@@ -179,89 +179,25 @@ const EventModal = () => {
                                 <input
                                     type="text"
                                     name='startTime'
-                                    placeholder="1:00am"
+                                    placeholder="09:00am"
                                     value={startTime}
                                     required
                                     className='pl-2 border-0 text-gray-600 text-sm font-roboto pb-2 w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500'
                                     onChange={(e) => setStartTime(e.target.value)}
                                 />
-                                {/* <select
-                                    className="absolute inset-0 opacity-0 cursor-pointer w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500 font-roboto text-sm "
-                                    onChange={(e) => setStartTime(e.target.value)}
-                                    value={startTime}
-                                >
-                               <option value="9:00am">9:00am</option>
-                                    <option value="9:30am">9:30am</option>
-                                    <option value="10:00am">10:00am</option>
-                                    <option value="10:30am">10:30am</option>
-                                    <option value="11:00am">11:00am</option>
-                                    <option value="11:30am">11:30am</option>  
-                                    <option value="12:00pm">12:00am</option>
-                                    <option value="12:30pm">12:30am</option>
-                                    <option value="1:00pm">1:00pm</option>
-                                    <option value="1:30pm">1:30pm</option>
-                                    <option value="2:00pm">2:00pm</option>
-                                    <option value="2:30pm">2:30pm</option>
-                                    <option value="3:00pm">3:00pm</option>
-                                    <option value="3:30pm">3:30pm</option>
-                                    <option value="4:00pm">4:00pm</option>
-                                    <option value="4:30pm">4:30pm</option>
-                                    <option value="5:00pm">5:00pm</option>
-                                    <option value="5:30pm">5:30pm</option>
-                                    <option value="6:00pm">6:00pm</option>
-                                    <option value="6:30pm">6:30pm</option>
-                                    <option value="7:00pm">7:00pm</option>
-                                    <option value="7:30pm">7:30pm</option>
-                                    <option value="8:00pm">8:00pm</option>
-                                    <option value="8:30pm">8:30pm</option>
-                                    <option value="9:00pm">9:00pm</option>
-                                    <option value="9:30pm">9:30pm</option>
-                            
-                                </select> */}
+                               
                             </div>
                             <div className="relative">
                                 <input
                                     type="text"
                                     name='endTime'
-                                    placeholder="1:00am"
+                                    placeholder="10:30am"
                                     value={endTime}
                                     required
                                     className='pl-2 border-0 text-gray-600 text-sm font-roboto pb-2 w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500 '
                                     onChange={(e) => setEndTime(e.target.value)}
                                 />
-                                {/* <select
-                                    className="absolute inset-0 opacity-0 cursor-pointer w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500"
-                                    onChange={(e) => setEndTime(e.target.value)}
-                                    value={endTime}
-                                >
-                                  <option value="9:00am">9:00am</option>
-                                    <option value="9:30am">9:30am</option>
-                                    <option value="10:00am">10:00am</option>
-                                    <option value="10:30am">10:30am</option>
-                                    <option value="11:00am">11:00am</option>
-                                    <option value="11:30am">11:30am</option>  
-                                    <option value="12:00pm">12:00am</option>
-                                    <option value="12:30pm">12:30am</option>
-                                    <option value="1:00pm">1:00pm</option>
-                                    <option value="1:30pm">1:30pm</option>
-                                    <option value="2:00pm">2:00pm</option>
-                                    <option value="2:30pm">2:30pm</option>
-                                    <option value="3:00pm">3:00pm</option>
-                                    <option value="3:30pm">3:30pm</option>
-                                    <option value="4:00pm">4:00pm</option>
-                                    <option value="4:30pm">4:30pm</option>
-                                    <option value="5:00pm">5:00pm</option>
-                                    <option value="5:30pm">5:30pm</option>
-                                    <option value="6:00pm">6:00pm</option>
-                                    <option value="6:30pm">6:30pm</option>
-                                    <option value="7:00pm">7:00pm</option>
-                                    <option value="7:30pm">7:30pm</option>
-                                    <option value="8:00pm">8:00pm</option>
-                                    <option value="8:30pm">8:30pm</option>
-                                    <option value="9:00pm">9:00pm</option>
-                                    <option value="9:30pm">9:30pm</option>
-          
-                                </select> */}
+                               
                             </div>
                         </div>
                         <span></span>

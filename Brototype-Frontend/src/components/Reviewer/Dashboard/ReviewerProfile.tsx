@@ -85,7 +85,7 @@ const ReviewerProfile = () => {
           <img src="/success.png" alt="" className="h-8 ml-1 " />
           <h1 className="font-roboto text-2xl ml-8 font-medium ">{data?.dayReviewCount}</h1>
         </div>
-        <h1 className="font-roboto text-sm ml-1 font-medium mt-3 text-gray-400 absolute">Today Review Count</h1>
+        <h1 className="font-roboto text-xs ml-2 font-medium mt-3 text-gray-400 absolute">Today Review Count</h1>
         <img src="/success.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
       </motion.div>
     </div>
@@ -95,7 +95,7 @@ const ReviewerProfile = () => {
           <img src="weekPerformance.png" alt="" className="h-8 ml-1 " />
           <h1 className="font-roboto text-2xl ml-8 font-medium  ">{data.dayTakeReviewCount}</h1>
         </div>
-        <h1 className="font-roboto text-sm ml- font-medium mt-3 text-gray-400 absolute">Review Took Oneday</h1>
+        <h1 className="font-roboto text-xs ml-2 font-medium mt-3 text-gray-400 absolute">Review Took Oneday</h1>
         <img src="/weekPerformance.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
       </motion.div>
     </div>
@@ -108,7 +108,7 @@ const ReviewerProfile = () => {
           <img src="/performance (1).png" alt="" className="h-8 ml-1 " />
           <h1 className="font-roboto text-2xl ml-8 font-medium ">{data?.oneMonthReviewCount}</h1>
         </div>
-        <h1 className="font-roboto text-sm ml-1 font-medium mt-3 text-gray-400 absolute">Today Review Count</h1>
+        <h1 className="font-roboto text-xs ml-2 font-medium mt-3 text-gray-400 absolute">Monthly Review Count</h1>
         <img src="/performance (1).png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
       </motion.div>
     </div>
@@ -118,7 +118,7 @@ const ReviewerProfile = () => {
           <img src="/failure.png" alt="" className="h-8 ml-1 " />
           <h1 className="font-roboto text-2xl ml-8 font-medium  ">{data.totalReviewCount}</h1>
         </div>
-        <h1 className="font-roboto text-sm ml- font-medium mt-3 text-gray-400 absolute">Review Took Oneday</h1>
+        <h1 className="font-roboto text-xs ml-2 font-medium mt-3 text-gray-400 absolute">Total Review Count</h1>
         <img src="/failure.png" alt="" className="h-12 w-12 ml-20 relative opacity-5" />
       </motion.div>
     </div>

@@ -5,6 +5,7 @@ import { combineReducers } from 'redux'; // Add this line
 import otpReducer from './otpReducer';
 import studentReducer from './studentReducer';
 import reviewerReducer from './reviewerReducer';
+import superleadReducer from './superleadReducer';
 const persistConfig = {
   key: 'root',
   storage,
@@ -15,7 +16,8 @@ const persistedReducer = persistReducer(
   combineReducers({
    otp : otpReducer,
    student:studentReducer,
-   reviewer: reviewerReducer
+   reviewer: reviewerReducer,
+   superlead: superleadReducer
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;

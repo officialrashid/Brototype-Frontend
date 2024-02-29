@@ -8,6 +8,7 @@ import StudentRoutes from './routes/StudentRoutes'; // Import StudentRoutes
 import ReviewerRoutes from './routes/ReviewerRoutes';
 import AuthenticationRoutes from './routes/StudentAuthRoutes';
 import ReviewerAuthRoutes from './routes/ReviewerAuthRoutes';
+import SuperleadAuthRoutes from './routes/SuperleadAuthRoutes';
 import AdvisorRoutes from './routes/AdvisorRoutes';
 import SuperLeadRoutes from "./routes/SuperLeadRoutes"
 function App() {
@@ -23,7 +24,7 @@ function App() {
               <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes/>} />
               <Route path="/studentIn/*" element={<AuthenticationRoutes/>} />
               <Route path="/advisorIn/*" element={<AuthenticationRoutes/>} />
-
+              <Route path="/superleadIn/*" element={<SuperleadAuthRoutes/>} />
 
               <Route path="/reviewer/*" element={<ReviewerRoutes />} />
           
