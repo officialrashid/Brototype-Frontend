@@ -13,3 +13,13 @@ export const updateEvents = async (data:any)=>{
     }
   
   }
+  export const updateStudentStatus = async (data:any)=>{
+    try {
+     const resposne = await Api.patch('/api/auth/update-student-status',data)
+     return resposne?.data?.response
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
+  

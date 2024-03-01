@@ -2,15 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getStudentStatus, getStudents } from '../../../utils/methods/get';
 import ActionModal from './ActionModal';
+import { tree } from 'd3';
 
 const StudentList = () => {
     const [students, setStudents] = useState([])
-    const [currentWeek, setCurrentWeek] = useState([])
-    const [studentStatus, setStudentStatus] = useState([])
+    const [currentWeek, setCurrentWeek] = useState([]||null)
+    const [studentStatus, setStudentStatus] = useState([]||null)
     const [modalActive, setModalActive] = useState(false)
     const [studentId, setStudentId] = useState("")
-    const [modalStatus,setModalStatus] = useState(false)
-    const [status,setStatus] =useState("")
+    const [modalStatus, setModalStatus] = useState(false)
+    const [status, setStatus] = useState("")
+    const [reload, setReload] = useState(false)
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filterData,setFilteredData] = useState([]||null)
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId")
 
     useEffect(() => {
@@ -35,29 +39,74 @@ const StudentList = () => {
             }
         }
         fechStudents()
-    }, [])
+    }, [reload])
     const handleActionChange = (studentId: string) => {
 
         try {
             setStudentId(studentId)
             setModalActive(true)
             setModalStatus(true)
+            setReload(false)
         } catch (error) {
 
         }
     }
-    const changeModalStatus = () =>{
-        if(modalStatus){
+    const changeModalStatus = () => {
+        if (modalStatus) {
             setModalActive(false)
             setModalStatus(false)
-        }else{
+            setReload((prevState) => !prevState);
+        } else {
             setModalStatus(true)
+            setReload((prevState) => !prevState);
         }
     }
-  
+    const handleSearchInputChange = (event) => {
+        const query = event.target.value.toLowerCase();
+        setSearchQuery(query);
+    
+        // Combine all data into one array
+        const combinedData = [
+            ...students,
+            ...studentStatus.map(({ studentId, ...rest }) => ({ ...rest, studentId })),
+            ...currentWeek.map(({ studentId, ...rest }) => ({ ...rest, studentId })),
+        ];
+    
+        // Filter the combined data based on the search query
+        const filtered:any = combinedData.filter((data) => {
+
+            const firstName = data.firstName ? data.firstName.toLowerCase() : '';
+            const lastName = data.lastName ? data.lastName.toLowerCase() : '';
+            const domain = data.domain ? data.domain.toLowerCase() : '';
+            const batch = data.batch ? data.batch.toLowerCase() : '';
+            const currentWeek = data.currentWeek ? data.currentWeek.toLowerCase() : '';
+    
+            // Check if any property matches the query
+            const propertyMatches = (
+                firstName.includes(query) ||
+                lastName.includes(query) ||
+                domain.includes(query) ||
+                batch.includes(query) ||
+                currentWeek.includes(query)
+            );
+    
+            // Check if isStatus matches exactly
+            const isStatusMatch = data.isStatus && data.isStatus.toLowerCase() === query;
+    
+            // Return true if any property matches or if isStatus matches exactly
+            return propertyMatches || isStatusMatch;
+        });
+    
+        // Update the state with the filtered results
+        setFilteredData(filtered);
+    };
+    
+    
+    
+
     return (
         <>
-            <section className=" p-3 sm:p-5 mt-36 w-full " onClick={()=> changeModalStatus()}>
+            <section className=" p-3 sm:p-5 mt-36 w-full " onClick={() => changeModalStatus()}>
                 <div className="mx-auto max-w-screen-xl px-4 lg:px-12 ">
 
                     <div className="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden ">
@@ -147,7 +196,13 @@ const StudentList = () => {
                                                     <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
-                                            <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto" required="" placeholder='Search...' />
+                                            <input 
+                                            type="text" 
+                                            id="simple-search" 
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto" required placeholder='Search...'
+                                            value={searchQuery}
+                                            onChange={handleSearchInputChange} 
+                                            />
                                         </div>
 
 
@@ -193,10 +248,85 @@ const StudentList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {students.map((student, index) => (
+                                {filterData.length > 0 ? (
+                                     filterData.map((student, index) => (
+                                    <tr key={index} className="border-b dark:border-gray-700 item text-center">
+                                    <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
+                                        <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
+                                        {student?.firstName} {student?.lastName}
+                                    </th>
+                                    <td className="px-4 py-3 text-ms font-roboto">{student?.batch}</td>
+                                    <td className="px-4 py-3 text-sm font-roboto">{student?.domain}</td>
+                                    {currentWeek.map((week, idx) => (
+                                        // Check if the studentId matches and render the current week
+                                        (student.studentId === week.studentId) &&
+                                        <td key={idx} className="px-4 py-3 text-sm font-roboto">{week.currentWeek}</td>
+                                    ))}
+                                    {studentStatus.map((status, idx) => (
+                                        <React.Fragment key={idx}>
+
+                                            {student.studentId === status.studentId && status.isStatus === "Active" ? (
+                                                // Render this block if the condition is true
+                                                <td className="px-4 py-3" key={idx}>
+                                                    <span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span>
+                                                </td>
+                                            ) : student.studentId === status.studentId && status.isStatus === "Terminate" ? (
+                                                // Render this block if the else if condition is true
+                                                <td className="px-4 py-3" key={idx}>
+                                                    <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
+                                                </td>
+                                            ) : student.studentId === status.studentId && status.isStatus === "Suspend" ? (
+                                                <td className="px-4 py-3" key={idx}>
+                                                    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-gray-10 text-Outstanding ring-Outstanding font-roboto text-xs">Suspend</span>
+                                                </td>
+                                            ) : student.studentId === status.studentId && status.isStatus === "Quit" ? (
+                                                <td className="px-4 py-3" key={idx}>
+                                                    <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Quit</span>
+                                                </td>
+                                            ) : student.studentId === status.studentId && status.isStatus === "Placed" ? (
+                                                <td className="px-4 py-3" key={idx}>
+                                                    <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-blue-10 text-Poor ring-Poor font-roboto">Placed</span>
+                                                </td>
+                                            ) : null}
+                                        </React.Fragment>
+                                    ))}
+
+                                    <td className="px-4 py-3">
+
+                                        <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(student?.studentId, status.isStatus)}>
+                                            {student.studentId === studentId ? (
+                                                <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus} />
+                                            ) : null}
+                                            <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                            </svg>
+
+                                        </button>
+
+
+
+
+                                        <div id="apple-imac-27-dropdown" className="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                            <ul className="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="apple-imac-27-dropdown-button">
+                                                <li>
+                                                    <a href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Show</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                </li>
+                                            </ul>
+                                            <div className="py-1">
+                                                <a href="#" className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        ))
+                        ) : (
+                                    students.map((student, index) => (
                                         <tr key={index} className="border-b dark:border-gray-700 item text-center">
                                             <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
-                                                <img src={student?.imageUrl} alt="iMac Front Image" className="w-auto h-8 mr-3 rounded-full" />
+                                                <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
                                                 {student?.firstName} {student?.lastName}
                                             </th>
                                             <td className="px-4 py-3 text-ms font-roboto">{student?.batch}</td>
@@ -208,7 +338,7 @@ const StudentList = () => {
                                             ))}
                                             {studentStatus.map((status, idx) => (
                                                 <React.Fragment key={idx}>
-                                                    
+
                                                     {student.studentId === status.studentId && status.isStatus === "Active" ? (
                                                         // Render this block if the condition is true
                                                         <td className="px-4 py-3" key={idx}>
@@ -221,32 +351,32 @@ const StudentList = () => {
                                                         </td>
                                                     ) : student.studentId === status.studentId && status.isStatus === "Suspend" ? (
                                                         <td className="px-4 py-3" key={idx}>
-                                                            <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
+                                                            <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-gray-10 text-Outstanding ring-Outstanding font-roboto text-xs">Suspend</span>
                                                         </td>
                                                     ) : student.studentId === status.studentId && status.isStatus === "Quit" ? (
                                                         <td className="px-4 py-3" key={idx}>
-                                                            <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
+                                                            <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Quit</span>
                                                         </td>
                                                     ) : student.studentId === status.studentId && status.isStatus === "Placed" ? (
                                                         <td className="px-4 py-3" key={idx}>
-                                                            <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
+                                                            <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-blue-10 text-Poor ring-Poor font-roboto">Placed</span>
                                                         </td>
                                                     ) : null}
                                                 </React.Fragment>
                                             ))}
 
                                             <td className="px-4 py-3">
-                                                
-                                                <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(student?.studentId,status.isStatus)}>
-                                                {student.studentId === studentId ? (
-                                                    <ActionModal isVisible={modalActive} onClose={()=>setModalActive(false)} studentId={studentId} status ={status.isStatus}  />
-                                                ):null}
+
+                                                <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(student?.studentId, status.isStatus)}>
+                                                    {student.studentId === studentId ? (
+                                                        <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus} />
+                                                    ) : null}
                                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                         <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                                     </svg>
-                                         
+
                                                 </button>
-                                        
+
 
 
 
@@ -265,7 +395,8 @@ const StudentList = () => {
                                                 </div>
                                             </td>
                                         </tr>
-                                    ))}
+                                    ))
+                        )}
 
                                 </tbody>
                             </table>

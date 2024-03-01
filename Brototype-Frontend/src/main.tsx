@@ -27,7 +27,7 @@ ReactDOM.render(
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="colored"
+   
       />
       <ContextWrapper>
         <App />

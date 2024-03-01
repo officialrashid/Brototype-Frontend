@@ -1,13 +1,33 @@
 import { useNavigate } from "react-router-dom";
+import { updateStudentStatus } from "../../../utils/methods/patch";
+import { toast } from "react-toastify";
 
-const ActionModal = ({ isVisible, onClose,studentId }) => {
+const ActionModal = ({ isVisible, onClose,studentId,changeModalStatus }) => {
 const navigate = useNavigate()
 
-    const handleEvent=(event:any,action:string)=>{
-        event.stopPropagation()
-      if(action==='View'){
-        navigate('/superlead/viewStudent',{ state: { studentId } }) 
-      }
+    const handleEvent= async (event:any,action:string)=>{
+        try {
+            event.stopPropagation()
+            if(action==='View'){
+              navigate('/superlead/viewStudent',{ state: { studentId } }) 
+            }else{
+                const studentStatusData = {
+                    studentId,
+                    action
+                }
+               const response = await updateStudentStatus(studentStatusData)
+                if(response.status===true){
+                    toast.success("status update succeessfully")
+                    changeModalStatus()
+                }else{
+                    toast.warn("student not found")
+                }
+               
+            }
+        } catch (error) {
+            
+        }
+   
     }
     if (isVisible) {
         return (
@@ -17,19 +37,19 @@ const navigate = useNavigate()
                         <p className="font-serif text-sm m-4 mb-0 pt-1">View</p>
                     </div>
                     <div className="w-full h-8 hover:bg-gray-200">
-                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event)}}>Active</p>
+                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event,"Active")}}>Active</p>
                     </div>
                     <div className="w-full h-8 hover:bg-gray-200">
-                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0"onClick={(event)=>{handleEvent(event)}}>Terminate</p>
+                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0"onClick={(event)=>{handleEvent(event,"Terminate")}}>Terminate</p>
                     </div>
                     <div className="w-full h-8 hover:bg-gray-200">
-                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event)}}>Suspend</p>
+                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event,"Suspend")}}>Suspend</p>
                     </div>
                     <div className="w-full h-8 hover:bg-gray-200">
-                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event)}}>Quit</p>
+                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event,"Quit")}}>Quit</p>
                     </div>
                     <div className="w-full h-8 hover:bg-gray-200">
-                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event)}}>Placed</p>
+                        <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event)=>{handleEvent(event,"Placed")}}>Placed</p>
                     </div>
                 </div>
             </div>
