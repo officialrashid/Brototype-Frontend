@@ -202,3 +202,29 @@ export const getTechnicalWorkout = async (data:any) => {
     return { status: false, message: "There is some issue" };
   }
 }
+
+//// ****** Get Api For Superleads ******* ///////
+
+
+export const getStudents = async (uniqueId:string) =>{
+   console.log(uniqueId,"uniqueIDddd");
+   
+   try {
+      const response = await studentApi.get(`/api/student/get-all-students/${uniqueId}`)
+      return response?.data;
+   } catch (error) {
+    
+   }
+
+}
+export const getStudentStatus = async (uniqueId:string) =>{
+  console.log(uniqueId,"uniqueIDddd");
+  
+  try {
+     const response = await Api.get(`/api/auth/get-all-students-status/${uniqueId}`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
