@@ -58,9 +58,10 @@ const AddReviewerModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
           toast.success("Reviewer Created Succefully")
           onClose();
          }else{
-          
+          toast.warn("Reviewer Created not Success")
+          onClose()
          }
-       
+       onClose()
       } catch (error) {
         console.error('Error uploading data:', error);
       }

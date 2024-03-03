@@ -1,7 +1,7 @@
 ///// **********   //////
 
 import Api from "../baseUrl/baseUrl"
-
+import studentApi from "../baseUrl/studentBaseUrl"
 export const updateEvents = async (data:any)=>{
     console.log(data,")()((&&&&&&&&");
     
@@ -22,4 +22,14 @@ export const updateEvents = async (data:any)=>{
     }
   
   }
+  export const updateReviewerStatus = async (data:any)=>{
+    try {
+     const resposne = await studentApi.patch('/api/auth/update-reviewer-status',data)
+     return resposne?.data?.response
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
+  
   
