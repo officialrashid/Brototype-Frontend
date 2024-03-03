@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../../../context/GlobalContext';
 import { toast } from 'react-toastify';
 import { getScheduleEvents } from '../../../utils/methods/get';
+import { useSelector } from 'react-redux';
 
 interface DayProps {
   day: any;
@@ -14,10 +15,9 @@ interface DayProps {
 const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
   const [dayEvents, setDayEvents] = useState([]);
   const { setDaySelected, setShowEventModal, savedEvents, setSelectedEvent, dispatchCalEvent ,showEventModal} = useContext(GlobalContext);
-
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   useEffect(() => {
     const fetchScheduleEvents = async () => {
-      const reviewerId = "658b2fcbc4e61a5bab23060f";
       try {
         console.log("Fetching Schedule Events...");
 

@@ -228,3 +228,30 @@ export const getStudentStatus = async (uniqueId:string) =>{
   }
 
 }
+export const getHubWiseStudentsDetails = async (uniqueId:string) =>{
+  try {
+     const response = await Api.get(`/api/auth/get-hubwise-students-details/${uniqueId}`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
+export const getAllReviewers = async () =>{
+  try {
+     const response = await Api.get(`/api/reviewer/get-all-reviewers-profile`)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
+export const getReviewerStatus = async () =>{
+  try {
+     const response = await studentApi.get(`/api/auth/get-all-reviewers-status`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}

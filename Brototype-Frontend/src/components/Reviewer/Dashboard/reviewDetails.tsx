@@ -1,12 +1,13 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { getReviewerDetails } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
 
 const ReviewDetails = () => {
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
 const [data,setData] = useState("")
   useEffect(()=>{
     const fetchReviewerDetails = async ()=>{
-      const reviewerId = "658b2fcbc4e61a5bab23060f";
        const response = await getReviewerDetails(reviewerId)
        console.log(response,"review all detailas");
        setData(response)

@@ -5,16 +5,16 @@ import ActionModal from './ActionModal';
 import { tree } from 'd3';
 
 const StudentList = () => {
-    const [students, setStudents] = useState([])
-    const [currentWeek, setCurrentWeek] = useState([]||null)
-    const [studentStatus, setStudentStatus] = useState([]||null)
+    const [students, setStudents] = useState([]);
+    const [currentWeek, setCurrentWeek] = useState([]);
+    const [studentStatus, setStudentStatus] = useState([]);
     const [modalActive, setModalActive] = useState(false)
     const [studentId, setStudentId] = useState("")
     const [modalStatus, setModalStatus] = useState(false)
     const [status, setStatus] = useState("")
     const [reload, setReload] = useState(false)
     const [searchQuery, setSearchQuery] = useState('');
-    const [filterData,setFilteredData] = useState([]||null)
+    const [filteredData, setFilteredData] = useState([]);
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId")
 
     useEffect(() => {
@@ -68,30 +68,25 @@ const StudentList = () => {
         // Combine all data into one array
         const combinedData = [
             ...students,
-            ...studentStatus.map(({ studentId, ...rest }) => ({ ...rest, studentId })),
-            ...currentWeek.map(({ studentId, ...rest }) => ({ ...rest, studentId })),
+            ...(studentStatus || []).map(({ studentId, ...rest }) => ({ ...rest, studentId })),
+            ...(currentWeek || []).map(({ studentId, ...rest }) => ({ ...rest, studentId })),
         ];
     
         // Filter the combined data based on the search query
         const filtered:any = combinedData.filter((data) => {
-
-            const firstName = data.firstName ? data.firstName.toLowerCase() : '';
-            const lastName = data.lastName ? data.lastName.toLowerCase() : '';
-            const domain = data.domain ? data.domain.toLowerCase() : '';
-            const batch = data.batch ? data.batch.toLowerCase() : '';
-            const currentWeek = data.currentWeek ? data.currentWeek.toLowerCase() : '';
+            const { firstName, lastName, domain, batch, currentWeek, isStatus } = data ?? {};
     
             // Check if any property matches the query
             const propertyMatches = (
-                firstName.includes(query) ||
-                lastName.includes(query) ||
-                domain.includes(query) ||
-                batch.includes(query) ||
-                currentWeek.includes(query)
+                (firstName?.toLowerCase() ?? '').includes(query) ||
+                (lastName?.toLowerCase() ?? '').includes(query) ||
+                (domain?.toLowerCase() ?? '').includes(query) ||
+                (batch?.toLowerCase() ?? '').includes(query) ||
+                ((currentWeek?.toString() ?? '').toLowerCase() ?? '').includes(query)
             );
     
             // Check if isStatus matches exactly
-            const isStatusMatch = data.isStatus && data.isStatus.toLowerCase() === query;
+            const isStatusMatch = isStatus && isStatus.toLowerCase() === query;
     
             // Return true if any property matches or if isStatus matches exactly
             return propertyMatches || isStatusMatch;
@@ -100,6 +95,7 @@ const StudentList = () => {
         // Update the state with the filtered results
         setFilteredData(filtered);
     };
+    
     
     
     
@@ -248,8 +244,8 @@ const StudentList = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {filterData.length > 0 ? (
-                                     filterData.map((student, index) => (
+                                {filteredData.length > 0 ? (
+                                     filteredData.map((student, index) => (
                                     <tr key={index} className="border-b dark:border-gray-700 item text-center">
                                     <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
                                         <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
@@ -322,8 +318,11 @@ const StudentList = () => {
                                     </td>
                                 </tr>
                         ))
-                        ) : (
+                        ) : (        
+                    
+                                   
                                     students.map((student, index) => (
+                           
                                         <tr key={index} className="border-b dark:border-gray-700 item text-center">
                                             <th scope="row" className="flex items-center px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white text-sm font-roboto">
                                                 <img src={student?.imageUrl} alt="" className="w-auto h-8 mr-3 rounded-full" />
@@ -397,7 +396,7 @@ const StudentList = () => {
                                         </tr>
                                     ))
                         )}
-
+                       
                                 </tbody>
                             </table>
                         </div>

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { getScheduleEvents } from '../../../utils/methods/get';
 import { motion, useAnimation } from 'framer-motion';
+import { useSelector } from 'react-redux';
 
 const ScheduleTimeCard = () => {
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [scheduleEvents, setScheduleEvents] = useState([]);
   // const controls = useAnimation();
   const scheduleTimeArray = []
   useEffect(() => {
     const fetchScheduleEvents = async () => {
-      const reviewerId = '658b2fcbc4e61a5bab23060f';
 
       try {
         console.log('Fetching Schedule Events...');

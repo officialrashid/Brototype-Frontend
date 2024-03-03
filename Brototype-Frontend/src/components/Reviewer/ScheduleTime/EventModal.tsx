@@ -7,8 +7,10 @@ import { deleteEvents } from '../../../utils/methods/delete';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 const EventModal = () => {
+    const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const navigate = useNavigate();
     const labelsClasses = ["yellow", "orange", "blue", "red"];
     const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
@@ -87,7 +89,7 @@ const EventModal = () => {
                 // Add other fields if needed
             });
 
-            const reviewerId = "658b2fcbc4e61a5bab23060f";
+       
             const calendarEvent = {
                 reviewerId,
                 startTime,
@@ -130,7 +132,7 @@ const EventModal = () => {
     const handleDelete = async (selectedEvent) => {
         const data = {
             id: selectedEvent.id,
-            reviewerId: "658b2fcbc4e61a5bab23060f",
+            reviewerId
         };
 
         const response = await deleteEvents(data);

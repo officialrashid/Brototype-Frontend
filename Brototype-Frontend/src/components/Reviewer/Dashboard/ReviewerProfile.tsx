@@ -41,7 +41,6 @@ const ReviewerProfile = () => {
   
   useEffect(()=>{
     const fetchReviewerDetails = async ()=>{
-      const reviewerId = "658b2fcbc4e61a5bab23060f";
        const response = await getReviewerDetails(reviewerId)
        console.log(response,"review all detailas");
        setData(response)

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { getMonth } from "../ScheduleTime/Utils";
 import GlobalContext from "../../../context/GlobalContext";
 import { getTimeLineUp } from "../../../utils/methods/get";
+import { useSelector } from "react-redux";
 
 interface Event {
   startTime: string;
@@ -13,6 +14,7 @@ interface Event {
 }
 
 const TimeLineUp: React.FC = () => {
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [currentMonthIndex, setCurrentMonthIndex] = useState(dayjs().month());
   const [currentMonth, setCurrentMonth] = useState(getMonth());
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
@@ -46,7 +48,7 @@ const TimeLineUp: React.FC = () => {
     const fetchTimeLineup = async () => {
       console.log(selectedDate.valueOf(),"[][][][]");
       
-      const reviewerId = "658b2fcbc4e61a5bab23060f";
+
       const dayTimeLine = selectedDate.format("DD-MM-YYYY");
       const data = {
         reviewerId,

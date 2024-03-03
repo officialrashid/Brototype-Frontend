@@ -1,10 +1,25 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import MiniChart from 'react-mini-chart'
-import Graph from './Graph';
-import WeeklySummary from '../../Advisor /dashboard/WeeklySymmary';
-import BestEmployeeGraph from './BestEmployeeGraph';
-import BestEmployees from './BestEmployees';
-const SuperLeadDetails = () => {
+import { getHubWiseStudentsDetails } from '../../../utils/methods/get';
+import { useSelector } from 'react-redux';
+
+const SuperLeadDetails =() => {
+    const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId")
+    const [analyzeDetails,setAnalyzeDetails] = useState("")
+    useEffect(()=>{
+       const fetchHubWiseStudentDetails =  async  () =>{
+           try {
+             const response = await getHubWiseStudentsDetails(superleadUniqueId)
+             console.log(response,"response in side sectionsss");
+             if(response.status===true){
+                setAnalyzeDetails(response)
+             }
+           } catch (err) {
+
+           }
+       }
+       fetchHubWiseStudentDetails()
+    },[])
     return (
         <>
         <div>
@@ -12,7 +27,7 @@ const SuperLeadDetails = () => {
                 <div className="bg-white l rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                         <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Students</p>
-                        <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">250</h1>
+                        <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">{analyzeDetails?.studentsCount}</h1>
                  
 
                     <div className="m-3 ml-6  ">
@@ -52,7 +67,7 @@ const SuperLeadDetails = () => {
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                    <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Reviewers</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">120</h1>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">{analyzeDetails?.reviewersCount}</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -72,7 +87,7 @@ const SuperLeadDetails = () => {
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                    <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Terminate</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">106</h1>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">{analyzeDetails?.terminateCount}</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -92,7 +107,7 @@ const SuperLeadDetails = () => {
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                    <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Quit</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">110</h1>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">{analyzeDetails?.quitCount}</h1>
             
 
                <div className="m-3 ml-6  ">

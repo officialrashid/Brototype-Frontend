@@ -1,6 +1,6 @@
 import Api from "../baseUrl/baseUrl";
 import { AxiosResponse } from "axios";
-
+import studentApi from "../baseUrl/studentBaseUrl"
 
 //***********  fumigation service Api  **********/
 // Enquirie interface
@@ -301,3 +301,15 @@ export const superleadLogin = async (data:any)=>{
 
 
 }
+export const addReviewers = async (data:any)=>{
+
+  try {
+   const resposne = await studentApi.post('/api/auth/add-reviewer',data)
+   return resposne?.data
+  } catch(err){
+    return {status:false,message:"some issue in the add Reviewer"}
+  }
+
+
+}
+
