@@ -4,7 +4,8 @@ import BestEmployeeGraph from "./BestEmployeeGraph"
 import SideSections from "./SideSections"
 import ActivityTimeLinup from "./ActivityTimeLinup"
 import AdvisorsReviewTarget from "./AdvisorsReviewTarget"
-
+import BestReviewers from "./BestReviewers";
+import BestReviewersGraph from "./BestReviewersGraph";
 
 
 const Dashboard = () => {
@@ -82,9 +83,9 @@ const Dashboard = () => {
 
                                 <div className="m-2 mb-0">
                                     <span className="font-semibold font-roboto">Best 5 Reviewers</span>
-                                    <BestEmployeeGraph />
+                                    <BestReviewersGraph />
                                 </div>
-                                <BestEmployees />
+                                <BestReviewers />
 
                             </div>
 

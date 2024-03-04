@@ -12,9 +12,9 @@ const SideSections = () => {
                 <div>
                     <SuperLeadDetails />
                 </div>
-                <div className="border m-4 ml-0 mt-5 mt-0 mb-0 rounded-md bg-white w-full  ">
+                <div className="border m-4 ml-0 mt-7  rounded-md bg-white w-full  ">
                   
-                  <div className="m-2  ">
+                  <div className="m-2 mb-0 ">
                       <span className="font-semibold font-roboto">Best 5 Reviewer</span>
                       <BestEmployeeGraph/>
                   </div>

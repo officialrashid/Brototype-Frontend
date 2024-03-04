@@ -23,7 +23,7 @@ const SuperLeadDetails =() => {
     return (
         <>
         <div>
-        <div className="grid grid-rows-3 grid-flow-col gap-2 w- h-21/4 mt-36   top-0  fit">
+        <div className="grid grid-rows-3 grid-flow-col gap-2 w- h-21/3 mt-36   top-0  fit">
                 <div className="bg-white l rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                         <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Students</p>
