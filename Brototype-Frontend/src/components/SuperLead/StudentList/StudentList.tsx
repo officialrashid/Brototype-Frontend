@@ -103,7 +103,54 @@ const StudentList = () => {
         setFilteredData(filteredStudents);
     };
 
+    const handleBatchWiseFilter = (selectedBatch:any) => {
+        try {
+           console.log(selectedBatch,"get the selected batch");
+                   // Create regular expression for case-insensitive search
+        const regex = new RegExp(selectedBatch, 'i');
 
+        // Filter student data based on the search query
+        const filteredStudents = studentsData.filter(student => {
+            // Test each property with the regular expression
+            return (
+                regex.test(student.firstName) ||
+                regex.test(student.lastName) ||
+                regex.test(student.batch) ||
+                regex.test(student.domain) ||
+                regex.test(student?.currentWeek.toString()) 
+              
+            )
+        });
+          setFilteredData(filteredStudents)
+        } catch (error) {
+
+        }
+    }
+    const handleDomainWiseFilter = (selectedDomain:any) => {
+        try {
+           console.log(selectedDomain,"get the selected batch");
+                   // Create regular expression for case-insensitive search
+        const regex = new RegExp(selectedDomain, 'i');
+
+        // Filter student data based on the search query
+        const filteredStudents = studentsData.filter(student => {
+            // Test each property with the regular expression
+            return (
+                regex.test(student.firstName) ||
+                regex.test(student.lastName) ||
+                regex.test(student.batch) ||
+                regex.test(student.domain) ||
+                regex.test(student?.currentWeek.toString()) 
+              
+            )
+        });
+        console.log(filteredStudents,"filterdf studestss");
+        
+          setStudentsData(filteredStudents)
+        } catch (error) {
+
+        }
+    }
 
 
 
@@ -130,7 +177,8 @@ const StudentList = () => {
                                         <select
                                             id="simple-search"
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
-                                            defaultValue="" // Set the default value to an empty string
+                                            defaultValue=""
+                                            onChange={(event) => handleBatchWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a batch</option>
                                             <option value="All">All</option>
@@ -138,6 +186,7 @@ const StudentList = () => {
                                             <option value="BCK-66">BCE-66</option>
                                             <option value="BCK-88">BCE-88</option>
                                         </select>
+
                                     </div>
                                 </form>
                             </div>
@@ -145,18 +194,25 @@ const StudentList = () => {
 
 
                             <div className="w-full md:w-1/2 m-3">
-                                <form className="flex items-center">
+                            <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto text-gray-500'>Select Batch</p>
+                                            {/* <p className='text-sm font-roboto text-gray-500'>Select Batch</p> */}
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value=""></option>
-                                            <option value="option1">Option 1</option>
-                                            <option value="option2">Option 2</option>
-                                            <option value="option3">Option 3</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            defaultValue=""
+                                            onChange={(event) => handleDomainWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
+                                        >
+                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a Domain</option>
+                                            <option value="All">All</option>
+                                            <option value="Mern Stack developer">Mern Stack developer</option>
+                                            <option value="BCK-66">BCE-66</option>
+                                            <option value="BCK-88">BCE-88</option>
                                         </select>
+
                                     </div>
                                 </form>
                             </div>

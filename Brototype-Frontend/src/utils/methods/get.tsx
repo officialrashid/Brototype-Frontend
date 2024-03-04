@@ -255,3 +255,25 @@ export const getReviewerStatus = async () =>{
   }
 
 }
+export const getAllFumigationStudents = async (hubLocation:string) =>{
+ 
+  try {
+     const response = await studentApi.get(`/api/fumigation/get-all-fumigation-students/${hubLocation}`)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
+export const getSuperleadHubLocation = async (uniqueId:string) =>{
+ 
+  try {
+     const response = await Api.get(`/api/auth/get-superlead-hub-location/${uniqueId}`)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
+
+
