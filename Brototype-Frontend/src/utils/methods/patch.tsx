@@ -31,5 +31,14 @@ export const updateEvents = async (data:any)=>{
     }
   
   }
+  export const updatePlacedStatus = async (data:any)=>{
+    try {
+     const resposne = await Api.patch('/api/auth/update-student-placed-status',data)
+     return resposne?.data?.response
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
   
   
