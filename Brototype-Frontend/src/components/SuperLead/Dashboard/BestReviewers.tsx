@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Advisor from '../../Advisor /reviewers/Advisor';
 import { toast } from 'react-toastify';
 import { getBestReviewers } from '../../../utils/methods/get';
 
@@ -28,7 +27,7 @@ const BestReviewers = () => {
     return (
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr className='text-sm font-roboto'>
+                <tr className='text-sm font-roboto '>
                     <th scope="col" className="px-6 py-3">
                         Name
                     </th>
@@ -42,10 +41,12 @@ const BestReviewers = () => {
             </thead>
             <tbody>
                 {bestReviewers.map((reviewer, index) => (
-                    <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="flex items-center px-6 py-4 whitespace-nowrap" >
+                    <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
+                        <td className="flex items-center px-6 py-4 overflow-hidden  whitespace-normal" >
+                            {/* <td className='w-16 rounded-full'> */}
                             <img className="w-8 h-8 rounded-full" src={reviewer.profile} alt={reviewer.firstName} />
-                            <div className="ps-3">
+                            {/* </td> */}
+                            <div className="ps-3 ">
                                 <div className="text-sm font-roboto" >
                                     {reviewer.firstName} {reviewer.lastName}
                                 </div>
