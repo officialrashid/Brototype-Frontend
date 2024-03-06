@@ -172,13 +172,13 @@ const FumigationStudentsList = () => {
                             <tbody>
                                 {fumigatioStudents.map((student,index) => (
                                     <tr key={index} className="border-b dark:border-gray-700 item text-center">
-                                        <td className="px-4 py-3 text-ms font-roboto">{student.name}</td>
-                                        <td className="px-4 py-3 text-ms font-roboto">{student.batchName}</td>
-                                        <td className="px-4 py-3 text-ms font-roboto">{student.email}</td>
-                                        <td className="px-4 py-3 text-sm font-roboto">{student.phone}</td>
-                                        <td className="px-4 py-3 text-sm font-roboto">{student.qualification}</td>
-                                        <td className="px-4 py-3 text-sm font-roboto">{student.prefferredLocation}</td>
-                                        <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">{student.status}</span></td>
+                                        <td className="px-4 py-3 text-ms font-roboto">{student?.name}</td>
+                                        <td className="px-4 py-3 text-ms font-roboto">{student?.batchName}</td>
+                                        <td className="px-4 py-3 text-ms font-roboto">{student?.email}</td>
+                                        <td className="px-4 py-3 text-sm font-roboto">{student?.phone}</td>
+                                        <td className="px-4 py-3 text-sm font-roboto">{student?.qualification}</td>
+                                        <td className="px-4 py-3 text-sm font-roboto">{student?.prefferredLocation}</td>
+                                        <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">{student?.status}</span></td>
 
 
                                         <td className="px-4 py-3   ">

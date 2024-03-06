@@ -275,5 +275,25 @@ export const getSuperleadHubLocation = async (uniqueId:string) =>{
   }
 
 }
+export const getBestReviewers = async () =>{
+ 
+  try {
+     const response = await Api.get(`/api/reviewer/get-best-reviewers`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
+export const getReviewCountAnalyze = async () =>{
+ 
+  try {
+     const response = await Api.get(`/api/reviewer/get-review-count-analyze`)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
 
 

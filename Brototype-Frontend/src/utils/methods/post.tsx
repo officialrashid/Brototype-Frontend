@@ -315,7 +315,7 @@ export const addReviewers = async (data:any)=>{
 export const addStudents = async (data:any)=>{
 
   try {
-   const resposne = await Api.post('/api/auth/add-student',data)
+   const resposne = await studentApi.post('/api/auth/add-student',data)
    return resposne?.data
   } catch(err){
     return {status:false,message:"some issue in the add Reviewer"}

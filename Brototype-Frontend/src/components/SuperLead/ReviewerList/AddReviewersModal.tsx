@@ -54,6 +54,8 @@ const AddReviewerModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
           return "not enter the details"
         }
         const response = await addReviewers(values)
+        console.log(response,"dfhdb");
+        
          if(response?.status===true){
           toast.success("Reviewer Created Succefully")
           onClose();
