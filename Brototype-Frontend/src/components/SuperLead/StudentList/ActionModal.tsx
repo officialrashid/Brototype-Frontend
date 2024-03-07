@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { updateStudentStatus } from "../../../utils/methods/patch";
 import { toast } from "react-toastify";
 import ConfirmPlacedModal from "./confirmPlacedModal";
+import Swal from 'sweetalert2';
 import { useState } from "react";
 interface ActionModalProps {
     isVisible: boolean;
@@ -22,6 +23,15 @@ const navigate = useNavigate()
                  
                 setModalActive(true)
             }else{
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Do you want to perform this action?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
+                }).then(async (result) => {
+                    if (result.isConfirmed) {
                 const studentStatusData = {
                     studentId,
                     action
@@ -34,6 +44,8 @@ const navigate = useNavigate()
                     toast.warn("student not found")
                 }
             }
+        }
+        )}
                
         } catch (error) {
             
