@@ -295,5 +295,15 @@ export const getReviewCountAnalyze = async () =>{
   }
 
 }
+export const getStudentsAndPlacedStudents = async (uniqueId:string) =>{
+ 
+  try {
+     const response = await studentApi.get(`/api/auth/get-students-and-placed-students/${uniqueId}`)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
 
 

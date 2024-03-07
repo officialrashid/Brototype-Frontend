@@ -41,17 +41,18 @@ const BestReviewers = () => {
             </thead>
             <tbody>
                 {bestReviewers.map((reviewer, index) => (
-                    <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
-                        <td className="flex items-center px-6 py-4 overflow-hidden  whitespace-normal" >
-                            {/* <td className='w-16 rounded-full'> */}
-                            <img className="w-8 h-8 rounded-full" src={reviewer.profile} alt={reviewer.firstName} />
-                            {/* </td> */}
-                            <div className="ps-3 ">
-                                <div className="text-sm font-roboto" >
-                                    {reviewer.firstName} {reviewer.lastName}
-                                </div>
-                            </div>
-                        </td>
+                  <tr className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 ">
+                  <td className="flex items-center px-6 py-4 overflow-hidden  whitespace-normal" >
+                   
+                      <img className="w-8 h-8 rounded-full" src={reviewer.profile} alt=""/>
+           
+                      <div className="ps-3 ">
+                          <div className="text-sm font-roboto" >
+                       <span>{reviewer.firstName} {reviewer.lastName}</span>
+                          </div>
+                      </div>
+                  </td>
+
 
                         <td className="px-6 py-4 text-sm font-roboto item text-center">
                             {reviewer.count}

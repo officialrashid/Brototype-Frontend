@@ -27,8 +27,22 @@ ChartJS.register(
 
 
 import { Bar } from 'react-chartjs-2'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { getStudentsAndPlacedStudents } from '../../../utils/methods/get'
 
 const Graph = () => {
+  const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
+  useEffect(()=>{
+   const fetchStudentsAndPlacedStudenst = async () =>{
+      try {
+        const response = await getStudentsAndPlacedStudents(superleadUniqueId)
+      } catch (error) {
+        
+      }
+   }
+   fetchStudentsAndPlacedStudenst()
+  },[])
   const data = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     datasets: [
