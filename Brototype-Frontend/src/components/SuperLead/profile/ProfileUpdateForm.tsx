@@ -1,76 +1,380 @@
+import { useState } from "react";
+import useMutation from "../../../hooks/useMutation";
 import DeactivateAccount from "./DeactivateAccount";
+import * as Yup from 'yup';
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
+
+
+const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="text-sm font-roboto text-red-700 mt-3 ml-3">
+    {children}
+  </p>
+)
 const ProfileUpdateForm = () => {
-    return (
-        <>
-        <section className="mt-36 w-full p-3 sm:p-5 mb-0">
+  const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+  const validationSchema = Yup.object().shape({
+    selectedFile: Yup.mixed()
+      .required('Please select an image')
+      .test('fileType', 'File must be in JPG/PNG format', (file) => {
+        return !file || validFileTypes.includes(file.type);
+      }),
+    firstName: Yup.string()
+      .required('First Name is required')
+      .trim()
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
+
+    lastName: Yup.string()
+      .required('Last Name is required')
+      .trim()
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
+
+    email: Yup.string()
+      .required('Email is required')
+      .email('Invalid email address')
+      .trim(),
+
+    gender: Yup.string()
+      .required('Gender is required')
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital')
+      .trim(),
+    phone: Yup.string()
+      .required('Phone is required')
+      .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
+      .trim(),
+
+    qualification: Yup.string()
+      .required('Qualification is required')
+      .trim()
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
+
+    pastYourWorkedCompany: Yup.string()
+      .required('Past Company is required')
+      .trim()
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
+
+    yearOfExpereience: Yup.string()
+      .required('Year of Experience is required')
+      .trim()
+      .matches(/^\d+$/, 'Year of Experience must be a number'),
+
+
+    hubLocation: Yup.string()
+      .required('Hub Location is required')
+      .trim()
+      .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
+
+    dateOfBirth: Yup.string()
+      .required('Date of Birth is required')
+      .test('valid-date', 'Invalid date', (value) => {
+        const currentDate = new Date();
+        const birthDate = new Date(value);
+        return !isNaN(birthDate) && birthDate < currentDate;
+      })
+      .trim()
+  });
+
+
+  const {
+    mutate: uploadImage,
+    isLoading: uploading,
+    error: uploadError,
+  } = useMutation({ url: '/api/superlead/profile-update' });
+
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    formik.setFieldValue('selectedFile', file || null); // Set to null if file is undefined
+    setSelectedFile(file || null);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      selectedFile: null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      gender: '',
+      dateOfBirth: '',
+      hubLocation: '',
+      qualification: '',
+      pastYourWorkedCompany: '',
+      yearOfExpereience: ''
+    },
+    validationSchema,
+    onSubmit: async (e: any) => {
+
+      try {
+        if (!formik.values.selectedFile) {
+          formik.setFieldError('selectedFile', 'Please select an image');
+          return;
+        }
+        const formData = new FormData();
+        formData.append('image', formik.values.selectedFile as unknown as File);
+        formData.append('firstName', formik.values.firstName);
+        formData.append('lastName', formik.values.lastName);
+        formData.append('email', formik.values.email);
+        formData.append('phone', formik.values.phone);
+        formData.append('gender', formik.values.gender);
+        formData.append('dateOfBirth', formik.values.dateOfBirth);
+        formData.append('hubLocation', formik.values.hubLocation);
+        formData.append('qualification', formik.values.qualification);
+        formData.append('pastYourWorkedCompany', formik.values.pastYourWorkedCompany);
+        formData.append('yearOfExpereience', formik.values.yearOfExpereience);
+        formData.append('superleadId', superleadId);
+        console.log(formData, "forData comingggggggggggggggggggggggggggggg");
+
+        const response = await uploadImage(formData);
+        if (response?.data?.status === true) {
+          toast.success("profile updated successfully")
+          formik.resetForm();
+        } else if(response?.data?.message==="Email or Phone already in use" && response?.data?.status === false ) {
+          toast.warn("email or phone already in use")
+        }else{
+          toast.error("profile updated not done,something went wrong")
+        }
+      } catch (error) {
+        console.error('Error uploading data:', error);
+      }
+    },
+  });
+
+
+  return (
+    <>
+      <section className="mt-36 w-full p-3 sm:p-5 mb-0">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg">
             <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold">Profile Details</h1>
-            <div className="flex border-b">
-              <div className="m-7 mb-4 mt-5">
-                <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png" alt="" className="h-aut mb-0 w-20 rounded-md" />
-              </div>
-              <div className="m-10 mb-0 ml-0 mr-0">
-                <label htmlFor="file-upload" className="mb-2 cursor-pointer rounded-md bg-dark-highBlue px-3 py-1.5 text-sm font-medium font-roboto text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Upload new photo </label>
-                <p className="m-4 mb-0 ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                <input type="file" id="file-upload" className="hidden" />
-              </div>
-            </div>
             <form className="mb-0 mt-0">
+              <div className="flex border-b">
+                {selectedFile ? (
+                  <div className="m-7 mb-4 mt-5">
+
+                    <img
+                      src={URL.createObjectURL(selectedFile)}
+                      alt=""
+                      className="h-aut mb-0 w-20 rounded-md" />
+
+                  </div>
+
+                ) : (
+                  <div className="m-7 mb-4 mt-5">
+                    <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png" alt="" className="h-aut mb-0 w-20 rounded-md"
+                    />
+                  </div>
+
+                )}
+
+                <div className="m-10 mb-0 ml-0 mr-0">
+
+                  <label htmlFor="file-upload" className="mb-2 cursor-pointer rounded-md bg-dark-highBlue px-3 py-1.5 text-sm font-medium font-roboto text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Upload new photo
+                  </label>
+
+                  <p className="m-4 mb-0  ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                  {formik.errors.selectedFile && <ErrorText>{formik.errors.selectedFile}</ErrorText>}
+                  <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} />
+
+                </div>
+
+              </div>
+
               <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="firstName" className="m-2 font-serif text-sm">First Name</label>
+                  <input
+                    type="firstName"
+                    id="firstName"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    required
+                  />
+                  {formik.touched.firstName && formik.errors.firstName && (
+                    <ErrorText>{formik?.errors?.firstName}</ErrorText>
+                  )}
                 </div>
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="lastName" className="m-2 font-serif text-sm">Last Name</label>
+                  <input
+                    type="lastName"
+                    id="lastName"
+                    value={formik.values.lastName}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.lastName && formik.errors.lastName && (
+                    <ErrorText>{formik?.errors?.lastName}</ErrorText>
+                  )}
                 </div>
               </div>
               <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
                 <div className="m-3 ml-0 mr-0 w-full">
                   <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <input
+                    type="email"
+                    id="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.email && formik.errors.email && (
+                    <ErrorText>{formik?.errors?.email}</ErrorText>
+                  )}
                 </div>
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="phone" className="m-2 font-serif text-sm">Phone</label>
+                  <input
+                    type="phone"
+                    id="phone"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.phone && formik.errors.phone && (
+                    <ErrorText>{formik?.errors?.phone}</ErrorText>
+                  )}
                 </div>
               </div>
               <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="gender" className="m-2 font-serif text-sm">Gender</label>
+                  <input
+                    type="gender"
+                    id="gender"
+                    value={formik.values.gender}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.gender && formik.errors.gender && (
+                    <ErrorText>{formik?.errors?.gender}</ErrorText>
+                  )}
                 </div>
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="date" className="m-2 font-serif text-sm">Date Of Birth</label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="dateOfBirth" // Add name attribute for formik
+                    value={formik.values.dateOfBirth}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none ${formik.touched.dateOfBirth && formik.errors.dateOfBirth ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
+                    <ErrorText>{formik.errors.dateOfBirth}</ErrorText>
+                  )}
+                </div>
+
+              </div>
+              <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
+                <div className="m-3 ml-0 mr-0 w-full">
+                  <label htmlFor="hubLocation" className="m-2 font-serif text-sm">Hub Location</label>
+                  <input
+                    type="hubLocation"
+                    id="hubLocation"
+                    value={formik.values.hubLocation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.hubLocation && formik.errors.hubLocation && (
+                    <ErrorText>{formik?.errors?.hubLocation}</ErrorText>
+                  )}
+                </div>
+                <div className="m-3 ml-0 mr-0 w-full">
+                  <label htmlFor="qualification" className="m-2 font-serif text-sm">Qualification</label>
+                  <input
+                    type="text"
+                    id="qualification"
+                    value={formik.values.qualification}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.qualification && formik.errors.qualification && (
+                    <ErrorText>{formik?.errors?.qualification}</ErrorText>
+                  )}
                 </div>
               </div>
               <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="pastYourWorkedCompany" className="m-2 font-serif text-sm">Past Your Worked Company</label>
+                  <input
+                    type="pastYourWorkedCompany"
+                    id="pastYourWorkedCompany"
+                    value={formik.values.pastYourWorkedCompany}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.pastYourWorkedCompany && formik.errors.pastYourWorkedCompany && (
+                    <ErrorText>{formik?.errors?.pastYourWorkedCompany}</ErrorText>
+                  )}
                 </div>
                 <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="email" className="m-2 font-serif text-sm">Email</label>
-                  <input type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="" />
+                  <label htmlFor="yearOfExpereience" className="m-2 font-serif text-sm">Year of Expereience</label>
+                  <input
+                    type="text"
+                    id="yearOfExpereience"
+                    value={formik.values.yearOfExpereience}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                    required
+                  />
+                  {formik.touched.yearOfExpereience && formik.errors.yearOfExpereience && (
+                    <ErrorText>{formik?.errors?.yearOfExpereience}</ErrorText>
+                  )}
                 </div>
+              </div>
+
+              <div className="flex m-5 mb-0 mt-2 gap-3">
+                <button
+                  type="button"
+                  onClick={(e) => formik.handleSubmit(e)}
+                  disabled={uploading}
+                  className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
+                >
+                  {uploading ? "Uploading..." : "Save Changes"}
+
+                </button>
+                {uploadError && <ErrorText>
+                  {uploadError}
+                </ErrorText>}
+                <button
+                  type="button"
+                  className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                  Cancel
+                </button>
               </div>
             </form>
-            <div className="flex m-5 mb-0 mt-2 gap-3">
-              <button type="button" className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">Save Changes</button>
-              <button type="button" className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">Cancel</button>
-            </div>
           </div>
         </div>
       </section>
-<DeactivateAccount/>
+      <DeactivateAccount />
 
-      </>
-      
-    );
+    </>
+
+  );
 }
 
 export default ProfileUpdateForm;
