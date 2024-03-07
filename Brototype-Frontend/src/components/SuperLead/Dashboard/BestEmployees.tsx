@@ -7,6 +7,7 @@ const BestEmployees = () => {
         { Name: "Adeela", Role: "Advisor", Performance: "Average", profile: '/profile.jpeg' },
         { Name: "Blessy", Role: "Advisor", Performance: "Poor", profile: '/profile.jpeg' },
         { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' },
+        { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' },
         { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' }
     ];
 
