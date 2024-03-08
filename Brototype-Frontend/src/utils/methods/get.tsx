@@ -206,22 +206,22 @@ export const getTechnicalWorkout = async (data:any) => {
 //// ****** Get Api For Superleads ******* ///////
 
 
-export const getStudents = async (uniqueId:string) =>{
-   console.log(uniqueId,"uniqueIDddd");
+export const getStudents = async (data:{superleadUniqueId:string,currentPage:number}) =>{
+  
    
    try {
-      const response = await studentApi.get(`/api/student/get-all-students/${uniqueId}`)
+      const response = await studentApi.get(`/api/student/get-all-students`,{params:data})
       return response?.data;
    } catch (error) {
     
    }
 
 }
-export const getStudentStatus = async (uniqueId:string) =>{
-  console.log(uniqueId,"uniqueIDddd");
+export const getStudentStatus = async (data:{superleadUniqueId:string,currentPage:number}) =>{
+
   
   try {
-     const response = await Api.get(`/api/auth/get-all-students-status/${uniqueId}`)
+     const response = await Api.get(`/api/auth/get-all-students-status`,{params:data})
      return response?.data;
   } catch (error) {
    
