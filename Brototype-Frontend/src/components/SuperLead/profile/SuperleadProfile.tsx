@@ -6,7 +6,7 @@ import DeactivateAccount from "./DeactivateAccount";
 
 
 const SuperleadProfile = () => {
-;
+
     const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const [profile,setProfile] = useState({})
     const navigate = useNavigate()
@@ -139,7 +139,7 @@ const handleEditAccount = (action:string) =>{
                       
                                     </div>
                                     <div className="flex items-center justify- gap-2 m-5">
-                            <button type="button" className="focus:outline-none text-white bg-Average hover:bg-purple-500 focus:ring-1 focus:ring-Average font-medium rounded-lg text-xs font-roboto px-5 py-2 mb-2 dark:bg-Average"onClick={(e)=>handleEditAccount("Edit")}>Edit</button>
+                            <button type="button" className="focus:outline-none text-white bg-Average hover:bg-purple-500 focus:ring-1 focus:ring-Average font-medium rounded-lg text-xs font-roboto px-5 py-2 mb-2 dark:bg-Average"onClick={(e)=>handleEditAccount("edit")}>Edit</button>
                             <button type="button" className="focus:outline-none text-red-500 hover:text-white bg-red-100 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2 mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Deactive My Account</button>
                         </div>
                                 </div>

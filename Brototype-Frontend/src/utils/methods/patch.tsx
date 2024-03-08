@@ -40,5 +40,18 @@ export const updateEvents = async (data:any)=>{
     }
   
   }
+  export const updateSuperleadProfile = async (data:any)=>{
+    console.log(data,"data in patchssss");
+    
+    try {
+     const resposne = await Api.patch('/api/superlead/update-superlead-profile',data)
+     return resposne?.data
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
+
+  
   
   

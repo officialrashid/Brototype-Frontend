@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import { getSuperleadProfile } from "../../../utils/methods/get";
 import { setSuperleadProfileImage } from "../../../redux-toolkit/superleadReducer"
+import { updateSuperleadProfile } from "../../../utils/methods/patch";
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 
@@ -185,16 +186,32 @@ const ProfileUpdateForm = () => {
         formData.append('yearOfExpereience', values.yearOfExpereience); // Corrected key name
         formData.append('superleadId', superleadId);
         console.log(formData, "forData comingggggggggggggggggggggggggggggg");
-
-        const response = await uploadImage(formData);
-        if (response?.data?.status === true) {
-          toast.success("profile updated successfully")
-          formik.resetForm();
-        } else if (response?.data?.message === "Email or Phone already in use" && response?.data?.status === false) {
-          toast.warn("email or phone already in use")
-        } else {
-          toast.error("profile updated not done, something went wrong")
+        if(action === "edit"){
+          console.log("keriiiiitttoooo");
+          
+          const response = await updateSuperleadProfile(formData)
+          console.log(response,"responseee");
+          if(response.status===true){
+            toast.success("profile updated successfully")
+           
+          } else if (response?.message === "Email or Phone already in use" && response?.status === false) {
+            toast.warn("email or phone already in use")
+          } else {
+            toast.error("profile updated not done, something went wrong")
+          }
+          
+        }else{
+          const response = await uploadImage(formData);
+          if (response?.data?.status === true) {
+            toast.success("profile updated successfully")
+            formik.resetForm();
+          } else if (response?.data?.message === "Email or Phone already in use" && response?.data?.status === false) {
+            toast.warn("email or phone already in use")
+          } else {
+            toast.error("profile updated not done, something went wrong")
+          }
         }
+      
       } catch (error) {
         console.error('Error uploading data:', error);
       }
