@@ -1,25 +1,19 @@
 import { useNavigate } from "react-router-dom";
-import { updateStudentStatus } from "../../../utils/methods/patch";
-import { toast } from "react-toastify";
-
-import Swal from 'sweetalert2';
 import { useState } from "react";
 
 interface ActionModalProps {
     isVisible: boolean;
     onClose: () => void;
-    studentId: string; // Assuming studentId is of type string, adjust as necessary
-    changeModalStatus: () => void; // Adjust the type of changeModalStatus as needed
   }
-const OptionsModal: React.FC<ActionModalProps> = ({ isVisible, onClose,studentId,changeModalStatus }) => {
-    const [modalActive, setModalActive] = useState(false)
+const OptionsModal: React.FC<ActionModalProps> = ({ isVisible, onClose }) => {
 const navigate = useNavigate()
 
     const handleEvent= async (event:any,action:string)=>{
         try {
             event.stopPropagation()
             if(action==='Profile'){
-              navigate('/superlead/viewStudent',{ state: { studentId } }) 
+              navigate('/superlead/viewProfile')
+              onClose() 
             }else if(action==='Update Profile'){
               navigate('/superlead/profileUpdate')
               onClose()
@@ -49,7 +43,6 @@ const navigate = useNavigate()
                 </div>
             </div>
            
-               {/* <ConfirmPlacedModal isVisible={modalActive} onClose={() => { setModalActive(false)}} studentId={studentId}  /> */}
             </>
         );
     } else {

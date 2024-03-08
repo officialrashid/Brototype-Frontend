@@ -10,22 +10,18 @@ import Chat from "../pages/SuperLead/Chat"
 import ViewStudent from '../pages/SuperLead/ViewStudent';
 import ViewReviewer from '../pages/SuperLead/ViewReviewer';
 import ProfileUpdateForm from '../pages/SuperLead/ProfileUpdateForm';
+import ViewProfile from "../pages/SuperLead/ViewProfile" ;
 function SuperLeadRoutes() {
-    //   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
-
-    //   useEffect(() => {
-    //     const reviewerJwt = localStorage.getItem('reviewerAccessToken');
-    //     setReviewerAccessToken(reviewerJwt);
-    //   }, []);
+  
 
     return (
         <>
-        {/* <div className='bg-custom-background h-auto'> */}
+     
             <div className=' w-full h-auto  flex '>
                 
                 <Navigation />
             
-                        {/* <Nav /> */}
+               
                         <Routes>
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/students" element={<Students />} />
@@ -36,10 +32,11 @@ function SuperLeadRoutes() {
                             <Route path="/viewStudent" element={<ViewStudent />} />
                             <Route path="/viewReviewer" element={<ViewReviewer />} />
                             <Route path="/profileUpdate" element={<ProfileUpdateForm />} />
+                            <Route path="/viewProfile" element={<ViewProfile />} />
                         </Routes>
                         </div>
-                        {/* </div> */}
-         
+              
+                        
         </>
     );
 }

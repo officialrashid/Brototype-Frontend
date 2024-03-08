@@ -3,8 +3,9 @@ import { useState } from 'react'
 import logo from '../../Advisor /assets/images/logo-black.png'
 import Nav from '../Nav/Nav'
 import OptionsModal from './OptionsModal'
+import { useSelector } from 'react-redux'
 const Navigation = () => {
-  const superleadId = "65e059d9aca1cf4a139ee727"
+  const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
   const [optionsModal, setOptionsModal] = useState(false)
   const [studentId, setStudentId] = useState("")
   const [modalStatus, setModalStatus] = useState(false)
@@ -67,7 +68,7 @@ const Navigation = () => {
 
       </nav>
       <Nav />
-      <OptionsModal isVisible={optionsModal} onClose={() => setOptionsModal(false)} studentId={studentId} changeModalStatus={changeModalStatus} />
+      <OptionsModal isVisible={optionsModal} onClose={() => setOptionsModal(false)}  />
     </>
   )
 }

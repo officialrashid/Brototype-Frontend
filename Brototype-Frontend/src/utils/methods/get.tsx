@@ -305,5 +305,15 @@ export const getStudentsAndPlacedStudents = async (uniqueId:string) =>{
   }
 
 }
+export const getSuperleadProfile = async (superleadId:string) =>{
+ 
+  try {
+     const response = await Api.get(`/api/superlead/get-superlead-profile/${superleadId}`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
 
 
