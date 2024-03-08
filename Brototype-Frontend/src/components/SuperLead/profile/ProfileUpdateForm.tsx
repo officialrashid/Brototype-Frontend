@@ -4,9 +4,10 @@ import DeactivateAccount from "./DeactivateAccount";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 import { getSuperleadProfile } from "../../../utils/methods/get";
+import { setSuperleadProfileImage } from "../../../redux-toolkit/superleadReducer"
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 
@@ -17,17 +18,20 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 )
 const ProfileUpdateForm = () => {
-
+  const dispatch = useDispatch()
   const [profile, setProfile] = useState({})
   const location = useLocation();
   const action = location.state && location.state.action;
   const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+
+
   const validationSchema = Yup.object().shape({
+
     selectedFile: Yup.mixed()
-      .required('Please select an image')
-      .test('fileType', 'File must be in JPG/PNG format', (file) => {
-        return !file || validFileTypes.includes(file?.type);
-      }),
+      .required('Please select an image'),
+    // .test('fileType', 'File must be in JPG/PNG format', (file) => {
+    //   return !file || validFileTypes.includes(file?.type);
+    // }),
     firstName: Yup.string()
       .required('First Name is required')
       .trim()
@@ -62,7 +66,7 @@ const ProfileUpdateForm = () => {
       .trim()
       .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
 
-      yearOfExpereience: Yup.string()
+    yearOfExpereience: Yup.string()
       .required('Year of Experience is required')
       .trim()
       .matches(/^\d+$/, 'Year of Experience must be a number'),
@@ -93,23 +97,24 @@ const ProfileUpdateForm = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e?.target?.files[0];
     formik.setFieldValue('selectedFile', file || null); // Set to null if file is undefined
     setSelectedFile(file || null);
+    // dispatch(setSuperleadProfileImage(file)); // Pass the file directly, not in an object
   };
+
   useEffect(() => {
     const fetchProfile = async () => {
       try {
         const response = await getSuperleadProfile(superleadId);
-        console.log(response, "dffdjjdbdhfdhfd");
         if (response.status === true) {
           const [profileData] = response?.response;
           setProfile(profileData);
-  
+
           // Set formik initial values to the fetched profile data
           formik.setValues({
             ...formik.values,
-            selectedFile: profile.imageUrl  || null, // You may need to handle the image separately
+            selectedFile: profileData.imageUrl || null, // You may need to handle the image separately
             firstName: profileData.firstName || '',
             lastName: profileData.lastName || '',
             email: profileData.email || '',
@@ -121,11 +126,12 @@ const ProfileUpdateForm = () => {
             pastYourWorkedCompany: profileData.pastYourWorkedCompany || '',
             yearOfExpereience: profileData.yearOfExpereience || '', // Corrected key name
           });
-        
+
           const initialTouched = Object.keys(profileData).reduce((acc, key) => {
             acc[key] = false;
             return acc;
           }, {});
+          // setSelectedFile(profileImageFile || null);
           formik.setTouched(initialTouched);
         } else {
           setProfile({});
@@ -136,7 +142,7 @@ const ProfileUpdateForm = () => {
     };
     fetchProfile();
   }, []);
-  
+
 
   const formik = useFormik({
     initialValues: {
@@ -156,13 +162,13 @@ const ProfileUpdateForm = () => {
 
     onSubmit: async (values: any) => {
       try {
-     
-          if (!values.selectedFile ) {
-            formik.setFieldError('selectedFile', 'Please select an image');
-            return;
+
+        if (!values.selectedFile) {
+          formik.setFieldError('selectedFile', 'Please select an image');
+          return;
         }
-          
-       
+
+
         console.log(values);
 
         const formData = new FormData();
@@ -227,7 +233,7 @@ const ProfileUpdateForm = () => {
                       <div className="m-7 mb-4 mt-5">
 
                         <img
-                          src={URL.createObjectURL(selectedFile)}
+                          src={URL.createObjectURL(selectedFile) ?? "https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png"}
                           alt=""
                           className="h-aut mb-0 w-20 rounded-md" />
 
@@ -268,7 +274,9 @@ const ProfileUpdateForm = () => {
                   </label>
 
                   <p className="m-4 mb-0  ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                  {formik.errors.selectedFile && <ErrorText>{formik.errors.selectedFile}</ErrorText>}
+                  {formik.touched.selectedFile && formik.errors.selectedFile && (
+                    <ErrorText>{formik.errors.selectedFile}</ErrorText>
+                  )}
                   <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} />
 
                 </div>
