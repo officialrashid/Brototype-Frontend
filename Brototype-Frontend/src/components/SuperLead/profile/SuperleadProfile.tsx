@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { getSuperleadProfile } from "../../../utils/methods/get";
+import { useNavigate } from "react-router-dom";
 
 
 const SuperleadProfile = () => {
+;
     const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const [profile,setProfile] = useState({})
+    const navigate = useNavigate()
     useEffect(()=>{
        const fetchProfile = async () =>{
              try {
@@ -16,11 +19,18 @@ const SuperleadProfile = () => {
                     setProfile(profileData);
                 }
              } catch (error) {
-                
+                throw error  
              }
        }
        fetchProfile()
     },[])
+const handleEditAccount = (action:string) =>{
+     try {
+        navigate('/superlead/profileUpdate',{ state: { action } })
+     } catch (error) {
+        throw error
+     }
+}
     return (
         <>
             <section className="p-3 sm:p-5 mt- w-full mt-36">
@@ -49,10 +59,10 @@ const SuperleadProfile = () => {
 
                                     <div className='ml-3 mt-5  w-full h-auto rounded-md border border-gray-300'>
                                         <h1 className='font-roboto ml-5 mt-3 font-semibold text-sm'>Personal Information</h1>
-                                        <span className="absolute font-roboto  mr-5 right-3 mt-20 inline-flex items-center rounded-md bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-700/10 cursor-pointer" >
+                                        {/* <span className="absolute font-roboto  mr-5 right-3 mt-24 inline-flex items-center rounded-md bg-purple-100 px-3 py-1 text-xs font-medium text-purple-800 ring-1 ring-inset ring-purple-700/10 cursor-pointer" >
                                             <img src='/edit.png' className='w-3 h-3 mr-2' alt="Edit Icon" />
-                                            Request Edit
-                                        </span>
+                                             Edit Your Account
+                                        </span> */}
 
                                         <div className='grid grid-cols-3 ml-5 mt-6 gap-x-5'>
                                             <div className='flex flex-col'>
@@ -123,10 +133,14 @@ const SuperleadProfile = () => {
                                                 <p className='text-sm text-gray-400 font-roboto mt-2 text-gray-500'>{profile.yearOfExpereience}</p>
 
                                             </div>
-                                    
+                           
                                         </div>
-
+                      
                                     </div>
+                                    <div className="flex items-center justify- gap-2 m-5">
+                            <button type="button" className="focus:outline-none text-white bg-Average hover:bg-purple-500 focus:ring-1 focus:ring-Average font-medium rounded-lg text-xs font-roboto px-5 py-2 mb-2 dark:bg-Average"onClick={(e)=>handleEditAccount("Edit")}>Edit</button>
+                            <button type="button" className="focus:outline-none text-red-500 hover:text-white bg-red-100 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs px-5 py-2 mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Deactive My Account</button>
+                        </div>
                                 </div>
                             </div>
 
