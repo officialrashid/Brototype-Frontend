@@ -17,6 +17,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 )
 const ProfileUpdateForm = () => {
+
   const [profile, setProfile] = useState({})
   const location = useLocation();
   const action = location.state && location.state.action;
@@ -61,7 +62,7 @@ const ProfileUpdateForm = () => {
       .trim()
       .matches(/^[A-Z][a-zA-Z]*$/, 'First letter must be capital'),
 
-    yearOfExpereience: Yup.string()
+      yearOfExpereience: Yup.string()
       .required('Year of Experience is required')
       .trim()
       .matches(/^\d+$/, 'Year of Experience must be a number'),
@@ -99,54 +100,83 @@ const ProfileUpdateForm = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await getSuperleadProfile(superleadId)
+        const response = await getSuperleadProfile(superleadId);
         console.log(response, "dffdjjdbdhfdhfd");
         if (response.status === true) {
           const [profileData] = response?.response;
           setProfile(profileData);
+  
+          // Set formik initial values to the fetched profile data
+          formik.setValues({
+            ...formik.values,
+            selectedFile: profile.imageUrl  || null, // You may need to handle the image separately
+            firstName: profileData.firstName || '',
+            lastName: profileData.lastName || '',
+            email: profileData.email || '',
+            phone: profileData.phone || '',
+            gender: profileData.gender || '',
+            dateOfBirth: profileData.dateOfBirth || '',
+            hubLocation: profileData.hubLocation || '',
+            qualification: profileData.qualification || '',
+            pastYourWorkedCompany: profileData.pastYourWorkedCompany || '',
+            yearOfExpereience: profileData.yearOfExpereience || '', // Corrected key name
+          });
+        
+          const initialTouched = Object.keys(profileData).reduce((acc, key) => {
+            acc[key] = false;
+            return acc;
+          }, {});
+          formik.setTouched(initialTouched);
         } else {
-          setProfile({})
+          setProfile({});
         }
       } catch (error) {
-        throw error
+        throw error;
       }
-    }
-    fetchProfile()
-  }, [])
+    };
+    fetchProfile();
+  }, []);
+  
+
   const formik = useFormik({
     initialValues: {
-      selectedFile: null,
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      gender: '',
-      dateOfBirth: '',
-      hubLocation: '',
-      qualification: '',
-      pastYourWorkedCompany: '',
-      yearOfExpereience: ''
+      selectedFile: profile.imageUrl || null,
+      firstName: profile.firstName || '',
+      lastName: profile.lastName || '',
+      email: profile.email || '',
+      phone: profile.phone || '',
+      gender: profile.gender || '',
+      dateOfBirth: profile.dateOfBirth || '',
+      hubLocation: profile.hubLocation || '',
+      qualification: profile.qualification || '',
+      pastYourWorkedCompany: profile.pastYourWorkedCompany || '',
+      yearOfExpereience: profile.yearOfExpereience || '', // 
     },
     validationSchema,
-    onSubmit: async (e: any) => {
 
+    onSubmit: async (values: any) => {
       try {
-        if (!formik.values.selectedFile) {
-          formik.setFieldError('selectedFile', 'Please select an image');
-          return;
+     
+          if (!values.selectedFile ) {
+            formik.setFieldError('selectedFile', 'Please select an image');
+            return;
         }
+          
+       
+        console.log(values);
+
         const formData = new FormData();
-        formData.append('image', formik.values.selectedFile as unknown as File);
-        formData.append('firstName', formik.values.firstName);
-        formData.append('lastName', formik.values.lastName);
-        formData.append('email', formik.values.email);
-        formData.append('phone', formik.values.phone);
-        formData.append('gender', formik.values.gender);
-        formData.append('dateOfBirth', formik.values.dateOfBirth);
-        formData.append('hubLocation', formik.values.hubLocation);
-        formData.append('qualification', formik.values.qualification);
-        formData.append('pastYourWorkedCompany', formik.values.pastYourWorkedCompany);
-        formData.append('yearOfExpereience', formik.values.yearOfExpereience);
+        formData.append('image', values.selectedFile as unknown as File);
+        formData.append('firstName', values.firstName);
+        formData.append('lastName', values.lastName);
+        formData.append('email', values.email);
+        formData.append('phone', values.phone);
+        formData.append('gender', values.gender);
+        formData.append('dateOfBirth', values.dateOfBirth);
+        formData.append('hubLocation', values.hubLocation);
+        formData.append('qualification', values.qualification);
+        formData.append('pastYourWorkedCompany', values.pastYourWorkedCompany);
+        formData.append('yearOfExpereience', values.yearOfExpereience); // Corrected key name
         formData.append('superleadId', superleadId);
         console.log(formData, "forData comingggggggggggggggggggggggggggggg");
 
@@ -157,13 +187,14 @@ const ProfileUpdateForm = () => {
         } else if (response?.data?.message === "Email or Phone already in use" && response?.data?.status === false) {
           toast.warn("email or phone already in use")
         } else {
-          toast.error("profile updated not done,something went wrong")
+          toast.error("profile updated not done, something went wrong")
         }
       } catch (error) {
         console.error('Error uploading data:', error);
       }
     },
   });
+
   const handleChange = (event: any, key: string) => {
     try {
       event.preventDefault();
@@ -175,7 +206,8 @@ const ProfileUpdateForm = () => {
         ...prevProfile,
         [key]: value
       }));
-      formik.values.key = value
+      formik.setFieldTouched(key, true);
+      formik.setFieldValue(key, value);
     } catch (error) {
       throw error;
     }
@@ -276,9 +308,11 @@ const ProfileUpdateForm = () => {
                           onBlur={formik.handleBlur}
                           required
                         />
+
                         {formik.touched.firstName && formik.errors.firstName && (
                           <ErrorText>{formik.errors.firstName}</ErrorText>
                         )}
+
                       </>
                     )}
                   </>
