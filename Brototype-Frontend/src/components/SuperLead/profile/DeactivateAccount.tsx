@@ -4,7 +4,7 @@ const DeactivateAccount = () => {
     return (
         <>
         
-        <section className="mt-0 mb-0 w-full p-3 sm:p-5">
+        <section className="mt-0  w-full p-3 sm:p-5 ">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg">
             <h1 className="font-roboto m-3 mb-0 ml-8 font-semibold">Delete Account</h1>

@@ -253,7 +253,7 @@ const ProfileUpdateForm = () => {
                           type="text"
                           id="firstName"
                           name="firstName"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                           value={formik.values.firstName || ''}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -269,7 +269,7 @@ const ProfileUpdateForm = () => {
                           type="text"
                           id="firstName"
                           name="firstName"
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                           value={profile?.firstName}
                           onChange={(e) => handleChange(e, 'firstName')}
 
@@ -297,7 +297,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.lastName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.lastName && formik.errors.lastName && (
@@ -312,7 +312,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.lastName}
                         onChange={(e) => handleChange(e, 'lastName')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.lastName && formik.errors.lastName && (
@@ -335,7 +335,7 @@ const ProfileUpdateForm = () => {
                           value={formik.values.email}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                           required
                         />
                         {formik.touched.email && formik.errors.email && (
@@ -350,7 +350,7 @@ const ProfileUpdateForm = () => {
                           value={profile?.email}
                           onChange={(e) => handleChange(e, 'email')}
                           onBlur={formik.handleBlur}
-                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                           required
                         />
                         {formik.touched.email && formik.errors.email && (
@@ -371,7 +371,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.phone}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.phone && formik.errors.phone && (
@@ -387,7 +387,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.phone}
                         onChange={(e) => handleChange(e, 'phone')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.phone && formik.errors.phone && (
@@ -409,7 +409,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.gender}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.gender && formik.errors.gender && (
@@ -424,7 +424,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.gender || ''}
                         onChange={(e) => handleChange(e, 'gender')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.gender && formik.errors.gender && (
@@ -445,7 +445,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.dateOfBirth}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none ${formik.touched.dateOfBirth && formik.errors.dateOfBirth ? 'border-red-500' : ''}`}
+                        className={`bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none ${formik.touched.dateOfBirth && formik.errors.dateOfBirth ? 'border-red-500' : ''}`}
                         required
                       />
                       {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
@@ -461,7 +461,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.dateOfBirth || ''}
                         onChange={(e) => handleChange(e, 'dateOfBirth')}
                         onBlur={formik.handleBlur}
-                        className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none ${formik.touched.dateOfBirth && formik.errors.dateOfBirth ? 'border-red-500' : ''}`}
+                        className={`bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none ${formik.touched.dateOfBirth && formik.errors.dateOfBirth ? 'border-red-500' : ''}`}
                         required
                       />
                       {formik.touched.dateOfBirth && formik.errors.dateOfBirth && (
@@ -484,7 +484,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.hubLocation}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.hubLocation && formik.errors.hubLocation && (
@@ -499,7 +499,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.hubLocation || ''}
                         onChange={(e) => handleChange(e, 'hubLocation')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.hubLocation && formik.errors.hubLocation && (
@@ -519,7 +519,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.qualification}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.qualification && formik.errors.qualification && (
@@ -534,7 +534,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.qualification || ''}
                         onChange={(e) => handleChange(e, 'qualification')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.qualification && formik.errors.qualification && (
@@ -557,7 +557,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.pastYourWorkedCompany}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.pastYourWorkedCompany && formik.errors.pastYourWorkedCompany && (
@@ -572,7 +572,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.pastYourWorkedCompany || ''}
                         onChange={(e) => handleChange(e, 'pastYourWorkedCompany')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.pastYourWorkedCompany && formik.errors.pastYourWorkedCompany && (
@@ -592,7 +592,7 @@ const ProfileUpdateForm = () => {
                         value={formik.values.yearOfExpereience}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.yearOfExpereience && formik.errors.yearOfExpereience && (
@@ -607,7 +607,7 @@ const ProfileUpdateForm = () => {
                         value={profile?.yearOfExpereience || ''}
                         onChange={(e) => handleChange(e, 'yearOfExpereience')}
                         onBlur={formik.handleBlur}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                         required
                       />
                       {formik.touched.yearOfExpereience && formik.errors.yearOfExpereience && (
@@ -626,7 +626,7 @@ const ProfileUpdateForm = () => {
                       type="button"
                       onClick={(e) => formik.handleSubmit(e)}
                       disabled={uploading}
-                      className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
+                      className="mb-2 rounded-lg font-roboto bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
                     >
                       {uploading ? "Uploading..." : "Edit Changes"}
                     </button>
@@ -664,7 +664,7 @@ const ProfileUpdateForm = () => {
           </div>
         </div>
       </section>
-      <DeactivateAccount />
+      {/* <DeactivateAccount /> */}
 
     </>
 

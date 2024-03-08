@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux";
 import { getSuperleadProfile } from "../../../utils/methods/get";
 import { useNavigate } from "react-router-dom";
+import DeactivateAccount from "./DeactivateAccount";
 
 
 const SuperleadProfile = () => {
@@ -33,8 +34,8 @@ const handleEditAccount = (action:string) =>{
 }
     return (
         <>
-            <section className="p-3 sm:p-5 mt- w-full mt-36">
-                <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
+            <section className="p-3 sm:p-5 mt- w-full mt-36 mb-0">
+                <div className="mx-auto max-w-screen-xl px-4 lg:px-12 mb-0">
 
                     <div className="bg-white border relative shadow-md sm:rounded-lg overflow-hidden">
                         <div className="relative">
@@ -149,6 +150,7 @@ const handleEditAccount = (action:string) =>{
 
                 {/* </div> */}
             </section>
+            <DeactivateAccount />
         </>
     )
 }
