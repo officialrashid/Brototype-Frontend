@@ -8,12 +8,13 @@ import AddStudentsModal from './AddStudentsModal';
 const StudentList = () => {
 
     const [studentsData, setStudentsData] = useState([]);
-    const [filteredData, setFilteredData] = useState([]);
+  
     const [modalActive, setModalActive] = useState(false)
     const [studentId, setStudentId] = useState("")
     const [modalStatus, setModalStatus] = useState(false)
     const [reload, setReload] = useState(false)
     const [searchQuery, setSearchQuery] = useState('');
+    const [filteredData, setFilteredData] = useState([]);
     const [addStudents, setAddStudents] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
     const totalPages = 1000; // Update with the total number of pages
@@ -153,7 +154,7 @@ const StudentList = () => {
         });
         console.log(filteredStudents,"filterdf studestss");
         
-          setStudentsData(filteredStudents)
+          setFilteredData(filteredStudents)
         } catch (error) {
 
         }
