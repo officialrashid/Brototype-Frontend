@@ -18,6 +18,8 @@ const StudentList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedDomain, setSelectedDomain] = useState('All');
     const [selectedBatch, setSelectedBatch] = useState('All');
+    const [selectedWeek, setSelectedWeek] = useState('All');
+    const [selectedStatus, setSelectedStatus] = useState('All');
     const [isBothFiltersSet, setIsBothFiltersSet] = useState(false);
 
     const totalPages = 1000; // Update with the total number of pages
@@ -116,10 +118,18 @@ const StudentList = () => {
 
     useEffect(() => {
         if (isBothFiltersSet) {
-            filterData(selectedDomain, selectedBatch);
+            filterData(selectedDomain, selectedBatch,selectedWeek,selectedStatus);
         }
-    }, [selectedDomain, selectedBatch, isBothFiltersSet]);
-
+    }, [selectedDomain, selectedBatch, isBothFiltersSet,selectedWeek,selectedStatus]);
+    
+    const handleStatusWiseFilter = (selectedStatus: React.SetStateAction<string>) => {
+        setSelectedStatus(selectedStatus);
+        setIsBothFiltersSet(true); // Reset flag when domain filter changes
+    };
+    const handleWeekWiseFilter = (selectedWeek: React.SetStateAction<string>) => {
+        setSelectedWeek(selectedWeek);
+        setIsBothFiltersSet(true); // Reset flag when domain filter changes
+    };
     const handleDomainWiseFilter = (selectedDomain: React.SetStateAction<string>) => {
         setSelectedDomain(selectedDomain);
         setIsBothFiltersSet(true); // Reset flag when domain filter changes
@@ -130,7 +140,7 @@ const StudentList = () => {
         setIsBothFiltersSet(true); // Set flag when batch filter changes
     };
 
-    const filterData = (domain: string, batch: string) => {
+    const filterData = (domain: string, batch: string , week:string,status:string) => {
         let newData = studentsData;
 
         if (domain !== 'All') {
@@ -139,6 +149,12 @@ const StudentList = () => {
 
         if (batch !== 'All') {
             newData = newData.filter(student => student?.batch === batch);
+        }
+        if(week !== 'All'){
+            newData = newData.filter(student => student?.currentWeek === week);
+        }
+        if(status !== 'All'){
+            newData = newData.filter(student => student?.isStatus === status);
         }
 
         setFilteredData(newData);
@@ -193,14 +209,14 @@ const StudentList = () => {
                                         </div>
                                         <select
                                             id="simple-search"
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                                             defaultValue=""
                                             onChange={(event) => handleBatchWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
                                             <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a batch</option>
                                             <option value="All">All</option>
                                             <option value="BCE-55">BCE-55</option>
-                                            <option value="BCK-66">BCE-66</option>
+                                            <option value="BCE-66">BCE-66</option>
                                             <option value="BCK-88">BCE-88</option>
                                         </select>
 
@@ -219,11 +235,11 @@ const StudentList = () => {
                                         </div>
                                         <select
                                             id="simple-search"
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
                                             defaultValue=""
                                             onChange={(event) => handleDomainWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
                                         >
-                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a Domain</option>
+                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a domain</option>
                                             <option value="All">All</option>
                                             <option value="Mern Stack developer">Mern Stack developer</option>
                                             <option value="BCK-66">BCE-66</option>
@@ -234,22 +250,56 @@ const StudentList = () => {
                                 </form>
                             </div>
                             <div className="w-full md:w-1/2 m-3">
-                                <form className="flex items-center">
+                            <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto text-gray-500'>Select Batch</p>
+                                            {/* <p className='text-sm font-roboto text-gray-500'>Select Batch</p> */}
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value=""></option>
-                                            <option value="option1">Option 1</option>
-                                            <option value="option2">Option 2</option>
-                                            <option value="option3">Option 3</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            defaultValue=""
+                                            onChange={(event) => handleWeekWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
+                                        >
+                                            <option value="" disabled hidden className="text-xs font-roboto font-roboto text-gray-500">Select a week</option>
+                                            <option value="All">All</option>
+                                            <option value="week1">week1</option>
+                                            <option value="week2">week2</option>
+                                            <option value="week3">week3</option>
+                                            <option value="week4">week4</option>
+                                            <option value="week5">week5</option>
+                                            <option value="week6">week6</option>
                                         </select>
+
                                     </div>
                                 </form>
                             </div>
+                            <div className="w-full md:w-1/2 m-3">
+                            <form className="flex items-center">
+                                    <label htmlFor="simple-search" className="sr-only">Search</label>
+                                    <div className="relative w-full">
+                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            {/* <p className='text-sm font-roboto text-gray-500'>Select Batch</p> */}
+                                        </div>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            defaultValue=""
+                                            onChange={(event) => handleStatusWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
+                                        >
+                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a status</option>
+                                            <option value="All">All</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Placed">Placed</option>
+                                            <option value="Terminate">Terminate</option>
+                                            <option value="Suspend">Suspend</option>
+                                            <option value="Quit">Quit</option>
+                                        </select>
 
+                                    </div>
+                                </form>
+                            </div>
 
                         </div>
                         <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-between md:space-x-3 flex-shrink-0 m-7 mb-2 mt-3  mr-4 ">
