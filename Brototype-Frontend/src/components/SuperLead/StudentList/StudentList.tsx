@@ -8,7 +8,6 @@ import AddStudentsModal from './AddStudentsModal';
 const StudentList = () => {
 
     const [studentsData, setStudentsData] = useState([]);
-  
     const [modalActive, setModalActive] = useState(false)
     const [studentId, setStudentId] = useState("")
     const [modalStatus, setModalStatus] = useState(false)
@@ -17,8 +16,12 @@ const StudentList = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [addStudents, setAddStudents] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
+    const [selectedDomain, setSelectedDomain] = useState('All');
+    const [selectedBatch, setSelectedBatch] = useState('All');
+    const [isBothFiltersSet, setIsBothFiltersSet] = useState(false);
+
     const totalPages = 1000; // Update with the total number of pages
-    const pageRange = 4; 
+    const pageRange = 4;
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     useEffect(() => {
         console.log(superleadUniqueId, "xbchjxbchbxhj");
@@ -63,7 +66,7 @@ const StudentList = () => {
         };
 
         fetchData();
-    }, [reload,currentPage]);
+    }, [reload, currentPage]);
 
 
     const handleActionChange = (studentId: string) => {
@@ -111,57 +114,38 @@ const StudentList = () => {
         setFilteredData(filteredStudents);
     };
 
-    const handleBatchWiseFilter = (selectedBatch:any) => {
-        try {
-           console.log(selectedBatch,"get the selected batch");
-                   // Create regular expression for case-insensitive search
-        const regex = new RegExp(selectedBatch, 'i');
-
-        // Filter student data based on the search query
-        const filteredStudents = studentsData.filter(student => {
-            // Test each property with the regular expression
-            return (
-                regex.test(student.firstName) ||
-                regex.test(student.lastName) ||
-                regex.test(student.batch) ||
-                regex.test(student.domain) ||
-                regex.test(student?.currentWeek.toString()) 
-              
-            )
-        });
-          setFilteredData(filteredStudents)
-        } catch (error) {
-
+    useEffect(() => {
+        if (isBothFiltersSet) {
+            filterData(selectedDomain, selectedBatch);
         }
-    }
-    const handleDomainWiseFilter = (selectedDomain:any) => {
-        try {
-           console.log(selectedDomain,"get the selected batch");
-                   // Create regular expression for case-insensitive search
-        const regex = new RegExp(selectedDomain, 'i');
+    }, [selectedDomain, selectedBatch, isBothFiltersSet]);
 
-        // Filter student data based on the search query
-        const filteredStudents = studentsData.filter(student => {
-            // Test each property with the regular expression
-            return (
-                regex.test(student.firstName) ||
-                regex.test(student.lastName) ||
-                regex.test(student.batch) ||
-                regex.test(student.domain) ||
-                regex.test(student?.currentWeek.toString()) 
-              
-            )
-        });
-        console.log(filteredStudents,"filterdf studestss");
-        
-          setFilteredData(filteredStudents)
-        } catch (error) {
+    const handleDomainWiseFilter = (selectedDomain: React.SetStateAction<string>) => {
+        setSelectedDomain(selectedDomain);
+        setIsBothFiltersSet(true); // Reset flag when domain filter changes
+    };
 
+    const handleBatchWiseFilter = (selectedBatch: React.SetStateAction<string>) => {
+        setSelectedBatch(selectedBatch);
+        setIsBothFiltersSet(true); // Set flag when batch filter changes
+    };
+
+    const filterData = (domain: string, batch: string) => {
+        let newData = studentsData;
+
+        if (domain !== 'All') {
+            newData = newData.filter(student => student?.domain === domain);
         }
-    }
+
+        if (batch !== 'All') {
+            newData = newData.filter(student => student?.batch === batch);
+        }
+
+        setFilteredData(newData);
+    };
     const goToPage = (page: React.SetStateAction<number>) => {
-        console.log(page,"pageNumberrrrr");
-        
+        console.log(page, "pageNumberrrrr");
+
         setCurrentPage(page);
     };
 
@@ -227,7 +211,7 @@ const StudentList = () => {
 
 
                             <div className="w-full md:w-1/2 m-3">
-                            <form className="flex items-center">
+                                <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -386,7 +370,7 @@ const StudentList = () => {
                                                 <td className="px-4 py-3">
                                                     <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(student?.studentId)}>
                                                         {student.studentId === studentId ? (
-                                                            <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus}  />
+                                                            <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus} />
                                                         ) : null}
                                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -442,7 +426,7 @@ const StudentList = () => {
                                                 <td className="px-4 py-3">
                                                     <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(student?.studentId)}>
                                                         {student.studentId === studentId ? (
-                                                            <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus}    />
+                                                            <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} studentId={studentId} changeModalStatus={changeModalStatus} />
                                                         ) : null}
                                                         <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
@@ -470,35 +454,35 @@ const StudentList = () => {
                             </table>
                         </div>
                         <nav className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
-            {/* Showing current page range */}
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                Showing
-                <span className="font-semibold text-gray-900 dark:text-white">{(currentPage - 1) * 10 + 1}-{currentPage * 10}</span>
-                {/* Assuming each page shows 10 items, update as needed */}
-                of
-                <span className="font-semibold text-gray-900 dark:text-white">1000</span> {/* Total number of items */}
-            </span>
-            <ul className="inline-flex items-stretch -space-x-px">
-                <li>
-                    <button onClick={() => goToPage(Math.max(1, currentPage - 1))} className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <span className="sr-only">Previous</span>
-                        {/* Your SVG icon for Previous */}
-                    </button>
-                </li>
-                {/* Render page numbers dynamically */}
-                {renderPageNumbers()}
-                <li>
-                    <button onClick={() => goToPage(Math.min(totalPages, currentPage + 1))} className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <span className="sr-only">Next</span>
-                        {/* Your SVG icon for Next */}
-                    </button>
-                </li>
-            </ul>
-        </nav>
+                            {/* Showing current page range */}
+                            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                                Showing
+                                <span className="font-semibold text-gray-900 dark:text-white">{(currentPage - 1) * 10 + 1}-{currentPage * 10}</span>
+                                {/* Assuming each page shows 10 items, update as needed */}
+                                of
+                                <span className="font-semibold text-gray-900 dark:text-white">1000</span> {/* Total number of items */}
+                            </span>
+                            <ul className="inline-flex items-stretch -space-x-px">
+                                <li>
+                                    <button onClick={() => goToPage(Math.max(1, currentPage - 1))} className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Previous</span>
+                                        {/* Your SVG icon for Previous */}
+                                    </button>
+                                </li>
+                                {/* Render page numbers dynamically */}
+                                {renderPageNumbers()}
+                                <li>
+                                    <button onClick={() => goToPage(Math.min(totalPages, currentPage + 1))} className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                        <span className="sr-only">Next</span>
+                                        {/* Your SVG icon for Next */}
+                                    </button>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </section >
-            <AddStudentsModal isVisible={addStudents} onClose={() => { setAddStudents(false) }}/>
+            <AddStudentsModal isVisible={addStudents} onClose={() => { setAddStudents(false) }} />
         </>
     );
 }
