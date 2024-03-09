@@ -256,10 +256,11 @@ export const getReviewerStatus = async () =>{
   }
 
 }
-export const getAllFumigationStudents = async (hubLocation:string) =>{
+export const getAllFumigationStudents = async (data:{hubLocation:string,currentPage:number}) =>{
  
   try {
-     const response = await studentApi.get(`/api/fumigation/get-all-fumigation-students/${hubLocation}`)
+   
+     const response = await studentApi.get(`/api/fumigation/get-all-fumigation-students`,{params:data})
      return response?.data?.response;
   } catch (error) {
    
@@ -341,6 +342,16 @@ export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,per
 
   try {
      const response = await Api.get(`/api/reviewer/get-per-page-reviewers/${perPage}`,)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
+
+}
+export const getPerPageFumiagtionStudents = async (data:{hubLocation:string,selectedPerPage:number}) =>{
+
+  try {
+     const response = await studentApi.get(`/api/fumigation/get-per-page-students`,{params:data})
      return response?.data?.response;
   } catch (error) {
    

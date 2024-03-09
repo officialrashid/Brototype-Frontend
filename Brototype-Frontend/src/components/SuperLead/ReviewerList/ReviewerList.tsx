@@ -230,7 +230,7 @@ const ReviewerList = () => {
                     });
                     console.log(combinedData, "mnbhbbbm");
 
-                    setReviewers(combinedData)
+                    setFilteredData(combinedData)
                 }
             }
         } catch (error) {

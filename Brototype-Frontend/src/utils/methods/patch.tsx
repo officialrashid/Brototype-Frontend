@@ -51,7 +51,17 @@ export const updateEvents = async (data:any)=>{
     }
   
   }
-
+  export const updateFumigationStudentStatus = async (data:any)=>{
+    console.log(data,"data in patchssss");
+    
+    try {
+     const resposne = await studentApi.patch('/api/fumigation/update-student-status',data)
+     return resposne?.data
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
   
   
   
