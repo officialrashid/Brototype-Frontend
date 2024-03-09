@@ -238,9 +238,9 @@ export const getHubWiseStudentsDetails = async (uniqueId:string) =>{
   }
 
 }
-export const getAllReviewers = async () =>{
+export const getAllReviewers = async (currentPage:number) =>{
   try {
-     const response = await Api.get(`/api/reviewer/get-all-reviewers-profile`)
+     const response = await Api.get(`/api/reviewer/get-all-reviewers-profile/${currentPage}`)
      return response?.data?.response;
   } catch (error) {
    
@@ -337,5 +337,14 @@ export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,per
    }
  
  }
+ export const getPerPageReviewers = async (perPage:number) =>{
 
+  try {
+     const response = await Api.get(`/api/reviewer/get-per-page-reviewers/${perPage}`,)
+     return response?.data?.response;
+  } catch (error) {
+   
+  }
 
+}
+ 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllReviewers, getReviewerStatus } from '../../../utils/methods/get';
+import { getAllReviewers, getPerPageReviewers, getReviewerStatus } from '../../../utils/methods/get';
 import { toast } from 'react-toastify';
 import AddReviewerModal from './AddReviewersModal';
 import ActionModal from './ActionModal';
@@ -13,10 +13,17 @@ const ReviewerList = () => {
     const [modalActive, setModalActive] = useState(false)
     const [modalStatus, setModalStatus] = useState(false)
     const [reload, setReload] = useState(false)
+    const [selectedGender, setSelectedGender] = useState('All');
+    const [selectedStatus, setSelectedStatus] = useState('All');
+    const [isBothFiltersSet, setIsBothFiltersSet] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage, setPerPage] = useState(10); // Default per page value
+    const totalPages = 1000; // Update with the total number of pages
+    const pageRange = 4;
     useEffect(() => {
         const fetchReviewers = async () => {
             try {
-                const response = await getAllReviewers()
+                const response = await getAllReviewers(currentPage)
                 const reviewerStatus = await getReviewerStatus()
 
                 if (response?.status === true || reviewerStatus.status == true) {
@@ -60,7 +67,7 @@ const ReviewerList = () => {
             }
         }
         fetchReviewers()
-    }, [reload])
+    }, [reload,currentPage])
     const handleActionChange = (reviewerId: string) => {
 
         try {
@@ -84,30 +91,153 @@ const ReviewerList = () => {
     }
     const handleSearchInputChange = (event: { target: { value: string; }; }) => {
         const query = event.target.value;
-        console.log(query);
-        
         setSearchQuery(query);
 
         // Create regular expression for case-insensitive search
         const regex = new RegExp(query, 'i');
+        console.log(filteredData, "mnnbnnmbbmnmm");
 
-        // Filter reviewer data based on the search query
-        const filteredStudents = reviewers.filter(reviewer => {
-            // Test each property with the regular expression
-            return (
-                regex.test(reviewer.firstName) ||
-                regex.test(reviewer.lastName) ||
-                regex.test(reviewer.email) ||
-                regex.test(reviewer.phone) ||
-                regex.test(reviewer.gender) ||
-                regex.test(reviewer.status) // Convert isStatus to string before testing
-            )
-        });
+        if (filteredData.length > 0) {
 
+            console.log(filteredData, "{}{}{}{}{}{}");
+
+            // Filter reviewer data based on the search query
+            const filteredStudents = filteredData.filter(reviewer => {
+                // Test each property with the regular expression
+                return (
+                    regex.test(reviewer.firstName) ||
+                    regex.test(reviewer.lastName) ||
+                    regex.test(reviewer.email) ||
+                    regex.test(reviewer.phone) ||
+                    regex.test(reviewer.gender.toString()) ||
+                    regex.test(reviewer.status)
+                );
+            });
+            setFilteredData(filteredStudents);
+        } else {
+            const filteredStudents = reviewers.filter(reviewer => {
+                // Test each property with the regular expression
+                return (
+                    regex.test(reviewer.firstName) ||
+                    regex.test(reviewer.lastName) ||
+                    regex.test(reviewer.email) ||
+                    regex.test(reviewer.phone) ||
+                    regex.test(reviewer.gender.toString()) ||
+                    regex.test(reviewer.status)
+                );
+            });
+            setFilteredData(filteredStudents);
+        }
         // Update state with filtered data
-        setFilteredData(filteredStudents);
+
     };
 
+    useEffect(() => {
+        if (isBothFiltersSet) {
+            filterData(selectedGender, selectedStatus);
+        }
+    }, [selectedGender, selectedStatus, isBothFiltersSet,]);
+
+    const handleGenderWiseFilter = (selectedStatus: React.SetStateAction<string>) => {
+        setSelectedGender(selectedStatus);
+        setIsBothFiltersSet(true); // Reset flag when domain filter changes
+    };
+    const handleStatusWiseFilter = (selectedWeek: React.SetStateAction<string>) => {
+        setSelectedStatus(selectedWeek);
+        setIsBothFiltersSet(true); // Reset flag when domain filter changes
+    };
+
+
+    const filterData = (gender: string, status: string) => {
+        let newData = reviewers;
+
+        if (gender !== 'All') {
+            newData = newData.filter(reviewer => reviewer?.gender === gender);
+        }
+
+        if (status !== 'All') {
+            newData = newData.filter(reviewer => reviewer?.status === status);
+        }
+
+        setFilteredData(newData);
+    };
+    const goToPage = (page: React.SetStateAction<number>) => {
+        setCurrentPage(page);
+    };
+
+    const renderPageNumbers = () => {
+        const pageNumbers = [];
+        const startPage = Math.max(1, currentPage - pageRange);
+        const endPage = Math.min(totalPages, currentPage + pageRange);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(
+                <li key={i}>
+                    <button
+                        onClick={() => goToPage(i)}
+                        className={`flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white ${currentPage === i ? 'font-semibold text-gray-900 dark:text-white' : ''}`}
+                    >
+                        {i}
+                    </button>
+                </li>
+            );
+        }
+
+        return pageNumbers;
+    };
+    const handlePerPageChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        try {
+            const selectedPerPage = parseInt(event.target.value);
+            setPerPage(selectedPerPage);
+    
+            // You can perform additional actions here, such as making an API call with the selected perPage value
+            if (selectedPerPage) {
+            
+                const response = await getPerPageReviewers(selectedPerPage); // Assuming getPerPageStudents is an async function
+                const reviewerStatus = await getReviewerStatus();
+                console.log(response,"++++++++++");
+                console.log(reviewerStatus,"________");
+                if (response?.status === true || reviewerStatus.status == true) {
+
+
+                    const combinedData: any = [];
+
+                    response.response.forEach((reviewer: { reviewerId: any; firstName: any; lastName: any; email: any; phone: any; age: any; gender: any; skills: any; PrefferedDomainsForReview: any, CurrentWorkingCompanyName: any, experience: any, imageUrl: any }) => {
+                        const matchedStatus = reviewerStatus.response?.find((status: { _id: any; }) => status._id === reviewer.reviewerId);
+
+
+                        if (matchedStatus) {
+                            combinedData.push({
+                                reviewerId: reviewer.reviewerId,
+                                imageUrl: reviewer.imageUrl,
+                                firstName: reviewer.firstName,
+                                lastName: reviewer.lastName,
+                                email: reviewer.email,
+                                phone: reviewer.phone,
+                                age: reviewer.age,
+                                gender: reviewer.gender,
+                                skills: reviewer.skills,
+                                PrefferedDomainsForReview: reviewer.PrefferedDomainsForReview,
+                                CurrentWorkingCompanyName: reviewer.CurrentWorkingCompanyName,
+                                experience: reviewer.experience,
+                                status: matchedStatus.isStatus
+
+
+                            });
+                        }
+
+
+                    });
+                    console.log(combinedData, "mnbhbbbm");
+
+                    setReviewers(combinedData)
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            // Handle error
+        }
+    };
     return (
         <>
             <section className=" p-3 sm:p-5 mt-36 w-full " onClick={() => changeModalStatus()}>
@@ -117,18 +247,24 @@ const ReviewerList = () => {
                         <h1 className='font-roboto m-5 ml-8 font-semibold mb-0'>Search Filter</h1>
                         <div className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 border-b dark:border-gray-700">
                             <div className="w-full md:w-1/2 m-3">
-                                <form className="flex items-center">
+                            <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto text-gray-500'>Select Batch</p>
+                                            {/* <p className='text-sm font-roboto text-gray-500'>Select Batch</p> */}
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value=""></option>
-                                            <option value="option1">Option 1</option>
-                                            <option value="option2">Option 2</option>
-                                            <option value="option3">Option 3</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            defaultValue=""
+                                            onChange={(event) => handleGenderWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
+                                        >
+                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a status</option>
+                                            <option value="All">All</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
                                         </select>
+
                                     </div>
                                 </form>
                             </div>
@@ -136,57 +272,55 @@ const ReviewerList = () => {
 
 
                             <div className="w-full md:w-1/2 m-3">
-                                <form className="flex items-center">
+                            <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto text-gray-500'>Select Batch</p>
+                                            {/* <p className='text-sm font-roboto text-gray-500'>Select Batch</p> */}
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value=""></option>
-                                            <option value="option1">Option 1</option>
-                                            <option value="option2">Option 2</option>
-                                            <option value="option3">Option 3</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-xs font-roboto rounded-md focus:ring-0 focus:border-Average block w-full pl-1 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            defaultValue=""
+                                            onChange={(event) => handleStatusWiseFilter(event?.target?.value)} // Pass selected value to handleBatchWiseFilter
+                                        >
+                                            <option value="" disabled hidden className="text-sm font-roboto text-gray-500">Select a status</option>
+                                            <option value="All">All</option>
+                                            <option value="Active">Active</option>
+                                            <option value="Suspend">Suspend</option>
+                                            <option value="Quit">Quit</option>
                                         </select>
+
                                     </div>
                                 </form>
                             </div>
-                            <div className="w-full md:w-1/2 m-3">
-                                <form className="flex items-center">
-                                    <label htmlFor="simple-search" className="sr-only">Search</label>
-                                    <div className="relative w-full">
-                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto text-gray-500'>Select Batch</p>
-                                        </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value=""></option>
-                                            <option value="option1">Option 1</option>
-                                            <option value="option2">Option 2</option>
-                                            <option value="option3">Option 3</option>
-                                        </select>
-                                    </div>
-                                </form>
-                            </div>
+                      
 
 
                         </div>
                         <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-between md:space-x-3 flex-shrink-0 m-7 mb-2 mt-3  mr-4 ">
                             <div className="w-full md:w-10">
-                                <form className="flex items-center">
-                                    <label htmlFor="simple-search" className="sr-only">Search</label>
+                            <form className="flex items-center">
+                                    <label htmlFor="simple-search" className="sr-only">Items per page</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto'>10</p>
+                                            <p className='text-sm font-roboto'>{perPage}</p>
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            value={perPage}
+                                            onChange={handlePerPageChange}
+                                        >
+                                            <option value="All">All</option>
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="20">30</option>
+                                            <option value="20">40</option>
+                                            <option value="20">50</option>
+                                            {/* Add more options as needed */}
                                         </select>
                                     </div>
-
-
                                 </form>
                             </div>
 
@@ -352,43 +486,28 @@ const ReviewerList = () => {
                             </table>
                         </div>
                         <nav className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+                            {/* Showing current page range */}
                             <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
                                 Showing
-                                <span className="font-semibold text-gray-900 dark:text-white">1-10</span>
+                                <span className="font-semibold text-gray-900 dark:text-white">{(currentPage - 1) * 10 + 1}-{currentPage * 10}</span>
+                                {/* Assuming each page shows 10 items, update as needed */}
                                 of
-                                <span className="font-semibold text-gray-900 dark:text-white">1000</span>
+                                <span className="font-semibold text-gray-900 dark:text-white">1000</span> {/* Total number of items */}
                             </span>
                             <ul className="inline-flex items-stretch -space-x-px">
                                 <li>
-                                    <a href="#" className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <button onClick={() => goToPage(Math.max(1, currentPage - 1))} className="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Previous</span>
-                                        <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
+                                        {/* Your SVG icon for Previous */}
+                                    </button>
                                 </li>
+                                {/* Render page numbers dynamically */}
+                                {renderPageNumbers()}
                                 <li>
-                                    <a href="#" className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                                </li>
-                                <li>
-                                    <a href="#" aria-current="page" className="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                                </li>
-                                <li>
-                                    <a href="#" className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <button onClick={() => goToPage(Math.min(totalPages, currentPage + 1))} className="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                                         <span className="sr-only">Next</span>
-                                        <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
+                                        {/* Your SVG icon for Next */}
+                                    </button>
                                 </li>
                             </ul>
                         </nav>
