@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getStudentStatus, getStudents } from '../../../utils/methods/get';
+import { getPerPageStudents, getStudentStatus, getStudents } from '../../../utils/methods/get';
 import ActionModal from './ActionModal';
 import { tree } from 'd3';
 import AddStudentsModal from './AddStudentsModal';
@@ -21,12 +21,12 @@ const StudentList = () => {
     const [selectedWeek, setSelectedWeek] = useState('All');
     const [selectedStatus, setSelectedStatus] = useState('All');
     const [isBothFiltersSet, setIsBothFiltersSet] = useState(false);
-
+    const [perPage, setPerPage] = useState(10); // Default per page value
     const totalPages = 1000; // Update with the total number of pages
     const pageRange = 4;
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     useEffect(() => {
-        console.log(superleadUniqueId, "xbchjxbchbxhj");
+
 
         const fetchData = async () => {
             try {
@@ -36,9 +36,6 @@ const StudentList = () => {
                 }
                 const response = await getStudents(data);
                 const studentStatus = await getStudentStatus(data);
-                console.log(response.response.students, "responseee");
-                console.log(response.response.studentCurrentWeek, "week");
-                console.log(studentStatus.response.response, "status");
                 if (response.status === true && studentStatus.status === true) {
                     const combinedData: any = [];
 
@@ -98,30 +95,49 @@ const StudentList = () => {
 
         // Create regular expression for case-insensitive search
         const regex = new RegExp(query, 'i');
+        console.log(filteredData, "mnnbnnmbbmnmm");
 
-        // Filter student data based on the search query
-        const filteredStudents = studentsData.filter(student => {
-            // Test each property with the regular expression
-            return (
-                regex.test(student.firstName) ||
-                regex.test(student.lastName) ||
-                regex.test(student.batch) ||
-                regex.test(student.domain) ||
-                regex.test(student.currentWeek.toString()) ||
-                regex.test(student.isStatus)
-            );
-        });
+        if (filteredData.length > 0) {
 
+            console.log(filteredData, "{}{}{}{}{}{}");
+
+            // Filter student data based on the search query
+            const filteredStudents = filteredData.filter(student => {
+                // Test each property with the regular expression
+                return (
+                    regex.test(student.firstName) ||
+                    regex.test(student.lastName) ||
+                    regex.test(student.batch) ||
+                    regex.test(student.domain) ||
+                    regex.test(student.currentWeek.toString()) ||
+                    regex.test(student.isStatus)
+                );
+            });
+            setFilteredData(filteredStudents);
+        } else {
+            const filteredStudents = studentsData.filter(student => {
+                // Test each property with the regular expression
+                return (
+                    regex.test(student.firstName) ||
+                    regex.test(student.lastName) ||
+                    regex.test(student.batch) ||
+                    regex.test(student.domain) ||
+                    regex.test(student.currentWeek.toString()) ||
+                    regex.test(student.isStatus)
+                );
+            });
+            setFilteredData(filteredStudents);
+        }
         // Update state with filtered data
-        setFilteredData(filteredStudents);
+
     };
 
     useEffect(() => {
         if (isBothFiltersSet) {
-            filterData(selectedDomain, selectedBatch,selectedWeek,selectedStatus);
+            filterData(selectedDomain, selectedBatch, selectedWeek, selectedStatus);
         }
-    }, [selectedDomain, selectedBatch, isBothFiltersSet,selectedWeek,selectedStatus]);
-    
+    }, [selectedDomain, selectedBatch, isBothFiltersSet, selectedWeek, selectedStatus]);
+
     const handleStatusWiseFilter = (selectedStatus: React.SetStateAction<string>) => {
         setSelectedStatus(selectedStatus);
         setIsBothFiltersSet(true); // Reset flag when domain filter changes
@@ -140,7 +156,7 @@ const StudentList = () => {
         setIsBothFiltersSet(true); // Set flag when batch filter changes
     };
 
-    const filterData = (domain: string, batch: string , week:string,status:string) => {
+    const filterData = (domain: string, batch: string, week: string, status: string) => {
         let newData = studentsData;
 
         if (domain !== 'All') {
@@ -150,18 +166,16 @@ const StudentList = () => {
         if (batch !== 'All') {
             newData = newData.filter(student => student?.batch === batch);
         }
-        if(week !== 'All'){
+        if (week !== 'All') {
             newData = newData.filter(student => student?.currentWeek === week);
         }
-        if(status !== 'All'){
+        if (status !== 'All') {
             newData = newData.filter(student => student?.isStatus === status);
         }
 
         setFilteredData(newData);
     };
     const goToPage = (page: React.SetStateAction<number>) => {
-        console.log(page, "pageNumberrrrr");
-
         setCurrentPage(page);
     };
 
@@ -186,7 +200,55 @@ const StudentList = () => {
         return pageNumbers;
     };
 
+    const handlePerPageChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+        try {
+            const selectedPerPage = parseInt(event.target.value);
+            setPerPage(selectedPerPage);
+    
+            // You can perform additional actions here, such as making an API call with the selected perPage value
+            if (selectedPerPage) {
+                const data = {
+                    superleadUniqueId,
+                    perPage: selectedPerPage // Fixed syntax error here
+                };
+                const statusData = {
+                    superleadUniqueId,
+                    currentPage
+                }
+                const response = await getPerPageStudents(data); // Assuming getPerPageStudents is an async function
+                const studentStatus = await getStudentStatus(statusData);
+                console.log(response);
+                console.log(studentStatus);
+                if (response.status === true && studentStatus.status === true) {
+                    const combinedData: any = [];
 
+                    response.response.students.forEach((student: { studentId: any; firstName: any; lastName: any; batch: any; domain: any; imageUrl: any; }) => {
+                        const matchedStatus = studentStatus.response.response.find((status: { studentId: any; }) => status.studentId === student.studentId);
+                        const matchedWeek = response.response.studentCurrentWeek.find((week: { studentId: any; }) => week.studentId === student.studentId);
+
+                        if (matchedStatus && matchedWeek) {
+                            combinedData.push({
+                                studentId: student.studentId,
+                                imageUrl: student.imageUrl,
+                                firstName: student.firstName,
+                                lastName: student.lastName,
+                                batch: student.batch,
+                                domain: student.domain,
+                                currentWeek: matchedWeek.currentWeek,
+                                isStatus: matchedStatus.isStatus
+                            });
+                        }
+                    });
+
+                    setFilteredData(combinedData);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            // Handle error
+        }
+    };
+    
 
 
     return (
@@ -250,7 +312,7 @@ const StudentList = () => {
                                 </form>
                             </div>
                             <div className="w-full md:w-1/2 m-3">
-                            <form className="flex items-center">
+                                <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -276,7 +338,7 @@ const StudentList = () => {
                                 </form>
                             </div>
                             <div className="w-full md:w-1/2 m-3">
-                            <form className="flex items-center">
+                                <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -305,20 +367,23 @@ const StudentList = () => {
                         <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-between md:space-x-3 flex-shrink-0 m-7 mb-2 mt-3  mr-4 ">
                             <div className="w-full md:w-10">
                                 <form className="flex items-center">
-                                    <label htmlFor="simple-search" className="sr-only">Search</label>
+                                    <label htmlFor="simple-search" className="sr-only">Items per page</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <p className='text-sm font-roboto'>10</p>
+                                            <p className='text-sm font-roboto'>{perPage}</p>
                                         </div>
-                                        <select type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none" required="">
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
-                                            <option value="10 text-sm font-roboto">60</option>
+                                        <select
+                                            id="simple-search"
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                                            value={perPage}
+                                            onChange={handlePerPageChange}
+                                        >
+                                            <option value="All">All</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            {/* Add more options as needed */}
                                         </select>
                                     </div>
-
-
                                 </form>
                             </div>
 

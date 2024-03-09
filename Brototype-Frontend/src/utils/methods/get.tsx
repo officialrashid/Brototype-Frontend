@@ -1,3 +1,4 @@
+import { LayoutGroup } from "framer-motion";
 import Api from "../baseUrl/baseUrl";
 import studentApi from "../baseUrl/studentBaseUrl"
 ////********   get enquirie methods  *****////
@@ -315,5 +316,26 @@ export const getSuperleadProfile = async (superleadId:string) =>{
   }
 
 }
+export const getPerPageStudents = async (data:{superleadUniqueId:string,perPage:number}) =>{
+ console.log(data,"sbsbfnsdsvghdvsghfshfhsfvsfsvsfgs");
+ 
+  try {
+     const response = await studentApi.get(`/api/student/get-per-page-students`,{params:data})
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
+export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,perPage:number}) =>{
+
+   try {
+      const response = await Api.get(`/api/auth/get-per-page-students-status`,{params:data})
+      return response?.data;
+   } catch (error) {
+    
+   }
+ 
+ }
 
 
