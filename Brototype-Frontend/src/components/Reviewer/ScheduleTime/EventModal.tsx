@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../../../context/GlobalContext';
 import { createEvents } from '../../../utils/methods/post';
 import { toast } from 'react-toastify';
@@ -8,8 +8,11 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const EventModal = () => {
+    const [currentDate, setCurrentDate] = useState(moment());
+    const [datesAfterWeek, setDatesAfterWeek] = useState([]);
     const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const navigate = useNavigate();
     const labelsClasses = ["yellow", "orange", "blue", "red"];
@@ -138,7 +141,20 @@ const EventModal = () => {
         const response = await deleteEvents(data);
         console.log(response, "response");
     };
+    useEffect(() => {
+        const calculateDatesAfterWeek = () => {
+          const dates = [];
+          for (let i = 0; i < 7; i++) {
+            const dateAfterWeek = currentDate.clone().add(i + 1, 'week');
+            dates.push(dateAfterWeek.format("dddd, MMMM DD"));
+          }
+        //   setDatesAfterWeek(dates);
+        console.log(dates);
+        };
 
+    
+        calculateDatesAfterWeek();
+      }, [currentDate]);
     return (
         <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
             <form className='bg-white rounded-lg shadow-2xl w-1/4'>

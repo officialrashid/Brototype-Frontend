@@ -447,13 +447,30 @@ const ReviewerList = () => {
                                                 <td className="px-4 py-3 text-sm font-roboto">{reviewer?.gender}</td>
 
 
+                                                <React.Fragment key={index}>
+                                                    
+                                                    {  reviewer.status === "Active" ? (
+                                                        // Render this block if the condition is true
+                                                        <div className="mt-0 mb-5">
+                                                        <span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span>
+                                                    </div>
+                                                    ) :   reviewer.status === "Terminate" ? (
+                                                        // Render this block if the else if condition is true
+                                                        <div className="mt-0 mb-5">
+                                                         <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
+                                                    </div>
+                                                    ) :   reviewer.status === "Suspend" ? (
+                                                        <div className="mt-0 mb-5">
+                                                        <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-gray-10 text-Outstanding ring-Outstanding font-roboto text-xs">Suspend</span>
+                                                    </div>
+                                                    ) :   reviewer.status === "Quit" ? (
+                                                        <div className="mt-0 mb-5">
+                                                        <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Quit</span>
+                                                    </div>
+                                                    )  : null}
+                                                </React.Fragment>
 
-
-                                                <td className="px-4 py-3"><span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">{reviewer.status}</span></td>
-
-
-
-
+                                            
                                                 <td className="px-4 py-3   ">
                                                     <button type='button' id="apple-imac-27-dropdown-button" data-dropdown-toggle="apple-imac-27-dropdown" className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100" onClick={() => handleActionChange(reviewer?.reviewerId)}>
                                                         {reviewer?.reviewerId === reviewerId ? (

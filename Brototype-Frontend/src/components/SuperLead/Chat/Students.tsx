@@ -1,15 +1,13 @@
 import { SetStateAction, useState } from "react"
-import Students from "./Students"
-const Chat = () => {
-    const [profile, setProfile] = useState(false)
-    const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
-    const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
 
-    const handleTabClick = (currentTab: string) => {
-        const currentIndex = tabs.indexOf(currentTab);
-        const nextIndex = (currentIndex ) % tabs.length; // Get the index of the next tab
-        setActiveTab(tabs[nextIndex]); // Set the next tab as active
-    };
+const Students = () => {
+    console.log("fbhjsdfhjsfs chat section startsss");
+    const [profile, setProfile] = useState(false)
+    // const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
+
+    // const handleTabClick = (tab: SetStateAction<string>) => {
+    //   setActiveTab(tab);
+    // };
     return (
 
 
@@ -34,11 +32,14 @@ const Chat = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-4 m-10 mt-0 mb-0">
-                    {tabs.map(tab => (
-                    <p key={tab} className={`text-sm font-roboto cursor-pointer ${activeTab === tab ? 'underline font-bold text-dark-highBlue' : ''}`} onClick={() => handleTabClick(tab)}>{tab}</p>
-                ))}
-                    </div>
+                    {/* <div className="flex gap-4 m-10 mt-0 mb-0">
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'chat' ? 'font-bold' : ''}`} onClick={() => handleTabClick('chat')}>Chat</p>
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'all' ? 'font-bold' : ''}`} onClick={() => handleTabClick('all')}>All</p>
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'students' ? 'font-bold' : ''}`} onClick={() => handleTabClick('students')}>Students</p>
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'advisors' ? 'font-bold' : ''}`} onClick={() => handleTabClick('advisors')}>Advisors</p>
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'reviewers' ? 'font-bold' : ''}`} onClick={() => handleTabClick('reviewers')}>Reviewers</p>
+                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'leads' ? 'font-bold' : ''}`} onClick={() => handleTabClick('leads')}>Leads</p>
+                    </div> */}
                     <div className="flex justify-between bg-dark-highBlue m-5 rounded-md">
                         <div className="flex gap-2 m-2 mt-">
 
@@ -93,9 +94,9 @@ const Chat = () => {
                                 <div className="border h-12 w-12 rounded-full  mt-3">
                                     <img src="/profile.jpeg" alt="" className="rounded-full" />
                                 </div>
-                                <div className="mt-5"><span className="text-md  font-semibold font-roboto">John Doe</span>
+                                <div className="mt-5"><span className="text-md  font-semibold font-roboto">John </span>
                                     <div>
-                                        <span className="text-gray-600 text-sm font-roboto">last seen 8:98 pm</span>
+                                        <span className="text-gray-600 text-sm font-roboto">last seen 8:58 pm</span>
                                     </div>
                                 </div>
 
@@ -130,7 +131,7 @@ const Chat = () => {
                                 {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
                                 <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
 
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
+                                    <p className="text-sm font-roboto m-3 text-white">Hello </p>
                                 </div>
 
                             </div>
@@ -139,7 +140,7 @@ const Chat = () => {
                                 {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
                                 <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
 
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
+                                    <p className="text-sm font-roboto m-3 text-white">Hello Ashif546345353543</p>
                                 </div>
 
                             </div>
@@ -211,10 +212,9 @@ const Chat = () => {
 
 
             </div>
-            {activeTab === 'students' && <Students />}
             {/* {activeTab === 'chat' && <ChatComponent />}
       {activeTab === 'all' && <AllComponent />}
- 
+      {activeTab === 'students' && <StudentsComponent />}
       {activeTab === 'advisors' && <AdvisorsComponent />}
       {activeTab === 'reviewers' && <ReviewersComponent />}
       {activeTab === 'leads' && <LeadsComponent />} */}
@@ -223,4 +223,4 @@ const Chat = () => {
 
     )
 }
-export default Chat
+export default Students

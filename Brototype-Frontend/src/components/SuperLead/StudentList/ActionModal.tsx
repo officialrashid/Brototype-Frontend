@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { updateStudentStatus } from "../../../utils/methods/patch";
 import { toast } from "react-toastify";
-import ConfirmPlacedModal from "./confirmPlacedModal";
+import ConfirmPlacedModal from "./ConfirmPlacedModal";
 import Swal from 'sweetalert2';
 import { useState } from "react";
 interface ActionModalProps {

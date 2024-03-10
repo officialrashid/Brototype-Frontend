@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddAdvisorModal from "./AddAdvisorModal";
 
 
 const AdvisorList = () => {
@@ -510,6 +511,7 @@ const AdvisorList = () => {
             </div>
         </div>
     </section>
+    <AddAdvisorModal isVisible={addReviewCordinator} onClose={() => { setAddReviewCordinator(false) }} />
     </>
     );
 }

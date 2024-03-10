@@ -1,7 +1,7 @@
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { addReviewers, addStudents } from '../../../utils/methods/post';
+import { addAdvisors, addReviewers } from '../../../utils/methods/post';
 import useMutation from '../../../hooks/useMutation';
 import { toast } from 'react-toastify';
 
@@ -16,27 +16,23 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+const AddAdvisorModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
  
   const validationSchema = Yup.object().shape({
-    name: Yup.string()
-      .required('Name is required')
+    firstName: Yup.string()
+      .required('First Name is required')
       .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
       .test('capitalize-first', 'First letter must be capital', (value) => {
         return /^[A-Z]/.test(value || ''); // Check if the first letter is capital
       }),
+    lastName: Yup.string()
+      .required('Last Name is required')
+      .transform((value, originalValue) => (originalValue.trim() === '' ? undefined : originalValue.trim()))
+      .test('capitalize-first', 'First letter must be capital', (value) => {
+        return /^[A-Z]/.test(value || '');
+      }),
     email: Yup.string().email('Invalid email address').transform((value) => value.trim()).required('Email is required'),
     phone: Yup.string().matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits').transform((value) => value.trim()).required('Phone is required'),
-    batch: Yup.string()
-    .required('Batch is required')
-    .transform((originalValue) => {
-      const trimmedValue = originalValue.trim();
-      return trimmedValue.toUpperCase();
-    })
-    .test('all-uppercase', 'Batch must be in uppercase', (value) => {
-      // Check if the transformed value is the same as the original value
-      return value === value?.toUpperCase();
-    }),
   });
   const {
     mutate: uploadImage,
@@ -45,10 +41,10 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
   } = useMutation({ url: '/api/student/profile-update' });
   const formik = useFormik({
     initialValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       phone:'',
-      batch:''
     },
     validationSchema,
     onSubmit: async (values:any) => {
@@ -57,12 +53,14 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
         if (!values) {
           return "not enter the details"
         }
-        const response = await addStudents(values)
+        const response = await addAdvisors(values)
+        console.log(response,"dfhdb");
+        
          if(response?.status===true){
-          toast.success("Student Created Succefully")
+          toast.success("Advisor Created Succefully")
           onClose();
-         }else{
-          toast.warn("Student Created not Success")
+         }else if(response?.status===false && response?.message==="Email or phone already exists"){
+          toast.warn("Email or Phone number alrady exist")
           onClose()
          }
        onClose()
@@ -92,20 +90,36 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
             <div className=" m-6 flex ">
               <div>
                 <div>
-                  <span className="text-sm font-roboto"> Name</span>
+                  <span className="text-sm font-roboto">First Name</span>
                 </div>
                 <input
                   type="text"
                   className="border border-2px mr-4  outline-black py-1 px-2 w-72 rounded-sm"
-                  name="name"
-                  value={formik.values.name}
+                  name="firstName"
+                  value={formik.values.firstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.name && formik.errors.name && (
-                  <ErrorText>{formik?.errors?.name}</ErrorText>
+                {formik.touched.firstName && formik.errors.firstName && (
+                  <ErrorText>{formik?.errors?.firstName}</ErrorText>
                 )}
               </div>
+              <div>
+                <div>
+                  <span className="text-sm font-roboto">Last Name</span>
+                </div>
+                <input type="text" className="border border-2px mr-4 outline-black py-1 px-2 w-72  rounded-sm "
+                  name="lastName"
+                  value={formik.values.lastName}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+                {formik.touched.lastName && formik.errors.lastName && (
+                  <ErrorText>{formik.errors.lastName}</ErrorText>
+                )}
+              </div>
+            </div>
+            <div className=" m-6 flex">
               <div>
                 <div>
                   <span className="text-sm font-roboto">
@@ -122,9 +136,7 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
                   <ErrorText>{formik.errors.email}</ErrorText>
                 )}
               </div>
-            </div>
-            <div className=" m-6 flex">
-            <div className="font-roboto">
+              <div className="font-roboto">
                 <div>
                   <span className="text-sm font-roboto">Phone</span>
                 </div>
@@ -135,21 +147,7 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.phone && formik.errors.phone && (
-                  <ErrorText>{formik?.errors?.phone}</ErrorText>
-                )}
-              </div>
-              <div className="font-roboto">
-                <div>
-                  <span className="text-sm font-roboto">Batch</span>
-                </div>
-                <input type="text" className="border font-roboto border-2px mr-4 outline-black py-1 px-2 w-72  rounded-sm "
-                  name="batch"
-                  value={formik.values.batch}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                {formik.touched.batch && formik.errors.batch && (
-                  <ErrorText>{formik?.errors?.batch}</ErrorText>
+                  <ErrorText>{formik.errors.phone}</ErrorText>
                 )}
               </div>
               
@@ -178,4 +176,4 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
   );
 };
 
-export default AddStudentsModal;
+export default AddAdvisorModal;
