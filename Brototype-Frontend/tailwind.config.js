@@ -53,8 +53,8 @@ module.exports = {
         '46.8rem' : '46.8rem',
         '4.6rem': '4.6rem',
         '6.8rem': '6.8rem',
-        '19rem': '19rem'
-        
+        '19rem': '19rem',
+        '30rem':'30rem'
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',

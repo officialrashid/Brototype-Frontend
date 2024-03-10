@@ -6,6 +6,7 @@ import otpReducer from './otpReducer';
 import studentReducer from './studentReducer';
 import reviewerReducer from './reviewerReducer';
 import superleadReducer from './superleadReducer';
+import chatOppositPersonDataReducer from './chatOppositPersonDataReducer';
 const persistConfig = {
   key: 'root',
   storage,
@@ -17,7 +18,8 @@ const persistedReducer = persistReducer(
    otp : otpReducer,
    student:studentReducer,
    reviewer: reviewerReducer,
-   superlead: superleadReducer
+   superlead: superleadReducer,
+   chat : chatOppositPersonDataReducer
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;

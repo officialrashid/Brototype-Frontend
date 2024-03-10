@@ -1,226 +1,62 @@
-import { SetStateAction, useState } from "react"
-
+import { SetStateAction, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllStudents } from "../../../utils/methods/get";
+import {setchatOppositPersonData} from "../../../redux-toolkit/chatOppositPersonDataReducer"
 const Students = () => {
-    console.log("fbhjsdfhjsfs chat section startsss");
-    const [profile, setProfile] = useState(false)
-    // const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
+    const dispatch = useDispatch()
+    const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
+    const [students, setStudents] = useState([]);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(0); // Initially selected index is 0
 
-    // const handleTabClick = (tab: SetStateAction<string>) => {
-    //   setActiveTab(tab);
-    // };
+    useEffect(() => {
+        const fetchStudents = async () => {
+            const response = await getAllStudents(superleadUniqueId);
+            if (response.status === true) {
+                setStudents(response.response);
+                handleStudentClick(0,response.response[0])
+            }
+        };
+        fetchStudents();
+
+    }, []);
+
+    const handleStudentClick = (index: number, student: any) => {
+        console.log(student, "sdbnfdfvndbvfd");
+        setSelectedStudentIndex(index);
+        dispatch(setchatOppositPersonData(student))
+    };
+
     return (
-
-
-        <>
-            <div className="flex border shadow-md  mt-36 w-2/2 m-48 item mb-0 h-36rem">
-
-
-                <div className="border-r w-1/2 bg-white ">
-                    <div className="m-5 flex gap-3">
-                        <div>
-                            <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
+        <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
+            {students.map((student, index) => (
+                <div
+                    key={student.studentId}
+                    className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
+                    onClick={() => handleStudentClick(index, student)}
+                >
+                    <div className="flex gap-2 m-2 mt-">
+                        <div className="border h-8 w-8 rounded-full mt-2 ">
+                            <img src={student.imageUrl} alt="" className="rounded-full " />
                         </div>
-                        <div className="relative">
-                            <div className="absolute m-3 mt-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 stroke-slate-400">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                                </svg>
-                            </div>
+                        <div className="mt-1 mb-0">
+                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                {student.firstName} {student.lastName}
+                            </span>
+
                             <div>
-                                <input type="search" className=" font-roboto   w-full py-1 px-10 rounded-full border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... " />
+                                <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                    Hello good morning
+                                </span>
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="flex gap-4 m-10 mt-0 mb-0">
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'chat' ? 'font-bold' : ''}`} onClick={() => handleTabClick('chat')}>Chat</p>
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'all' ? 'font-bold' : ''}`} onClick={() => handleTabClick('all')}>All</p>
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'students' ? 'font-bold' : ''}`} onClick={() => handleTabClick('students')}>Students</p>
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'advisors' ? 'font-bold' : ''}`} onClick={() => handleTabClick('advisors')}>Advisors</p>
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'reviewers' ? 'font-bold' : ''}`} onClick={() => handleTabClick('reviewers')}>Reviewers</p>
-                        <p className={`text-sm font-roboto cursor-pointer ${activeTab === 'leads' ? 'font-bold' : ''}`} onClick={() => handleTabClick('leads')}>Leads</p>
-                    </div> */}
-                    <div className="flex justify-between bg-dark-highBlue m-5 rounded-md">
-                        <div className="flex gap-2 m-2 mt-">
-
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src="/profile.jpeg" alt="" className="rounded-full " />
-                            </div>
-                            <div className="mt-1 mb-0"><span className="text-sm  font-meduim font-roboto text-white">John Doe</span>
-                                <div>
-                                    <span className="text-gray-600 font-roboto text-white text-xs">Hello good mrng</span>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div className="m-4">
-                            <span className="text-gray-600 text-sm font-roboto text-white ">6m</span>
-                        </div>
-
-                    </div>
-                    <div className="flex justify-between m-5 rounded-md">
-                        <div className="flex gap-2 m-2 mt-">
-
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src="/profile.jpeg" alt="" className="rounded-full " />
-                            </div>
-                            <div className="mt-1 mb-0"><span className="text-sm  font-meduim font-roboto">John Doe</span>
-                                <div>
-                                    <span className="text-gray-600 font-roboto  text-xs">Hello good mrng</span>
-                                </div>
-                            </div>
-
-
-                        </div>
-                        <div className="m-4">
-                            <span className="text-gray-600 text-sm font-roboto  ">6m</span>
-                        </div>
-
-
-
-
-
-
-
+                    <div className="m-4">
+                        <span className="text-gray-600 text-sm font-roboto text-white">6m</span>
                     </div>
                 </div>
+            ))}
+        </div>
+    );
+};
 
-
-                <div className="  border-r w-full bg-white h-20 mb-0">
-                    <div className="border-b ">
-                        <div className="flex justify-between ">
-                            <div className="flex gap-2 m-2 ">
-                                <div className="border h-12 w-12 rounded-full  mt-3">
-                                    <img src="/profile.jpeg" alt="" className="rounded-full" />
-                                </div>
-                                <div className="mt-5"><span className="text-md  font-semibold font-roboto">John </span>
-                                    <div>
-                                        <span className="text-gray-600 text-sm font-roboto">last seen 8:58 pm</span>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div className="m-4 mt-8 flex gap-4">
-                                <div className="border w-8 h-8 flex items-center justify-center rounded-full">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
-                                    </svg>
-
-
-                                </div>
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
-                                    </svg>
-
-
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div className="h-28rem bg-custom-background mt-0">
-
-                        <div className="grid grid-cols-1 mb-0">
-
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello </p>
-                                </div>
-
-                            </div>
-
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Ashif546345353543</p>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-
-
-                    </div>
-
-                    <div className=" m-3 mt-0 rounded-md ">
-                        <div className=" flex ">
-
-
-
-                            <div className="relative top-0 w-full">
-
-
-
-                                <textarea
-                                    className=" font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40  absolute bottom-0 rounded-md w-full"
-
-                                    placeholder="Type a message.."
-                                >
-
-
-                                </textarea>
-
-
-                            </div>
-
-                            <div className="m-1 cursor-pointer ">
-                                <div className=" flex gap-1 ">
-                                    <div className="flex items-center justify-center h-8 w-8"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                                    </svg>
-                                    </div>
-                                    <div className="flex items-center justify-center h-8 w-8">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-                                        </svg>
-
-                                    </div>
-                                    <div className="border h-8 w-8 flex items-center justify-center bg-gray-300 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                                    </svg>
-                                    </div>
-                                </div>
-
-                            </div>
-
-
-
-
-
-                        </div>
-
-
-
-
-                    </div>
-
-
-                </div>
-
-
-
-
-
-
-            </div>
-            {/* {activeTab === 'chat' && <ChatComponent />}
-      {activeTab === 'all' && <AllComponent />}
-      {activeTab === 'students' && <StudentsComponent />}
-      {activeTab === 'advisors' && <AdvisorsComponent />}
-      {activeTab === 'reviewers' && <ReviewersComponent />}
-      {activeTab === 'leads' && <LeadsComponent />} */}
-
-        </>
-
-    )
-}
-export default Students
+export default Students;

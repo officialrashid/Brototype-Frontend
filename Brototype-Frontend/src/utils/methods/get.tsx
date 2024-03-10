@@ -358,4 +358,14 @@ export const getPerPageFumiagtionStudents = async (data:{hubLocation:string,sele
   }
 
 }
- 
+export const getAllStudents = async (uniqueId:string) =>{
+
+  try {
+     const response = await studentApi.get(`/api/student/get-all-chat-students/${uniqueId}`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
+
