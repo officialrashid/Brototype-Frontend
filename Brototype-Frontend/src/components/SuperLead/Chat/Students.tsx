@@ -2,9 +2,11 @@ import { SetStateAction, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllStudents } from "../../../utils/methods/get";
 import {setchatOppositPersonData} from "../../../redux-toolkit/chatOppositPersonDataReducer"
+import { createChat } from "../../../utils/methods/post";
 const Students = () => {
     const dispatch = useDispatch()
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
+    const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const [students, setStudents] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(0); // Initially selected index is 0
 
@@ -20,10 +22,19 @@ const Students = () => {
 
     }, []);
 
-    const handleStudentClick = (index: number, student: any) => {
-        console.log(student, "sdbnfdfvndbvfd");
-        setSelectedStudentIndex(index);
-        dispatch(setchatOppositPersonData(student))
+    const handleStudentClick = async (index: number, student: any) => {
+        try {
+            setSelectedStudentIndex(index);
+            dispatch(setchatOppositPersonData(student))
+            const chatData = {
+                initiatorId : superleadId,
+                recipientId : student.studentId
+            }
+            const response = await createChat(chatData)
+        } catch (err){
+           /// handle error componets definr
+        }
+       
     };
 
     return (

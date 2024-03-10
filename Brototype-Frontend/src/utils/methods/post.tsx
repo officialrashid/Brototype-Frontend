@@ -334,3 +334,19 @@ export const addAdvisors = async (data:any)=>{
 
 
 }
+
+
+////// POST METHOD FOR CHAT AND VIDEO SERVICES //////
+
+
+export const createChat = async (data:any)=>{
+
+  try {
+   const resposne = await Api.post('/api/chat-and-video/create-chat',data)
+   return resposne?.data
+  } catch(err){
+    return {status:false,message:"some issue in the add Reviewer"}
+  }
+
+
+}

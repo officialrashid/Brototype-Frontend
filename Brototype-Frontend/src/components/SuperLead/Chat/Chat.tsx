@@ -3,6 +3,7 @@ import Students from "./Students"
 import { useSelector } from "react-redux";
 const Chat = () => {
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
+    const superleadId:any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     console.log(student,"dbfdfdhfd");
     
     const [profile, setProfile] = useState(false)
