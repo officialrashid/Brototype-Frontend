@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
-
+// import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = () => {
+ 
     const dispatch = useDispatch();
     const superleadUniqueId = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     const superleadId = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
@@ -29,33 +30,33 @@ const ChatTab = () => {
         fetchAllChatRecipients();
     }, [superleadId]);
 
-    // useEffect(() => {
-    //     const fetchMessages = async () => {
-    //         try {
-    //             if (chatUser.length > 0) { // Check if chatUser array is not empty
-    //                 // Iterate through chatUser array to fetch messages for each chat user
-    //                 for (const user of chatUser) {
-    //                     const data = {
-    //                         initiatorId: superleadId,
-    //                         recipientId: user.chaterId // Access chaterId from each chat user object
-    //                     };
-    //                     const response = await getMessages(data);
-    //                     if (response.getMessages.status === true) {
-    //                         // Update state for each chat user separately
-    //                         setAllMessage(prevState => [...prevState, response.getMessages.messages]);
-    //                         setLastMessage(response.getMessages.lastMessage);
-    //                     } else {
-    //                         setAllMessage([]);
-    //                         setLastMessage({});
-    //                     }
-    //                 }
-    //             }
-    //         } catch (error) {
-    //             console.error("Error fetching messages:", error);
-    //         }
-    //     };
-    //     fetchMessages();
-    // }, [chatUser]);
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                if (chatUser.length > 0) { // Check if chatUser array is not empty
+                    // Iterate through chatUser array to fetch messages for each chat user
+                    for (const user of chatUser) {
+                        const data = {
+                            initiatorId: superleadId,
+                            recipientId: user.chaterId // Access chaterId from each chat user object
+                        };
+                        const response = await getMessages(data);
+                        if (response.getMessages.status === true) {
+                            // Update state for each chat user separately
+                            setAllMessage(prevState => [...prevState, response.getMessages.messages]);
+                            setLastMessage(response.getMessages.lastMessage);
+                        } else {
+                            setAllMessage([]);
+                            setLastMessage({});
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+        };
+        fetchMessages();
+    }, [chatUser]);
     
 
     const handleStudentClick = async (index: number, chatUser: any) => {

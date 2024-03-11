@@ -1,11 +1,20 @@
 import { SetStateAction, useEffect, useState } from "react"
-import Students from "./Students"
-import ChatTab from "./ChatTab";
+// import Students from "./Students"
+// import ChatTab from "./ChatTab";
 import { useSelector } from "react-redux";
 import { sendMessage } from "../../../utils/methods/post";
 import { getMessages } from "../../../utils/methods/get";
+import Students from "./Students";
+import ChatTab from "./ChatTab";
+import { useSocket } from "../../../hooks/useSocket";
+
 const Chat = () => {
+    let socket=useSocket()
+    console.log(socket,'sockettttt');
+    
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
+    console.log(student,"dsnvbsdvbs");
+    
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     console.log(student, "dbfdfdhfd");
 
@@ -33,34 +42,42 @@ const Chat = () => {
     const handleSubmit = async () => {
         try {
             if (!message) {
-                ///handle error message
+                // Handle error: Empty message
+                return;
             }
             const messageData = {
                 senderId: superleadId,
                 receiverId: student.studentId || student.chaterId,
                 content: message
-            }
-            console.log(messageData, "mesageDatat");
-
-            const response = await sendMessage(messageData)
-            console.log(response, "fdmfdbjhfbdjfjdf");
-            if (response.sendMessage.status === true) {
-                console.log("keriiiittoooo");
-
-                setMessage("")
-            }
+            };
+            console.log(messageData, "messageData");
+    
+            // Emit message to the server
+            socket.emit('message', messageData);
+    
+            // Listen for response from the server
+            socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                if (response.status === true) {
+                    console.log("Message sent successfully");
+                    setMessage(""); // Clear the message input field
+                } else {
+                    console.error("Failed to send message:", response.message);
+                }
+            });
         } catch (error) {
-            ////
-            // return {status:}
+            console.error("Error sending message:", error);
         }
-    }
+    };
+    
     useEffect(() => {
         const fetchMessages = async () => {
             try {
                 const data = {
                     initiatorId: superleadId,
-                    recipientId: student?.chaterId 
+                    recipientId: student?.chaterId || student.studentId
                 }
+                console.log(data,"bvvcfgvghh");
+                
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
@@ -74,7 +91,7 @@ const Chat = () => {
             }
         }
         fetchMessages();
-    }, [student?.studentId,student?.chaterId,message]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?.studentId,student?.chaterId,message,superleadId]); // Only trigger when superleadId or student?.chaterId changes
     
     return (
 
