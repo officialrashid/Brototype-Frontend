@@ -373,9 +373,21 @@ export const getAllStudents = async (uniqueId:string) =>{
 
     try {
        const response = await Api.get(`/api/chat-and-video/get-all-chat-recipients/${initiatorId}`)
+       return response?.data?.getAllChatRecipients
+       ;
+    } catch (error) {
+     
+    }
+  
+  }
+  export const getMessages = async (data:{initiatorId:string,recipientId:string}) =>{
+
+    try {
+       const response = await Api.get(`/api/chat-and-video/get-messages`,{params:data})
        return response?.data;
     } catch (error) {
      
     }
   
   }
+  

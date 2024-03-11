@@ -24,11 +24,13 @@ const Students = () => {
 
     const handleStudentClick = async (index: number, student: any) => {
         try {
+            console.log(student,"dfhdbfjdbfdffff11222122");
+            
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(student))
             const chatData = {
                 initiatorId : superleadId,
-                recipientId : student.studentId,
+                recipientId : student.studentId || student.chaterId,
                 chaters : student
             }
             const response = await createChat(chatData)

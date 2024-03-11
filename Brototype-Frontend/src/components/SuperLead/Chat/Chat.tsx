@@ -1,8 +1,9 @@
-import { SetStateAction, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 import Students from "./Students"
 import ChatTab from "./ChatTab";
 import { useSelector } from "react-redux";
 import { sendMessage } from "../../../utils/methods/post";
+import { getMessages } from "../../../utils/methods/get";
 const Chat = () => {
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
@@ -12,6 +13,8 @@ const Chat = () => {
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
     const [message, setMessage] = useState("")
+    const [allMesage, setAllMessage] = useState([])
+    const [lastMessage, setLastMessage] = useState([])
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -27,29 +30,52 @@ const Chat = () => {
 
         }
     }
-    const handleSubmit = async () =>{
+    const handleSubmit = async () => {
         try {
-            if(!message){
+            if (!message) {
                 ///handle error message
             }
-        const messageData = {
-            senderId :superleadId,
-            receiverId:student.studentId,
-            content : message
-        }
-        console.log(messageData,"mesageDatat");
-        
-     const response = await sendMessage(messageData)  
-     console.log(response,"fdmfdbjhfbdjfjdf");
-     if(response.sendMessage.status===true){
-        console.log("keriiiittoooo");
-        
-        setMessage("")
-     }
+            const messageData = {
+                senderId: superleadId,
+                receiverId: student.studentId || student.chaterId,
+                content: message
+            }
+            console.log(messageData, "mesageDatat");
+
+            const response = await sendMessage(messageData)
+            console.log(response, "fdmfdbjhfbdjfjdf");
+            if (response.sendMessage.status === true) {
+                console.log("keriiiittoooo");
+
+                setMessage("")
+            }
         } catch (error) {
-            
+            ////
+            // return {status:}
         }
     }
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const data = {
+                    initiatorId: superleadId,
+                    recipientId: student?.chaterId 
+                }
+                const response = await getMessages(data)
+                if (response.getMessages.status === true) {
+                    setAllMessage(response.getMessages.messages)
+                    setLastMessage(response.getMessages.lastMessage)
+                } else {
+                    setAllMessage([])
+                    setLastMessage([])
+                }
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+        }
+        fetchMessages();
+    }, [student?.studentId,student?.chaterId,message]); // Only trigger when superleadId or student?.chaterId changes
+    
     return (
 
 
@@ -84,7 +110,7 @@ const Chat = () => {
                         <Students />
                     ) : activeTab === "chat" ? (
 
-                      <ChatTab/>
+                        <ChatTab />
                     ) : null}
 
 
@@ -130,80 +156,19 @@ const Chat = () => {
                     <div className="h-30rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
                         <div className="grid grid-cols-1 mb-0">
+                            {allMesage.map((message: string, index: number) => (
+                                <div key={index} className="flex gap-5 m-5 mb-0 mt-3">
+                                    {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
+                                    <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
 
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
+                                        <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
+                                    </div>
 
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
                                 </div>
+                            ))}
 
-                            </div>
 
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
 
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
-                            <div className="flex gap-5 m-5 mb-0">
-                                {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
-                                <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                    <p className="text-sm font-roboto m-3 text-white">Hello Rashid</p>
-                                </div>
-
-                            </div>
                         </div>
 
 
