@@ -368,4 +368,14 @@ export const getAllStudents = async (uniqueId:string) =>{
   }
 
 }
+  //////// GET METHOD FOR CHAT-AND-VIDEO SERVICES /////
+  export const getAllChatRecipients = async (initiatorId:string) =>{
 
+    try {
+       const response = await Api.get(`/api/chat-and-video/get-all-chat-recipients/${initiatorId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }

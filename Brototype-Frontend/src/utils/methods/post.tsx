@@ -350,3 +350,15 @@ export const createChat = async (data:any)=>{
 
 
 }
+export const sendMessage = async (data:any)=>{
+
+  try {
+   const resposne = await Api.post('/api/chat-and-video/send-message',data)
+   return resposne?.data
+  } catch(err){
+    return {status:false,message:"some issue in the add Reviewer"}
+  }
+
+
+}
+

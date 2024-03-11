@@ -28,7 +28,8 @@ const Students = () => {
             dispatch(setchatOppositPersonData(student))
             const chatData = {
                 initiatorId : superleadId,
-                recipientId : student.studentId
+                recipientId : student.studentId,
+                chaters : student
             }
             const response = await createChat(chatData)
         } catch (err){
