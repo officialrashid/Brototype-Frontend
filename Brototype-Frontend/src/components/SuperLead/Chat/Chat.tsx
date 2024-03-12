@@ -7,14 +7,14 @@ import { getMessages } from "../../../utils/methods/get";
 import Students from "./Students";
 import ChatTab from "./ChatTab";
 import { useSocket } from "../../../hooks/useSocket";
-
+import { ReactMic } from 'react-mic';
 const Chat = () => {
-    let socket=useSocket()
-    console.log(socket,'sockettttt');
-    
+    let socket = useSocket()
+    console.log(socket, 'sockettttt');
+
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-    console.log(student,"dsnvbsdvbs");
-    
+    console.log(student, "dsnvbsdvbs");
+
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     console.log(student, "dbfdfdhfd");
 
@@ -24,6 +24,27 @@ const Chat = () => {
     const [message, setMessage] = useState("")
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
+    const [isStreaming, setIsStreaming] = useState(false);
+
+    const startStreaming = () => {
+        setIsStreaming(true);
+        console.log('Start streaming'); // For debugging
+        // Start audio stream logic here
+    };
+
+    const stopStreaming = () => {
+        setIsStreaming(false);
+        console.log('Stop streaming'); // For debugging
+        // Stop audio stream logic here
+    };
+
+    const handleMouseDown = () => {
+        startStreaming();
+    };
+
+    const handleMouseUp = () => {
+        stopStreaming();
+    };
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -51,10 +72,10 @@ const Chat = () => {
                 content: message
             };
             console.log(messageData, "messageData");
-    
+
             // Emit message to the server
             socket.emit('message', messageData);
-    
+
             // Listen for response from the server
             socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
                 if (response.status === true) {
@@ -68,7 +89,7 @@ const Chat = () => {
             console.error("Error sending message:", error);
         }
     };
-    
+
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -76,8 +97,8 @@ const Chat = () => {
                     initiatorId: superleadId,
                     recipientId: student?.chaterId || student.studentId
                 }
-                console.log(data,"bvvcfgvghh");
-                
+                console.log(data, "bvvcfgvghh");
+
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
@@ -91,8 +112,8 @@ const Chat = () => {
             }
         }
         fetchMessages();
-    }, [student?.studentId,student?.chaterId,message,superleadId]); // Only trigger when superleadId or student?.chaterId changes
-    
+    }, [student?.studentId, student?.chaterId, message, superleadId]); // Only trigger when superleadId or student?.chaterId changes
+
     return (
 
 
@@ -213,7 +234,13 @@ const Chat = () => {
 
                             <div className="m-1 cursor-pointer ">
                                 <div className="flex gap-1">
-                                    <div className="bg-dark-highBlue rounded-md">
+
+                                    <div className="bg-dark-highBlue rounded-md"
+                                        onMouseDown={handleMouseDown}
+                                        onMouseUp={handleMouseUp}
+                                        onMouseLeave={handleMouseUp} // Handle mouse leaving the button
+                                    >
+                                        
                                         <div className="flex items-center justify-center h-8 w-8">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
