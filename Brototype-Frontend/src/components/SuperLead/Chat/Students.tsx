@@ -6,20 +6,20 @@ import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 
-const Students = () => {
-    const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
+const Students = ({socket}:{socket:any}) => {
+    // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const [students, setStudents] = useState([]);
-    const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchStudents = async () => {
             const response = await getAllStudents(superleadUniqueId);
             if (response.status === true) {
                 setStudents(response.response);
-                handleStudentClick(0, response.response[0]);
+                // handleStudentClick(0, response.response[0]);
             }
         };
         fetchStudents();
@@ -41,7 +41,9 @@ const Students = () => {
             };
             const response = await createChat(chatData);
             if (response.response.data._id) {
-                socket.emit("joinRoom", response?.response?.data?._id);
+                console.log("emitted join roommmmm");
+                
+                socket.emit("joinRoom", "65f16837ff18d7c22868e870");
             }
         } catch (err) {
             console.error("Error handling student click:", err);

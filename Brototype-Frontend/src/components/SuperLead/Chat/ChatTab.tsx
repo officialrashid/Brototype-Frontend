@@ -63,8 +63,9 @@ const ChatTab = () => {
                 chaters: chatUser
             };
             const response = await createChat(chatData);
+            socket.emit("joinRoom", "65f16837ff18d7c22868e870");
             if (response?.response?.data?._id) {
-                socket.emit("joinRoom", response.response.data._id);
+                // socket.emit("joinRoom", response.response.data._id);
             }
         } catch (err) {
             console.error("Error handling student click:", err);

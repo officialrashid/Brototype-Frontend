@@ -7,12 +7,12 @@ import { RootState } from "../../../redux-toolkit/store";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 
-const Students = () => {
-    const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
+const Students = ({socket}:{socket:any}) => {
+    // const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
     const studentId: string | null = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const [superleads, setSuperleads] = useState([]);
-    const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchSuperleads = async () => {
@@ -20,7 +20,7 @@ const Students = () => {
                 const response = await getAllSuperleads();
                 if (response.status === true) {
                     setSuperleads(response.result);
-                    handleStudentClick(0, response.result[0]);
+                    // handleStudentClick(0, response.result[0]);
                 }
             } catch (error) {
                 console.error("Error fetching superleads:", error);
@@ -39,8 +39,14 @@ const Students = () => {
                 chaters: superlead
             };
             const response = await createChat(chatData);
-            if (response.response.data._id && socket) {
-                socket.emit("joinRoom", response?.response?.data?._id);
+            console.log(response,"ghgghg9999887666");
+            
+            if (response.response.data._id) {
+                console.log("emittedd join room");
+                
+                console.log(response.response.data._id,"::::::::::::::");
+                
+                socket.emit("joinRoom", "65f16837ff18d7c22868e870");
             }
         } catch (error) {
             console.error("Error handling student click:", error);

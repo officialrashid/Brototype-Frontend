@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const chatOppositPersonDataSlice = createSlice({
   name: 'chat',
   initialState: {
-    chatOppositPersonData: {}
+    chatOppositPersonData: {},
+    chatDependencies:""
   },
   
   reducers: {
@@ -13,12 +14,15 @@ const chatOppositPersonDataSlice = createSlice({
         
       state.chatOppositPersonData = action.payload;
     },
- 
+    setChatDependecies:(state,action)=>{
+       state.chatDependencies = action.payload
+    }
     }
   });
 
 export const {
     setchatOppositPersonData,
+    setChatDependecies
  
 } = chatOppositPersonDataSlice.actions;
 

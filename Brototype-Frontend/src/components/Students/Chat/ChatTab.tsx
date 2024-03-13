@@ -10,7 +10,7 @@ const ChatTab = () => {
    
     const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const [chatUser, setChatUser] = useState([]);
-    const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
 
@@ -64,6 +64,7 @@ const ChatTab = () => {
         try {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(chatUser));
+            socket.emit("joinRoom", "65f16837ff18d7c22868e870");
         } catch (err) {
             console.error("Error handling student click:", err);
         }

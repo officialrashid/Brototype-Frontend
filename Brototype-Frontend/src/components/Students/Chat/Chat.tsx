@@ -9,15 +9,15 @@ import ChatTab from "./ChatTab";
 import { useSocket } from "../../../hooks/useSocket";
 import { ReactMic } from 'react-mic';
 import { RootState } from "../../../redux-toolkit/store";
+import { Socket } from "socket.io-client";
+import { all } from "axios";
 const Chat = () => {
-    let socket = useSocket()
+    const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
       const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
-    console.log(student, "dbfdfdhfd");
-console.log(studentId,"sfnsfdsbf");
-
+      
     const [profile, setProfile] = useState(false)
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
@@ -25,7 +25,7 @@ console.log(studentId,"sfnsfdsbf");
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
     const [isStreaming, setIsStreaming] = useState(false);
-
+    const [messageHandle,setMessageHandle] = useState(false)
     const startStreaming = () => {
         setIsStreaming(true);
         console.log('Start streaming'); // For debugging
@@ -75,11 +75,12 @@ console.log(studentId,"sfnsfdsbf");
 
             // Emit message to the server
             socket.emit('message', messageData);
-
+            
             // Listen for response from the server
             socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
                 if (response.status === true) {
                     console.log("Message sent successfully");
+          
                     setMessage(""); // Clear the message input field
                 } else {
                     console.error("Failed to send message:", response.message);
@@ -100,6 +101,8 @@ console.log(studentId,"sfnsfdsbf");
                 console.log(data, "bvvcfgvghh");
 
                 const response = await getMessages(data)
+                console.log(response,"dnbfdfbdf");
+                
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
                     setLastMessage(response.getMessages.lastMessage)
@@ -112,7 +115,34 @@ console.log(studentId,"sfnsfdsbf");
             }
         }
         fetchMessages();
-    }, [student?.superleadId, student?.chaterId, message, studentId]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?.superleadId, student?.chaterId, studentId]);
+     // Only trigger when superleadId or student?.chaterId changes
+     useEffect(() => {
+        if (socket) {
+            const handleReceivedMessage = (data: any) => {
+                console.log("Received messagesssssssssssssss:", data);
+                console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content.content);
+                setAllMessage(prev => {
+                    console.log('Previous state:', prev);
+                    const newState = [...prev, data.content];
+                    console.log('New state:', newState);
+                    return newState;
+                  });
+            };
+
+            socket.on("received", handleReceivedMessage);
+
+            return () => {
+                // Clean up socket listener when component unmounts
+                socket.off("received", handleReceivedMessage);
+            };
+        }
+    }, [socket]);
+    const isSender = (message: any) => {
+        return message.senderId === studentId;
+    };
+
+    
 
     return (
 
@@ -145,7 +175,7 @@ console.log(studentId,"sfnsfdsbf");
                     </div>
                     {activeTab === "students" ? (
 
-                        <Students />
+                        <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
                         <ChatTab />
@@ -193,20 +223,19 @@ console.log(studentId,"sfnsfdsbf");
 
                     <div className="h-30rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                        <div className="grid grid-cols-1 mb-0">
-                            {allMesage.map((message: string, index: number) => (
-                                <div key={index} className="flex gap-5 m-5 mb-0 mt-3">
-                                    {/* <img src="/profile.jpeg" alt="" className="w-8 h-8 rounded-full"/> */}
+                     
+                    <div className="grid grid-cols-1 mb-0">
+                            {allMesage.map((message: any, index: number) => (
+                                <div
+                                    key={index}
+                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                >
                                     <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
 
                                         <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
                                     </div>
-
                                 </div>
                             ))}
-
-
-
                         </div>
 
 
