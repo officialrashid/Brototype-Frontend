@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
-import { createChat } from "../../../utils/methods/post";
-import { useSocket } from "../../../hooks/useSocket";
-
+import { RootState } from "../../../redux-toolkit/store";
+// import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = () => {
-    const socket = useSocket();
+ 
     const dispatch = useDispatch();
-    const superleadId = useSelector((state) => state?.superlead?.superleadData?.superleadId);
+   
+    const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const [chatUser, setChatUser] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
     const [allMessage, setAllMessage] = useState([]);
@@ -17,55 +17,53 @@ const ChatTab = () => {
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
-                const response = await getAllChatRecipients(superleadId);
-                if (response?.status === true && response?.recipients) {
-                    setChatUser(response.recipients);
+                const response = await getAllChatRecipients(studentId);
+                if (response.status === true) {
+                    setChatUser(response?.recipients);
                     handleStudentClick(0, response.recipients[0]);
+                    console.log(response.recipients[0],"{}{}{}{}{");
+                    
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
             }
         };
         fetchAllChatRecipients();
-    }, [superleadId]);
+    }, [studentId]);
 
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                if (chatUser.length > 0) {
-                    const messagesPromises = chatUser.map(async (user) => {
+                if (chatUser.length > 0) { // Check if chatUser array is not empty
+                    // Iterate through chatUser array to fetch messages for each chat user
+                    for (const user of chatUser) {
                         const data = {
-                            initiatorId: superleadId,
-                            recipientId: user.chaterId
+                            initiatorId: studentId,
+                            recipientId: user.chaterId // Access chaterId from each chat user object
                         };
                         const response = await getMessages(data);
-                        if (response.getMessages?.status === true) {
-                            setAllMessage((prevMessages) => [...prevMessages, response.getMessages.messages]);
+                        if (response.getMessages.status === true) {
+                            // Update state for each chat user separately
+                            setAllMessage(prevState => [...prevState, response.getMessages.messages]);
                             setLastMessage(response.getMessages.lastMessage);
+                        } else {
+                            setAllMessage([]);
+                            setLastMessage({});
                         }
-                    });
-                    await Promise.all(messagesPromises);
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching messages:", error);
             }
         };
         fetchMessages();
-    }, [chatUser, superleadId]);
+    }, [chatUser]);
+    
 
-    const handleStudentClick = async (index, chatUser) => {
+    const handleStudentClick = async (index: number, chatUser: any) => {
         try {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(chatUser));
-            const chatData = {
-                initiatorId: superleadId,
-                recipientId: chatUser.studentId || chatUser.chaterId,
-                chaters: chatUser
-            };
-            const response = await createChat(chatData);
-            if (response?.response?.data?._id) {
-                socket.emit("joinRoom", response.response.data._id);
-            }
         } catch (err) {
             console.error("Error handling student click:", err);
         }
@@ -73,26 +71,26 @@ const ChatTab = () => {
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {chatUser.map((user, index) => (
+            {chatUser.map((chatUser: any, index: number) => (
                 <div
-                    key={user.chaterId}
+                    key={chatUser.chaterId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
-                    onClick={() => handleStudentClick(index, user)}
+                    onClick={() => handleStudentClick(index, chatUser)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={user.imageUrl} alt="" className="rounded-full " />
+                            <img src={chatUser.imageUrl} alt="" className="rounded-full " />
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {user.firstName} {user.lastName}
+                                {chatUser.firstName} {chatUser.lastName}
                             </span>
                             <div>
-                                {lastMessage && lastMessage.content &&
+                                {/* {lastMessage && lastMessage.content && ( */}
                                     <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {lastMessage.content}
+                                        {/* {lastMessage.content} */} hellooo
                                     </span>
-                                }
+                                {/* )} */}
                             </div>
                         </div>
                     </div>

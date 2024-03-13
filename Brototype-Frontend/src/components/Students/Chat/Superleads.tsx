@@ -1,86 +1,84 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStudents } from "../../../utils/methods/get";
+import { getAllSuperleads } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
+import { RootState } from "../../../redux-toolkit/store";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 
 const Students = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     const dispatch = useDispatch();
-    const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
-    const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
-    const [students, setStudents] = useState([]);
+    const studentId: string | null = useSelector((state: RootState) => state?.student?.studentData?.studentId);
+    const [superleads, setSuperleads] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
 
     useEffect(() => {
-        const fetchStudents = async () => {
-            const response = await getAllStudents(superleadUniqueId);
-            if (response.status === true) {
-                setStudents(response.response);
-                handleStudentClick(0, response.response[0]);
+        const fetchSuperleads = async () => {
+            try {
+                const response = await getAllSuperleads();
+                if (response.status === true) {
+                    setSuperleads(response.result);
+                    handleStudentClick(0, response.result[0]);
+                }
+            } catch (error) {
+                console.error("Error fetching superleads:", error);
             }
         };
-        fetchStudents();
+        fetchSuperleads();
     }, []);
 
-    const handleStudentClick = async (index: number, student: any) => {
+    const handleStudentClick = async (index: number, superlead: any) => {
         try {
-            if (!socket) {
-                console.error("Socket is null. Connection might not be established.");
-                return;
-            }
-
             setSelectedStudentIndex(index);
-            dispatch(setchatOppositPersonData(student));
+            dispatch(setchatOppositPersonData(superlead));
             const chatData = {
-                initiatorId: superleadId,
-                recipientId: student.studentId || student.chaterId,
-                chaters: student
+                initiatorId: studentId,
+                recipientId: superlead.superleadId || superlead.chaterId,
+                chaters: superlead
             };
             const response = await createChat(chatData);
-            if (response.response.data._id) {
+            if (response.response.data._id && socket) {
                 socket.emit("joinRoom", response?.response?.data?._id);
             }
-        } catch (err) {
-            console.error("Error handling student click:", err);
+        } catch (error) {
+            console.error("Error handling student click:", error);
         }
     };
 
     useEffect(() => {
-        if (!socket) return;
+        if (socket) {
+            const handleReceivedMessage = (data: any) => {
+                console.log("Received message:", data);
+                // Handle received message here
+            };
 
-        const handleReceivedMessage = (data: any) => {
-            console.log("Received message:", data);
-            // Handle received message here
-        };
+            socket.on("received", handleReceivedMessage);
 
-        socket.on("received", handleReceivedMessage);
-
-        return () => {
-            // Clean up socket listener when component unmounts
-            socket.off("received", handleReceivedMessage);
-        };
+            return () => {
+                // Clean up socket listener when component unmounts
+                socket.off("received", handleReceivedMessage);
+            };
+        }
     }, [socket]);
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {students.map((student, index) => (
+            {superleads.map((superlead: any, index: number) => (
                 <div
-                    key={student.studentId}
+                    key={superlead.superleadId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
-                    onClick={() => handleStudentClick(index, student)}
+                    onClick={() => handleStudentClick(index, superlead)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={student.imageUrl} alt="" className="rounded-full " />
+                            <img src={superlead.imageUrl} alt="" className="rounded-full " />
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {student.firstName} {student.lastName}
+                                {superlead.firstName} {superlead.lastName}
                             </span>
-
                             <div>
                                 <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
                                     Hello good morning

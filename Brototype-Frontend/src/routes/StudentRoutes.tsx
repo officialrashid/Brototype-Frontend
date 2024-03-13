@@ -11,6 +11,7 @@ import ReviewResult from '../pages/Students/reviewDetails';
 import StudentSignIn from "../pages/Students/SignIn"
 import StudentOtp from "../pages/Students/StudentOtp";
 import Navigationbar from '../components/LandingPage/Navbar';
+import Chat from "../pages/Students/Chat"
 function StudentRoutes() {
     const [studentAccessToken,setStudentAccessToken] = useState("")
     useEffect(()=>{
@@ -34,6 +35,7 @@ function StudentRoutes() {
             <Route path="/todolist" element={studentAccessToken ?<TodoList />:<StudentSignIn/>} />
             <Route path="/extendDetails" element={studentAccessToken ?<ExtendDetails />:<StudentSignIn/>} />
             <Route path="/review" element={studentAccessToken ?<ReviewResult />:<StudentSignIn/>} />
+            <Route path="/chat" element={studentAccessToken ?<Chat />:<StudentSignIn/>} />
           </Routes>
         </div>
       </div>

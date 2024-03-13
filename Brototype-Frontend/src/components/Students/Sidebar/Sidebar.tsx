@@ -37,6 +37,9 @@ const Sidebar = () => {
     if (title === 'Review') {
       navigate('/student/review');
     }
+    if (title === 'Chat') {
+      navigate('/student/chat');
+    }
   };
 
   // Add a class to the body when the sidebar is open
