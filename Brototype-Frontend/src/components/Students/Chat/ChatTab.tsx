@@ -64,7 +64,7 @@ const ChatTab = () => {
         try {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(chatUser));
-            socket.emit("joinRoom", "65f16837ff18d7c22868e870");
+            socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
         } catch (err) {
             console.error("Error handling student click:", err);
         }

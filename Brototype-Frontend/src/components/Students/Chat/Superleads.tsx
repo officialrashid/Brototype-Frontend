@@ -46,7 +46,7 @@ const Students = ({socket}:{socket:any}) => {
                 
                 console.log(response.response.data._id,"::::::::::::::");
                 
-                socket.emit("joinRoom", "65f16837ff18d7c22868e870");
+                socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
             }
         } catch (error) {
             console.error("Error handling student click:", error);
