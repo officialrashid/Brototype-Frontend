@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+import { Formik } from 'formik';
 
 const EventModal = () => {
     const [currentDate, setCurrentDate] = useState(moment());
@@ -109,6 +110,8 @@ const EventModal = () => {
                 if (response.status === true) {
                     toast.success("Events updated successfully");
                     dispatchCalEvent({ type: 'update', payload: calendarEvent });
+                    setStartTime("")
+                    setEndTime("")
                 } else {
                     toast.warn("Event already added at this time and date");
                 }
@@ -117,6 +120,8 @@ const EventModal = () => {
                 if (response.data.status === true) {
                     toast.success("Event added successfully");
                     dispatchCalEvent({ type: 'push', payload: calendarEvent });
+                    setStartTime("")
+                    setEndTime("")
                 } else {
                     toast.warn("Event already added at this time");
                 }
@@ -149,7 +154,7 @@ const EventModal = () => {
             dates.push(dateAfterWeek.format("dddd, MMMM DD"));
           }
         //   setDatesAfterWeek(dates);
-        console.log(dates);
+        console.log(dates,"dsmbjsdbhjsjhfsdgh");
         };
 
     
@@ -184,14 +189,14 @@ const EventModal = () => {
                         </button>
                     </div>
                 </header>
-                <div className='p-3'>
+                <div className='p-3 pb-0'>
                     <div className='grid grid-cols-1/5 items-end gap-y-7'>
                         <div></div>
                         <h1 className='font-roboto font-bold ml-10 mt-5 '>Shedule Your Time</h1>
                         <span className='material-icons-outlined text-gray-400 mb-4'>
                             schedule
                         </span>
-                        <div className='flex flex-3'>
+                        <div className='flex flex-3 mb-0 '>
                             <p className='font-roboto'>{daySelected.format("dddd, MMMM DD")}</p>
                             <div className="relative">
                                 <input
@@ -215,14 +220,17 @@ const EventModal = () => {
                                     className='pl-2 border-0 text-gray-600 text-sm font-roboto pb-2 w-16 border-b-2 border-gray-200 focus:outline-none focus:ring-0 focus:border-blue-500 '
                                     onChange={(e) => setEndTime(e.target.value)}
                                 />
-                               
+                                 
                             </div>
+                
                         </div>
-                        <span></span>
-                        <span></span>
+                   
+                        <div className='mb-0 pb-0'> </div>
+                        <span><p className='text-xs underline'>Deosn`t Repeat</p></span>
                         <span className='material-icons-outlined text-gray-400'>
                             bookmark_border
                         </span>
+                        
                         <div className='flex gap-x-2'>
                             {labelsClasses.map((lblClass, i) => (
                                 <span key={i}
@@ -237,6 +245,7 @@ const EventModal = () => {
                                 </span>
                             ))}
                         </div>
+               
                     </div>
                     {/* Add this block to display the validation error */}
                     {validationError && (

@@ -19,7 +19,7 @@ const ReviewerDashboard = () => {
        
             <Graph/>
             <ScheduleTimeCard />
-            <UpcomingReviews/>
+            {/* <UpcomingReviews/> */}
 
         </div>
         
