@@ -131,7 +131,7 @@ const EventModal = () => {
                 const response = await updateEvents(calendarEvent);
                 if (response.status === true) {
                     toast.success("Events updated successfully");
-                    dispatchCalEvent({ type: 'update', payload: calendarEvent });
+                    // dispatchCalEvent({ type: 'update', payload: calendarEvent });
                     setStartTime("")
                     setEndTime("")
                 } else {
@@ -141,7 +141,7 @@ const EventModal = () => {
                 const response = await createEvents(calendarEvent);
                 if (response.data.status === true) {
                     toast.success("Event added successfully");
-                    dispatchCalEvent({ type: 'push', payload: calendarEvent });
+                    // dispatchCalEvent({ type: 'push', payload: calendarEvent });
                     setStartTime("")
                     setEndTime("")
                 } else {

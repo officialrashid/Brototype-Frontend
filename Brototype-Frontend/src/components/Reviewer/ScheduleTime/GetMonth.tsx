@@ -7,6 +7,7 @@ interface MonthProps {
 }
 
 const Month: React.FC<MonthProps> = ({ month }) => {
+console.log(month,"{}{}[[][][][[");
 
   
   return (
