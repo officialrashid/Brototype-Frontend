@@ -10,18 +10,19 @@ import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import { Formik } from 'formik';
-
+import CustomModal from './CustomModal';
 const EventModal = () => {
     const [currentDate, setCurrentDate] = useState(moment());
     const [datesAfterWeek, setDatesAfterWeek] = useState([]);
     const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const navigate = useNavigate();
     const labelsClasses = ["yellow", "orange", "blue", "red"];
-    const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent } = useContext(GlobalContext);
+    const { setShowEventModal, daySelected, dispatchCalEvent, selectedEvent,dates,dayId,customType,selectedCustomWeek } = useContext(GlobalContext);
     const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : "");
     const [startTime, setStartTime] = useState(selectedEvent ? selectedEvent.startTime || "09:00am" : "09:00am");
     const [endTime, setEndTime] = useState(selectedEvent ? selectedEvent.endTime || "09:30am" : "09:30am");
     const [description, setDescription] = useState(selectedEvent ? selectedEvent.description : "");
+    const [customModal,setCustomModal] = useState(false)
     const [selectedLabel, setSelctedLabel] = useState(
         selectedEvent
             ? labelsClasses.find((lbl) => lbl === selectedEvent.label)
@@ -78,12 +79,15 @@ const EventModal = () => {
       });
       
     
+    console.log(daySelected,"dmcbjdbd111@@@@@@");
     
     
     
     
 
     const handleSubmit = async (e) => {
+        console.log(dates,"dates in Event modalllllllllll2222222");
+        
         e.preventDefault();
 
         try {
@@ -92,16 +96,34 @@ const EventModal = () => {
                 endTime,
                 // Add other fields if needed
             });
-
+            const events:any = []
+            const dayIds :any =[]
+            if (dates && dayId && customType) {
+                // If dates exist, push each date from dates array into the events array
+                dates.forEach((evt) => {
+                    events.push(evt);
+                });
+                // Push the selected event into the events array
+                events.push(dayjs(daySelected).format("DD-MM-YYYY"));
+                dayId.forEach((day)=>{
+                    dayIds.push(day)
+                })
+                dayIds.push(daySelected?.valueOf())
+            } else {
+                // If dates don't exist, push only the selected event into the events array
+                events.push(dayjs(daySelected).format("DD-MM-YYYY"));
+                dayIds.push(daySelected?.valueOf())
+            }
        
             const calendarEvent = {
                 reviewerId,
                 startTime,
                 endTime,
                 label: selectedLabel,
-                day: daySelected?.valueOf(),
+                day: dayIds,
                 id: selectedEvent ? selectedEvent.id : Date.now(),
-                date: daySelected ? dayjs(daySelected).format("DD-MM-YYYY") : "", // Format the date
+                date: daySelected ? events: "", // Format the date
+                weekly:selectedCustomWeek
               };
               console.log(calendarEvent,"dnbcdbhcdbhvdhcdhgc");
               
@@ -146,21 +168,34 @@ const EventModal = () => {
         const response = await deleteEvents(data);
         console.log(response, "response");
     };
-    useEffect(() => {
-        const calculateDatesAfterWeek = () => {
-          const dates = [];
-          for (let i = 0; i < 7; i++) {
-            const dateAfterWeek = currentDate.clone().add(i + 1, 'week');
-            dates.push(dateAfterWeek.format("dddd, MMMM DD"));
-          }
-        //   setDatesAfterWeek(dates);
-        console.log(dates,"dsmbjsdbhjsjhfsdgh");
-        };
-
+    // useEffect(() => {
+    //     const calculateRepeatedDates = (daysToRepeat, numberOfWeeks) => {
+    //         const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    //         const dates = [];
+    //         let currentDate = moment(); 
     
-        calculateDatesAfterWeek();
-      }, [currentDate]);
+    //         const weekdayIndices = daysToRepeat.map(day => weekdays.indexOf(day));
+    
+    //         for (let i = 0; i < 7 * numberOfWeeks; i++) { 
+    //             const date = currentDate.clone().add(i, 'days');
+    //             const weekdayName = date.format('dddd');
+    //             if (weekdayIndices.includes(weekdays.indexOf(weekdayName))) {
+    //                 const formattedDate =  dayjs(date).format("DD-MM-YYYY")
+    //                 dates.push(formattedDate);
+    //             }
+    //         }
+    //         console.log(dates, `Dates for the next ${numberOfWeeks} weeks repeating ${daysToRepeat.join(' and ')}`);
+    //     };
+
+    //     calculateRepeatedDates(['Monday', 'Tuesday'], 2);
+    // }, []);
+
+    const handleCustomModalChange = () => {
+        setCustomModal(true);
+    }
+    
     return (
+        <>
         <div className='h-screen w-full fixed left-0 top-0 flex justify-center items-center'>
             <form className='bg-white rounded-lg shadow-2xl w-1/4'>
                 <header className='bg-gray-100 px-4 py-2 flex justify-between items-center'>
@@ -226,7 +261,9 @@ const EventModal = () => {
                         </div>
                    
                         <div className='mb-0 pb-0'> </div>
-                        <span><p className='text-xs underline'>Deosn`t Repeat</p></span>
+                        <span>
+                <p className='text-xs underline' onClick={handleCustomModalChange}>Doesn't Repeat</p>
+            </span>
                         <span className='material-icons-outlined text-gray-400'>
                             bookmark_border
                         </span>
@@ -261,6 +298,9 @@ const EventModal = () => {
                 </footer>
             </form>
         </div>
+        <CustomModal isVisible={customModal} isClose={() => { setCustomModal(false) }} selectedDate={dayjs(daySelected).format("DD-MM-YYYY")} />
+
+        </>
     );
 }
 

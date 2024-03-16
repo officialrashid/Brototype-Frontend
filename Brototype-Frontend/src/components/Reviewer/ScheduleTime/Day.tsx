@@ -1,35 +1,32 @@
-// Day.tsx
-
-import dayjs from 'dayjs';
 import React, { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../../../context/GlobalContext';
 import { toast } from 'react-toastify';
 import { getScheduleEvents } from '../../../utils/methods/get';
 import { useSelector } from 'react-redux';
-
+import dayjs from 'dayjs';
 interface DayProps {
   day: any;
-  rowIdx: number;
 }
 
-const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
-  const [dayEvents, setDayEvents] = useState([]);
-  const { setDaySelected, setShowEventModal, savedEvents, setSelectedEvent, dispatchCalEvent ,showEventModal} = useContext(GlobalContext);
+const Day: React.FC<DayProps> = ({ day }) => {
+  console.log(day,"day comingv d");
+  
+  const [dayEvents, setDayEvents] = useState<any[]>([]);
+  const { setDaySelected, setShowEventModal, setSelectedEvent, dispatchCalEvent, showEventModal,monthIndex } = useContext(GlobalContext);
   const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
+
   useEffect(() => {
     const fetchScheduleEvents = async () => {
       try {
         console.log("Fetching Schedule Events...");
-
+       console.log(monthIndex+1,"hhhhhh");
+       
         const response = await getScheduleEvents(reviewerId);
 
         if (response) {
           console.log("Fetched Schedule Events:", response.response[0].events);
 
-          // Set the schedule events to the state
-
           // Call the filtering function
-
           filterAndSetDayEvents(response.response[0].events);
         }
       } catch (err) {
@@ -39,24 +36,30 @@ const Day: React.FC<DayProps> = ({ day, rowIdx }) => {
     };
 
     fetchScheduleEvents();
-  }, [showEventModal]);
+  }, [showEventModal, reviewerId]); // Include 'reviewerId' in the dependency array
 
-  const filterAndSetDayEvents = async (eventsToFilter: any) => {
+  const filterAndSetDayEvents = (eventsToFilter: any[]) => {
     console.log(eventsToFilter, "{}{}++++++");
 
-    const events = await eventsToFilter.filter((evt: { day: string | number | Date | dayjs.Dayjs | null | undefined; }) => {
-      const eventDate = dayjs(parseInt(evt?.day)); // Convert milliseconds to dayjs object
-      return eventDate.format("DD-MM-YY") === day.format("DD-MM-YY");
+    const events = eventsToFilter.filter(evt => {
+      const eventDay = Array.isArray(evt.day) ? evt.day.map((d: number) => new Date(d)) : new Date(evt.day);
+      console.log(eventDay,"evetDayyaaaaa");
+
+      const isEventInMonth = eventDay.some((d: Date) => dayjs(d).isSame(day, 'month') && dayjs(d).isSame(day, 'year'));
+      console.log(isEventInMonth,"isEventInMonth");
+
+      const isDateMatch = evt.date.includes(day.format("DD-MM-YYYY"));
+      console.log(isDateMatch,"{}{{))()()(");
+
+      return isEventInMonth && isDateMatch;
     });
 
     console.log("Filtered Events:", events);
     setDayEvents(events);
   };
 
-  // Rest of your component code...
-
   const getCurrentDayClass = () => {
-    return day.format("DD-MM-YY") === dayjs().format("DD-MM-YY") ? 'bg-blue-600 text-white rounded-full w-7' : '';
+    return dayjs().isSame(day, 'day') ? 'bg-blue-600 text-white rounded-full w-7' : '';
   };
 
   return (

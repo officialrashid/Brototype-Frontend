@@ -1,5 +1,6 @@
 import React from "react";
 
+
 interface Action {
   type: string;
   payload: any; // Replace 'any' with the actual type of your payload
@@ -17,7 +18,15 @@ const GlobalContext = React.createContext({
   dispatchCalEvent: ({ type, payload }: Action) => {},
   savedEvents: [],
   selectedEvent : null,
-  setSelectedEvent : () =>{}
+  setSelectedEvent : () =>{},
+  dates : [],
+  setDates : () => [],
+  dayId : [],
+  setDayId : ()=> [],
+  customType: null,
+  setCustomType : () => null,
+  selectedCustomWeek : [],
+  setSelectedCustomWeek : ()=> []
 });
 
 export default GlobalContext;

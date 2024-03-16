@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useMemo, useReducer, useState } from "react";
 import GlobalContext from "./GlobalContext";
 
 interface Event {
+    someCondition: boolean;
     id: number; // Replace 'number' with the actual type of your event ID
     // Add other properties of your event here
   }
@@ -37,6 +38,15 @@ const ContextWrapper = (props:any) => {
     const [showEventModal,setShowEventModal] = useState(false)
     const [savedEvents,dispatchCalEvent] = useReducer(savedEventsReducer,[],initEvents)
     const [selectedEvent, setSelectedEvent] = useState(null);
+    const [dates,setDates] = useState([])
+    const [dayId,setDayId] = useState([])
+    const [customType,setCustomType] = useState(" ")
+    const [selectedCustomWeek,setSelectedCustomWeek] = useState([])
+    const filteredEvents = useMemo(() => {
+      // Filter logic here using savedEvents
+      // For example:
+      return savedEvents.filter(event => event.someCondition === true);
+    }, [savedEvents]);
     useEffect(()=>{
       localStorage.setItem("savedEvents",JSON.stringify(savedEvents))
     },[savedEvents])
@@ -46,6 +56,11 @@ const ContextWrapper = (props:any) => {
             setMonthIndex(smallCalendarMonth)
         }
     },[smallCalendarMonth])
+    useEffect(()=>{
+        if(!showEventModal){
+          setSelectedEvent(null)
+        }
+    },[showEventModal])
     return (
        <GlobalContext.Provider value={{
         monthIndex,setMonthIndex,
@@ -56,6 +71,14 @@ const ContextWrapper = (props:any) => {
         selectedEvent,
         setSelectedEvent,
         savedEvents,
+        dates,
+        setDates,
+        dayId,
+        setDayId,
+        customType,
+        setCustomType,
+        selectedCustomWeek,
+        setSelectedCustomWeek
         }}>
             {props.children}
        </GlobalContext.Provider>
