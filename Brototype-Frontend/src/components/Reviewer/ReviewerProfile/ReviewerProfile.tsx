@@ -12,7 +12,7 @@ const ReviewerProfile = () => {
  
   useEffect(() => {
     fetchReviewerProfile();
-  }, [profileInfo, setProfileInfo]);
+  }, [profileInfo]);
 
   const fetchReviewerProfile = async () => {
     try {
@@ -22,6 +22,7 @@ const ReviewerProfile = () => {
       if (response?.status===true) {
         // Assuming 'response.data.response' is an array
         const [profileData] = response.response;
+console.log(profileData.skills,"fbdvfdvfhdvfdfvgh");
 
         // Set the profile details in the state
         setProfileInfo({
@@ -29,7 +30,7 @@ const ReviewerProfile = () => {
           firstName: profileData.firstName,
           lastName: profileData.lastName,
           experience: profileData.experience,
-          skills: profileData.skills,
+          skills: Array.from(profileData.skills), // Convert to regular JavaScript array,
           age : profileData.age,
           gender: profileData.gender,
           email: profileData.email,
@@ -88,15 +89,25 @@ const ReviewerProfile = () => {
             </div>
 
             <div className='grid grid-cols-2 ml-5 mt-6 gap-x-5'>
-              <div className='flex flex-col'>
-                <p className='text-sm text-gray-400 font-roboto'>Skills</p>
-                <p className='text-sm text-gray-400 font-roboto mt-2 text-gray-500'>{profileInfo.skills}</p>
-              </div>
-              <div className='flex flex-col'>
-                <p className='text-sm text-gray-400 font-roboto'>Preffered Domains For Review</p>
-                <p className='text-sm text-gray-400 font-roboto mt-2 text-gray-500'>{profileInfo.PrefferedDomainsForReview}</p>
-              </div>
-            </div>
+  <div className='flex flex-col'>
+    <p className='text-sm text-gray-400 font-roboto'>Skills</p>
+    <ul className='text-sm text-gray-400 font-roboto mt-2'>
+    {profileInfo.skills && profileInfo.skills.map((skill, index) => (
+  <li key={index}>{index+1}. {skill}</li>
+))}
+
+    </ul>
+  </div>
+  <div className='flex flex-col'>
+    <p className='text-sm text-gray-400 font-roboto'>Preferred Domains For Review</p>
+    <ul className='text-sm text-gray-400 font-roboto mt-2'>
+      {profileInfo.PrefferedDomainsForReview && profileInfo.PrefferedDomainsForReview.map((domain, index) => (
+        <li key={index}>{index+1}. {domain}</li>
+      ))}
+    </ul>
+  </div>
+</div>
+
         
           </div>
           <p className="text-white">hr</p>

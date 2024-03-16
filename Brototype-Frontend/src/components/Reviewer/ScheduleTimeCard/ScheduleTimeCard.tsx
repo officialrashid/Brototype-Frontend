@@ -10,22 +10,25 @@ const ScheduleTimeCard = () => {
   const scheduleTimeArray = []
   useEffect(() => {
     const fetchScheduleEvents = async () => {
-
       try {
         console.log('Fetching Schedule Events...');
 
         const response = await getScheduleEvents(reviewerId);
+        console.log(response, "response schedule time cardsss");
 
         if (response) {
-
           const sortedEvents = response.response[0].events.sort((a: any, b: any) => {
-            const dateA: any = new Date(a.date.split('-').reverse().join('-'));
-            const dateB: any = new Date(b.date.split('-').reverse().join('-'));
+            // Get the earliest date for event a
+            const earliestDateA: Date = new Date(Math.min(...a.date[0].map((d: string) => new Date(d))));
+            // Get the earliest date for event b
+            const earliestDateB: Date = new Date(Math.min(...b.date[0].map((d: string) => new Date(d))));
 
-            return dateB - dateA;
+            // Sort in ascending order (earliest date first)
+            return earliestDateA.getTime() - earliestDateB.getTime();
           });
+
           setScheduleEvents(sortedEvents);
-          console.log('Sorted Schedule Events (Descending Order):', sortedEvents);
+          console.log('Sorted Schedule Events (Ascending Order by Earliest Date):', sortedEvents);
         }
       } catch (err) {
         console.error('Error fetching schedule events:', err);
@@ -34,8 +37,7 @@ const ScheduleTimeCard = () => {
     };
 
     fetchScheduleEvents();
-  }, []);
-
+  }, [reviewerId]); 
   // const handleScroll = () => {
   //   const scrollY = window.scrollY;
   //   const triggerThreshold = 100;
