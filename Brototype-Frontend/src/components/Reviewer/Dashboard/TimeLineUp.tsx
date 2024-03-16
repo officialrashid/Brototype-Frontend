@@ -56,11 +56,14 @@ const TimeLineUp: React.FC = () => {
       };
       const events = await getTimeLineUp(data);
       console.log(events, "response vannu makkaleee ev");
-      if(events.length>0){
+      if(events.status===true){
         console.log("set aaayannuu");
         
         const formattedDate = selectedDate.format("DD-MM-YYYY");
-        const filteredEvents = events;
+        const filteredEvents = events.allBookedEvents;
+        console.log(events.allBookedEvents
+          ,"matchingEvents");
+        
         setFilteredEvents(filteredEvents);
       }else if(events.status===false){
         console.log("ketttt");
