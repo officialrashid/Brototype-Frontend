@@ -400,5 +400,25 @@ export const getAllStudents = async (uniqueId:string) =>{
     }
   
   }
+  export const getActivityEvents = async (superleadId:string) =>{
+
+    try {
+       const response = await Api.get(`/api/superlead/get-activity-events/${superleadId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
+  export const getActivityTimeLineup = async (superleadId:string) =>{
+
+    try {
+       const response = await Api.get(`/api/superlead/get-activity-timelineup/${superleadId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
   
   

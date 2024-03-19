@@ -11,6 +11,7 @@ import ViewStudent from '../pages/SuperLead/ViewStudent';
 import ViewReviewer from '../pages/SuperLead/ViewReviewer';
 import ProfileUpdateForm from '../pages/SuperLead/ProfileUpdateForm';
 import ViewProfile from "../pages/SuperLead/ViewProfile" ;
+import Calendar from '../pages/SuperLead/Calendar';
 function SuperLeadRoutes() {
   
 
@@ -33,6 +34,7 @@ function SuperLeadRoutes() {
                             <Route path="/viewReviewer" element={<ViewReviewer />} />
                             <Route path="/profileUpdate" element={<ProfileUpdateForm />} />
                             <Route path="/viewProfile" element={<ViewProfile />} />
+                            <Route path="/calender" element={<Calendar />} />
                         </Routes>
                         </div>
               

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../../../context/GlobalContext';
-import { getScheduleEvents } from '../../../utils/methods/get';
+import { getActivityEvents, getScheduleEvents } from '../../../utils/methods/get';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 
@@ -11,14 +11,18 @@ interface DayProps {
 const Day: React.FC<DayProps> = ({ day }) => {
   const [dayEvents, setDayEvents] = useState<any[]>([]);
   const { reviewerId } = useSelector((state: any) => state?.reviewer?.reviewerData);
-  const { setDaySelected, setShowEventModal, setSelectedEvent,showEventModal } = useContext(GlobalContext);
+  const { superleadId } = useSelector((state: any) => state?.superlead?.superleadData);
+  const { setDaySelected, setShowEventModal, setSelectedEvent, showEventModal } = useContext(GlobalContext);
 
   useEffect(() => {
     const fetchScheduleEvents = async () => {
       try {
+        console.log(dayEvents,"i am the day eventss");
+        
         console.log("Fetching Schedule Events...");
-        const response = await getScheduleEvents(reviewerId);
-
+        const response = await getActivityEvents(superleadId);
+        console.log(response.response[0].events[0].label,":::::::::::::::::");
+      
         if (response) {
           console.log("Fetched Schedule Events:", response.response[0].events);
           filterAndSetDayEvents(response.response[0].events);
@@ -29,30 +33,32 @@ const Day: React.FC<DayProps> = ({ day }) => {
     };
 
     fetchScheduleEvents();
-  }, [day, reviewerId,showEventModal]); // Fetch events whenever the displayed month changes or reviewerId changes
+  }, [day, superleadId, showEventModal]); // Fetch events whenever the displayed month changes or superleadId changes
 
   const filterAndSetDayEvents = (eventsToFilter: any[]) => {
     const currentDate = day.format("DD-MM-YYYY");
-    console.log(currentDate,"currentDate currentDatecurrentDate");
-    
+
     const events = eventsToFilter.filter(evt => {
       const eventDays = Array.isArray(evt.day) ? evt.day : [evt.day];
       const eventDates = evt.date;
-  
+       console.log(eventDates,"lllllll");
+       
       const isEventInCurrentDay = eventDays.some((eventDay: number) => {
         const dayTimestamp = new Date(eventDay);
+        console.log(dayTimestamp,"dayTimestamp dayTimestamp");
+        
         return dayjs(dayTimestamp).isSame(day, 'day');
       });
-  
+
       const isDateMatch = eventDates.includes(currentDate);
-  
+
       return isEventInCurrentDay && isDateMatch;
     });
-  console.log(events," events events v");
-  
-    setDayEvents(events);
+
+    console.log(events, "filtered events");
+    setDayEvents(events)
   };
-  
+
   const getCurrentDayClass = () => {
     return dayjs().isSame(day, 'day') ? 'bg-blue-600 text-white rounded-full w-7' : '';
   };
@@ -68,14 +74,15 @@ const Day: React.FC<DayProps> = ({ day }) => {
         setShowEventModal(true);
       }}>
         <div className='event-container' style={{ maxHeight: '100px', overflowY: 'auto' }}>
-          {dayEvents.map((evt, idx) => (
+          {dayEvents?.map((evt, idx) => (
             <div
               key={idx}
               onClick={() => setSelectedEvent(evt)}
-              className={`bg-${evt.label}-500 p-1 mr-2 text-white text-xs rounded mb-1 truncate`}
+              className={`bg-${evt.label} p-1 mr-2 text-white text-xs rounded mb-1 truncate`}
             >
-               {console.log(evt.startTime,"::::::))(******")}
+              {evt.title}<br></br>
               {evt.startTime} - {evt.endTime}
+              
             </div>
           ))}
         </div>

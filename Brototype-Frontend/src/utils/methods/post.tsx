@@ -361,4 +361,27 @@ export const sendMessage = async (data:any)=>{
 
 
 }
+export const updateActivityEvents = async (data:any)=>{
+
+  try {
+   const resposne = await Api.post('/api/superlead/update-activity-event',data)
+   return resposne?.data
+  } catch(err){
+    return {status:false,message:"some issue in the add Reviewer"}
+  }
+
+
+}
+export const createActivityEvents = async (data:any)=>{
+console.log(data,"superlead eventsss");
+
+  try {
+   const resposne = await Api.post('/api/superlead/update-activity-event',data)
+   return resposne?.data
+  } catch(err){
+    return {status:false,message:"some issue in the add Reviewer"}
+  }
+
+
+}
 

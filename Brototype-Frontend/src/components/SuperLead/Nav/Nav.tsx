@@ -12,6 +12,7 @@ const Nav = () => {
     { title: "Reviewers", src: "/app (1).png" },
     { title: "Fumigation", src: "/expired.png" },
     { title: "Chat", src: "/chat (2).png" },
+    { title: "Calender", src: "/chat (2).png" },
     { title: "Notification", src: "" },
   ];
 const handleChangeSideBar = (title:string) =>{
@@ -43,6 +44,10 @@ const handleChangeSideBar = (title:string) =>{
         
         navigate('/superlead/chat')
       }
+      if(title==='Calender'){
+        
+        navigate('/superlead/calender')
+      }
       if(title==='Notification'){
         setNotification(true)
 
@@ -57,7 +62,7 @@ const handleChangeSideBar = (title:string) =>{
     <nav className="fixed mt-4.6rem z-30 w-full border-gray-200 bg-white shadow-md h-12  border-t-gray-20">
       <div className="m-2 mx-auto max-w-screen-xl">
         <ul className="flex items-center justify-between">
-          <li className="flex items-center gap-20 mr-5 ml-5">
+          <li className="flex items-center gap-16 mr-5 ml-5">
             {Menus.map((menu, index) => (
               <div
                 key={index}
