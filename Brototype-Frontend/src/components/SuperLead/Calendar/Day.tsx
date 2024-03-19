@@ -17,14 +17,12 @@ const Day: React.FC<DayProps> = ({ day }) => {
   useEffect(() => {
     const fetchScheduleEvents = async () => {
       try {
-        console.log(dayEvents,"i am the day eventss");
-        
-        console.log("Fetching Schedule Events...");
+  
         const response = await getActivityEvents(superleadId);
-        console.log(response.response[0].events[0].label,":::::::::::::::::");
+      
       
         if (response) {
-          console.log("Fetched Schedule Events:", response.response[0].events);
+       
           filterAndSetDayEvents(response.response[0].events);
         }
       } catch (err) {
@@ -55,7 +53,7 @@ const Day: React.FC<DayProps> = ({ day }) => {
       return isEventInCurrentDay && isDateMatch;
     });
 
-    console.log(events, "filtered events");
+
     setDayEvents(events)
   };
 

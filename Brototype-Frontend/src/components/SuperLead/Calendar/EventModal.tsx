@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../../../context/GlobalContext';
-import { createActivityEvents, updateActivityEvents } from '../../../utils/methods/post';
+import { createActivityEvents } from '../../../utils/methods/post';
 import { toast } from 'react-toastify';
-import { deleteEvents } from '../../../utils/methods/delete';
+import { deleteActivityEvents, deleteEvents } from '../../../utils/methods/delete';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
 import CustomModal from './CustomModal';
+import { updateActivityEvents } from '../../../utils/methods/patch';
 const EventModal = () => {
     const [currentDate, setCurrentDate] = useState(moment());
     const [datesAfterWeek, setDatesAfterWeek] = useState([]);
@@ -116,7 +117,6 @@ const EventModal = () => {
             const calendarEvent = {
                 superleadId,
                 title,
-
                 startTime,
                 endTime,
                 label: selectedLabel,
@@ -129,7 +129,9 @@ const EventModal = () => {
 
             if (selectedEvent) {
                 const response = await updateActivityEvents(calendarEvent);
-                if (response.status === true) {
+                console.log(response,"response update activityt eventsss");
+                
+                if (response.response.status === true) {
                     toast.success("Events updated successfully");
                     // dispatchCalEvent({ type: 'update', payload: calendarEvent });
                     setStartTime("")
@@ -139,7 +141,7 @@ const EventModal = () => {
                 }
             } else {
                 const response = await createActivityEvents(calendarEvent);
-                console.log(response,"response in 9999000000");
+            
                 
                 if (response.status === true) {
                     toast.success("Activity Event added successfully");
@@ -161,14 +163,18 @@ const EventModal = () => {
         }
     };
 
-    const handleDelete = async (selectedEvent) => {
+    const handleDelete = async (selectedEvent: never) => {
         const data = {
             id: selectedEvent.id,
-            reviewerId
+            superleadId
         };
 
-        const response = await deleteEvents(data);
-        console.log(response, "response");
+        const response = await deleteActivityEvents(data);
+        if(response?.response?.status===true){
+            toast.success("EVent Deleted Successfully")
+        }else{
+            toast.error("Event Deleted Not Success")
+        }
     };
     // useEffect(() => {
     //     const calculateRepeatedDates = (daysToRepeat, numberOfWeeks) => {

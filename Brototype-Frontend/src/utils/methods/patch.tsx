@@ -64,4 +64,14 @@ export const updateEvents = async (data:any)=>{
   }
   
   
+  export const updateActivityEvents = async (data:any)=>{
+
+    try {
+     const resposne = await Api.patch('/api/superlead/update-activity-event',data)
+     return resposne?.data
+    } catch(err){
+      return {status:false,message:"some issue in the add Reviewer"}
+    }
   
+  
+  }
