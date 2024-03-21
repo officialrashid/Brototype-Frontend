@@ -5,8 +5,7 @@ import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPers
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 
-const ChatTab = () => {
-    const socket = useSocket();
+const ChatTab = ({socket}:{socket:any}) => {
     const dispatch = useDispatch();
     const superleadId = useSelector((state) => state?.superlead?.superleadData?.superleadId);
     const [chatUser, setChatUser] = useState([]);
@@ -20,7 +19,7 @@ const ChatTab = () => {
                 const response = await getAllChatRecipients(superleadId);
                 if (response?.status === true && response?.recipients) {
                     setChatUser(response.recipients);
-                    handleStudentClick(0, response.recipients[0]);
+                    // handleStudentClick(0, response.recipients[0]);
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);

@@ -106,7 +106,6 @@ const Chat = () => {
         fetchMessages();
     }, [student?.studentId, student?.chaterId, superleadId]); // Only trigger when superleadId or student?.chaterId changes
 
-
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
@@ -131,6 +130,7 @@ const Chat = () => {
     const isSender = (message: any) => {
         return message.senderId === superleadId;
     };
+
     const addAudioElement = async (blob: any) => {
         setRecordedAudioBlob(blob);
         const url = URL.createObjectURL(blob);
@@ -210,7 +210,7 @@ const Chat = () => {
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
-                        <ChatTab />
+                        <ChatTab socket={socket}/>
                     ) : null}
 
 
@@ -263,30 +263,29 @@ const Chat = () => {
                                         className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                     >
                                         <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
-                                            <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
+                                            <p className="text-sm font-roboto m-3 text-black">{message?.content}</p>
                                         </div>
                                     </div>
                                 ) : (
                                     <div
-                                    key={index}
-                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                >
-                                    <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
-                                    <audio controls>
-                                        <source
-                                          src={message.content}
-                                          type="audio/mpeg"
-                                        />
-                                      </audio>
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
+                                            <audio controls className="m-1">
+                                                <source src={message.content} type="audio/mpeg" />
+                                       
+                                            </audio>
+                                        </div>
                                     </div>
-                                </div>
                                 )
                             ))}
 
 
+
                         </div>
 
-                      
+
 
 
                     </div>

@@ -5,7 +5,7 @@ import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPers
 import { RootState } from "../../../redux-toolkit/store";
 import { createChat } from "../../../utils/methods/post";
 // import { useSocket } from "../../../hooks/useSocket";
-const ChatTab = () => {
+const ChatTab = ({socket}:{socket:any}) => {
  
     const dispatch = useDispatch();
    

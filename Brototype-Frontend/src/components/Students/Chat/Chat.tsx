@@ -1,34 +1,38 @@
 import { SetStateAction, useEffect, useState } from "react"
-// import Students from "./Students"
-// import ChatTab from "./ChatTab";
+import {
+    ArrowLeft,
+    Image,
+    Mic,
+    MoreVertical,
+    Phone,
+    Video,
+    Files,
+} from "lucide-react";
 import { useSelector } from "react-redux";
-import { sendMessage, storeChatAudio } from "../../../utils/methods/post";
+
 import { getMessages } from "../../../utils/methods/get";
 import Students from "./Superleads";
 import ChatTab from "./ChatTab";
 import { useSocket } from "../../../hooks/useSocket";
-import { ReactMic } from 'react-mic';
-import { RootState } from "../../../redux-toolkit/store";
 import { Socket } from "socket.io-client";
-import { all } from "axios";
 import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
+import { storeChatAudio } from "../../../utils/methods/post";
+import { RootState } from "../../../redux-toolkit/store";
+
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-      const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
-      
-    const [profile, setProfile] = useState(false)
+    const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
+    
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
     const [message, setMessage] = useState("")
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
-    const [isStreaming, setIsStreaming] = useState(false);
-    const [messageHandle, setMessageHandle] = useState(false)
     const [recordedAudioBlob, setRecordedAudioBlob] = useState<any>(null);
-    const [file, setFile] = useState(null);
+
     
    
     const handleTabClick = (currentTab: string) => {
@@ -45,7 +49,10 @@ const Chat = () => {
         } catch (error) {
 
         }
-    }
+    }  
+   
+
+
     const handleSubmit = async () => {
         try {
             if (!message) {
@@ -55,15 +62,18 @@ const Chat = () => {
             const messageData = {
                 senderId: studentId,
                 receiverId: student.superleadId || student.chaterId,
-                content: message
+                content: message,
+                type: "textChat"
             };
             console.log(messageData, "messageData");
 
             // Emit message to the server
             socket.emit('message', messageData);
-            
+            setRecordedAudioBlob(null);
             // Listen for response from the server
             socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                console.log(response,'respnseeeeeeeeeeeee');
+                
                 if (response.status === true) {
                     console.log("Message sent successfully");
           
@@ -204,7 +214,7 @@ const Chat = () => {
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
-                        <ChatTab />
+                        <ChatTab socket={socket}/>
                     ) : null}
 
 
@@ -249,8 +259,7 @@ const Chat = () => {
 
                     <div className="h-30rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                     
-                    <div className="grid grid-cols-1 mb-0">
+                        <div className="grid grid-cols-1 mb-0">
                             {allMesage.map((message: any, index: number) => (
                                 message.type === "textChat" ? (
                                     <div
@@ -263,20 +272,19 @@ const Chat = () => {
                                     </div>
                                 ) : (
                                     <div
-                                    key={index}
-                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                >
-                                    <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
-                                    <audio controls>
-                                        <source
-                                          src={message.content}
-                                          type="audio/mpeg"
-                                        />
-                                      </audio>
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
+                                            <audio controls className="m-1">
+                                                <source src={message.content} type="audio/mpeg" />
+                                       
+                                            </audio>
+                                        </div>
                                     </div>
-                                </div>
                                 )
                             ))}
+
 
 
                         </div>
