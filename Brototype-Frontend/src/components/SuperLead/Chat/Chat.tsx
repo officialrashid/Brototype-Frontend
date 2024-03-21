@@ -1,5 +1,13 @@
 import { SetStateAction, useEffect, useState } from "react"
-
+import {
+    ArrowLeft,
+    Image,
+    Mic,
+    MoreVertical,
+    Phone,
+    Video,
+    Files,
+} from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { getMessages } from "../../../utils/methods/get";
@@ -7,43 +15,22 @@ import Students from "./Students";
 import ChatTab from "./ChatTab";
 import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
+import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
+import { storeChatAudio } from "../../../utils/methods/post";
+
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-
-
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
-
-
-    const [profile, setProfile] = useState(false)
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
     const [message, setMessage] = useState("")
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
-    const [isStreaming, setIsStreaming] = useState(false);
-    const [messageHandle, setMessageHandle] = useState(false)
-    const startStreaming = () => {
-        setIsStreaming(true);
-        console.log('Start streaming'); // For debugging
-        // Start audio stream logic here
-    };
+    const [recordedAudioBlob, setRecordedAudioBlob] = useState<any>(null);
 
-    const stopStreaming = () => {
-        setIsStreaming(false);
-        console.log('Stop streaming'); // For debugging
-        // Stop audio stream logic here
-    };
-
-    const handleMouseDown = () => {
-        startStreaming();
-    };
-
-    const handleMouseUp = () => {
-        stopStreaming();
-    };
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -68,13 +55,14 @@ const Chat = () => {
             const messageData = {
                 senderId: superleadId,
                 receiverId: student.studentId || student.chaterId,
-                content: message
+                content: message,
+                type: "textChat"
             };
             console.log(messageData, "messageData");
 
             // Emit message to the server
             socket.emit('message', messageData);
-            setMessageHandle(false)
+            setRecordedAudioBlob(null);
             // Listen for response from the server
             socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
@@ -143,7 +131,49 @@ const Chat = () => {
     const isSender = (message: any) => {
         return message.senderId === superleadId;
     };
+    const addAudioElement = async (blob: any) => {
+        setRecordedAudioBlob(blob);
+        const url = URL.createObjectURL(blob);
+        const audio = document.createElement("audio");
+        audio.src = url;
+        audio.controls = true;
+        document.body.appendChild(audio);
+        const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
+        const formData = new FormData();
+        formData.append("audio", audioFile);
+        formData.append("senderId", superleadId);
+        const response = await storeChatAudio(formData)
+        console.log(response, "response response response");
 
+        if (response?.status === true) {
+            console.log("kerri vice il chat ill");
+
+            const voiceChat = response?.chatData?.audioUrl
+            console.log(voiceChat, "voiceChat vice il chat ill");
+            const messageData = {
+                senderId: superleadId,
+                receiverId: student.studentId || student.chaterId,
+                content: voiceChat,
+                type: "voiceChat"
+            };
+            console.log(messageData, "messageData messageData messageData");
+            socket.emit('message', messageData);
+            setRecordedAudioBlob(null);
+            // Listen for response from the server
+            socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+
+
+                if (response.status === true) {
+                    console.log("Message sent successfully");
+
+                    setMessage(""); // Clear the message input field
+                } else {
+                    console.error("Failed to send message:", response.message);
+                }
+            });
+        }
+
+    };
 
 
     return (
@@ -227,19 +257,36 @@ const Chat = () => {
 
                         <div className="grid grid-cols-1 mb-0">
                             {allMesage.map((message: any, index: number) => (
-                                <div
+                                message.type === "textChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
+                                            <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div
                                     key={index}
                                     className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                 >
-                                    <div className="w-fit  bg-dark-highBlue mb-0 h-10 rounded-sm ">
-
-                                        <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
+                                    <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
+                                    <audio controls>
+                                        <source
+                                          src={message.content}
+                                          type="audio/mpeg"
+                                        />
+                                      </audio>
                                     </div>
                                 </div>
+                                )
                             ))}
+
+
                         </div>
 
-
+                      
 
 
                     </div>
@@ -253,7 +300,7 @@ const Chat = () => {
 
 
                                 <textarea
-                                    className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-full"
+                                    className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-16"
                                     placeholder="Type a message.."
                                     value={message}
                                     onChange={handleMessageChange}
@@ -266,22 +313,19 @@ const Chat = () => {
                                 <div className="flex gap-1">
 
                                     <div className="bg-dark-highBlue rounded-md"
-                                        onMouseDown={handleMouseDown}
-                                        onMouseUp={handleMouseUp}
-                                        onMouseLeave={handleMouseUp} // Handle mouse leaving the button
+                                    // Handle mouse leaving the button
                                     >
 
-                                        <div className="flex items-center justify-center h-8 w-8">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z" />
-                                            </svg>
+                                        <div className="bg-dark-highBlue rounded-md">
+                                            <VoiceRecorder
+                                                onRecordingComplete={addAudioElement}
+                                                setRecordedAudioBlob={setRecordedAudioBlob}
+                                            />
                                         </div>
                                     </div>
                                     <div className="bg-dark-highBlue rounded-md">
                                         <div className="flex items-center justify-center h-8 w-8">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m18.375 12.739-7.693 7.693a4.5 4.5 0 0 1-6.364-6.364l10.94-10.94A3 3 0 1 1 19.5 7.372L8.552 18.32m.009-.01-.01.01m5.699-9.941-7.81 7.81a1.5 1.5 0 0 0 2.112 2.13" />
-                                            </svg>
+                                            {/* handlr fil share */}
                                         </div>
                                     </div>
                                     <div className="bg-dark-highBlue rounded-md hover:bg-purple-500" onClick={handleSubmit}>
@@ -321,4 +365,5 @@ const Chat = () => {
 
     )
 }
-export default Chat
+
+export default Chat;

@@ -40,10 +40,12 @@ const Students = ({socket}:{socket:any}) => {
                 chaters: student
             };
             const response = await createChat(chatData);
-            if (response.response.data._id) {
+            console.log(response,"response response in hateee");
+            
+            if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                 console.log("emitted join roommmmm");
                 
-                socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
+                socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
         } catch (err) {
             console.error("Error handling student click:", err);

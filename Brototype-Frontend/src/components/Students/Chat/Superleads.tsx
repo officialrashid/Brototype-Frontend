@@ -39,14 +39,12 @@ const Students = ({socket}:{socket:any}) => {
                 chaters: superlead
             };
             const response = await createChat(chatData);
-            console.log(response,"ghgghg9999887666");
-            
-            if (response.response.data._id) {
-                console.log("emittedd join room");
-                
-                console.log(response.response.data._id,"::::::::::::::");
-                
-                socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
+             console.log(response,"responseresponse");
+             
+            if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                  console.log("join room event emittedd",response?.response?.data?._id || response?.chatExists?.response?._id);
+                  
+                socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
         } catch (error) {
             console.error("Error handling student click:", error);

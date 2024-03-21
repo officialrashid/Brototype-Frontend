@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { RootState } from "../../../redux-toolkit/store";
+import { createChat } from "../../../utils/methods/post";
 // import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = () => {
  
@@ -20,7 +21,7 @@ const ChatTab = () => {
                 const response = await getAllChatRecipients(studentId);
                 if (response.status === true) {
                     setChatUser(response?.recipients);
-                    handleStudentClick(0, response.recipients[0]);
+                    // handleStudentClick(0, response.recipients[0]);
                     console.log(response.recipients[0],"{}{}{}{}{");
                     
                 }
@@ -64,7 +65,16 @@ const ChatTab = () => {
         try {
             setSelectedStudentIndex(index);
             dispatch(setchatOppositPersonData(chatUser));
-            socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
+            const chatData = {
+                initiatorId: studentId,
+                recipientId: chatUser.superleadId || chatUser.chaterId,
+                chaters: chatUser
+            };
+            const response = await createChat(chatData);
+            if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                console.log("join room event emittedd",response?.response?.data?._id || response?.chatExists?.response?._id);
+                socket.emit("joinRoom",response?.response?.data?._id || response?.chatExists?.response?._id);
+            }
         } catch (err) {
             console.error("Error handling student click:", err);
         }
@@ -87,11 +97,11 @@ const ChatTab = () => {
                                 {chatUser.firstName} {chatUser.lastName}
                             </span>
                             <div>
-                                {/* {lastMessage && lastMessage.content && ( */}
+                                {lastMessage && lastMessage.content && (
                                     <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {/* {lastMessage.content} */} hellooo
+                                        {lastMessage.content} hellooo
                                     </span>
-                                {/* )} */}
+                                 )} 
                             </div>
                         </div>
                     </div>

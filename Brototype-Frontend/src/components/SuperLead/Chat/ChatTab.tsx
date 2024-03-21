@@ -10,7 +10,7 @@ const ChatTab = () => {
     const dispatch = useDispatch();
     const superleadId = useSelector((state) => state?.superlead?.superleadData?.superleadId);
     const [chatUser, setChatUser] = useState([]);
-    const [selectedStudentIndex, setSelectedStudentIndex] = useState(0);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
 
@@ -63,9 +63,10 @@ const ChatTab = () => {
                 chaters: chatUser
             };
             const response = await createChat(chatData);
-            socket.emit("joinRoom", "65f1ebd8b8c4250ca02bf081");
-            if (response?.response?.data?._id) {
-                // socket.emit("joinRoom", response.response.data._id);
+            if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                console.log("join room emittedd",response?.response?.data?._id || response?.chatExists?.response?._id);
+                
+                socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
         } catch (err) {
             console.error("Error handling student click:", err);

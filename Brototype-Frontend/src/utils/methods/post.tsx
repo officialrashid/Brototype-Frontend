@@ -340,6 +340,8 @@ export const addAdvisors = async (data:any)=>{
 
 
 export const createChat = async (data:any)=>{
+  console.log(data,"dataaaaa");
+  
 
   try {
    const resposne = await Api.post('/api/chat-and-video/create-chat',data)
@@ -374,4 +376,17 @@ console.log(data,"superlead eventsss");
 
 
 }
+
+export const storeChatAudio = async (data:any)=>{
+  console.log(data,"superlead eventsss");
+  
+    try {
+     const resposne = await Api.post('/api/chat-and-video/store-chat-audio',data)
+     return resposne?.data
+    } catch(err){
+      return {status:false,message:"some issue in the add Reviewer"}
+    }
+  
+  
+  }
 
