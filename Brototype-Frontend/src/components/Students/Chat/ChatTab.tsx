@@ -4,6 +4,7 @@ import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { RootState } from "../../../redux-toolkit/store";
 import { createChat } from "../../../utils/methods/post";
+import ChatMediaModal from "./ChatMediaModal";
 // import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = ({socket}:{socket:any}) => {
  
