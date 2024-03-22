@@ -27,6 +27,7 @@ const Chat = () => {
     const [selectMedia, setSelectMedia] = useState(false)
     const [modalStatus, setModalStatus] = useState(false)
     const [reload, setReload] = useState(false)
+    const [chatType, setChatType] = useState("")
     const messageRef = useRef<any>(null);
     useEffect(() => {
         messageRef?.current?.scrollIntoView({ behavior: "smooth" });
@@ -36,16 +37,28 @@ const Chat = () => {
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
         setActiveTab(tabs[nextIndex]); // Set the next tab as active
     };
-    const handleMessageChange = (event: string) => {
+    const handleMessageChange = (event: string, type: string) => {
         try {
-            const message = event?.target?.value
-            console.log(message, "smhcjhfhdhjdfgdhfdh");
+            console.log(type, "typeeeee chat typeee");
+            if (type === "textChat") {
+                const message = event?.target?.value
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("textChat")
+                setMessage(message)
+            } else if (type === "imageChat") {
+                console.log(event, "{}{}{}{}{}{}{");
 
-            setMessage(message)
+                const message = event
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("imageChat")
+                setMessage(message)
+            }
+
         } catch (error) {
 
         }
     }
+
 
 
 
@@ -59,9 +72,10 @@ const Chat = () => {
                 senderId: studentId,
                 receiverId: student.superleadId || student.chaterId,
                 content: message,
-                type: "textChat"
+                type: chatType
             };
-            console.log(messageData, "messageData");
+            console.log(messageData, "messageDatas");
+            console.log("yyyyyyyyyyyyyyyyyyy");
 
             // Emit message to the server
             socket.emit('message', messageData);
@@ -107,7 +121,7 @@ const Chat = () => {
             }
         }
         fetchMessages();
-    }, [student?.superleadId, student?.chaterId, studentId]);
+    }, [student?.superleadId, student?.chaterId, studentId, reload]);
     // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         if (socket) {
@@ -275,7 +289,7 @@ const Chat = () => {
                                                 <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
                                             </div>
                                         </div>
-                                    ) : (
+                                    ) : message.type === "voiceChat" ? (
                                         <div
                                             key={index}
                                             className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
@@ -283,16 +297,24 @@ const Chat = () => {
                                             <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
                                                 <audio controls className="m-1">
                                                     <source src={message.content} type="audio/mpeg" />
-
                                                 </audio>
                                             </div>
                                         </div>
-                                    )
+                                    ) : message.type==="imageChat" ? (
+                                        <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                      {/* <div className=" bg-dark-highBlue mb-0 mt-10 h-10 rounded-sm"> */}
+
+                                             <img src={message?.content} alt="" className="w-48 h-auto font-roboto m-3 text-white border-2 border-dark-highBlue" />
+                                          
+                                            {/* </div> */}
+                                    </div> 
+                                    ): null
                                 ))}
-
-
-
                             </div>
+
 
 
 
@@ -313,7 +335,7 @@ const Chat = () => {
                                         className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-16"
                                         placeholder="Type a message.."
                                         value={message}
-                                        onChange={handleMessageChange}
+                                        onChange={(e) => handleMessageChange(e, "textChat")}
                                     />
 
 
@@ -371,7 +393,7 @@ const Chat = () => {
 
 
             </div>
-            <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} />
+            <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />
 
         </>
 

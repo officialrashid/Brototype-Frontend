@@ -255,35 +255,42 @@ const Chat = () => {
 
                     <div className="h-30rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                        <div className="grid grid-cols-1 mb-0">
-                            {allMesage.map((message: any, index: number) => (
-                                message.type === "textChat" ? (
-                                    <div
-                                        key={index}
-                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                    >
-                                        <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
-                                            <p className="text-sm font-roboto m-3 text-black">{message?.content}</p>
+                    <div className="grid grid-cols-1 mb-0">
+                                {allMesage.map((message: any, index: number) => (
+                                    message.type === "textChat" ? (
+                                        <div
+                                            key={index}
+                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                        >
+                                            <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
+                                                <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div
-                                        key={index}
-                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                    >
-                                        <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
-                                            <audio controls className="m-1">
-                                                <source src={message.content} type="audio/mpeg" />
-                                       
-                                            </audio>
+                                    ) : message.type === "voiceChat" ? (
+                                        <div
+                                            key={index}
+                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                        >
+                                            <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
+                                                <audio controls className="m-1">
+                                                    <source src={message.content} type="audio/mpeg" />
+                                                </audio>
+                                            </div>
                                         </div>
-                                    </div>
-                                )
-                            ))}
+                                    ) : message.type==="imageChat" ? (
+                                        <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                      {/* <div className=" bg-dark-highBlue mb-0 mt-10 h-10 rounded-sm"> */}
 
-
-
-                        </div>
+                                             <img src={message?.content} alt="" className="w-48 h-auto font-roboto m-3 text-white border-2 border-dark-highBlue rounded-md" />
+                                          
+                                            {/* </div> */}
+                                    </div> 
+                                    ): null
+                                ))}
+                            </div>
 
 
 
@@ -322,11 +329,11 @@ const Chat = () => {
                                             />
                                         </div>
                                     </div>
-                                    <div className="bg-dark-highBlue rounded-md">
-                                        <div className="flex items-center justify-center h-8 w-8">
-                                            {/* handlr fil share */}
+                                    <div className="bg-dark-highBlue rounded-md" onClick={() => setSelectMedia(true)}>
+                                            <div className="flex items-center justify-center h-8 w-8">
+                                                <img src="/MediaIcon.svg" alt="" className="w-fit h-10 mt-2" />
+                                            </div>
                                         </div>
-                                    </div>
                                     <div className="bg-dark-highBlue rounded-md hover:bg-purple-500" onClick={handleSubmit}>
                                         <div className="border h-8 w-8 flex items-center justify-center  rounded-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
