@@ -62,8 +62,15 @@ const Chat = () => {
                 console.log(message, "smhcjhfhdhjdfgdhfdh");
                 setChatType("videoChat")
                 setMessage(message)
-            }
+            } else if (type === "documentChat") {
+                console.log(event, "{}{}{}{}{}{}{");
 
+                const message = event
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("documentChat")
+                setMessage(message)
+            }
+            
         } catch (error) {
 
         }
@@ -320,17 +327,19 @@ const Chat = () => {
 
                                         {/* </div> */}
                                     </div>
-                                ) :message.type === "videoChat" ? (
+                                ) :message.type === "documentChat" ? (
                                     <div
                                         key={index}
                                         className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                     >
-                                        <video controls className="w-fit h-60 object-contain ">
-                                            <source src={message.content} type="video/mp4" />
-                                            {/* Add additional <source> elements for other video formats if needed */}
-                                        </video>
+                                        {/* Display PDF */}
+                                        <embed src={message.content} type="application/pdf" width="500" height="600" />
+                                        
+                                        {/* Or, display DOC */}
+                                        {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
                                     </div>
                                 ) : null
+                                
                                 
                      
 
@@ -356,7 +365,7 @@ const Chat = () => {
                                     className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
                                     placeholder="Type a message.."
                                     value={message}
-                                    onChange={handleMessageChange}
+                                    onChange={(e)=>handleMessageChange(e,"textChat")}
                                 />
 
 

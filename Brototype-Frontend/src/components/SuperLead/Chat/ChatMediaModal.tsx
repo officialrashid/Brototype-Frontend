@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux-toolkit/store';
-import { storeChatImage, storeChatVideo } from '../../../utils/methods/post';
+import { storeChatDocument, storeChatImage, storeChatVideo } from '../../../utils/methods/post';
 
 const ChatMediaModal = ({ isVisible, onClose, changeModalStatus,handleMessageChange }: { isVisible: any; onClose: any; changeModalStatus: any; handleMessageChange:any}) => {
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
@@ -20,7 +20,7 @@ const ChatMediaModal = ({ isVisible, onClose, changeModalStatus,handleMessageCha
                     changeModalStatus()
                 }
             }
-            if(file.type.startsWith("video")){
+            else if(file.type.startsWith("video")){
                 const formData = new FormData();
                 formData.append("video", file);
                 formData.append("senderId", superleadId);
@@ -28,6 +28,17 @@ const ChatMediaModal = ({ isVisible, onClose, changeModalStatus,handleMessageCha
                 console.log(response,"dsnbsbfsfhshsdshfs");
                 if(response?.chatData?.audioUrl){
                     handleMessageChange(response?.chatData?.audioUrl,"videoChat")
+                    changeModalStatus()
+                }
+            }
+            else{
+                const formData = new FormData();
+                formData.append("document", file);
+                formData.append("senderId", superleadId);
+                const response = await storeChatDocument(formData)
+                console.log(response,"dsnbsbfsfhshsdshfs");
+                if(response?.chatData?.audioUrl){
+                    handleMessageChange(response?.chatData?.audioUrl,"documentChat")
                     changeModalStatus()
                 }
             }
@@ -55,6 +66,11 @@ const ChatMediaModal = ({ isVisible, onClose, changeModalStatus,handleMessageCha
                             <img src="" alt="" />
                             <label htmlFor="video-upload" className="mb-2 cursor-pointer rounded-md  px-3 py-1.5 text-sm font-medium font-roboto text-black hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Videos
                             <input type="file" id="video-upload" className="hidden" accept="video/*" onChange={handleFileInputChange} />
+
+
+                            </label>
+                            <label htmlFor="document-upload" className="mb-2 cursor-pointer rounded-md  px-3 py-1.5 text-sm font-medium font-roboto text-black hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Document
+                            <input type="file" id="document-upload" className="hidden" accept=".pdf,.zip,.docx" onChange={handleFileInputChange} />
 
 
                             </label>

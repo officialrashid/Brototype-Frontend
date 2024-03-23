@@ -321,6 +321,17 @@ const Chat = () => {
                                                 {/* Add additional <source> elements for other video formats if needed */}
                                             </video>
                                         </div>
+                                    ) :message.type === "documentChat" ? (
+                                        <div
+                                            key={index}
+                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                        >
+                                            {/* Display PDF */}
+                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+                                            
+                                            {/* Or, display DOC */}
+                                            {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
+                                        </div>
                                     ) : null
                                 ))}
                                 <p className="text-custom-background ">example chat</p>

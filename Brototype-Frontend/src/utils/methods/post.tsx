@@ -413,4 +413,16 @@ export const storeChatAudio = async (data:any)=>{
       
       
       }
-    
+      export const storeChatDocument = async (data:any)=>{
+        console.log(data,"superlead eventsss");
+        
+          try {
+           const resposne = await Api.post('/api/chat-and-video/store-chat-document',data)
+           return resposne?.data
+          } catch(err){
+            return {status:false,message:"some issue in the add Reviewer"}
+          }
+        
+        
+        }
+      
