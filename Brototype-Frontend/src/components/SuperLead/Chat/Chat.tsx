@@ -17,6 +17,7 @@ import { useSocket } from "../../../hooks/useSocket";
 import { Socket } from "socket.io-client";
 import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
 import { storeChatAudio } from "../../../utils/methods/post";
+import ChatMediaModal from "./ChatMediaModal";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -30,22 +31,44 @@ const Chat = () => {
     const [allMesage, setAllMessage] = useState([])
     const [lastMessage, setLastMessage] = useState([])
     const [recordedAudioBlob, setRecordedAudioBlob] = useState<any>(null);
-
+    const [selectMedia, setSelectMedia] = useState(false)
+    const [modalStatus, setModalStatus] = useState(false)
+    const [reload, setReload] = useState(false)
+    const [chatType, setChatType] = useState("")
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
         setActiveTab(tabs[nextIndex]); // Set the next tab as active
     };
-    const handleMessageChange = (event: string) => {
+    const handleMessageChange = (event: string, type: string) => {
         try {
-            const message = event?.target?.value
-            console.log(message, "smhcjhfhdhjdfgdhfdh");
+            console.log(type, "typeeeee chat typeee");
+            if (type === "textChat") {
+                const message = event?.target?.value
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("textChat")
+                setMessage(message)
+            } else if (type === "imageChat") {
+                console.log(event, "{}{}{}{}{}{}{");
 
-            setMessage(message)
+                const message = event
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("imageChat")
+                setMessage(message)
+            } else if (type === "videoChat") {
+                console.log(event, "{}{}{}{}{}{}{");
+
+                const message = event
+                console.log(message, "smhcjhfhdhjdfgdhfdh");
+                setChatType("videoChat")
+                setMessage(message)
+            }
+
         } catch (error) {
 
         }
     }
+
     const handleSubmit = async () => {
         try {
             if (!message) {
@@ -56,7 +79,7 @@ const Chat = () => {
                 senderId: superleadId,
                 receiverId: student.studentId || student.chaterId,
                 content: message,
-                type: "textChat"
+                type: chatType
             };
             console.log(messageData, "messageData");
 
@@ -104,7 +127,7 @@ const Chat = () => {
             }
         }
         fetchMessages();
-    }, [student?.studentId, student?.chaterId, superleadId]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?.studentId, student?.chaterId, superleadId, reload]); // Only trigger when superleadId or student?.chaterId changes
 
     useEffect(() => {
         if (socket) {
@@ -174,16 +197,25 @@ const Chat = () => {
         }
 
     };
-
+    const changeModalStatus = () => {
+        if (modalStatus) {
+            setSelectMedia(false)
+            setModalStatus(false)
+            setReload((prevState) => !prevState);
+        } else {
+            setModalStatus(true)
+            setReload((prevState) => !prevState);
+        }
+    }
 
     return (
 
 
         <>
-            <div className="flex border shadow-md  mt-36 w-2/2 m-48 item mb-0 h-38rem" >
+            <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
 
 
-                <div className="border-r w-1/2 bg-white ">
+                <div className="border-r w-2/6 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
                             <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
@@ -210,14 +242,14 @@ const Chat = () => {
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
-                        <ChatTab socket={socket}/>
+                        <ChatTab socket={socket} />
                     ) : null}
 
 
                 </div>
 
 
-                <div className="  border-r w-full bg-white h-20 mb-0" >
+                <div className="  border-r w-full bg-white h-20 mb-" >
                     <div className="border-b ">
                         <div className="flex justify-between ">
                             <div className="flex gap-2 m-2 ">
@@ -253,60 +285,75 @@ const Chat = () => {
 
                     </div>
 
-                    <div className="h-30rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
+                    <div className="h-31rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                    <div className="grid grid-cols-1 mb-0">
-                                {allMesage.map((message: any, index: number) => (
-                                    message.type === "textChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <div className="w-fit bg-dark-highBlue mb-0 h-10 rounded-sm">
-                                                <p className="text-sm font-roboto m-3 text-white">{message?.content}</p>
-                                            </div>
+                        <div className="grid grid-cols-1 mb-">
+                            {allMesage.map((message: any, index: number) => (
+                                message.type === "textChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
+                                            <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
                                         </div>
-                                    ) : message.type === "voiceChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <div className=" bg-dark-highBlue mb-0 h-16 w-2/1 rounded-full">
-                                                <audio controls className="m-1">
-                                                    <source src={message.content} type="audio/mpeg" />
-                                                </audio>
-                                            </div>
+                                    </div>
+                                ) : message.type === "voiceChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className="  mb-0 h-16 w-2/1 rounded-full">
+                                            <audio controls className="m-1">
+                                                <source src={message.content} type="audio/mpeg" />
+                                            </audio>
                                         </div>
-                                    ) : message.type==="imageChat" ? (
-                                        <div
+                                    </div>
+                                ) : message.type === "imageChat" ? (
+                                    <div
                                         key={index}
                                         className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                     >
-                                      {/* <div className=" bg-dark-highBlue mb-0 mt-10 h-10 rounded-sm"> */}
+                                        {/* <div className=" bg-dark-highBlue mb-0 mt-10 h-10 rounded-sm"> */}
 
-                                             <img src={message?.content} alt="" className="w-48 h-auto font-roboto m-3 text-white border-2 border-dark-highBlue rounded-md" />
-                                          
-                                            {/* </div> */}
-                                    </div> 
-                                    ): null
-                                ))}
-                            </div>
+                                        <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+
+                                        {/* </div> */}
+                                    </div>
+                                ) :message.type === "videoChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <video controls className="w-fit h-60 object-contain ">
+                                            <source src={message.content} type="video/mp4" />
+                                            {/* Add additional <source> elements for other video formats if needed */}
+                                        </video>
+                                    </div>
+                                ) : null
+                                
+                     
+
+                            ))}
+                            <p className="text-custom-background ">example chat</p>
+                            <p className="text-custom-background ">example chat</p>
+                        </div>
 
 
 
 
                     </div>
 
-                    <div className=" m-3 mt-0 rounded-md ">
+                    <div className=" m-3 mt-0 rounded-md  ">
                         <div className=" flex ">
 
 
 
-                            <div className="relative top-0 w-full">
+                            <div className="relative  w-full bottom-6">
 
 
                                 <textarea
-                                    className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-16"
+                                    className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
                                     placeholder="Type a message.."
                                     value={message}
                                     onChange={handleMessageChange}
@@ -315,31 +362,33 @@ const Chat = () => {
 
                             </div>
 
-                            <div className="m-1 cursor-pointer ">
+                            <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                 <div className="flex gap-1">
 
-                                    <div className="bg-dark-highBlue rounded-md"
-                                    // Handle mouse leaving the button
+                                    <div className="rounded-md"
+
                                     >
 
-                                        <div className="bg-dark-highBlue rounded-md">
+                                        <div className=" rounded-md">
                                             <VoiceRecorder
                                                 onRecordingComplete={addAudioElement}
                                                 setRecordedAudioBlob={setRecordedAudioBlob}
                                             />
                                         </div>
                                     </div>
-                                    <div className="bg-dark-highBlue rounded-md" onClick={() => setSelectMedia(true)}>
-                                            <div className="flex items-center justify-center h-8 w-8">
-                                                <img src="/MediaIcon.svg" alt="" className="w-fit h-10 mt-2" />
-                                            </div>
+                                    <div className=" rounded-full shadow-xl bg-gray-200 cursor-pointer" onClick={() => setSelectMedia(true)}>
+                                        <div className="flex items-center justify-center h-8 w-8">
+                                            <img src="/MediaIcon.svg" alt="" className="w-fit h-10 mt-2" />
                                         </div>
-                                    <div className="bg-dark-highBlue rounded-md hover:bg-purple-500" onClick={handleSubmit}>
-                                        <div className="border h-8 w-8 flex items-center justify-center  rounded-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                                            </svg>
-                                        </div>
+                                    </div>
+                                    {/* <div className="flex rounded-full" > */}
+                                    <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={handleSubmit}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+                                        </svg>
+
+                                        {/* </div> */}
+
                                     </div>
                                 </div>
                             </div>
@@ -365,7 +414,7 @@ const Chat = () => {
 
 
             </div>
-
+            <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />
 
         </>
 

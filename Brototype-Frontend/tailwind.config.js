@@ -54,7 +54,7 @@ module.exports = {
         '4.6rem': '4.6rem',
         '6.8rem': '6.8rem',
         '19rem': '19rem',
-        '30rem':'30rem'
+        '31rem':'31rem'
       },
       backgroundColor: {
         'custom-grey': '#D9D9D9',
@@ -92,7 +92,8 @@ module.exports = {
         'Good':'#70DD38',
         "Average":"#8082FF",
         "Poor":"#03c3ec",
-        "Outstanding":"#8492A3"
+        "Outstanding":"#8492A3",
+        'custom-background': '#ECECF0',
      },
     },
     plugins: {
