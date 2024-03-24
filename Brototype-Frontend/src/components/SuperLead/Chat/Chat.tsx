@@ -11,6 +11,7 @@ import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
 import { storeChatAudio } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
 import PDFViewer from "./PdfViewer";
+import CreateGroupChat from "./CreateGroupChat";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -28,6 +29,7 @@ const Chat = () => {
     const [modalStatus, setModalStatus] = useState(false)
     const [reload, setReload] = useState(false)
     const [chatType, setChatType] = useState("")
+    const [createGroupChat,setCreateGroupChat] = useState(false)
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -63,7 +65,7 @@ const Chat = () => {
                 setChatType("documentChat")
                 setMessage(message)
             }
-            
+
         } catch (error) {
 
         }
@@ -212,6 +214,7 @@ const Chat = () => {
 
 
         <>
+        <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }}  />
             <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
 
 
@@ -229,8 +232,8 @@ const Chat = () => {
                             <div>
                                 <input type="search" className=" font-roboto   w-full py-1 px-10 rounded-full border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... " />
                             </div>
-                            <div className="rounded-full bg-Average w-8 h-8 mt-0.5 cursor-pointer hover hover:bg-purple-500">
-                                   <img src="/plus (2).png" alt="" className="w-8 h-8" />
+                            <div className="rounded-full bg-Average w-8 h-8 mt-0.5 cursor-pointer hover hover:bg-purple-500"onClick={()=>setCreateGroupChat(true)}>
+                                <img src="/plus (2).png" alt="" className="w-8 h-8" />
                             </div>
                         </div>
                     </div>
@@ -317,23 +320,34 @@ const Chat = () => {
                                         key={index}
                                         className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                     >
-                                        {/* <div className=" bg-dark-highBlue mb-0 mt-10 h-10 rounded-sm"> */}
+                                        {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
 
                                         <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
 
                                         {/* </div> */}
                                     </div>
-                                ):message.type === "documentChat" ? (
-                                    <div className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}>
-                                        <a href={message.content} target="_blank" rel="noopener noreferrer">
-                                            <PDFViewer url={message.content} />
-                                        </a>
+                                ) : message.type === "videoChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <video controls className="w-fit h-60 object-contain ">
+                                            <source src={message.content} type="video/mp4" />
+                                            {/* Add additional <source> elements for other video formats if needed */}
+                                        </video>
+                                    </div>
+                                ) : message.type === "documentChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        {/* Display PDF */}
+                                        <embed src={message.content} type="application/pdf" width="500" height="600" />
+
+                                        {/* Or, display DOC */}
+                                        {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
                                     </div>
                                 ) : null
-                                
-                                
-                     
-
                             ))}
                             <p className="text-custom-background ">example chat</p>
                             <p className="text-custom-background ">example chat</p>
@@ -347,20 +361,32 @@ const Chat = () => {
                     <div className=" m-3 mt-0 rounded-md  ">
                         <div className=" flex ">
 
-
-
-                            <div className="relative  w-full bottom-6">
-
-
-                                <textarea
-                                    className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
-                                    placeholder="Type a message.."
-                                    value={message}
-                                    onChange={(e)=>handleMessageChange(e,"textChat")}
-                                />
-
-
+                            <div className="relative w-full bottom-6">
+                                {chatType === 'imageChat' ? (
+                                    <div className="relative">
+                                        <textarea
+                                            className="font-roboto border  px-2 h-auto py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
+                                            placeholder="Type a message.."
+                                            onChange={(e) => handleMessageChange(e, "textChat")}
+                                        />
+                                        <img
+                                            src={message}
+                                            alt="Chat Image"
+                                            className="absolute w-auto max-h-24" // Adjust the max height as needed
+                                            style={{ width: 'auto', height: 'auto' }} // Ensure the image size is dynamic
+                                        />
+                                    </div>
+                                ) : (
+                                    <textarea
+                                        className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
+                                        placeholder="Type a message.."
+                                        value={message}
+                                        onChange={(e) => handleMessageChange(e, "textChat")}
+                                    />
+                                )}
                             </div>
+
+
 
                             <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                 <div className="flex gap-1">

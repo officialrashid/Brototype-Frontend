@@ -173,6 +173,7 @@ const Chat = () => {
 
             socket.emit('message', messageData);
             setRecordedAudioBlob(null);
+         
             // Listen for response from the server
             socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
 

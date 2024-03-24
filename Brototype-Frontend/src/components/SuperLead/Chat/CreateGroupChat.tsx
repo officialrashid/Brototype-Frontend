@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import { getSuperleadProfile } from "../../../utils/methods/get";
 import { setSuperleadProfileImage } from "../../../redux-toolkit/superleadReducer"
 import { updateSuperleadProfile } from "../../../utils/methods/patch";
+
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 
@@ -18,13 +19,14 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     {children}
   </p>
 )
-const CreateGroupChat = ({ isVisible,onClose}: { isVisible: any; onClose: any;}) => {
-  if(!isVisible){
+const CreateGroupChat = ({ isVisible, onClose }: { isVisible: any; onClose: any; }) => {
+  if (!isVisible) {
     return null
   }
   const dispatch = useDispatch()
   const [profile, setProfile] = useState({})
   const location = useLocation();
+  const [next, setNext] = useState(false)
   const action = location.state && location.state.action;
   const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
 
@@ -189,21 +191,21 @@ const CreateGroupChat = ({ isVisible,onClose}: { isVisible: any; onClose: any;})
         formData.append('yearOfExpereience', values.yearOfExpereience); // Corrected key name
         formData.append('superleadId', superleadId);
         console.log(formData, "forData comingggggggggggggggggggggggggggggg");
-        if(action === "edit"){
+        if (action === "edit") {
           console.log("keriiiiitttoooo");
-          
+
           const response = await updateSuperleadProfile(formData)
-          console.log(response,"responseee");
-          if(response.status===true){
+          console.log(response, "responseee");
+          if (response.status === true) {
             toast.success("profile updated successfully")
-           
+
           } else if (response?.message === "Email or Phone already in use" && response?.status === false) {
             toast.warn("email or phone already in use")
           } else {
             toast.error("profile updated not done, something went wrong")
           }
-          
-        }else{
+
+        } else {
           const response = await uploadImage(formData);
           if (response?.data?.status === true) {
             toast.success("profile updated successfully")
@@ -214,7 +216,7 @@ const CreateGroupChat = ({ isVisible,onClose}: { isVisible: any; onClose: any;})
             toast.error("profile updated not done, something went wrong")
           }
         }
-      
+
       } catch (error) {
         console.error('Error uploading data:', error);
       }
@@ -238,157 +240,244 @@ const CreateGroupChat = ({ isVisible,onClose}: { isVisible: any; onClose: any;})
       throw error;
     }
   }
-
+  const bestEmployees = [
+    { Name: "Yen", Role: "Advisor", Performance: "Good", profile: '/profile.jpeg' },
+    { Name: "Adeela", Role: "Advisor", Performance: "Average", profile: '/profile.jpeg' },
+    { Name: "Blessy", Role: "Advisor", Performance: "Poor", profile: '/profile.jpeg' },
+    { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' },
+    { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' },
+    { Name: "Kiran", Role: "Advisor", Performance: "Outstanding", profile: '/profile.jpeg' }
+  ];
   return (
     <>
-      <section className=" w-2/3 ml-96 item items-center justify-center p-3 sm:p-5 mt-64 absolute z-50 ">
+      <section className=" w-2/3 ml-96 item items-center justify-center p-3 sm:p-5 mt-36 absolute z-50 ">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12 ">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg ">
-            <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold text-sm">Create Group Chat</h1>
+            {next === false ? (
+              <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold text-sm">Create Group Chat</h1>
+            ) : (
+              <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold text-sm">Add Members</h1>
+            )}
+
             <form className="mb-0 mt-0">
-              <div className="flex border-b">
-                {!profile?.imageUrl ? (
-                  <>
-                    {selectedFile ? (
-                      <div className="m-7 mb-4 mt-5">
-
-                        <img
-                          src={URL.createObjectURL(selectedFile) ?? "https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png"}
-                          alt=""
-                          className="h-aut mb-0 w-20 rounded-md" />
-
-                      </div>
-
-                    ) : (
-                      <div className="m-7 mb-4 mt-5">
-                        <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png" alt="" className="h-aut mb-0 w-20 rounded-md"
-                        />
-                      </div>
-
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {selectedFile ? (
-                      <div className="m-7 mb-4 mt-5">
-
-                        <img
-                          src={URL.createObjectURL(selectedFile)}
-                          alt=""
-                          className="h-aut mb-0 w-20 rounded-md" />
-
-                      </div>
-
-                    ) : (
-                      <div className="m-7 mb-4 mt-5">
-                        <img src={profile?.imageUrl} alt="" className="h-aut mb-0 w-20 rounded-md"
-                        />
-                      </div>
-
-                    )}
-                  </>
-                )}
-                <div className="m-10 mb-0 ml-0 mr-0">
-
-                  <label htmlFor="file-upload" className="text-xs mb-2 cursor-pointer rounded-md bg-dark-highBlue px-3 py-1.5 text-sm font-medium font-roboto text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Upload Group Profile
-                  </label>
-
-                  <p className="m-4 mb-0  ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                  {formik.touched.selectedFile && formik.errors.selectedFile && (
-                    <ErrorText>{formik.errors.selectedFile}</ErrorText>
-                  )}
-                  <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} />
-
-                </div>
-
-              </div>
-
-              <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
-                <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="firstName" className="m-2 font-serif text-xs">Enter a Group Name</label>
-                  <>
-                    {(!profile.firstName || !profile.firstName.trim()) ? (
+              {next === false && (
+                <>
+                  <div className="flex border-b">
+                    {!profile?.imageUrl ? (
                       <>
-                        <input
-                          type="text"
-                          id="firstName"
-                          name="firstName"
-                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
-                          value={formik.values.firstName || ''}
-                          onChange={formik.handleChange}
-                          onBlur={formik.handleBlur}
-                          required
-                        />
-                        {formik.touched.firstName && formik.errors.firstName && (
-                          <ErrorText>{formik.errors.firstName}</ErrorText>
+                        {selectedFile ? (
+                          <div className="m-7 mb-4 mt-5">
+
+                            <img
+                              src={URL.createObjectURL(selectedFile) ?? "https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png"}
+                              alt=""
+                              className="h-aut mb-0 w-20 rounded-md" />
+
+                          </div>
+
+                        ) : (
+                          <div className="m-7 mb-4 mt-5">
+                            <img src="https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png" alt="" className="h-aut mb-0 w-20 rounded-md"
+                            />
+                          </div>
+
                         )}
                       </>
                     ) : (
                       <>
-                        <input
-                          type="text"
-                          id="firstName"
-                          name="firstName"
-                          className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
-                          value={profile?.firstName}
-                          onChange={(e) => handleChange(e, 'firstName')}
+                        {selectedFile ? (
+                          <div className="m-7 mb-4 mt-5">
 
-                          onBlur={formik.handleBlur}
-                          required
-                        />
+                            <img
+                              src={URL.createObjectURL(selectedFile)}
+                              alt=""
+                              className="h-aut mb-0 w-20 rounded-md" />
 
-                        {formik.touched.firstName && formik.errors.firstName && (
-                          <ErrorText>{formik.errors.firstName}</ErrorText>
+                          </div>
+
+                        ) : (
+                          <div className="m-7 mb-4 mt-5">
+                            <img src={profile?.imageUrl} alt="" className="h-aut mb-0 w-20 rounded-md"
+                            />
+                          </div>
+
                         )}
-
                       </>
                     )}
-                  </>
+                    <div className="m-10 mb-0 ml-0 mr-0">
 
-                </div>
+                      <label htmlFor="file-upload" className="text-xs mb-2 cursor-pointer rounded-md bg-dark-highBlue px-3 py-1.5 text-sm font-medium font-roboto text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Upload Group Profile
+                      </label>
 
-                <div className="m-3 ml-0 mr-0 w-full">
-                  <label htmlFor="lastName" className="m-2 font-serif text-xs">Eneter a Description</label>
-                  <>
-                  </>
-                  {!profile.lastName ? (
-                    <>
-                      <input
-                        type="lastName"
-                        id="lastName"
-                        value={formik.values.lastName}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
-                        required
-                      />
-                      {formik.touched.lastName && formik.errors.lastName && (
-                        <ErrorText>{formik?.errors?.lastName}</ErrorText>
+                      <p className="m-4 mb-0  ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                      {formik.touched.selectedFile && formik.errors.selectedFile && (
+                        <ErrorText>{formik.errors.selectedFile}</ErrorText>
                       )}
-                    </>
-                  ) : (
-                    <>
-                      <input
-                        type="lastName"
-                        id="lastName"
-                        value={profile?.lastName}
-                        onChange={(e) => handleChange(e, 'lastName')}
-                        onBlur={formik.handleBlur}
-                        className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
-                        required
-                      />
-                      {formik.touched.lastName && formik.errors.lastName && (
-                        <ErrorText>{formik?.errors?.lastName}</ErrorText>
-                      )}
-                    </>
-                  )}
+                      <input type="file" id="file-upload" className="hidden" onChange={handleFileChange} />
 
+                    </div>
+
+                  </div>
+
+                  <div className="space-y- flex flex-col items-center justify-between p-4 pb-0 pt-0 md:flex-row md:space-x-4 md:space-y-0">
+                    <div className="m-3 ml-0 mr-0 w-full">
+                      <label htmlFor="firstName" className="m-2 font-serif text-xs">Enter a Group Name</label>
+                      <>
+                        {(!profile.firstName || !profile.firstName.trim()) ? (
+                          <>
+                            <input
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                              className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                              value={formik.values.firstName || ''}
+                              onChange={formik.handleChange}
+                              onBlur={formik.handleBlur}
+                              required
+                            />
+                            {formik.touched.firstName && formik.errors.firstName && (
+                              <ErrorText>{formik.errors.firstName}</ErrorText>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <input
+                              type="text"
+                              id="firstName"
+                              name="firstName"
+                              className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                              value={profile?.firstName}
+                              onChange={(e) => handleChange(e, 'firstName')}
+
+                              onBlur={formik.handleBlur}
+                              required
+                            />
+
+                            {formik.touched.firstName && formik.errors.firstName && (
+                              <ErrorText>{formik.errors.firstName}</ErrorText>
+                            )}
+
+                          </>
+                        )}
+                      </>
+
+                    </div>
+
+                    <div className="m-3 ml-0 mr-0 w-full">
+                      <label htmlFor="lastName" className="m-2 font-serif text-xs">Eneter a Description</label>
+                      <>
+                      </>
+                      {!profile.lastName ? (
+                        <>
+                          <input
+                            type="lastName"
+                            id="lastName"
+                            value={formik.values.lastName}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                            className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                            required
+                          />
+                          {formik.touched.lastName && formik.errors.lastName && (
+                            <ErrorText>{formik?.errors?.lastName}</ErrorText>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <input
+                            type="lastName"
+                            id="lastName"
+                            value={profile?.lastName}
+                            onChange={(e) => handleChange(e, 'lastName')}
+                            onBlur={formik.handleBlur}
+                            className="bg-gray-50 border font-roboto border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-2 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none"
+                            required
+                          />
+                          {formik.touched.lastName && formik.errors.lastName && (
+                            <ErrorText>{formik?.errors?.lastName}</ErrorText>
+                          )}
+                        </>
+                      )}
+
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {next === true && (
+                <div className="">
+                  <div className="flex gap-4 m-5 mb-3 mt-3">
+
+                    <div className="w-full md:w-2/6">
+                      <form className="flex items-center">
+                        <label htmlFor="simple-search" className="sr-only">Search</label>
+                        <div className="relative w-full">
+                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                          </div>
+                          <input
+                            type="text"
+                            id="simple-search"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto" required=""
+                            placeholder='Search...'
+                          // value={searchQuery}
+                          // onChange={handleSearchInputChange}
+                          />
+                        </div>
+
+
+                      </form>
+                    </div>
+                  </div>
+                  <div className="max-h-60 overflow-y-auto">
+                    <table className="w-full text-sm text- text-gray-500 dark:text-gray-400">
+                      <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ml-16">
+                        <tr className='text-sm font-roboto'>
+                          <th scope="col" className="px-6 py-3">
+                            Name
+                          </th>
+                          <th scope="col" className="px-10 py-3">
+                            Role
+                          </th>
+                          <th scope="col" className="px-6 py-3">
+                            Select
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bestEmployees.map((advisor, index) => (
+                          <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td className="flex items-center px-6 py-4 whitespace-nowrap">
+                              <img className="w-8 h-8 rounded-full" src={advisor.profile} alt={advisor.Name} />
+                              <div className="ps-3">
+                                <div className=" text-sm font-roboto">{advisor.Name}</div>
+                              </div>
+                            </td>
+                            <td className="px-6 py-4 text-sm font-roboto item text-center">
+                              {advisor.Role}
+                            </td>
+                            <td className="px- py-4 text-sm font-roboto item text-center">
+                              <input type="checkbox" name="" id="" />
+
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-             
-             
-             
-            
+              )}
+
+
+
+
+
+
+
+
+
 
               <div className="flex m-5 mb-0 mt-2 gap-3">
                 {action ? (
@@ -409,27 +498,55 @@ const CreateGroupChat = ({ isVisible,onClose}: { isVisible: any; onClose: any;})
                   </>
                 ) : (
                   <>
-                    <button
-                      type="button"
-                      onClick={(e) => formik.handleSubmit(e)}
-                      disabled={uploading}
-                      className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
-                    >
-                      {uploading ? "Uploading..." : "Save Changes"}
-                    </button>
-                    {uploadError && (
-                      <ErrorText>
-                        {uploadError}
-                      </ErrorText>
+                    {next === true ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={(e) => formik.handleSubmit(e)}
+                          disabled={uploading}
+                          className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
+                        >
+                          {uploading ? "Uploading..." : "Save Changes"}
+                        </button>
+                        {uploadError && (
+                          <ErrorText>
+                            {uploadError}
+                          </ErrorText>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={(e) => setNext(true)}
+                          disabled={uploading}
+                          className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
+                        >
+                          {uploading ? "Uploading..." : "Next"}
+                        </button>
+
+                      </>
                     )}
+
                   </>
+
+                )}
+                {next === true ? (
+                  <button
+                    type="button"
+                    onClick={() => setNext(false)}
+                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                    Back
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => onClose()}
+                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                    Cancel
+                  </button>
                 )}
 
-                <button
-                  type="button"
-                  className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
-                  Cancel
-                </button>
               </div>
             </form>
           </div>
