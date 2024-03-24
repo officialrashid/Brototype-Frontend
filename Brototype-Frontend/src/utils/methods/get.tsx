@@ -393,7 +393,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getAllSuperleads = async () =>{
 
     try {
-       const response = await studentApi.get(`/api/superlead/get-chat-all-superleads`)
+       const response = await Api.get(`/api/superlead/get-chat-all-superleads`)
        return response?.data?.response;
     } catch (error) {
      
