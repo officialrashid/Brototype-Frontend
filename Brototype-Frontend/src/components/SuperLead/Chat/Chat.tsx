@@ -1,13 +1,5 @@
 import { SetStateAction, useEffect, useState } from "react"
-import {
-    ArrowLeft,
-    Image,
-    Mic,
-    MoreVertical,
-    Phone,
-    Video,
-    Files,
-} from "lucide-react";
+
 import { useSelector } from "react-redux";
 
 import { getMessages } from "../../../utils/methods/get";
@@ -18,6 +10,7 @@ import { Socket } from "socket.io-client";
 import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
 import { storeChatAudio } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
+import PDFViewer from "./PdfViewer";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -227,7 +220,7 @@ const Chat = () => {
                         <div>
                             <img src="/profile.jpeg" alt="" className="w-10 h-10 rounded-full" />
                         </div>
-                        <div className="relative">
+                        <div className="relative flex gap-3">
                             <div className="absolute m-3 mt-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5 stroke-slate-400">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -235,6 +228,9 @@ const Chat = () => {
                             </div>
                             <div>
                                 <input type="search" className=" font-roboto   w-full py-1 px-10 rounded-full border border-slate-200 outline-none   dark:focus:ring-black dark:focus:border-black " placeholder="hello search....... " />
+                            </div>
+                            <div className="rounded-full bg-Average w-8 h-8 mt-0.5 cursor-pointer hover hover:bg-purple-500">
+                                   <img src="/plus (2).png" alt="" className="w-8 h-8" />
                             </div>
                         </div>
                     </div>
@@ -327,16 +323,11 @@ const Chat = () => {
 
                                         {/* </div> */}
                                     </div>
-                                ) :message.type === "documentChat" ? (
-                                    <div
-                                        key={index}
-                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                    >
-                                        {/* Display PDF */}
-                                        <embed src={message.content} type="application/pdf" width="500" height="600" />
-                                        
-                                        {/* Or, display DOC */}
-                                        {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
+                                ):message.type === "documentChat" ? (
+                                    <div className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}>
+                                        <a href={message.content} target="_blank" rel="noopener noreferrer">
+                                            <PDFViewer url={message.content} />
+                                        </a>
                                     </div>
                                 ) : null
                                 
