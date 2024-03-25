@@ -5,10 +5,10 @@ import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPers
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
 
-const ChatTab = ({socket}:{socket:any}) => {
+const ChatTab = ({ socket }: { socket: any }) => {
     const dispatch = useDispatch();
     const superleadId = useSelector((state) => state?.superlead?.superleadData?.superleadId);
-    const [chatUser, setChatUser] = useState([]);
+    const [chatUser, setChatUser] = useState<any[]>([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
@@ -17,10 +17,17 @@ const ChatTab = ({socket}:{socket:any}) => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(superleadId);
+                console.log(response, "lll response i ngroup chatess and rediosfe");
+
                 if (response?.status === true && response?.recipients) {
-                    setChatUser(response.recipients);
+
+                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
+
+
                     // handleStudentClick(0, response.recipients[0]);
                 }
+                console.log(chatUser, ";;;;;00098***&&^^^^^^^^");
+
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
             }
@@ -54,19 +61,26 @@ const ChatTab = ({socket}:{socket:any}) => {
 
     const handleStudentClick = async (index, chatUser) => {
         try {
-            setSelectedStudentIndex(index);
-            dispatch(setchatOppositPersonData(chatUser));
-            const chatData = {
-                initiatorId: superleadId,
-                recipientId: chatUser.studentId || chatUser.chaterId,
-                chaters: chatUser
-            };
-            const response = await createChat(chatData);
-            if (response?.response?.data?._id || response?.chatExists?.response?._id) {
-                console.log("join room emittedd",response?.response?.data?._id || response?.chatExists?.response?._id);
-                
-                socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
+            console.log(chatUser,")))))))))");
+            if(chatUser?.groupName){
+                console.log("join room emittedd",chatUser?._id );
+                socket.emit("joinRoom",chatUser?._id); 
+            }else{
+                setSelectedStudentIndex(index);
+                dispatch(setchatOppositPersonData(chatUser));
+                const chatData = {
+                    initiatorId: superleadId,
+                    recipientId: chatUser.studentId || chatUser.chaterId,
+                    chaters: chatUser
+                };
+                const response = await createChat(chatData);
+                if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                    console.log("join room emittedd", response?.response?.data?._id || response?.chatExists?.response?._id);
+    
+                    socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
+                }
             }
+          
         } catch (err) {
             console.error("Error handling student click:", err);
         }
@@ -81,13 +95,27 @@ const ChatTab = ({socket}:{socket:any}) => {
                     onClick={() => handleStudentClick(index, user)}
                 >
                     <div className="flex gap-2 m-2 mt-">
-                        <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={user.imageUrl} alt="" className="rounded-full " />
-                        </div>
-                        <div className="mt-1 mb-0">
-                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {user.firstName} {user.lastName}
-                            </span>
+                        {user.groupName ? (
+                            <div className="border h-8 w-8 rounded-full mt-2 ">
+                                <img src={user.profile} alt="" className="rounded-full " />
+                            </div>
+                        ) : (
+                            <div className="border h-8 w-8 rounded-full mt-2 ">
+                                <img src={user.imageUrl} alt="" className="rounded-full " />
+                            </div>
+                        )}
+
+                        <div className="mt-1 mb-0 ">
+                            {user.groupName ? (
+                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                    {user.groupName} 
+                                </span>
+                            ) : (
+                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                    {user.firstName} {user.lastName}
+                                </span>
+                            )}
+
                             <div>
                                 {lastMessage && lastMessage.content &&
                                     <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
