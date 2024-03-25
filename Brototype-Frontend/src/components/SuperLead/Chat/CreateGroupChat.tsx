@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import useMutation from "../../../hooks/useMutation";
-import DeactivateAccount from "./DeactivateAccount";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import { toast } from "react-toastify";
 import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from "react-router-dom";
 import { getAllStudents, getAllSuperleads } from "../../../utils/methods/get";
-import { setSuperleadProfileImage } from "../../../redux-toolkit/superleadReducer"
-import { updateSuperleadProfile } from "../../../utils/methods/patch";
+import { createGroupChat } from "../../../utils/methods/post";
+import { toast } from "react-toastify";
+
+
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
@@ -19,13 +18,17 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void; }) => {
-  if(!isVisible){
+  if (!isVisible) {
     return null
   }
   const dispatch = useDispatch();
   const [next, setNext] = useState(false);
   const [chatParticipantsDetails, setGroupParticipantsDetails] = useState<any[]>([]);
   const [selectedChatDetails, setSelectedChatDetails] = useState<any[]>([]);
+  const [isChecked, setIsChecked] = useState(true);
+  const [participants,setParticipants] = useState<any[]>([]);
+  const [admins,setAdmins] = useState<any[]>([]);
+  const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
   const superleadUniqueId = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
   const validationSchema = Yup.object().shape({
     selectedFile: Yup.mixed()
@@ -54,9 +57,19 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
         const superleads = await getAllSuperleads();
 
         if (students?.status === true && superleads?.status === true) {
-          const combinedResponses = [...students.response, ...superleads.result];
+          const combinedResponses = [...superleads.result, ...students.response];
+          console.log(combinedResponses,"llllll");
+          
           setGroupParticipantsDetails(combinedResponses);
+          combinedResponses.map((chatDetails,index)=>{
+            
+             if(chatDetails.superleadId===superleadId){
+                  handleCheckboxChange(chatDetails)
+                  setAdmins(prevState => [...prevState, chatDetails.superleadId])
+             }
+          })
         }
+
       } catch (error) {
         console.error('Error fetching group chat profiles:', error);
       }
@@ -78,37 +91,64 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
           formik.setFieldError('selectedFile', 'Please select an image');
           return;
         }
- console.log(values);
- console.log(selectedChatDetails);
- 
+        console.log(values);
+        console.log(selectedChatDetails);
+        console.log(participants);
+        console.log(admins);
+        
         const formData = new FormData();
-        formData.append('chatGroupProfile', values.selectedFile as unknown as File);
+        formData.append('groupChatProfile', values.selectedFile as unknown as File);
         formData.append('groupName', values.groupName);
         formData.append('description', values.description);
+        formData.append('createrId',superleadId);
         selectedChatDetails.forEach((chatDetail, index) => {
-          formData.append(`participants[${index}]`, JSON.stringify(chatDetail));
+          formData.append(`participantsDetails[${index}]`, JSON.stringify(chatDetail));
         });
-        
+        participants.forEach((participantsId, index) => {
+          formData.append(`participants[${index}]`, participantsId);
+        });
+        admins.forEach((adminsId, index) => {
+          formData.append(`admins[${index}]`, adminsId);
+        });
+        const response = await createGroupChat(formData)
+        console.log(response,"response in group chateee");
+        if(response?.createGroupChat?.status===true){
+          toast.success("Group Created Successfully")
+        }else{
+          toast.error("Group Not Created,Please Try Again")
+        }
+        onClose()
       } catch (error) {
         console.error('Error uploading data:', error);
       }
     },
   });
 
-  const handleCheckboxChange = (chatDetails: any) => {
+  const handleCheckboxChange = (chatDetails:any) => {
     const index = selectedChatDetails.findIndex((item) =>
       (item.studentId && item.studentId === chatDetails.studentId) ||
       (item.superleadId && item.superleadId === chatDetails.superleadId)
     );
 
     if (index === -1) {
+      // If the chatDetails is not already selected, add it to the selectedChatDetails state
       setSelectedChatDetails(prevState => [...prevState, chatDetails]);
+      // Also add the corresponding studentId or superleadId to the participants state
+      setParticipants(prevState => [...prevState, chatDetails.studentId || chatDetails.superleadId]);
     } else {
+      // If the chatDetails is already selected, remove it from the selectedChatDetails state
       const updatedSelectedChatDetails = [...selectedChatDetails];
       updatedSelectedChatDetails.splice(index, 1);
       setSelectedChatDetails(updatedSelectedChatDetails);
+
+      // Remove the corresponding studentId or superleadId from the participants state if it exists
+      const updatedParticipants = participants.filter(id =>
+        id !== chatDetails.studentId && id !== chatDetails.superleadId
+      );
+      setParticipants(updatedParticipants);
     }
-  };
+};
+
   const handleNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setNext(true);
@@ -218,9 +258,16 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                           <tr key={index} className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td className="flex items-center px-6 py-4 whitespace-nowrap">
                               <img className="w-8 h-8 rounded-full" src={chatDetails.imageUrl} alt={chatDetails.firstName} />
-                              <div className="ps-3">
-                                <div className=" text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
-                              </div>
+                              {chatDetails.superleadId || chatDetails.studentId === superleadId ? (
+                                <div className="ps-3">
+                                  <div className=" text-sm font-roboto">Your Account</div>
+                                </div>
+                              ) : (
+                                <div className="ps-3">
+                                  <div className=" text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
+                                </div>
+                              )}
+
                             </td>
                             {chatDetails?.studentId ? (
                               <td className="px-6 py-4 text-sm font-roboto item text-center">
@@ -231,9 +278,22 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                                 superlead
                               </td>
                             ) : null}
-                            <td className="px- py-4 text-sm font-roboto item text-center" >
-                              <input type="checkbox" name="selected" id="selected" onClick={() => handleCheckboxChange(chatDetails)} />
-                            </td>
+                            {chatDetails.superleadId || chatDetails.studentId === superleadId ? (
+                              <td className="px- py-4 text-sm font-roboto item text-center" >
+                                <input
+                                  type="checkbox"
+                                  name="selected"
+                                  id="selected"
+                                  checked={isChecked} // Set checked state based on state variable
+                                  // onChange={() => setIsChecked(!isChecked)} // Toggle isChecked state when checkbox is clicked
+                                />
+                              </td>
+                            ) : (
+                              <td className="px- py-4 text-sm font-roboto item text-center" >
+                                <input type="checkbox" name="selected" id="selected" onClick={() => handleCheckboxChange(chatDetails)} />
+                              </td>
+                            )}
+
                           </tr>
                         ))}
                       </tbody>
@@ -242,11 +302,11 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                 </div>
               )}
               <div className="flex m-5 mb-0 mt-2 gap-3">
-                {next===true ? (
+                {next === true ? (
                   <>
                     <button
-                      type="button"
-                       onClick={formik.handleSubmit}
+                      type="submit"
+                      onClick={formik.handleSubmit}
                       className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
                     >
                       {uploading ? "Uploading..." : "Save Changes"}
@@ -261,16 +321,16 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                   <>
                     <button
                       type="button"
-                      onClick={(e)=>handleNextClick(e)}
+                      onClick={(e) => handleNextClick(e)}
                       className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
                     >
                       {uploading ? "Uploading..." : "Next"}
                     </button>
-                 
-                  
+
+
                   </>
                 )}
-                {next===true ? (
+                {next === true ? (
                   <button
                     type="button"
                     onClick={() => setNext(false)}
@@ -279,11 +339,11 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                   </button>
                 ) : (
                   <button
-                  type="button"
-                  onClick={() => onClose()}
-                  className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
-                  Cancel
-                </button>
+                    type="button"
+                    onClick={() => onClose()}
+                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                    Cancel
+                  </button>
                 )}
               </div>
             </form>

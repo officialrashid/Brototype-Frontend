@@ -192,6 +192,7 @@ const Chat = () => {
                     console.log("Message sent successfully");
 
                     setMessage(""); // Clear the message input field
+                    
                 } else {
                     console.error("Failed to send message:", response.message);
                 }
