@@ -390,6 +390,18 @@ export const getAllStudents = async (uniqueId:string) =>{
     }
   
   }
+  export const getGroupMessages = async (data:{groupId:string,senderId:string}) =>{
+
+    try {
+       const response = await Api.get(`/api/chat-and-video/get-group-messages`,{params:data})
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
+
+  
   export const getAllSuperleads = async () =>{
 
     try {

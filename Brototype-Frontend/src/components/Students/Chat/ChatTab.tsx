@@ -65,6 +65,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const handleStudentClick = async (index: number, chatUser: any) => {
         try {
             if(chatUser?.groupName){
+                setSelectedStudentIndex(index);
+                dispatch(setchatOppositPersonData(chatUser));
                 console.log("join room event emittedd",chatUser?._id );
                 socket.emit("joinRoom", chatUser?._id);
             }else{

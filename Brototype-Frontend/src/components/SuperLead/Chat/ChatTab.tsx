@@ -63,6 +63,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
         try {
             console.log(chatUser,")))))))))");
             if(chatUser?.groupName){
+                setSelectedStudentIndex(index);
+                dispatch(setchatOppositPersonData(chatUser));
                 console.log("join room emittedd",chatUser?._id );
                 socket.emit("joinRoom",chatUser?._id); 
             }else{

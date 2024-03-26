@@ -22,7 +22,12 @@ const CourseCompletionGraph = () => {
             try {
                 const response = await getCourseCompletion(data);
                 const percentage = parseInt(response.response.percentageCompleted);
-                setCourseCompletion(percentage);
+                if(percentage > 0){
+                    setCourseCompletion(percentage);
+                }else{
+                    setCourseCompletion(0) 
+                }
+      
             } catch (error) {
                 console.error('Error fetching course completion:', error);
             }
