@@ -335,16 +335,16 @@ const Chat = () => {
 
                         <div className="h-31rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                            <div className="grid grid-cols-1 mb-">
+                            <div className="grid grid-cols-1 mb- ">
                                 {allMesage.map((message: any, index: number) => (
                                     message.type === "textChat" ? (
                                         <>
                                             {message.senderFirstName && message.senderLastName ? (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
                                                 >
-                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-16 rounded-sm`}>
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-auto rounded-sm`}>
                                                         <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
@@ -376,16 +376,34 @@ const Chat = () => {
                                             </div>
                                         </div>
                                     ) : message.type === "imageChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
-
-                                            <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
-
-                                            {/* </div> */}
-                                        </div>
+                                        <>
+                                            {message.senderFirstName && message.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className="">
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
+                                                    <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+    
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
+    
+                                                    <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+    
+                                                    {/* </div> */}
+                                                </div>
+                                            )}
+    
+                                        </>
                                     ) : message.type === "videoChat" ? (
                                         <div
                                             key={index}

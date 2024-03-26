@@ -432,5 +432,15 @@ export const getAllStudents = async (uniqueId:string) =>{
     }
   
   }
+  export const getGroupMembersDetails = async (groupId:string) =>{
+
+    try {
+       const response = await Api.get(`/api/chat-and-video/get-group-members-details/${groupId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
   
   

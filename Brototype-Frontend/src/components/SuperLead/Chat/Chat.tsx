@@ -12,6 +12,7 @@ import { storeChatAudio } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
 import PDFViewer from "./PdfViewer";
 import CreateGroupChat from "./CreateGroupChat";
+import GroupInformationModal from "./GroupInformation";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -30,6 +31,8 @@ const Chat = () => {
     const [reload, setReload] = useState(false)
     const [chatType, setChatType] = useState("")
     const [createGroupChat, setCreateGroupChat] = useState(false)
+    const [groupInfo,setGroupInfo] = useState(false)
+    const [groupId,setGroupId] = useState("")
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -71,13 +74,13 @@ const Chat = () => {
         }
     }
 
-    const handleSubmit = async (type:string) => {
+    const handleSubmit = async (type: string) => {
         try {
             if (!message) {
                 // Handle error: Empty message
                 return;
             }
-            if(type==="oneToOne"){
+            if (type === "oneToOne") {
                 const messageData = {
                     senderId: superleadId,
                     receiverId: student.studentId || student.chaterId,
@@ -85,43 +88,43 @@ const Chat = () => {
                     type: chatType
                 };
                 console.log(messageData, "messageData");
-    
+
                 // Emit message to the server
                 socket.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
                 socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
-    
-    
+
+
                     if (response.status === true) {
                         console.log("Message sent successfully");
-    
+
                         setMessage(""); // Clear the message input field
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
                 });
-            }else if(type==="groupChat"){
+            } else if (type === "groupChat") {
                 const groupMessageData = {
-                    groupId : student?._id,
-                    senderId : superleadId,
-                    content : message,
-                    type : chatType
-                } 
+                    groupId: student?._id,
+                    senderId: superleadId,
+                    content: message,
+                    type: chatType
+                }
                 socket.emit('groupMessage', groupMessageData);
                 socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
                     console.log(response, 'respnseeeeeeeeeeeee');
-    
+
                     if (response.status === true) {
                         console.log("Message sent successfully");
-    
+
                         setMessage(""); // Clear the message input field
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
-                });  
+                });
             }
-          
+
         } catch (error) {
             console.error("Error sending message:", error);
         }
@@ -257,12 +260,16 @@ const Chat = () => {
             setReload((prevState) => !prevState);
         }
     }
-
+const handleGroupInfo = (groupId:string) =>{
+    setGroupId(groupId)
+    setGroupInfo(true)
+}
     return (
 
 
         <>
             <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
+            <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} />
             <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
 
 
@@ -308,9 +315,12 @@ const Chat = () => {
                         <div className="flex justify-between ">
                             <div className="flex gap-2 m-2 ">
                                 {student.groupName ? (
-                                    <div className="border h-12 w-12 rounded-full  mt-3">
+                                    <>
+                                    <div className="border h-12 w-12 rounded-full  mt-3" onClick={()=>handleGroupInfo(student?._id)}>
                                         <img src={student?.profile} alt="" className="rounded-full" />
                                     </div>
+
+                                    </>
                                 ) : (
                                     <div className="border h-12 w-12 rounded-full  mt-3">
                                         <img src={student?.imageUrl} alt="" className="rounded-full" />
@@ -353,83 +363,120 @@ const Chat = () => {
 
                     <div className="h-31rem bg-custom-background mt-0" style={{ maxHeight: "800px", overflowY: "scroll" }}>
 
-                    <div className="grid grid-cols-1 mb-">
-                                {allMesage.map((message: any, index: number) => (
-                                    message.type === "textChat" ? (
-                                        <>
-                                            {message.senderFirstName && message.senderLastName ? (
-                                                <div
-                                                    key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                                >
-                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-16 rounded-sm`}>
-                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                        </p>
+                        <div className="grid grid-cols-1 mb-">
+                            {allMesage.map((message: any, index: number) => (
+                                message.type === "textChat" ? (
+                                    <>
+                                        {message.senderFirstName && message.senderLastName ? (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                            >
+                                                <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm`}>
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                    </p>
 
-                                                        <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-                                                    </div>
+                                                    <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
                                                 </div>
-                                            ) : (
-                                                <div
-                                                    key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                                >
-                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                        <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                        </>
-                                    ) : message.type === "voiceChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <div className="  mb-0 h-16 w-2/1 rounded-full">
-                                                <audio controls className="m-1">
-                                                    <source src={message.content} type="audio/mpeg" />
-                                                </audio>
                                             </div>
-                                        </div>
-                                    ) : message.type === "imageChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
+                                        ) : (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
+                                                    <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                </div>
+                                            </div>
+                                        )}
 
-                                            <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+                                    </>
+                                ) : message.type === "voiceChat" ? (
+                                    <>
+                                        {message.senderFirstName && message.senderLastName ? (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className="  mb-0 h-16 w-2/1 rounded-full">
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                    </p>
+                                                    <audio controls className="m-1">
+                                                        <source src={message.content} type="audio/mpeg" />
+                                                    </audio>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className="  mb-0 h-16 w-2/1 rounded-full">
+                                                    <audio controls className="m-1">
+                                                        <source src={message.content} type="audio/mpeg" />
+                                                    </audio>
+                                                </div>
+                                            </div>
+                                        )}
 
-                                            {/* </div> */}
-                                        </div>
-                                    ) : message.type === "videoChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <video controls className="w-fit h-60 object-contain ">
-                                                <source src={message.content} type="video/mp4" />
-                                                {/* Add additional <source> elements for other video formats if needed */}
-                                            </video>
-                                        </div>
-                                    ) : message.type === "documentChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            {/* Display PDF */}
-                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+                                    </>
+                                ) : message.type === "imageChat" ? (
+                                    <>
+                                        {message.senderFirstName && message.senderLastName ? (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className="">
+                                                <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                    </p>
+                                                <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
 
-                                            {/* Or, display DOC */}
-                                            {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
-                                        </div>
-                                    ) : null
-                                ))}
-                                <p className="text-custom-background ">example chat</p>
-                                <p className="text-custom-background ">example chat</p>
-                            </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
+
+                                                <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+
+                                                {/* </div> */}
+                                            </div>
+                                        )}
+
+                                    </>
+                                ) : message.type === "videoChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <video controls className="w-fit h-60 object-contain ">
+                                            <source src={message.content} type="video/mp4" />
+                                            {/* Add additional <source> elements for other video formats if needed */}
+                                        </video>
+                                    </div>
+                                ) : message.type === "documentChat" ? (
+                                    <div
+                                        key={index}
+                                        className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        {/* Display PDF */}
+                                        <embed src={message.content} type="application/pdf" width="500" height="600" />
+
+                                        {/* Or, display DOC */}
+                                        {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
+                                    </div>
+                                ) : null
+                            ))}
+                            <p className="text-custom-background ">example chat</p>
+                            <p className="text-custom-background ">example chat</p>
+                        </div>
 
 
 
@@ -486,7 +533,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={()=>handleSubmit("groupChat")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("groupChat")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
@@ -517,7 +564,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={()=>handleSubmit("oneToOne")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("oneToOne")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
