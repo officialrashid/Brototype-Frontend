@@ -269,7 +269,7 @@ const handleGroupInfo = (groupId:string) =>{
 
         <>
             <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
-            <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} />
+            <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
 
 

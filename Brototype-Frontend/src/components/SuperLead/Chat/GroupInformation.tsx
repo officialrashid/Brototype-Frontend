@@ -3,7 +3,7 @@ import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from 'react-redux';
-import { getGroupMembersDetails } from "../../../utils/methods/get";
+import { getGroupMembersDetails, getGroupMessages } from "../../../utils/methods/get";
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -12,7 +12,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const GroupInformationModal = ({ isVisible, onClose ,changeModalStatus,groupId }: { isVisible: boolean; onClose: () => void; changeModalStatus: () => void; groupId:string}) => {
+const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId, groupDetails }: { isVisible: boolean; onClose: () => void; changeModalStatus: () => void; groupId: string; groupDetails: any; }) => {
   if (!isVisible) {
     return null
   }
@@ -21,23 +21,54 @@ const GroupInformationModal = ({ isVisible, onClose ,changeModalStatus,groupId }
   const [chatParticipantsDetails, setGroupParticipantsDetails] = useState<any[]>([]);
   const [selectedChatDetails, setSelectedChatDetails] = useState<any[]>([]);
   const [isChecked, setIsChecked] = useState(true);
-  const [participants,setParticipants] = useState<any[]>([]);
-  const [admins,setAdmins] = useState<any[]>([]);
+  const [participants, setParticipants] = useState<any[]>([]);
+  const [admins, setAdmins] = useState<any[]>([]);
+  const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
   const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
-  const superleadUniqueId = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
-   
-  useEffect(()=>{
-      const fetchGroupMembersDetails = async () =>{
-           try {
-            const response = await getGroupMembersDetails(groupId)
-           } catch (error) {
-            
-           }
-      }
-      fetchGroupMembersDetails()
-  },[])
+  const [allMesage, setAllMessage] = useState([])
+  const [grouInfoOrNot,setGroupInfoOrNot] = useState(true)
+  useEffect(() => {
+    const fetchGroupMembersDetails = async () => {
+      try {
+        const response = await getGroupMembersDetails(groupId)
+        console.log(response, "responsee responsee hhh group memebersss");
 
-  const handleCheckboxChange = (chatDetails:any) => {
+      } catch (error) {
+
+      }
+    }
+    fetchGroupMembersDetails()
+  }, [])
+  // useEffect(()=>{
+  //   fetchGroupDetails
+  // },[])
+  useEffect(() => {
+    const fetchGroupMessages = async () => {
+      try {
+        const data = {
+          groupId: student?._id,
+          senderId: superleadId,
+
+        }
+        console.log(data, "bvvcfgvghh");
+
+        const response = await getGroupMessages(data)
+        console.log(response, "dnbfdfbdf response in group messagessss");
+
+        if (response.getMessages.status === true) {
+          setAllMessage(response.getMessages.messages)
+
+        } else {
+          setAllMessage([])
+
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    }
+    fetchGroupMessages();
+  }, []);
+  const handleCheckboxChange = (chatDetails: any) => {
     const index = selectedChatDetails.findIndex((item) =>
       (item.studentId && item.studentId === chatDetails.studentId) ||
       (item.superleadId && item.superleadId === chatDetails.superleadId)
@@ -60,37 +91,74 @@ const GroupInformationModal = ({ isVisible, onClose ,changeModalStatus,groupId }
       );
       setParticipants(updatedParticipants);
     }
-};
+  };
 
   return (
     <>
       <section className="w-2/3 ml-96 items-center justify-center p-3 sm:p-5 mt-36 absolute z-50">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg">
-            <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold text-sm">Group Info</h1>
-            <form className="mb-0 mt-0">
-      
-                <>
-                  <div className="flex border-b">
-                    <div className="m-7 mb-4 mt-5">
-                      <img
-                        src=""
-                        alt=""
-                        className="h-aut mb-0 w-20 rounded-md"
-                      />
-                    </div>
-                    <div className="m-10 mb-0 ml-0 mr-0">
-                      <label htmlFor="file-upload" className="text-xs mb-2 cursor-pointer rounded-md bg-dark-highBlue px-3 py-1.5 text-sm font-medium font-roboto text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"> Upload Group Profile
-                      </label>
-                      <p className="m-4 mb-0  ml-0 text-xs text-gray-400">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                      <input type="file" id="file-upload" className="hidden"  />
-                     
-                    </div>
-                  </div>
-                
-                </>
-       
-                <div className="">
+            {grouInfoOrNot === true ? (
+            <div className="flex gap-2 m-5 items-center justify-center">
+            <h1 className="font-roboto text-white cursor-pointer  text-center flex items-center justify-center font-meduim text-sm w-full h-10 bg-Average rounded-md"onClick={()=>setGroupInfoOrNot(true)}>Group Info</h1>
+            <h1 className="font-roboto text-black cursor-pointer text-center flex items-center justify-center font-meduim text-sm w-full h-10 bg-gray-100 rounded-md"onClick={()=>setGroupInfoOrNot(false)}>Members</h1>
+          </div>
+            ):(
+              <div className="flex gap-2 m-5 items-center justify-center">
+              <h1 className="font-roboto text-black cursor-pointer text-center flex items-center justify-center font-meduim text-sm w-full h-10 bg-gray-100 rounded-md"onClick={()=>setGroupInfoOrNot(true)}>Group Info</h1>
+              <h1 className="font-roboto text-white cursor-pointer  text-center flex items-center justify-center font-meduim text-sm w-full h-10 bg-Average rounded-md"onClick={()=>setGroupInfoOrNot(false)}>Members</h1>
+            </div>
+            )}
+            {grouInfoOrNot===true ? (
+               <form className="mb-0 mt-0">
+
+               <>
+ 
+                 <div className="flex border-b">
+                   <div className="m-7 mb-4 mt-5 ">
+                     <img
+                       src={groupDetails.profile ?? "https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png"}
+                       alt={groupDetails.profile ?? "https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png"}
+                       className="h-auto mb-0 w-20 rounded-md"
+                     />
+                   </div>
+                   <div className="m-10 mb-0 ml-0 mr-0">
+                     <label htmlFor="file-upload" className="text-md mb-2 cursor-pointer font-roboto font-semibold">{groupDetails.groupName}
+                     </label>
+                     <p className="m-4 mb-0 mt-1  ml-0 text-sm text-gray-500 font-roboto font-medium">{groupDetails.description}</p>
+                     <input type="file" id="file-upload" className="hidden" />
+ 
+                   </div>
+                 </div>
+ 
+ 
+               </>
+               <div className="mb-0">
+                 <h1 className="mb-0 pb-0 text-sm font-roboto m-5">Medias</h1>
+                 <div className="flex gap-5 w-80 h-48 mb-0">
+                   {allMesage.map((message, index) => (
+                     <React.Fragment key={index}>
+                       {message?.type === "imageChat" ? (
+                         <div className="flex mb-0">
+                           <img src={message?.content} alt="" className="w-72 h-32 object-cover font-roboto m-3 mb-0 text-white rounded-md" />
+                         </div>
+                       ) : message?.type === "videoChat" ? (
+                         <div className="flex mb-0">
+                           <video controls className="w-72 h-32 object-cover font-roboto m-3 mb-0 text-white rounded-md">
+                             <source src={message.content} type="video/mp4" />
+                           </video>
+                         </div>
+                       ) : null}
+                     </React.Fragment>
+                   ))}
+                 </div>
+               </div>
+             </form>
+            ):(
+              <form className="mb-0 mt-0">
+
+
+              <div className="">
                   <div className="flex gap-4 m-5 mb-3 mt-3">
                     <div className="w-full md:w-2/6">
                       <form className="flex items-center">
@@ -167,35 +235,35 @@ const GroupInformationModal = ({ isVisible, onClose ,changeModalStatus,groupId }
                       </tbody>
                     </table>
                   </div>
-                </div>
-             
-              <div className="flex m-5 mb-0 mt-2 gap-3">
-                
-                  <>
-                    <button
-                      type="submit"
-                      className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
-                    >
-                      Save Changes
-                    </button>
-                  
-                   
-                  </>
-          
-          
+                </div> 
+                <div className="flex m-5 mb-0 mt-2 gap-3">
+                <>
                   <button
-                    type="button"
-                    onClick={() => onClose()}
-                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
-                    Cancel
+                    type="submit"
+                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif"
+                  >
+                    Save Changes
                   </button>
-       
+
+
+                </>
+
+
+                <button
+                  type="button"
+                  onClick={() => onClose()}
+                  className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                  Cancel
+                </button>
+
               </div>
             </form>
+            )}
+           
           </div>
         </div>
       </section>
-      {/* <DeactivateAccount /> */}
+      {/* <DeactivateAccount />  */}
     </>
   );
 }
