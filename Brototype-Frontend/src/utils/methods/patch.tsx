@@ -75,3 +75,16 @@ export const updateEvents = async (data:any)=>{
   
   
   }
+
+  // PATCH METHOD FOR CHAT AND VIDEO SERVICE /////
+
+  export const updateGroupParticipantStatus = async (data: any) => {
+    try {
+      const resposne = await Api.patch('/api/chat-and-video/update-group-participant-status', data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }

@@ -96,7 +96,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
 
   return (
     <>
-      <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
+      <div className="bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
         <div className="border border-gray-200 m-5 rounded-lg shadow-2xl w-2/5 bg-white">
           <div className="flex justify-between">
             <div></div>
