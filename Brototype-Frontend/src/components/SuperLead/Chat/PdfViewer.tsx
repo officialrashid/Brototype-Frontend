@@ -17,6 +17,8 @@ const PDFViewer = ({ url }) => {
                 file={url}
                 onLoadSuccess={onDocumentLoadSuccess}
             >
+
+                
                 {Array.from(new Array(numPages), (el, index) => (
                     <Page key={`page_${index + 1}`} pageNumber={index + 1} />
                 ))}
