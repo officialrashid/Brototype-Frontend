@@ -16,6 +16,8 @@ const Chat = () => {
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
+    console.log(student, "students stdenst");
+
     const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
 
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
@@ -29,6 +31,11 @@ const Chat = () => {
     const [reload, setReload] = useState(false)
     const [chatType, setChatType] = useState("")
     const messageRef = useRef<any>(null);
+    const scroll = useRef()
+
+    useEffect(() => {
+        scroll.current?.scrollIntoView({ behavior: "smooth" })
+    }, [allMesage])
     useEffect(() => {
         messageRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, [allMesage]);
@@ -196,46 +203,93 @@ const Chat = () => {
     const isSender = (message: any) => {
         return message.senderId === studentId;
     };
-    const addAudioElement = async (blob: any) => {
-        setRecordedAudioBlob(blob);
-        const url = URL.createObjectURL(blob);
-        const audio = document.createElement("audio");
-        audio.src = url;
-        audio.controls = true;
-        document.body.appendChild(audio);
-        const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
-        const formData = new FormData();
-        formData.append("audio", audioFile);
-        formData.append("senderId", studentId);
-        const response = await storeChatAudio(formData)
-        console.log(response, "response response response");
+    const addAudioElement = async (blob: any, type: string) => {
+        console.log(type, ";;;;;;;;;");
 
-        if (response?.status === true) {
-            const voiceChat = response?.chatData?.audioUrl
-            const messageData = {
-                senderId: studentId,
-                receiverId: student.superleadId || student.chaterId,
-                content: voiceChat,
-                type: "voiceChat"
-            };
-            console.log(messageData, "messageData messageData messageData");
+        if (type === "oneToOne") {
+            setRecordedAudioBlob(blob);
+            const url = URL.createObjectURL(blob);
+            const audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            document.body.appendChild(audio);
+            const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("senderId", studentId);
+            const response = await storeChatAudio(formData)
+            console.log(response, "response response response");
 
-            socket.emit('message', messageData);
-            setRecordedAudioBlob(null);
+            if (response?.status === true) {
+                const voiceChat = response?.chatData?.audioUrl
+                const messageData = {
+                    senderId: studentId,
+                    receiverId: student.superleadId || student.chaterId,
+                    content: voiceChat,
+                    type: "voiceChat"
+                };
+                console.log(messageData, "messageData messageData messageData");
 
-            // Listen for response from the server
-            socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket.emit('message', messageData);
+                setRecordedAudioBlob(null);
+
+                // Listen for response from the server
+                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
 
-                if (response.status === true) {
-                    console.log("Message sent successfully");
+                    if (response.status === true) {
+                        console.log("Message sent successfully");
 
-                    setMessage(""); // Clear the message input field
-                } else {
-                    console.error("Failed to send message:", response.message);
+                        setMessage(""); // Clear the message input field
+                    } else {
+                        console.error("Failed to send message:", response.message);
+                    }
+                });
+            }
+        } else if (type === "group") {
+            console.log("kadanityud");
+
+            setRecordedAudioBlob(blob);
+            const url = URL.createObjectURL(blob);
+            const audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            document.body.appendChild(audio);
+            const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("senderId", studentId);
+            const response = await storeChatAudio(formData)
+            console.log(response, "response response response");
+
+            if (response?.status === true) {
+                const voiceChat = response?.chatData?.audioUrl
+                const groupMessageData = {
+                    groupId: student?._id,
+                    senderId: studentId,
+                    content: voiceChat,
+                    type: "voiceChat"
                 }
-            });
+                console.log(groupMessageData, "messageData messageData messageData");
+
+                socket.emit('groupMessage', groupMessageData);
+                setRecordedAudioBlob(null);
+
+                // Listen for response from the server
+                socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
+
+
+                    if (response.status === true) {
+                        console.log("Message sent successfully");
+
+                        setMessage(""); // Clear the message input field
+                    } else {
+                        console.error("Failed to send message:", response.message);
+                    }
+                });
+            }
         }
+
 
     };
     const changeModalStatus = () => {
@@ -365,16 +419,36 @@ const Chat = () => {
 
                                         </>
                                     ) : message.type === "voiceChat" ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <div className="  mb-0 h-16 w-2/1 rounded-full">
-                                                <audio controls className="m-1">
-                                                    <source src={message.content} type="audio/mpeg" />
-                                                </audio>
-                                            </div>
-                                        </div>
+                                        <>
+                                            {message.senderFirstName && message.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className="">
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
+
+                                                        <audio controls className="m-1">
+                                                            <source src={message.content} type="audio/mpeg" />
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-5 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className="mb-0 h-16 w-2/1 rounded-full">
+                                                        <audio controls className="m-1">
+                                                            <source src={message.content} type="audio/mpeg" />
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </>
                                     ) : message.type === "imageChat" ? (
                                         <>
                                             {message.senderFirstName && message.senderLastName ? (
@@ -383,11 +457,11 @@ const Chat = () => {
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     <div className="">
-                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
-                                                    <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
-    
+                                                        <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+
                                                     </div>
                                                 </div>
                                             ) : (
@@ -396,13 +470,13 @@ const Chat = () => {
                                                     className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     {/* <div className=" mb-0 mt-10 h-10 rounded-sm"> */}
-    
+
                                                     <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
-    
+
                                                     {/* </div> */}
                                                 </div>
                                             )}
-    
+
                                         </>
                                     ) : message.type === "videoChat" ? (
                                         <div
@@ -427,36 +501,42 @@ const Chat = () => {
                                         </div>
                                     ) : null
                                 ))}
+                                <div ref={scroll}></div>
                                 <p className="text-custom-background ">example chat</p>
                                 <p className="text-custom-background ">example chat</p>
                             </div>
-
-
-
-
-
-
-
                         </div>
-                        {student.groupName ? (
-                            <div className=" m-3 mt-0 rounded-md ">
-                                <div className=" flex ">
 
+                        <div className=" m-3 mt-0 rounded-md  ">
+                            <div className=" flex ">
 
-
-                                    <div className="relative  w-full bottom-6">
-
-
+                                <div className="relative w-full bottom-6">
+                                    {chatType === 'imageChat' ? (
+                                        <div className="relative">
+                                            <textarea
+                                                className="font-roboto border  px-2 h-auto py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
+                                                placeholder="Type a message.."
+                                                onChange={(e) => handleMessageChange(e, "textChat")}
+                                            />
+                                            <img
+                                                src={message}
+                                                alt="Chat Image"
+                                                className="absolute w-auto max-h-24" // Adjust the max height as needed
+                                                style={{ width: 'auto', height: 'auto' }} // Ensure the image size is dynamic
+                                            />
+                                        </div>
+                                    ) : (
                                         <textarea
-                                            className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-full"
+                                            className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
                                             placeholder="Type a message.."
                                             value={message}
                                             onChange={(e) => handleMessageChange(e, "textChat")}
                                         />
+                                    )}
+                                </div>
 
 
-                                    </div>
-
+                                {student.groupName ? (
                                     <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                         <div className="flex gap-1">
 
@@ -468,6 +548,7 @@ const Chat = () => {
                                                     <VoiceRecorder
                                                         onRecordingComplete={addAudioElement}
                                                         setRecordedAudioBlob={setRecordedAudioBlob}
+                                                        type="group"
                                                     />
                                                 </div>
                                             </div>
@@ -487,37 +568,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
-
-                                </div>
-
-
-
-
-                            </div>
-                        ) : (
-                            <div className=" m-3 mt-0 rounded-md ">
-                                <div className=" flex ">
-
-
-
-                                    <div className="relative  w-full bottom-6">
-
-
-                                        <textarea
-                                            className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute bottom-0 rounded-md w-full"
-                                            placeholder="Type a message.."
-                                            value={message}
-                                            onChange={(e) => handleMessageChange(e, "textChat")}
-                                        />
-
-
-                                    </div>
-
+                                ) : (
                                     <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                         <div className="flex gap-1">
 
@@ -529,6 +580,7 @@ const Chat = () => {
                                                     <VoiceRecorder
                                                         onRecordingComplete={addAudioElement}
                                                         setRecordedAudioBlob={setRecordedAudioBlob}
+                                                        type="oneToOne"
                                                     />
                                                 </div>
                                             </div>
@@ -548,19 +600,22 @@ const Chat = () => {
                                             </div>
                                         </div>
                                     </div>
+                                )}
 
 
 
-
-
-
-                                </div>
 
 
 
 
                             </div>
-                        )}
+
+
+
+
+                        </div>
+
+
                     </div>
                 )}
 

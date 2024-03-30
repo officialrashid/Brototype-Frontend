@@ -1,9 +1,9 @@
 import React from 'react';
 import { AudioRecorder } from 'react-audio-voice-recorder';
 
-const VoiceRecorder = ({ onRecordingComplete }: any) => {
+const VoiceRecorder = ({ onRecordingComplete, type }: any) => {
     const addAudioElement = (blob: any) => {
-        onRecordingComplete(blob);
+        onRecordingComplete(blob, type); // Pass type to the callback function
     };
 
     return (

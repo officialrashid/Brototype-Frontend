@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useEffect, useRef, useState } from "react"
 
 import { useSelector } from "react-redux";
 
@@ -19,6 +19,8 @@ const Chat = () => {
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
+    console.log(student,"students studentsss");
+    
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
@@ -33,6 +35,12 @@ const Chat = () => {
     const [createGroupChat, setCreateGroupChat] = useState(false)
     const [groupInfo,setGroupInfo] = useState(false)
     const [groupId,setGroupId] = useState("")
+    const scroll = useRef()
+
+   useEffect(()=>{
+     scroll.current?.scrollIntoView({behavior:"smooth"})
+   },[allMesage])
+
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -206,48 +214,95 @@ const Chat = () => {
         return message.senderId === superleadId;
     };
 
-    const addAudioElement = async (blob: any) => {
-        setRecordedAudioBlob(blob);
-        const url = URL.createObjectURL(blob);
-        const audio = document.createElement("audio");
-        audio.src = url;
-        audio.controls = true;
-        document.body.appendChild(audio);
-        const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
-        const formData = new FormData();
-        formData.append("audio", audioFile);
-        formData.append("senderId", superleadId);
-        const response = await storeChatAudio(formData)
-        console.log(response, "response response response");
-
-        if (response?.status === true) {
-            console.log("kerri vice il chat ill");
-
-            const voiceChat = response?.chatData?.audioUrl
-            console.log(voiceChat, "voiceChat vice il chat ill");
-            const messageData = {
-                senderId: superleadId,
-                receiverId: student.studentId || student.chaterId,
-                content: voiceChat,
-                type: "voiceChat"
-            };
-            console.log(messageData, "messageData messageData messageData");
-            socket.emit('message', messageData);
-            setRecordedAudioBlob(null);
-            // Listen for response from the server
-            socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
-
-
-                if (response.status === true) {
-                    console.log("Message sent successfully");
-
-                    setMessage(""); // Clear the message input field
-
-                } else {
-                    console.error("Failed to send message:", response.message);
-                }
-            });
+    const addAudioElement = async (blob: any,type:string) => {
+        console.log(type,";;;;;;;;;;;;;;");
+        
+        if(type==="oneToOne"){
+            setRecordedAudioBlob(blob);
+            const url = URL.createObjectURL(blob);
+            const audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            document.body.appendChild(audio);
+            const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("senderId", superleadId);
+            const response = await storeChatAudio(formData)
+            console.log(response, "response response response");
+    
+            if (response?.status === true) {
+                console.log("kerri vice il chat ill");
+    
+                const voiceChat = response?.chatData?.audioUrl
+                console.log(voiceChat, "voiceChat vice il chat ill");
+                const messageData = {
+                    senderId: superleadId,
+                    receiverId: student.studentId || student.chaterId,
+                    content: voiceChat,
+                    type: "voiceChat"
+                };
+                console.log(messageData, "messageData messageData messageData");
+                socket.emit('message', messageData);
+                setRecordedAudioBlob(null);
+                // Listen for response from the server
+                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+    
+    
+                    if (response.status === true) {
+                        console.log("Message sent successfully");
+    
+                        setMessage(""); // Clear the message input field
+    
+                    } else {
+                        console.error("Failed to send message:", response.message);
+                    }
+                });
+            }
+        }else if(type==="group"){
+            setRecordedAudioBlob(blob);
+            const url = URL.createObjectURL(blob);
+            const audio = document.createElement("audio");
+            audio.src = url;
+            audio.controls = true;
+            document.body.appendChild(audio);
+            const audioFile = new File([blob], "audio.mp3", { type: "audio/mpeg" });
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("senderId", superleadId);
+            const response = await storeChatAudio(formData)
+            console.log(response, "response response response");
+    
+            if (response?.status === true) {
+                console.log("kerri vice il chat ill");
+    
+                const voiceChat = response?.chatData?.audioUrl
+                console.log(voiceChat, "voiceChat vice il chat ill");
+                const messageData = {
+                    groupId: student?._id,
+                    senderId: superleadId,
+                    content: voiceChat,
+                    type: "voiceChat"
+                };
+                console.log(messageData, "messageData messageData messageData");
+                socket.emit('groupMessage', messageData);
+                setRecordedAudioBlob(null);
+                // Listen for response from the server
+                socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
+    
+    
+                    if (response.status === true) {
+                        console.log("Message sent successfully");
+    
+                        setMessage(""); // Clear the message input field
+    
+                    } else {
+                        console.error("Failed to send message:", response.message);
+                    }
+                });
+            }
         }
+      
 
     };
     const changeModalStatus = () => {
@@ -394,34 +449,35 @@ const handleGroupInfo = (groupId:string) =>{
                                     </>
                                 ) : message.type === "voiceChat" ? (
                                     <>
-                                        {message.senderFirstName && message.senderLastName ? (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                            >
-                                                <div className="  mb-0 h-16 w-2/1 rounded-full">
-                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                    </p>
-                                                    <audio controls className="m-1">
-                                                        <source src={message.content} type="audio/mpeg" />
-                                                    </audio>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                            >
-                                                <div className="  mb-0 h-16 w-2/1 rounded-full">
-                                                    <audio controls className="m-1">
-                                                        <source src={message.content} type="audio/mpeg" />
-                                                    </audio>
-                                                </div>
-                                            </div>
-                                        )}
+                                            {message.senderFirstName && message.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className="">
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
 
-                                    </>
+                                                        <audio controls className="m-1">
+                                                            <source src={message.content} type="audio/mpeg" />
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-5 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className="mb-0 h-16 w-2/1 rounded-full">
+                                                        <audio controls className="m-1">
+                                                            <source src={message.content} type="audio/mpeg" />
+                                                        </audio>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </>
                                 ) : message.type === "imageChat" ? (
                                     <>
                                         {message.senderFirstName && message.senderLastName ? (
@@ -474,6 +530,7 @@ const handleGroupInfo = (groupId:string) =>{
                                     </div>
                                 ) : null
                             ))}
+                           <div ref={scroll}></div>
                             <p className="text-custom-background ">example chat</p>
                             <p className="text-custom-background ">example chat</p>
                         </div>
@@ -524,6 +581,7 @@ const handleGroupInfo = (groupId:string) =>{
                                                 <VoiceRecorder
                                                     onRecordingComplete={addAudioElement}
                                                     setRecordedAudioBlob={setRecordedAudioBlob}
+                                                     type="group"
                                                 />
                                             </div>
                                         </div>
@@ -555,6 +613,7 @@ const handleGroupInfo = (groupId:string) =>{
                                                 <VoiceRecorder
                                                     onRecordingComplete={addAudioElement}
                                                     setRecordedAudioBlob={setRecordedAudioBlob}
+                                                    type="oneToOne"
                                                 />
                                             </div>
                                         </div>
