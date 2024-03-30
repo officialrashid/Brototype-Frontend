@@ -87,8 +87,10 @@ const Chat = () => {
         }
     }
 
-    const handleSubmit = async (type: string) => {
+    const handleSubmit = async (e:any,type: string) => {
+
         try {
+            e.preventDefault()
             if (!message) {
                 // Handle error: Empty message
                 return;
@@ -208,8 +210,6 @@ const Chat = () => {
         };
 
         fetchGroupMessages();
-
-        // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
         const messageListener = () => {
             fetchGroupMessages();
         };
@@ -250,12 +250,16 @@ const Chat = () => {
             const handleDeletedMessage = (data: any) => {
                 console.log("deleted messagesssssssssssssss:", data);
                 if (data.status === true && data.message === "message deleted successfullt") {
+                    // Filter out the deleted message from the state array
+                    setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
+                    // Optionally, you can also set reload to true if you want to refetch messages
+                    setReload(false);
                     setReload(true);
                 }
             };
-
+    
             socket.on("messageDeleted", handleDeletedMessage);
-
+    
             return () => {
                 // Clean up socket listener when component unmounts
                 socket?.off("messageDeleted", handleDeletedMessage);
@@ -679,7 +683,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("groupChat")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e,"groupChat")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
@@ -711,7 +715,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={() => handleSubmit("oneToOne")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e,"oneToOne")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
@@ -719,8 +723,10 @@ const Chat = () => {
                                             {/* </div> */}
 
                                         </div>
+
+                                        </div>
                                     </div>
-                                </div>
+                                
                             )}
 
 

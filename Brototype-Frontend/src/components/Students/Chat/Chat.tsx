@@ -218,22 +218,20 @@ const Chat = () => {
         if (socket) {
             const handleDeletedMessage = (data: any) => {
                 console.log("deleted messagesssssssssssssss:", data);
-                if(data.status===true && data.message==="message deleted successfullt"){
-                    setReload(true)
+                if (data.status === true && data.message === "message deleted successfullt") {
+                    // Filter out the deleted message from the state array
+                    setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
+                    // Optionally, you can also set reload to true if you want to refetch messages
+                    setReload(false);
+                    setReload(true);
                 }
-                // setAllMessage(prev => {
-                //     console.log('Previous state:', prev);
-                //     const newState = [...prev, data.content];
-                //     console.log('New state:', newState);
-                //     return newState;
-                // });
             };
-
+    
             socket.on("messageDeleted", handleDeletedMessage);
-
+    
             return () => {
                 // Clean up socket listener when component unmounts
-                socket.off("messageDeleted", handleDeletedMessage);
+                socket?.off("messageDeleted", handleDeletedMessage);
             };
         }
     }, [socket]);
