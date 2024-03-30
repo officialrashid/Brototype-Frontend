@@ -25,4 +25,16 @@ export const deleteEvents = async (data: {id: string; reviewerId: string;})=>{
   
   }
 
+  // CHAT AND VIDEO SERVICE DELETE ACTIONS /////
+  export const deleteMessage = async (data: {messageId: string; action: string;})=>{ 
+    try {
+     const resposne = await Api.delete('/api/chat-and-video/delete-message',{ params: data })
+     return resposne.data
+    } catch(err){
+      return {status:false,message:"some issue in the Address details update"}
+    }
+  
+  }
+
+
   

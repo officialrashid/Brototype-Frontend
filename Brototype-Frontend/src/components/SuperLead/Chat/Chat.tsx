@@ -13,6 +13,7 @@ import ChatMediaModal from "./ChatMediaModal";
 import PDFViewer from "./PdfViewer";
 import CreateGroupChat from "./CreateGroupChat";
 import GroupInformationModal from "./GroupInformation";
+import DeleteMessageModal from "./DeleteMessageModal";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -35,8 +36,10 @@ const Chat = () => {
     const [createGroupChat, setCreateGroupChat] = useState(false)
     const [groupInfo,setGroupInfo] = useState(false)
     const [groupId,setGroupId] = useState("")
+    const [deleteMessage,setDeleteMessage] = useState(false)
     const scroll = useRef()
-
+    const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
+    const [messageId,setMessageId] = useState("")
    useEffect(()=>{
      scroll.current?.scrollIntoView({behavior:"smooth"})
    },[allMesage])
@@ -319,6 +322,24 @@ const handleGroupInfo = (groupId:string) =>{
     setGroupId(groupId)
     setGroupInfo(true)
 }
+
+
+const handleMouseEnter = (index) => {
+    setMessageHoverIndex(index);
+}
+
+const handleMouseLeave = () => {
+    setMessageHoverIndex(-1);
+}
+const handleDeleteMessage = (e:any,messageId:string) =>{
+    e.preventDefault()
+    console.log("calinggggg");
+    
+    console.log(messageId,"{}{}{*******");
+    
+    setMessageId(messageId)
+    setDeleteMessage(true)
+}
     return (
 
 
@@ -422,31 +443,53 @@ const handleGroupInfo = (groupId:string) =>{
                             {allMesage.map((message: any, index: number) => (
                                 message.type === "textChat" ? (
                                     <>
-                                        {message.senderFirstName && message.senderLastName ? (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                    {message.senderFirstName && message.senderLastName ? (
+                                        <div
+                                            key={index}
+                                            className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                        >
+                                            <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
+                                                 onMouseEnter={() => handleMouseEnter(index)}
+                                                 onMouseLeave={() => handleMouseLeave(index)}
                                             >
-                                                <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm`}>
-                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                    </p>
+                                                <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                    {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                </p>
+                    
+                                                <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
 
-                                                    <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-                                                </div>
+                                                {isSender(message) && messageHoverIndex === index && (
+                                                    <>
+
+                                                    <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e)=>handleDeleteMessage(e,message._id)}>
+                                                         <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0"/>
+                                                         <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} messageId={messageId} changeModalStatus={changeModalStatus}/>
+                                                    </div>
+
+                                                    </>
+                                                )}
                                             </div>
-                                        ) : (
-                                            <div
-                                                key={index}
-                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                        </div>
+                                    ) : (
+                                        <div
+                                            key={index}
+                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                        >
+                                            <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm relative`}
+                                                 onMouseEnter={() => handleMouseEnter(index)}
+                                                 onMouseLeave={() => handleMouseLeave(index)}
                                             >
-                                                <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                    <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-                                                </div>
+                                                <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                {isSender(message) && messageHoverIndex === index && (
+                                                    <div className="absolute right-0 top-0 mt-0 mr-1">
+                                                        <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0"/>
+                                                    </div>
+                                                )}
                                             </div>
-                                        )}
-
-                                    </>
+                                        </div>
+                                    )}
+                    
+                                </>
                                 ) : message.type === "voiceChat" ? (
                                     <>
                                             {message.senderFirstName && message.senderLastName ? (

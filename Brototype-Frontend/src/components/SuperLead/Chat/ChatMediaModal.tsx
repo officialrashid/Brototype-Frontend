@@ -51,7 +51,7 @@ const ChatMediaModal = ({ isVisible, onClose, changeModalStatus,handleMessageCha
     }
 
     return (
-        <div className="absolute z-50 right-12 bottom-40">
+        <div className="absolute z-50 right-12 bottom-96">
             <div className="grid-cols-1 bg-white w-48 h-24 shadow-xl ">
                 <form className="mb-0 mt-0">
                     <div className="flex border-b">
