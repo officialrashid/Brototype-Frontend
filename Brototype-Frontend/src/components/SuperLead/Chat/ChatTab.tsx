@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
+import GlobalContext from "../../../context/GlobalContext";
 
 const ChatTab = ({ socket }: { socket: any }) => {
     const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
-
+    const { chatId,setChatId } = useContext(GlobalContext);
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
@@ -66,7 +67,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
                 console.log("join room emittedd",chatUser?._id );
-                socket.emit("joinRoom",chatUser?._id); 
+                socket.emit("joinRoom",chatUser?._id);
+                setChatId(chatUser?._id) 
             }else{
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
@@ -75,11 +77,12 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     recipientId: chatUser.studentId || chatUser.chaterId,
                     chaters: chatUser
                 };
-                const response = await createChat(chatData);
+                const response:any = await createChat(chatData);
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     console.log("join room emittedd", response?.response?.data?._id || response?.chatExists?.response?._id);
     
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
+                    setChatId(response?.response?.data?._id || response?.chatExists?.response?._id) 
                 }
             }
           

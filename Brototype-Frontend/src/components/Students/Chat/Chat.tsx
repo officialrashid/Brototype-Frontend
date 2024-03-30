@@ -149,6 +149,20 @@ const Chat = () => {
             }
         }
         fetchMessages();
+        // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
+        const messageListener = () => {
+            fetchMessages();
+        };
+
+        if (reload) {
+            messageListener();
+        }
+
+        // Clean up listener when component unmounts
+        return () => {
+            // Clean up socket listener when component unmounts
+            socket?.off("messageDeleted", messageListener);
+        };
     }, [student?.superleadId, student?.chaterId, studentId, reload]);
 
 
@@ -197,6 +211,29 @@ const Chat = () => {
             return () => {
                 // Clean up socket listener when component unmounts
                 socket.off("received", handleReceivedMessage);
+            };
+        }
+    }, [socket]);
+    useEffect(() => {
+        if (socket) {
+            const handleDeletedMessage = (data: any) => {
+                console.log("deleted messagesssssssssssssss:", data);
+                if(data.status===true && data.message==="message deleted successfullt"){
+                    setReload(true)
+                }
+                // setAllMessage(prev => {
+                //     console.log('Previous state:', prev);
+                //     const newState = [...prev, data.content];
+                //     console.log('New state:', newState);
+                //     return newState;
+                // });
+            };
+
+            socket.on("messageDeleted", handleDeletedMessage);
+
+            return () => {
+                // Clean up socket listener when component unmounts
+                socket.off("messageDeleted", handleDeletedMessage);
             };
         }
     }, [socket]);

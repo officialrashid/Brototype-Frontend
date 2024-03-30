@@ -2,15 +2,19 @@
 import { toast } from "react-toastify";
 import Swal from 'sweetalert2';
 import { deleteMessage } from "../../../utils/methods/delete";
+import { linkHorizontal } from "d3";
 interface ActionModalProps {
     isVisible: boolean;
-    onClose: any
-    messageId: string
+    onClose: any;
+    socket:any;
+    messageId: string;
+    chatId:string;
+    type:string
     changeActionModalStatus: any // Adjust the type of changeModalStatus as needed
 }
-const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose, messageId, changeActionModalStatus }) => {
-
-    console.log(messageId, "messageId cominggg");
+const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose,socket, messageId, chatId, type ,changeActionModalStatus }) => {
+console.log(chatId,"dnckjdncd chat id form dlete emodalll");
+console.log(messageId,"0000000000");
 
     const handleEvent = async (event: any, action: string) => {
         try {
@@ -26,11 +30,13 @@ const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose, me
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     const data = {
+                        chatId,
                         messageId,
                         action
                     }
-                    const response = await deleteMessage(data)
-                    console.log(response, " response in statsu updated");
+                    socket.emit('deleteMessage', data);
+                
+                  
 
                     // if(response?.response?.status===true && response?.response?.message==="Admin added successfully"){
                     //     toast.success("admin added successfully")
@@ -56,11 +62,11 @@ const DeleteMessageModal: React.FC<ActionModalProps> = ({ isVisible, onClose, me
     if (isVisible) {
         return (
             <>
-                <div className="absolute z-50 right-5 mt-3 " >
+                <div className="absolute z-50 right-5 mt- " >
                     <div className="grid-cols-1 bg-white w-48 h-auto shadow-xl z-40">
 
                         <div className="w-full h-8 hover:bg-gray-200">
-                            <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event) => { handleEvent(event, "group") }}>Delete</p>
+                            <p className="font-serif text-sm m-4 mb-0 pt-1 mt-0" onClick={(event) => { handleEvent(event, type) }}>Delete</p>
                         </div>
 
 

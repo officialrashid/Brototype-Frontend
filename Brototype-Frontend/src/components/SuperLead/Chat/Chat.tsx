@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useRef, useState } from "react"
+import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
 
 import { useSelector } from "react-redux";
 
@@ -14,14 +14,15 @@ import PDFViewer from "./PdfViewer";
 import CreateGroupChat from "./CreateGroupChat";
 import GroupInformationModal from "./GroupInformation";
 import DeleteMessageModal from "./DeleteMessageModal";
+import GlobalContext from "../../../context/GlobalContext";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-    console.log(student,"students studentsss");
-    
+    console.log(student, "students studentsss");
+
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
@@ -34,15 +35,16 @@ const Chat = () => {
     const [reload, setReload] = useState(false)
     const [chatType, setChatType] = useState("")
     const [createGroupChat, setCreateGroupChat] = useState(false)
-    const [groupInfo,setGroupInfo] = useState(false)
-    const [groupId,setGroupId] = useState("")
-    const [deleteMessage,setDeleteMessage] = useState(false)
+    const [groupInfo, setGroupInfo] = useState(false)
+    const [groupId, setGroupId] = useState("")
+    const [deleteMessage, setDeleteMessage] = useState(false)
     const scroll = useRef()
     const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
-    const [messageId,setMessageId] = useState("")
-   useEffect(()=>{
-     scroll.current?.scrollIntoView({behavior:"smooth"})
-   },[allMesage])
+    const [messageId, setMessageId] = useState("")
+    const { chatId,setChatId } = useContext(GlobalContext);
+    useEffect(() => {
+        scroll.current?.scrollIntoView({ behavior: "smooth" })
+    }, [allMesage])
 
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
@@ -165,32 +167,62 @@ const Chat = () => {
             }
         }
         fetchMessages();
-    }, [student?.studentId, student?.chaterId, superleadId, reload]); // Only trigger when superleadId or student?.chaterId changes
+        // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
+        const messageListener = () => {
+            fetchMessages();
+        };
+
+        if (reload) {
+            messageListener();
+        }
+
+        // Clean up listener when component unmounts
+        return () => {
+            // Clean up socket listener when component unmounts
+            socket?.off("messageDeleted", messageListener);
+        };
+    }, [student?.studentId, student?.chaterId, superleadId, ,reload]); // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         const fetchGroupMessages = async () => {
             try {
                 const data = {
                     groupId: student?._id,
                     senderId: superleadId,
+                };
 
-                }
                 console.log(data, "bvvcfgvghh");
 
-                const response = await getGroupMessages(data)
+                const response = await getGroupMessages(data);
                 console.log(response, "dnbfdfbdf response in group messagessss");
 
-                if (response.getMessages.status === true) {
-                    setAllMessage(response.getMessages.messages)
-                    setLastMessage(response.getMessages.lastMessage)
+                if (response?.getMessages?.status === true) {
+                    setAllMessage(response?.getMessages?.messages);
+                    setLastMessage(response?.getMessages?.lastMessage);
                 } else {
-                    setAllMessage([])
-                    setLastMessage([])
+                    setAllMessage([]);
+                    setLastMessage([]);
                 }
             } catch (error) {
                 console.error("Error fetching messages:", error);
             }
-        }
+        };
+
         fetchGroupMessages();
+
+        // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
+        const messageListener = () => {
+            fetchGroupMessages();
+        };
+
+        if (reload) {
+            messageListener();
+        }
+
+        // Clean up listener when component unmounts
+        return () => {
+            // Clean up socket listener when component unmounts
+            socket?.off("messageDeleted", messageListener);
+        };
     }, [student?.studentId, student?.chaterId, superleadId, reload]);
     useEffect(() => {
         if (socket) {
@@ -213,14 +245,33 @@ const Chat = () => {
             };
         }
     }, [socket]);
+    useEffect(() => {
+        if (socket) {
+            const handleDeletedMessage = (data: any) => {
+                console.log("deleted messagesssssssssssssss:", data);
+                if (data.status === true && data.message === "message deleted successfullt") {
+                    setReload(true);
+                }
+            };
+
+            socket.on("messageDeleted", handleDeletedMessage);
+
+            return () => {
+                // Clean up socket listener when component unmounts
+                socket?.off("messageDeleted", handleDeletedMessage);
+            };
+        }
+    }, [socket]);
+
+
     const isSender = (message: any) => {
         return message.senderId === superleadId;
     };
 
-    const addAudioElement = async (blob: any,type:string) => {
-        console.log(type,";;;;;;;;;;;;;;");
-        
-        if(type==="oneToOne"){
+    const addAudioElement = async (blob: any, type: string) => {
+        console.log(type, ";;;;;;;;;;;;;;");
+
+        if (type === "oneToOne") {
             setRecordedAudioBlob(blob);
             const url = URL.createObjectURL(blob);
             const audio = document.createElement("audio");
@@ -233,10 +284,10 @@ const Chat = () => {
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
             console.log(response, "response response response");
-    
+
             if (response?.status === true) {
                 console.log("kerri vice il chat ill");
-    
+
                 const voiceChat = response?.chatData?.audioUrl
                 console.log(voiceChat, "voiceChat vice il chat ill");
                 const messageData = {
@@ -250,19 +301,19 @@ const Chat = () => {
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
                 socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
-    
-    
+
+
                     if (response.status === true) {
                         console.log("Message sent successfully");
-    
+
                         setMessage(""); // Clear the message input field
-    
+
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
                 });
             }
-        }else if(type==="group"){
+        } else if (type === "group") {
             setRecordedAudioBlob(blob);
             const url = URL.createObjectURL(blob);
             const audio = document.createElement("audio");
@@ -275,10 +326,10 @@ const Chat = () => {
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
             console.log(response, "response response response");
-    
+
             if (response?.status === true) {
                 console.log("kerri vice il chat ill");
-    
+
                 const voiceChat = response?.chatData?.audioUrl
                 console.log(voiceChat, "voiceChat vice il chat ill");
                 const messageData = {
@@ -292,20 +343,20 @@ const Chat = () => {
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
                 socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
-    
-    
+
+
                     if (response.status === true) {
                         console.log("Message sent successfully");
-    
+
                         setMessage(""); // Clear the message input field
-    
+
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
                 });
             }
         }
-      
+
 
     };
     const changeModalStatus = () => {
@@ -318,28 +369,30 @@ const Chat = () => {
             setReload((prevState) => !prevState);
         }
     }
-const handleGroupInfo = (groupId:string) =>{
-    setGroupId(groupId)
-    setGroupInfo(true)
-}
+    const handleGroupInfo = (groupId: string) => {
+        setGroupId(groupId)
+        setGroupInfo(true)
+    }
 
 
-const handleMouseEnter = (index) => {
-    setMessageHoverIndex(index);
-}
+    const handleMouseEnter = (index) => {
+        console.log(index,"lllllllll");
+        
+        setMessageHoverIndex(index);
+    }
 
-const handleMouseLeave = () => {
-    setMessageHoverIndex(-1);
-}
-const handleDeleteMessage = (e:any,messageId:string) =>{
-    e.preventDefault()
-    console.log("calinggggg");
-    
-    console.log(messageId,"{}{}{*******");
-    
-    setMessageId(messageId)
-    setDeleteMessage(true)
-}
+    const handleMouseLeave = () => {
+        setMessageHoverIndex(-1);
+    }
+    const handleDeleteMessage = (e: any, messageId: string) => {
+        e.preventDefault()
+        console.log("calinggggg");
+
+        console.log(messageId, "{}{}{*******");
+
+        setMessageId(messageId)
+        setDeleteMessage(true)
+    }
     return (
 
 
@@ -392,9 +445,9 @@ const handleDeleteMessage = (e:any,messageId:string) =>{
                             <div className="flex gap-2 m-2 ">
                                 {student.groupName ? (
                                     <>
-                                    <div className="border h-12 w-12 rounded-full  mt-3" onClick={()=>handleGroupInfo(student?._id)}>
-                                        <img src={student?.profile} alt="" className="rounded-full" />
-                                    </div>
+                                        <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
+                                            <img src={student?.profile} alt="" className="rounded-full" />
+                                        </div>
 
                                     </>
                                 ) : (
@@ -443,84 +496,76 @@ const handleDeleteMessage = (e:any,messageId:string) =>{
                             {allMesage.map((message: any, index: number) => (
                                 message.type === "textChat" ? (
                                     <>
-                                    {message.senderFirstName && message.senderLastName ? (
-                                        <div
-                                            key={index}
-                                            className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
-                                        >
-                                            <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
-                                                 onMouseEnter={() => handleMouseEnter(index)}
-                                                 onMouseLeave={() => handleMouseLeave(index)}
+                                        {message.senderFirstName && message.senderLastName ? (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
                                             >
-                                                <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                    {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                </p>
-                    
-                                                <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
+                                                    onMouseEnter={() => handleMouseEnter(index)}
+                                                    onMouseLeave={() => handleMouseLeave(index)}
+                                                >
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                    </p>
 
-                                                {isSender(message) && messageHoverIndex === index && (
-                                                    <>
+                                                    <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
 
-                                                    <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e)=>handleDeleteMessage(e,message._id)}>
-                                                         <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0"/>
-                                                         <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} messageId={messageId} changeModalStatus={changeModalStatus}/>
-                                                    </div>
+                                                    {isSender(message) && messageHoverIndex === index && (
+                                                        <>
 
-                                                    </>
-                                                )}
+                                                            <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
+                                                                <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                            </div>
+
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : (
-                                        <div
+                                        ) : (
+                                            <div
                                             key={index}
                                             className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                         >
-                                            <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm relative`}
-                                                 onMouseEnter={() => handleMouseEnter(index)}
-                                                 onMouseLeave={() => handleMouseLeave(index)}
-                                            >
+                                            <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
                                                 <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
-                                                {isSender(message) && messageHoverIndex === index && (
-                                                    <div className="absolute right-0 top-0 mt-0 mr-1">
-                                                        <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0"/>
-                                                    </div>
-                                                )}
                                             </div>
                                         </div>
-                                    )}
-                    
-                                </>
+                                        )}
+
+                                    </>
                                 ) : message.type === "voiceChat" ? (
                                     <>
-                                            {message.senderFirstName && message.senderLastName ? (
-                                                <div
-                                                    key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                                >
-                                                    <div className="">
-                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
-                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
-                                                        </p>
+                                        {message.senderFirstName && message.senderLastName ? (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className="">
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                        {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                    </p>
 
-                                                        <audio controls className="m-1">
-                                                            <source src={message.content} type="audio/mpeg" />
-                                                        </audio>
-                                                    </div>
+                                                    <audio controls className="m-1">
+                                                        <source src={message.content} type="audio/mpeg" />
+                                                    </audio>
                                                 </div>
-                                            ) : (
-                                                <div
-                                                    key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-5 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                                >
-                                                    <div className="mb-0 h-16 w-2/1 rounded-full">
-                                                        <audio controls className="m-1">
-                                                            <source src={message.content} type="audio/mpeg" />
-                                                        </audio>
-                                                    </div>
+                                            </div>
+                                        ) : (
+                                            <div
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-5 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className="mb-0 h-16 w-2/1 rounded-full">
+                                                    <audio controls className="m-1">
+                                                        <source src={message.content} type="audio/mpeg" />
+                                                    </audio>
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
 
-                                        </>
+                                    </>
                                 ) : message.type === "imageChat" ? (
                                     <>
                                         {message.senderFirstName && message.senderLastName ? (
@@ -529,10 +574,10 @@ const handleDeleteMessage = (e:any,messageId:string) =>{
                                                 className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                             >
                                                 <div className="">
-                                                <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                    <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
                                                         {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                     </p>
-                                                <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
+                                                    <img src={message?.content} alt="" className="w-72 h-auto font-roboto m-3 text-white  rounded-md" />
 
                                                 </div>
                                             </div>
@@ -573,7 +618,7 @@ const handleDeleteMessage = (e:any,messageId:string) =>{
                                     </div>
                                 ) : null
                             ))}
-                           <div ref={scroll}></div>
+                            <div ref={scroll}></div>
                             <p className="text-custom-background ">example chat</p>
                             <p className="text-custom-background ">example chat</p>
                         </div>
@@ -624,7 +669,7 @@ const handleDeleteMessage = (e:any,messageId:string) =>{
                                                 <VoiceRecorder
                                                     onRecordingComplete={addAudioElement}
                                                     setRecordedAudioBlob={setRecordedAudioBlob}
-                                                     type="group"
+                                                    type="group"
                                                 />
                                             </div>
                                         </div>
