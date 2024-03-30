@@ -1,6 +1,7 @@
 import { LayoutGroup } from "framer-motion";
 import Api from "../baseUrl/baseUrl";
 import studentApi from "../baseUrl/studentBaseUrl"
+import superleadApi from "../baseUrl/superleadBaseUrl"
 ////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
@@ -405,7 +406,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getAllSuperleads = async () =>{
 
     try {
-       const response = await Api.get(`/api/superlead/get-chat-all-superleads`)
+       const response = await superleadApi.get(`/api/superlead/get-chat-all-superleads`)
        return response?.data?.response;
     } catch (error) {
      

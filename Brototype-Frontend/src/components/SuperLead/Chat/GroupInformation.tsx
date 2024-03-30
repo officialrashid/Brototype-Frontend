@@ -3,8 +3,11 @@ import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useSelector, useDispatch } from 'react-redux';
-import { getGroupMembersDetails, getGroupMessages } from "../../../utils/methods/get";
+import { getAllStudents, getAllSuperleads, getGroupMembersDetails, getGroupMessages } from "../../../utils/methods/get";
 import ActionModal from "./ActionModal";
+import { tree } from "d3";
+import { updateGroupMembers } from "../../../utils/methods/patch";
+import { toast } from "react-toastify";
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -17,6 +20,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
   if (!isVisible) {
     return null
   }
+  const superleadUniqueId = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
   const [selectedChatDetails, setSelectedChatDetails] = useState<any[]>([]);
   const [participants, setParticipants] = useState<any[]>([]);
   const [admins, setAdmins] = useState<any[]>([]);
@@ -28,6 +32,9 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
   const [modalActive, setModalActive] = useState(false)
   const [modalStatus, setModalStatus] = useState(false)
   const [reload, setReload] = useState(false)
+  const [addGroupMembers, setAddGroupMembers] = useState(false)
+  const [chatParticipantsDetails, setGroupParticipantsDetails] = useState<any[]>([]);
+  const [isChecked, setIsChecked] = useState(true);
   let actionChaterId = null;
   useEffect(() => {
     const fetchGroupMembersDetails = async () => {
@@ -47,8 +54,33 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
       }
     }
     fetchGroupMembersDetails()
-  }, [reload])
+  }, [reload,addGroupMembers])
+  useEffect(() => {
+    const fetchGroupChatProfiles = async () => {
+      try {
+        const students = await getAllStudents(superleadUniqueId);
+        const superleads = await getAllSuperleads();
 
+        if (students?.status === true && superleads?.status === true) {
+          const combinedResponses = [...superleads.result, ...students.response];
+          console.log(combinedResponses, "llllll");
+
+          setGroupParticipantsDetails(combinedResponses);
+          combinedResponses.map((chatDetails, index) => {
+
+            if (chatDetails.superleadId === superleadId) {
+              setAdmins(prevState => [...prevState, chatDetails.superleadId])
+            }
+          })
+        }
+
+      } catch (error) {
+        console.error('Error fetching group chat profiles:', error);
+      }
+    };
+
+    fetchGroupChatProfiles();
+  }, []);
   useEffect(() => {
     const fetchGroupMessages = async () => {
       try {
@@ -75,6 +107,30 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
     }
     fetchGroupMessages();
   }, []);
+
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) =>{
+     e.preventDefault()
+     console.log(selectedChatDetails,"selectedChatDetails");
+     console.log(participants,"participants");
+     const data = {
+      groupId : groupId,
+      participantsDetails: selectedChatDetails,
+      participants : participants
+     }
+
+     const response = await updateGroupMembers(data)
+     console.log(response,"group memebersss updateddd");
+     if(response?.updateGroupMembers?.status===true){
+       toast.success("Members Added Successfully")
+       setAddGroupMembers(false)
+       setReload(true)
+     }else{
+      toast.error("Members Added Not Successfully")
+      setAddGroupMembers(false)
+      setReload(true)
+     }
+  }
+
   const handleCheckboxChange = (chatDetails: any) => {
     const index = selectedChatDetails.findIndex((item) =>
       (item.studentId && item.studentId === chatDetails.studentId) ||
@@ -111,6 +167,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
       setReload((prevState) => !prevState);
     }
   }
+
   return (
     <>
       <section className="w-2/3 ml-96 items-center justify-center p-3 sm:p-5 mt-56 absolute z-50 mb-0" onClick={() => changeActionModalStatus()}>
@@ -187,114 +244,231 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
 
 
             ) : (
-              <form className="mb-0 mt-0">
-
-
-                <div className="">
-                  <div className="flex gap-4 m-5 mb-3 mt-3">
-                    <div className="w-full md:w-2/6">
-                      <form className="flex items-center">
-                        <label htmlFor="simple-search" className="sr-only">Search</label>
-                        <div className="relative w-full">
-                          <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                            </svg>
+              <>
+              {addGroupMembers === true ? (
+                <form className="mb-0 mt-0">
+                  <div className="">
+                    <div className="flex gap-4 m-5 mb-3 mt-3">
+                      <div className="w-full md:w-2/4">
+                        <form className="flex items-center">
+                          <label htmlFor="simple-search" className="sr-only">Search</label>
+                          <div className="relative w-full">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <input
+                              type="text"
+                              id="simple-search"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto"
+                              required=""
+                              placeholder='Search...'
+                            />
                           </div>
-                          <input
-                            type="text"
-                            id="simple-search"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto" required=""
-                            placeholder='Search...'
-                          />
-                        </div>
-                      </form>
+                        </form>
+                      </div>
+                      <div className="w-full md:w-2/4">
+                        <form className="flex items-center">
+                          <label htmlFor="simple-search" className="sr-only">Search</label>
+                          <div className="relative w-full">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            </div>
+                            <h1 className="font-roboto text-black cursor-pointer  text-center flex items-center justify-center font-meduim text-sm w-full h-8 bg- border rounded-md" onClick={() => setAddGroupMembers(false)}>Back</h1>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div className="max-h-60 overflow-y-auto">
+                      <table className="w-full text-sm text- text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ml-16">
+                          <tr className='text-sm font-roboto'>
+                            <th scope="col" className="px-6 py-3">
+                              Name
+                            </th>
+                            <th scope="col" className="px-10 py-3">
+                              Role
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              Select
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Render participants not in the group */}
+                          {chatParticipantsDetails
+                            .filter(chatDetails => !members.some(member => member.chaterId === chatDetails.studentId || member.chaterId === chatDetails.superleadId))
+                            .map((chatDetails, index) => (
+                              <tr key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td className="flex items-center px-6 py-4 whitespace-nowrap">
+                                  <img className="w-8 h-8 rounded-full" src={chatDetails.imageUrl} alt={chatDetails.firstName} />
+                                  <div className="ps-3">
+                                    <div className="text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
+                                  </div>
+                                </td>
+                                {chatDetails?.studentId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
+                                ) : chatDetails.superleadId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">superlead</td>
+                                ) : null}
+                                <td className="px-6 py-4 text-sm font-roboto item text-center">
+                                  <input type="checkbox" name="selected" id="selected" onClick={() => handleCheckboxChange(chatDetails)} />
+                                </td>
+                              </tr>
+                            ))}
+            
+                          {/* Render participants already in the group */}
+                          {chatParticipantsDetails
+                            .filter(chatDetails => members.some(member => member.chaterId === chatDetails.studentId || member.chaterId === chatDetails.superleadId))
+                            .map((chatDetails, index) => (
+                              <tr key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td className="flex items-center px-6 py-4 whitespace-nowrap">
+                                  <img className="w-8 h-8 rounded-full" src={chatDetails.imageUrl} alt={chatDetails.firstName} />
+                                  <div className="ps-3">
+                                    <div className="text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
+                                  </div>
+                                </td>
+                                {chatDetails?.studentId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
+                                ) : chatDetails.superleadId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">superlead</td>
+                                ) : null}
+                              <td className="px-6 py-4 text-xs font-roboto item text-center font-italic">
+                                  <p>already added to the group</p>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                  <div className="max-h-60 overflow-y-auto">
-                    <table className="w-full text-sm text- text-gray-500 dark:text-gray-400">
-                      <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ml-16">
-                        <tr className='text-sm font-roboto'>
-                          <th scope="col" className="px-6 py-3">
-                            Name
-                          </th>
-                          <th scope="col" className="px-10 py-3">
-                            Role
-                          </th>
-                          <th scope="col" className="px-6 py-3">
-                            Select
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {members.map((member, index) => (
-                          <React.Fragment key={index}>
-                            <p className="text-white">{actionChaterId = member.chaterId}</p> {/* Assigns member.chaterId to actionChaterId */}
-                            <tr key="" className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                              <td className="flex items-center px-6 py-4 whitespace-nowrap">
-                                <img className="w-8 h-8 rounded-full" src={member?.imageUrl} />
-                                {member?.chaterId === superleadId ? (
-                                  <div className="ps-3">
-                                    <div className="text-sm font-roboto">Your Account</div>
-                                  </div>
-                                ) : (
-                                  <div className="ps-3">
-                                    <div className="text-sm font-roboto">{member?.firstName} {member?.lastName}</div>
-                                  </div>
-                                )}
-                              </td>
-                              <td className="px-6 py-4 text-sm font-roboto item text-center">
-                                student
-                              </td>
-                              {admins.includes(member.chaterId) ? (
-                                <td className="px-6 py-4 text-sm font-roboto item text-center">
-                                  <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10 cursor-pointer">Admin</span>
-                                </td>
-                              ) : (
-                                <React.Fragment>
-                                  {admins.includes(superleadId) && (
-                                    <td className="px-6 py-4 text-sm font-roboto item text-center">
-                                      {member.chaterId === actionChaterId && (
-                                        <>
-                                          <button
-                                        type='button'
-                                        className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                        onClick={() => setModalActive(true)}
-                                      >
-                                        <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                          <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        </svg>
-                                      </button>
-                                       
-                                        <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} chaterId={member?.chaterId} groupId={groupId} changeActionModalStatus={changeActionModalStatus} />
-                                        </>
-                                      )}
-                                    
-                                    </td>
-                                  )}
-                                </React.Fragment>
-                              )}
-
-                            </tr>
-
-                          </React.Fragment>
-                        ))}
-
-                      </tbody>
-                    </table>
+                  <div className="flex m-5 mb-0 mt-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={(e) => handleSubmit(e)}
+                      className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                      Update
+                    </button>
                   </div>
-                </div>
-                <div className="flex m-5 mb-0 mt-2 gap-3">
-
-                  <button
-                    type="button"
-                    onClick={() => onClose()}
-                    className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
-                    Back
-                  </button>
-
-                </div>
-              </form>
+                </form>
+              ) : (
+                <form className="mb-0 mt-0">
+                  <div className="">
+                    <div className="flex gap-4 m-5 mb-3 mt-3">
+                      <div className="w-full md:w-2/4">
+                        <form className="flex items-center">
+                          <label htmlFor="simple-search" className="sr-only">Search</label>
+                          <div className="relative w-full">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                              <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                              </svg>
+                            </div>
+                            <input
+                              type="text"
+                              id="simple-search"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md focus:ring-0 focus:border-Average block w-full pl-10 p-1 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-0 dark:focus:border-Average outline-none text-sm font-roboto"
+                              required=""
+                              placeholder='Search...'
+                            />
+                          </div>
+                        </form>
+                      </div>
+                      <div className="w-full md:w-2/4">
+                        <form className="flex items-center">
+                          <label htmlFor="simple-search" className="sr-only">Search</label>
+                          <div className="relative w-full">
+                            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            </div>
+                            <h1 className="font-roboto text-black cursor-pointer  text-center flex items-center justify-center font-meduim text-sm w-full h-8 bg- border rounded-md" onClick={() => setAddGroupMembers(true)}>Add New Members</h1>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    <div className="max-h-60 overflow-y-auto">
+                      <table className="w-full text-sm text- text-gray-500 dark:text-gray-400">
+                        <thead className="text-xs uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 ml-16">
+                          <tr className='text-sm font-roboto'>
+                            <th scope="col" className="px-6 py-3">
+                              Name
+                            </th>
+                            <th scope="col" className="px-10 py-3">
+                              Role
+                            </th>
+                            <th scope="col" className="px-6 py-3">
+                              Select
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {members.map((member, index) => (
+                            <React.Fragment key={index}>
+                              <p className="text-white">{actionChaterId = member.chaterId}</p> {/* Assigns member.chaterId to actionChaterId */}
+                              <tr key="" className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <td className="flex items-center px-6 py-4 whitespace-nowrap">
+                                  <img className="w-8 h-8 rounded-full" src={member?.imageUrl} />
+                                  {member?.chaterId === superleadId ? (
+                                    <div className="ps-3">
+                                      <div className="text-sm font-roboto">Your Account</div>
+                                    </div>
+                                  ) : (
+                                    <div className="ps-3">
+                                      <div className="text-sm font-roboto">{member?.firstName} {member?.lastName}</div>
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="px-6 py-4 text-sm font-roboto item text-center">
+                                  student
+                                </td>
+                                {admins.includes(member.chaterId) ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">
+                                    <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-700/10 cursor-pointer">Admin</span>
+                                  </td>
+                                ) : (
+                                  <React.Fragment>
+                                    {admins.includes(superleadId) && (
+                                      <td className="px-6 py-4 text-sm font-roboto item text-center">
+                                        {member.chaterId === actionChaterId && (
+                                          <>
+                                            <button
+                                              type='button'
+                                              className="inline-flex items-center p-0.5 text-sm font-medium text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                                              onClick={() => setModalActive(true)}
+                                            >
+                                              <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                              </svg>
+                                            </button>
+            
+                                            <ActionModal isVisible={modalActive} onClose={() => setModalActive(false)} chaterId={member?.chaterId} groupId={groupId} changeActionModalStatus={changeActionModalStatus} />
+                                          </>
+                                        )}
+            
+                                      </td>
+                                    )}
+                                  </React.Fragment>
+                                )}
+            
+                              </tr>
+            
+                            </React.Fragment>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div className="flex m-5 mb-0 mt-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => onClose()}
+                      className="mb-2 rounded-lg bg-dark-highBlue px-5 py-2.5 text-xs font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900 font-serif">
+                      Back
+                    </button>
+                  </div>
+                </form>
+              )}
+            </>
+            
             )}
 
           </div>
