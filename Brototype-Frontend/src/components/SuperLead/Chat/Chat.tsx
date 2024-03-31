@@ -41,10 +41,22 @@ const Chat = () => {
     const scroll = useRef()
     const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
     const [messageId, setMessageId] = useState("")
-    const { chatId,setChatId ,onlineUsers,setOnlineUsers} = useContext(GlobalContext);
+    const { chatId, setChatId, onlineUsers, setOnlineUsers } = useContext(GlobalContext);
     useEffect(() => {
-        console.log("Online users state updated chateeeeeee:", onlineUsers);
-    }, [onlineUsers]);
+        console.log("Online users state updated chateeeeeee studebteee:", onlineUsers);
+    }, [onlineUsers, setOnlineUsers]);
+    useEffect(() => {
+        if (!socket || !superleadId) return;
+
+        socket.on("getOnlineUser", (users) => {
+            console.log(users, "online usersssss comingggc");
+            setOnlineUsers(users);
+        });
+
+        return () => {
+            socket.off("getOnlineUser");
+        };
+    }, [socket, superleadId,onlineUsers, setOnlineUsers]);
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -90,7 +102,7 @@ const Chat = () => {
         }
     }
 
-    const handleSubmit = async (e:any,type: string) => {
+    const handleSubmit = async (e: any, type: string) => {
 
         try {
             e.preventDefault()
@@ -186,7 +198,7 @@ const Chat = () => {
             // Clean up socket listener when component unmounts
             socket?.off("messageDeleted", messageListener);
         };
-    }, [student?.studentId, student?.chaterId, superleadId, ,reload]); // Only trigger when superleadId or student?.chaterId changes
+    }, [student?.studentId, student?.chaterId, superleadId, , reload]); // Only trigger when superleadId or student?.chaterId changes
     useEffect(() => {
         const fetchGroupMessages = async () => {
             try {
@@ -260,9 +272,9 @@ const Chat = () => {
                     setReload(true);
                 }
             };
-    
+
             socket.on("messageDeleted", handleDeletedMessage);
-    
+
             return () => {
                 // Clean up socket listener when component unmounts
                 socket?.off("messageDeleted", handleDeletedMessage);
@@ -383,8 +395,8 @@ const Chat = () => {
 
 
     const handleMouseEnter = (index) => {
-        console.log(index,"lllllllll");
-        
+        console.log(index, "lllllllll");
+
         setMessageHoverIndex(index);
     }
 
@@ -404,6 +416,7 @@ const Chat = () => {
 
 
         <>
+            {console.log(onlineUsers, student.chaterId, '///////All Idssss')}
             <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
@@ -470,8 +483,25 @@ const Chat = () => {
 
 
                                     <div>
-                                        <span className="text-gray-600 text-sm font-roboto">last seen 8:98 pm</span>
+                                        {onlineUsers.some(user => {
+                                            console.log(user, "user:", user.userId);
+                                            console.log(user, "user:", student.studentId);
+                                            console.log(user, "user:", student.superleadId);
+                                            console.log(user, "user:", student.chaterId);
+                                            return (
+                                                user.userId === student.studentId || user.userId === student.superleadId || user.userId === student.chaterId
+                                            );
+                                        }) ? (
+                                            <div>
+                                                <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <span className="text-gray-600 text-sm font-roboto">Not Active</span>
+                                            </div>
+                                        )}
                                     </div>
+
                                 </div>
 
 
@@ -532,13 +562,13 @@ const Chat = () => {
                                             </div>
                                         ) : (
                                             <div
-                                            key={index}
-                                            className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
-                                        >
-                                            <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                key={index}
+                                                className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                            >
+                                                <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
+                                                    <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                </div>
                                             </div>
-                                        </div>
                                         )}
 
                                     </>
@@ -686,7 +716,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e,"groupChat")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e, "groupChat")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
@@ -718,7 +748,7 @@ const Chat = () => {
                                             </div>
                                         </div>
                                         {/* <div className="flex rounded-full" > */}
-                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e,"oneToOne")}>
+                                        <div className="border h-10 w-16 cursor-pointer flex items-center justify-center ml-1 rounded-full bg-gray-200 shadow-xl" onClick={(e) => handleSubmit(e, "oneToOne")}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                             </svg>
@@ -727,9 +757,9 @@ const Chat = () => {
 
                                         </div>
 
-                                        </div>
                                     </div>
-                                
+                                </div>
+
                             )}
 
 

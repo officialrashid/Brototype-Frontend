@@ -51,7 +51,8 @@ const Chat = () => {
         return () => {
             socket.off("getOnlineUser");
         };
-    }, [socket, studentId, setOnlineUsers]);
+    }, [socket, studentId,onlineUsers, setOnlineUsers]);
+
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -366,6 +367,7 @@ const Chat = () => {
 
 
         <>
+                    {console.log(onlineUsers, student.chaterId, '///////All Idssss')}
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-10  m-10  mr-4 ml-4 item  h-38rem" onClick={() => changeModalStatus()}>
 
@@ -419,17 +421,26 @@ const Chat = () => {
                                     )}
 
                                     <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
-                                        <div>
-                                            {onlineUsers.some(user => user.userId === student.studentId || user.userId === student.superleadId || student.chaterId) ? (
-                                                <div>
-                                                    <span className="text-gray-600 text-sm font-roboto">Active Now</span>
-                                                </div>
-                                            ) : (
-                                                <div>
-                                                    <span className="text-gray-600 text-sm font-roboto">Not Active</span>
-                                                </div>
-                                            )}
-                                        </div>
+                                     
+                                    <div>
+                                        {onlineUsers.some(user => {
+                                            console.log(user, "user:", user.userId);
+                                            console.log(user, "user:", student.studentId);
+                                            console.log(user, "user:", student.superleadId);
+                                            console.log(user, "user:", student.chaterId);
+                                            return (
+                                                user.userId === student.studentId || user.userId === student.superleadId || user.userId === student.chaterId
+                                            );
+                                        }) ? (
+                                            <div>
+                                                <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <span className="text-gray-600 text-sm font-roboto">Not Active</span>
+                                            </div>
+                                        )}
+                                    </div>
                                     </div>
 
 
