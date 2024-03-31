@@ -28,6 +28,8 @@ interface GlobalContextType {
   setSelectedCustomWeek: (week: any[]) => void;
   chatId: string;
   setChatId: (id: string) => void; // Change the argument type to string
+  onlineUsers : any[],
+  setOnlineUsers: () => void;
 }
 const GlobalContext = React.createContext<GlobalContextType>({
   monthIndex: 0,
@@ -52,6 +54,8 @@ const GlobalContext = React.createContext<GlobalContextType>({
   setSelectedCustomWeek: () => {},
   chatId: "",
   setChatId: () => {}, // Adjusted to accept a string argument
+  onlineUsers: [],
+  setOnlineUsers : () => {}
 });
 
 export default GlobalContext;

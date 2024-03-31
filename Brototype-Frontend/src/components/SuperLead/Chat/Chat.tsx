@@ -41,7 +41,10 @@ const Chat = () => {
     const scroll = useRef()
     const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
     const [messageId, setMessageId] = useState("")
-    const { chatId,setChatId } = useContext(GlobalContext);
+    const { chatId,setChatId ,onlineUsers,setOnlineUsers} = useContext(GlobalContext);
+    useEffect(() => {
+        console.log("Online users state updated chateeeeeee:", onlineUsers);
+    }, [onlineUsers]);
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])

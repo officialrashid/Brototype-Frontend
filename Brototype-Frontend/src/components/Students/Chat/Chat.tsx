@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useRef, useState } from "react"
+import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
 import { useSelector } from "react-redux";
 
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
@@ -10,6 +10,8 @@ import VoiceRecorder from "../VoiceRecorder/VoiceRecorder";
 import { storeChatAudio } from "../../../utils/methods/post";
 import { RootState } from "../../../redux-toolkit/store";
 import ChatMediaModal from "./ChatMediaModal";
+import GroupInformationModal from "./GroupInformation";
+import GlobalContext from "../../../context/GlobalContext";
 
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -19,7 +21,6 @@ const Chat = () => {
     console.log(student, "students stdenst");
 
     const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
-
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
     const [message, setMessage] = useState("")
@@ -32,7 +33,25 @@ const Chat = () => {
     const [chatType, setChatType] = useState("")
     const messageRef = useRef<any>(null);
     const scroll = useRef()
+    const [groupInfo, setGroupInfo] = useState(false)
+    const [groupId, setGroupId] = useState("")
+    const { onlineUsers, setOnlineUsers } = useContext(GlobalContext);
 
+    useEffect(() => {
+        console.log("Online users state updated chateeeeeee studebteee:", onlineUsers);
+    }, [onlineUsers, setOnlineUsers]);
+    useEffect(() => {
+        if (!socket || !studentId) return;
+
+        socket.on("getOnlineUser", (users) => {
+            console.log(users, "online usersssss comingggc");
+            setOnlineUsers(users);
+        });
+
+        return () => {
+            socket.off("getOnlineUser");
+        };
+    }, [socket, studentId, setOnlineUsers]);
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -127,6 +146,8 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchMessages = async () => {
+
+
             try {
                 const data = {
                     initiatorId: studentId,
@@ -226,9 +247,9 @@ const Chat = () => {
                     setReload(true);
                 }
             };
-    
+
             socket.on("messageDeleted", handleDeletedMessage);
-    
+
             return () => {
                 // Clean up socket listener when component unmounts
                 socket?.off("messageDeleted", handleDeletedMessage);
@@ -337,11 +358,15 @@ const Chat = () => {
             setReload((prevState) => !prevState);
         }
     }
-
+    const handleGroupInfo = (groupId: string) => {
+        setGroupId(groupId)
+        setGroupInfo(true)
+    }
     return (
 
 
         <>
+            <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-10  m-10  mr-4 ml-4 item  h-38rem" onClick={() => changeModalStatus()}>
 
 
@@ -384,7 +409,7 @@ const Chat = () => {
                             <div className="flex justify-between ">
                                 <div className="flex gap-2 m-2 ">
                                     {student.groupName ? (
-                                        <div className="border h-12 w-12 rounded-full  mt-3">
+                                        <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
                                             <img src={student?.profile} alt="" className="rounded-full" />
                                         </div>
                                     ) : (
@@ -395,7 +420,15 @@ const Chat = () => {
 
                                     <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
                                         <div>
-                                            <span className="text-gray-600 text-sm font-roboto">last seen 8:98 pm</span>
+                                            {onlineUsers.some(user => user.userId === student.studentId || user.userId === student.superleadId || student.chaterId) ? (
+                                                <div>
+                                                    <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <span className="text-gray-600 text-sm font-roboto">Not Active</span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
 

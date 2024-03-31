@@ -43,6 +43,7 @@ const ContextWrapper = (props:any) => {
     const [customType,setCustomType] = useState(" ")
     const [selectedCustomWeek,setSelectedCustomWeek] = useState([])
     const [chatId,setChatId] = useState(" ")
+    const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
     const filteredEvents = useMemo(() => {
       // Filter logic here using savedEvents
       // For example:
@@ -81,7 +82,9 @@ const ContextWrapper = (props:any) => {
         selectedCustomWeek,
         setSelectedCustomWeek,
         chatId,
-        setChatId
+        setChatId,
+        onlineUsers,
+        setOnlineUsers,
         }}>
             {props.children}
        </GlobalContext.Provider>

@@ -1,4 +1,3 @@
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './pages/LandingPage/LandingPage';
 import Navigation from './pages/Fumigation/Navigation';
@@ -11,30 +10,34 @@ import ReviewerAuthRoutes from './routes/ReviewerAuthRoutes';
 import SuperleadAuthRoutes from './routes/SuperleadAuthRoutes';
 import AdvisorRoutes from './routes/AdvisorRoutes';
 import SuperLeadRoutes from "./routes/SuperLeadRoutes"
+import { useSocket } from './hooks/useSocket';
+
 function App() {
+
+
   return (
     <Router>
 
-            <Routes>
-              <Route path="/" element={<Navbar />} />
-              <Route path="/invigilator" element={<Login />} />
-              <Route path="/fumigation" element={<Navigation />} />
-              <Route path="/otpLogin" element={<OtpComponet />} />
-              <Route path="/otpTestLogin" element={<OtpComponet />} />
-              <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes/>} />
-              <Route path="/studentIn/*" element={<AuthenticationRoutes/>} />
-              <Route path="/advisorIn/*" element={<AuthenticationRoutes/>} />
-              <Route path="/superleadIn/*" element={<SuperleadAuthRoutes/>} />
+    <Routes>
+      <Route path="/" element={<Navbar />} />
+      <Route path="/invigilator" element={<Login />} />
+      <Route path="/fumigation" element={<Navigation />} />
+      <Route path="/otpLogin" element={<OtpComponet />} />
+      <Route path="/otpTestLogin" element={<OtpComponet />} />
+      <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes/>} />
+      <Route path="/studentIn/*" element={<AuthenticationRoutes/>} />
+      <Route path="/advisorIn/*" element={<AuthenticationRoutes/>} />
+      <Route path="/superleadIn/*" element={<SuperleadAuthRoutes/>} />
 
-              <Route path="/reviewer/*" element={<ReviewerRoutes />} />
-          
-              {/* Nested StudentRoutes */}
-              <Route path="/student/*" element={<StudentRoutes />} />
-              <Route path="/advisor/*" element={<AdvisorRoutes />} />
-              <Route path="/superlead/*" element={<SuperLeadRoutes />} />
-            </Routes>
+      <Route path="/reviewer/*" element={<ReviewerRoutes />} />
   
-    </Router>
+      {/* Nested StudentRoutes */}
+      <Route path="/student/*" element={<StudentRoutes />} />
+      <Route path="/advisor/*" element={<AdvisorRoutes />} />
+      <Route path="/superlead/*" element={<SuperLeadRoutes />} />
+    </Routes>
+
+</Router>
   );
 }
 

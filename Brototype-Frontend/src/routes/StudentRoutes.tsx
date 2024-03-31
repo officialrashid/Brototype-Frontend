@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
 import Sidebar from "../components/Students/Sidebar/Sidebar";
 import StudentManifest from '../components/Students/StudentManifest/StudentManifest';
@@ -12,12 +12,57 @@ import StudentSignIn from "../pages/Students/SignIn"
 import StudentOtp from "../pages/Students/StudentOtp";
 import Navigationbar from '../components/LandingPage/Navbar';
 import Chat from "../pages/Students/Chat"
+import GlobalContext from '../context/GlobalContext';
+import { useSocket } from '../hooks/useSocket';
 function StudentRoutes() {
     const [studentAccessToken,setStudentAccessToken] = useState("")
     useEffect(()=>{
       const studentJwt = localStorage.getItem("studentAccessToken")
       setStudentAccessToken(studentJwt)
     },[])
+
+    const socket: Socket | null = useSocket();
+    const { onlineUsers,setOnlineUsers } = useContext(GlobalContext);
+    useEffect(() => {
+        if (!socket || !superleadId) return;
+    
+        socket.emit("addOnlineUser", superleadId);
+    
+        socket.on("getOnlineUser", (users) => {
+            console.log(users, "online usersssss");
+            setOnlineUsers(users);
+        });
+    
+        return () => {
+            socket.off("getOnlineUser");
+        };
+    }, [socket, superleadId, setOnlineUsers,Route]);
+    
+    useEffect(() => {
+        console.log("Online users state updated:", onlineUsers);
+    }, [onlineUsers,setOnlineUsers]);
+    
+    useEffect(() => {
+        const handleFocus = async () => {
+            if (socket && superleadId) {
+                socket.emit("addOnlineUser", superleadId);
+            }
+        };
+
+        const handleBlur = () => {
+            if (socket && superleadId) {
+                socket.emit("offline",superleadId);
+            }
+        };
+
+        window.addEventListener('focus', handleFocus);
+        window.addEventListener('blur', handleBlur);
+
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+            window.removeEventListener('blur', handleBlur);
+        };
+    }, [socket, superleadId]);
   return (
     <>
     <Navigationbar/>
