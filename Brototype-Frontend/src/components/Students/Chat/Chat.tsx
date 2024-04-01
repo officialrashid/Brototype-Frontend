@@ -1,5 +1,5 @@
 import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
 import Students from "./Superleads";
@@ -13,13 +13,14 @@ import ChatMediaModal from "./ChatMediaModal";
 import GroupInformationModal from "./GroupInformation";
 import GlobalContext from "../../../context/GlobalContext";
 
+
 const Chat = () => {
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
     console.log(student, "students stdenst");
-
+    const dispatch = useDispatch()
     const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
@@ -35,24 +36,21 @@ const Chat = () => {
     const scroll = useRef()
     const [groupInfo, setGroupInfo] = useState(false)
     const [groupId, setGroupId] = useState("")
-    const { onlineUsers, setOnlineUsers } = useContext(GlobalContext);
+    const { isOnline, setIsOnline } = useContext(GlobalContext);
 
-    useEffect(() => {
-        console.log("Online users state updated chateeeeeee studebteee:", onlineUsers);
-    }, [onlineUsers, setOnlineUsers]);
+
     useEffect(() => {
         if (!socket || !studentId) return;
 
-        socket.on("getOnlineUser", (users) => {
+        socket.on("getOnlineUser", (users: any) => {
             console.log(users, "online usersssss comingggc");
-            setOnlineUsers(users);
+            setIsOnline(users)
         });
 
         return () => {
             socket.off("getOnlineUser");
         };
-    }, [socket, studentId,onlineUsers, setOnlineUsers]);
-
+    }, [socket, studentId,isOnline, setIsOnline]);
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -363,11 +361,11 @@ const Chat = () => {
         setGroupId(groupId)
         setGroupInfo(true)
     }
+
     return (
 
 
         <>
-                    {console.log(onlineUsers, student.chaterId, '///////All Idssss')}
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-10  m-10  mr-4 ml-4 item  h-38rem" onClick={() => changeModalStatus()}>
 
@@ -423,13 +421,10 @@ const Chat = () => {
                                     <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
                                      
                                     <div>
-                                        {onlineUsers.some(user => {
-                                            console.log(user, "user:", user.userId);
-                                            console.log(user, "user:", student.studentId);
-                                            console.log(user, "user:", student.superleadId);
-                                            console.log(user, "user:", student.chaterId);
+                                        {isOnline.some(onlineUser => {
+                                         
                                             return (
-                                                user.userId === student.studentId || user.userId === student.superleadId || user.userId === student.chaterId
+                                             onlineUser.chaterId === student.chaterId
                                             );
                                         }) ? (
                                             <div>
@@ -440,7 +435,7 @@ const Chat = () => {
                                                 <span className="text-gray-600 text-sm font-roboto">Not Active</span>
                                             </div>
                                         )}
-                                    </div>
+                                    </div> 
                                     </div>
 
 

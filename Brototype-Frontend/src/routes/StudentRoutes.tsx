@@ -14,7 +14,7 @@ import Navigationbar from '../components/LandingPage/Navbar';
 import Chat from "../pages/Students/Chat"
 import GlobalContext from '../context/GlobalContext';
 import { useSocket } from '../hooks/useSocket';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface StudentRoutesProps {
   // Define any props if required
@@ -28,7 +28,7 @@ interface Socket {
 }
 
 interface RootState {
-  superlead: {
+  student: {
       studentData: {
           studentId: string;
           // Define other properties if needed
@@ -37,7 +37,6 @@ interface RootState {
 }
 
 function StudentRoutes() {
-
   const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const [studentAccessToken,setStudentAccessToken] = useState("")
     useEffect(()=>{
@@ -46,45 +45,57 @@ function StudentRoutes() {
     },[])
 
     const socket = useSocket();
-    const { onlineUsers, setOnlineUsers } = useContext(GlobalContext);
-
-
     useEffect(() => {
-        if (!socket || !studentId) return;
-    
-        // Emit online status when the tab is open
-        socket.emit("addOnlineUser", studentId);
-    
-        const handleGetOnlineUser = (users: any[]) => {
-            console.log(users, "online usersssss");
-            // Update onlineUsers based on previous state
-            setOnlineUsers((prevUsers: any[]) => {
-               return [...prevUsers, ...users];
-            });
-        };
-    
-        socket.on("getOnlineUser", handleGetOnlineUser);
-    
-        // Clean up socket event listener on component unmount
-        return () => {
-            socket.off("getOnlineUser", handleGetOnlineUser);
-        };
-    }, [socket, studentId, setOnlineUsers,Route]); // Include dependencies in the dependency array
+      if (!socket || !studentId) return;
 
-    useEffect(() => {
-        // Handle the beforeunload event to emit offline status when the tab is closed
-        const handleBeforeUnload = () => {
-            if (socket && studentId) {
-                socket.emit("offline", studentId);
-            }
-        };
+      // Emit online status when the tab is open
+      socket.emit("addOnlineUser", studentId);
 
-        window.addEventListener('beforeunload', handleBeforeUnload);
+      const handleGetOnlineUser = (users: any[]) => {
+          console.log(users, "online usersssss");
 
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, [socket, studentId]);
+          // Dispatch action to update Redux with new online users
+        
+      };
+
+      socket.on("getOnlineUser", handleGetOnlineUser);
+
+      // Clean up socket event listener on component unmount
+      return () => {
+          socket.off("getOnlineUser", handleGetOnlineUser);
+      };
+  }, [ studentId, socket]);
+  
+  useEffect(() => {
+      const handleBeforeUnload = () => {
+          if (socket && studentId) {
+              // Emit offline status to the server when the tab is closed
+              socket.emit("setOfflineUser", studentId); 
+          }
+      };
+  
+      window.addEventListener('beforeunload', handleBeforeUnload);
+  
+      return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+      };
+  }, [studentId, socket]);
+  
+  useEffect(() => {
+      const handleWindowFocus = () => {
+          if (socket && studentId) {
+              // Emit online status to the server when the tab is focused
+              socket.emit("addOnlineUser", studentId);
+          }
+      };
+
+      window.addEventListener('focus', handleWindowFocus);
+
+      return () => {
+          window.removeEventListener('focus', handleWindowFocus);
+      };
+  }, [studentId,socket]);
+
   return (
     <>
     <Navigationbar/>

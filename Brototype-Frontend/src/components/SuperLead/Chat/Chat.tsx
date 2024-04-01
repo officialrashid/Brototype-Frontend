@@ -1,6 +1,6 @@
 import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
 import Students from "./Students";
@@ -16,13 +16,15 @@ import GroupInformationModal from "./GroupInformation";
 import DeleteMessageModal from "./DeleteMessageModal";
 import GlobalContext from "../../../context/GlobalContext";
 
+
 const Chat = () => {
+    
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
     console.log(student, "students studentsss");
-
+    const dispatch = useDispatch()
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
     const tabs = ['chat', 'all', 'students', 'advisors', 'reviewers', 'leads'];
     const [activeTab, setActiveTab] = useState('chat'); // Initial active tab is 'chat'
@@ -41,22 +43,22 @@ const Chat = () => {
     const scroll = useRef()
     const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
     const [messageId, setMessageId] = useState("")
-    const { chatId, setChatId, onlineUsers, setOnlineUsers } = useContext(GlobalContext);
-    useEffect(() => {
-        console.log("Online users state updated chateeeeeee studebteee:", onlineUsers);
-    }, [onlineUsers, setOnlineUsers]);
+    const { chatId, setChatId, isOnline, setIsOnline } = useContext(GlobalContext);
+   
+   
     useEffect(() => {
         if (!socket || !superleadId) return;
 
-        socket.on("getOnlineUser", (users) => {
+        socket.on("getOnlineUser", (users: any) => {
             console.log(users, "online usersssss comingggc");
-            setOnlineUsers(users);
+            setIsOnline(users)
         });
 
         return () => {
             socket.off("getOnlineUser");
         };
-    }, [socket, superleadId,onlineUsers, setOnlineUsers]);
+    }, [socket, superleadId,isOnline, setIsOnline]);
+
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
@@ -416,7 +418,7 @@ const Chat = () => {
 
 
         <>
-            {console.log(onlineUsers, student.chaterId, '///////All Idssss')}
+          
             <CreateGroupChat isVisible={createGroupChat} onClose={() => { setCreateGroupChat(false) }} />
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-36 w-2/2 m-16  item mb- h-38rem" onClick={() => changeModalStatus()}>
@@ -483,13 +485,10 @@ const Chat = () => {
 
 
                                     <div>
-                                        {onlineUsers.some(user => {
-                                            console.log(user, "user:", user.userId);
-                                            console.log(user, "user:", student.studentId);
-                                            console.log(user, "user:", student.superleadId);
-                                            console.log(user, "user:", student.chaterId);
+                                        {isOnline.some(onlineUser => {
+                                         
                                             return (
-                                                user.userId === student.studentId || user.userId === student.superleadId || user.userId === student.chaterId
+                                              onlineUser.chaterId === student.chaterId
                                             );
                                         }) ? (
                                             <div>
@@ -500,7 +499,7 @@ const Chat = () => {
                                                 <span className="text-gray-600 text-sm font-roboto">Not Active</span>
                                             </div>
                                         )}
-                                    </div>
+                                    </div> 
 
                                 </div>
 

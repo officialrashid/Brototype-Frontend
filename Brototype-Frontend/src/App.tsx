@@ -10,10 +10,8 @@ import ReviewerAuthRoutes from './routes/ReviewerAuthRoutes';
 import SuperleadAuthRoutes from './routes/SuperleadAuthRoutes';
 import AdvisorRoutes from './routes/AdvisorRoutes';
 import SuperLeadRoutes from "./routes/SuperLeadRoutes"
-import { useSocket } from './hooks/useSocket';
 
 function App() {
-
 
   return (
     <Router>

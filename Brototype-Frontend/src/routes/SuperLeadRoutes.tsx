@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import { ReactElement, useContext, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { ReactElement, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useSocket } from '../hooks/useSocket';
 import Navigation from '../components/SuperLead/Navigation/Navigation';
 import Dashboard from '../pages/SuperLead/Dashboard';
@@ -14,7 +14,6 @@ import ViewReviewer from '../pages/SuperLead/ViewReviewer';
 import ProfileUpdateForm from '../pages/SuperLead/ProfileUpdateForm';
 import ViewProfile from "../pages/SuperLead/ViewProfile" ;
 import Calendar from '../pages/SuperLead/Calendar';
-import GlobalContext from '../context/GlobalContext';
 
 interface RootState {
     superlead: {
@@ -25,46 +24,61 @@ interface RootState {
 }
 
 function SuperLeadRoutes(): ReactElement {
+  
+    const dispatch = useDispatch();
     const superleadId: string | undefined = useSelector((state: RootState) => state?.superlead?.superleadData?.superleadId);
     const socket = useSocket();
-    const { onlineUsers, setOnlineUsers } = useContext(GlobalContext);
 
     useEffect(() => {
         if (!socket || !superleadId) return;
-    
+
         // Emit online status when the tab is open
         socket.emit("addOnlineUser", superleadId);
-    
+
         const handleGetOnlineUser = (users: any[]) => {
             console.log(users, "online usersssss");
-            // Update onlineUsers based on previous state
-            setOnlineUsers((prevUsers: any[]) => {
-               return [...prevUsers, ...users];
-            });
+
+            // Dispatch action to update Redux with new online users
+          
         };
-    
+ 
         socket.on("getOnlineUser", handleGetOnlineUser);
-    
+
         // Clean up socket event listener on component unmount
         return () => {
             socket.off("getOnlineUser", handleGetOnlineUser);
         };
-    }, [socket, superleadId, setOnlineUsers,Route]); // Include dependencies in the dependency array
-
+    }, [ superleadId, socket]);
+    
     useEffect(() => {
-        // Handle the beforeunload event to emit offline status when the tab is closed
         const handleBeforeUnload = () => {
             if (socket && superleadId) {
-                socket.emit("offline", superleadId);
+                // Emit offline status to the server when the tab is closed
+                socket.emit("setOfflineUser", superleadId); 
             }
         };
-
+    
         window.addEventListener('beforeunload', handleBeforeUnload);
-
+    
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [socket, superleadId]);
+    }, [superleadId, socket]);
+    
+    useEffect(() => {
+        const handleWindowFocus = () => {
+            if (socket && superleadId) {
+                // Emit online status to the server when the tab is focused
+                socket.emit("addOnlineUser", superleadId);
+            }
+        };
+
+        window.addEventListener('focus', handleWindowFocus);
+
+        return () => {
+            window.removeEventListener('focus', handleWindowFocus);
+        };
+    }, [superleadId,socket]);
 
     return (
         <div className='w-full h-auto flex'>
