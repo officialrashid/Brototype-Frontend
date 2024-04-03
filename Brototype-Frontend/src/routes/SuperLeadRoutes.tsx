@@ -35,18 +35,18 @@ function SuperLeadRoutes(): ReactElement {
         // Emit online status when the tab is open
         socket.emit("addOnlineUser", superleadId);
 
-        const handleGetOnlineUser = (users: any[]) => {
-            console.log(users, "online usersssss");
+        // const handleGetOnlineUser = (users: any[]) => {
+        //     console.log(users, "online usersssss");
 
-            // Dispatch action to update Redux with new online users
+        //     // Dispatch action to update Redux with new online users
           
-        };
+        // };
  
-        socket.on("getOnlineUser", handleGetOnlineUser);
+        // socket.on("getOnlineUser", handleGetOnlineUser);
 
         // Clean up socket event listener on component unmount
         return () => {
-            socket.off("getOnlineUser", handleGetOnlineUser);
+            // socket.off("getOnlineUser", handleGetOnlineUser);
         };
     }, [ superleadId, socket]);
     
@@ -94,7 +94,7 @@ function SuperLeadRoutes(): ReactElement {
                 <Route path="/viewReviewer" element={<ViewReviewer />} />
                 <Route path="/profileUpdate" element={<ProfileUpdateForm />} />
                 <Route path="/viewProfile" element={<ViewProfile />} />
-                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/calender" element={<Calendar />} />
             </Routes>
         </div>
     );

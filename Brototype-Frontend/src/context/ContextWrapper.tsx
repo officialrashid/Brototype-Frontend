@@ -43,7 +43,7 @@ const ContextWrapper = (props:any) => {
     const [customType,setCustomType] = useState(" ")
     const [selectedCustomWeek,setSelectedCustomWeek] = useState([])
     const [chatId,setChatId] = useState(" ")
-    const [isOnline, setIsOnline] = useState<string[]>([]);
+    const [isOnline, setIsOnline] = useState<any[]>([]);
     const [declareSocket, setDeclareSocket] = useState<any>(null);
     const filteredEvents = useMemo(() => {
       // Filter logic here using savedEvents

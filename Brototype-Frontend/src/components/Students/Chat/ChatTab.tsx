@@ -110,7 +110,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                 <div>
                                     {lastMessage && lastMessage.content && (
                                         <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content} hellooo
+                                            {lastMessage.content} 
                                         </span>
                                     )}
                                 </div>

@@ -46,6 +46,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
                             recipientId: user.chaterId
                         };
                         const response = await getMessages(data);
+                        console.log(response,"response fetch last message check");
+                        
                         if (response.getMessages?.status === true) {
                             setAllMessage((prevMessages) => [...prevMessages, response.getMessages.messages]);
                             setLastMessage(response.getMessages.lastMessage);

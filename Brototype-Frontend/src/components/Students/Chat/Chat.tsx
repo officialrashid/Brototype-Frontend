@@ -11,7 +11,9 @@ import { storeChatAudio } from "../../../utils/methods/post";
 import { RootState } from "../../../redux-toolkit/store";
 import ChatMediaModal from "./ChatMediaModal";
 import GroupInformationModal from "./GroupInformation";
-import GlobalContext from "../../../context/GlobalContext";
+import { Smile } from "lucide-react";
+import Emoji from "./emoji/emojis"
+
 
 
 const Chat = () => {
@@ -36,27 +38,45 @@ const Chat = () => {
     const scroll = useRef()
     const [groupInfo, setGroupInfo] = useState(false)
     const [groupId, setGroupId] = useState("")
-    const { isOnline, setIsOnline } = useContext(GlobalContext);
-
-
+    // const { isOnline, setIsOnline } = useContext(GlobalContext);
+    const [online,setOnline] = useState([])
+    const [showEmojis, setShowEmojis] = useState(false)
+    const [cursorPosition, setCursorPosition] = useState()
+    const inputRef = useRef(null);
     useEffect(() => {
         if (!socket || !studentId) return;
 
         socket.on("getOnlineUser", (users: any) => {
             console.log(users, "online usersssss comingggc");
-            setIsOnline(users)
+            setOnline(users)
+            const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            console.log(currentTime, "time updation callingggg yarr");
+            socket.emit("getCurrentOnlineUser");
         });
-
+ 
         return () => {
             socket.off("getOnlineUser");
         };
-    }, [socket, studentId,isOnline, setIsOnline]);
+    }, [socket, studentId]);
+    socket?.on("currentOnlineUser", (users: any) => {
+        console.log(users, "online usersssss comingggc");
+        setOnline(users)
+    });
     useEffect(() => {
         scroll.current?.scrollIntoView({ behavior: "smooth" })
     }, [allMesage])
     useEffect(() => {
         messageRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, [allMesage]);
+    useEffect(() => {
+        inputRef.current.selectionEnd = cursorPosition;
+
+    }, [cursorPosition])
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
     const handleTabClick = (currentTab: string) => {
         const currentIndex = tabs.indexOf(currentTab);
         const nextIndex = (currentIndex) % tabs.length; // Get the index of the next tab
@@ -170,19 +190,7 @@ const Chat = () => {
         }
         fetchMessages();
         // Listen for changes to 'reload' state, if 'reload' changes, fetch messages again
-        const messageListener = () => {
-            fetchMessages();
-        };
-
-        if (reload) {
-            messageListener();
-        }
-
-        // Clean up listener when component unmounts
-        return () => {
-            // Clean up socket listener when component unmounts
-            socket?.off("messageDeleted", messageListener);
-        };
+  
     }, [student?.superleadId, student?.chaterId, studentId, reload]);
 
 
@@ -361,7 +369,29 @@ const Chat = () => {
         setGroupId(groupId)
         setGroupInfo(true)
     }
+    const handleShowEmojis = () => {
+        inputRef.current.focus()
+        setShowEmojis(!showEmojis)
+    }
 
+    const pickEmoji = (emojiObject: any) => {
+        const { emoji } = emojiObject;
+        console.log(emoji, "Selected Emoji");
+    
+        if (inputRef.current) {
+            const ref: any = inputRef.current;
+            ref.focus();
+            const start = message.substring(0, ref.selectionStart);
+            const end = message.substring(ref.selectionStart);
+            const msg = start + emoji + end;
+            setMessage(msg);
+            setChatType("textChat");
+            setCursorPosition(start.length + emoji.length);
+    
+            // Delay focusing on the input to ensure it's rendered
+        
+        }
+    }
     return (
 
 
@@ -419,23 +449,19 @@ const Chat = () => {
                                     )}
 
                                     <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
-                                     
-                                    <div>
-                                        {isOnline.some(onlineUser => {
-                                         
-                                            return (
-                                             onlineUser.chaterId === student.chaterId
-                                            );
-                                        }) ? (
-                                            <div>
-                                                <span className="text-gray-600 text-sm font-roboto">Active Now</span>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <span className="text-gray-600 text-sm font-roboto">Not Active</span>
-                                            </div>
-                                        )}
-                                    </div> 
+
+                                        <div>
+                                            {online.some(onlineUser => onlineUser.chaterId === student.chaterId && onlineUser.isOnline) ? (
+                                                <div>
+                                                    <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                                </div>
+                                            ) : (
+                                                <div>
+                                                    <span className="text-gray-600 text-sm font-roboto">Last Seen {student.lastSeen}</span>
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </div>
 
 
@@ -579,12 +605,15 @@ const Chat = () => {
                                 <p className="text-custom-background ">example chat</p>
                                 <p className="text-custom-background ">example chat</p>
                             </div>
+                            <div className={`absolute bottom-3.5 ml-3 emoji-list ${showEmojis ? '' : 'hidden'}`}>
+                                <Emoji pickEmoji={pickEmoji} />
+                            </div>
                         </div>
 
                         <div className=" m-3 mt-0 rounded-md  ">
                             <div className=" flex ">
 
-                                <div className="relative w-full bottom-6">
+                            <div className="relative w-full bottom-6">
                                     {chatType === 'imageChat' ? (
                                         <div className="relative">
                                             <textarea
@@ -595,18 +624,31 @@ const Chat = () => {
                                             <img
                                                 src={message}
                                                 alt="Chat Image"
-                                                className="absolute w-auto max-h-24" // Adjust the max height as needed
-                                                style={{ width: 'auto', height: 'auto' }} // Ensure the image size is dynamic
+                                                className="absolute w-auto max-h-24"
+                                                style={{ width: 'auto', height: 'auto' }}
                                             />
                                         </div>
                                     ) : (
-                                        <textarea
-                                            className="font-roboto border px-2 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 absolute rounded-md w-full"
-                                            placeholder="Type a message.."
-                                            value={message}
-                                            onChange={(e) => handleMessageChange(e, "textChat")}
-                                        />
+                                        <>
+
+                                            <div className="relative">
+                                                <textarea
+                                                    className="font-roboto border px-10 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 rounded-md w-full"
+                                                    placeholder="Type a message.."
+                                                    value={message}
+                                                    ref={inputRef}
+                                                    onChange={(e) => handleMessageChange(e, "textChat")}
+                                                />
+
+                                                {/* Example of positioning EmojiPicker relatively */}
+                                                <div className="absolute bottom-3.5 left-3">
+                                                    <Smile color="gray" size={20} onClick={handleShowEmojis} />
+                                                </div>
+                                            </div>
+                                        </>
+
                                     )}
+
                                 </div>
 
 
@@ -695,7 +737,7 @@ const Chat = () => {
 
 
 
-                {/*  */}
+            
 
 
 
