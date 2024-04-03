@@ -42,9 +42,10 @@ const Chat = () => {
     const [messageHoverIndex, setMessageHoverIndex] = useState(-1);
     const [messageId, setMessageId] = useState("")
     const messageRef = useRef<any>(null);
-    const [online, setOnline] = useState([])
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
+    const [online, setOnline] = useState([])
+    // const inputRef: any = createRef()
     const inputRef = useRef(null);
     useEffect(() => {
         if (!socket || !superleadId) return;
@@ -94,24 +95,24 @@ const Chat = () => {
                 setChatType("textChat")
                 setMessage(message)
             } else if (type === "imageChat") {
-     
+
 
                 const message = event
-     
+
                 setChatType("imageChat")
                 setMessage(message)
             } else if (type === "videoChat") {
-        
+
 
                 const message = event
-       
+
                 setChatType("videoChat")
                 setMessage(message)
             } else if (type === "documentChat") {
 
 
                 const message = event
-     
+
                 setChatType("documentChat")
                 setMessage(message)
             }
@@ -122,7 +123,7 @@ const Chat = () => {
     }
 
     const handleSubmit = async (e: any, type: string) => {
-        
+
         try {
             e.preventDefault()
             if (!message) {
@@ -374,12 +375,12 @@ const Chat = () => {
 
     };
     const changeModalStatus = (e) => {
-      
+
         if (modalStatus) {
             setSelectMedia(false)
             setModalStatus(false)
             setReload((prevState) => !prevState);
-            
+
         } else {
             setModalStatus(true)
             setReload((prevState) => !prevState);
@@ -417,7 +418,7 @@ const Chat = () => {
     const pickEmoji = (emojiObject: any) => {
         const { emoji } = emojiObject;
         console.log(emoji, "Selected Emoji");
-    
+
         if (inputRef.current) {
             const ref: any = inputRef.current;
             ref.focus();
@@ -427,9 +428,9 @@ const Chat = () => {
             setMessage(msg);
             setChatType("textChat");
             setCursorPosition(start.length + emoji.length);
-    
+
             // Delay focusing on the input to ensure it's rendered
-        
+
         }
     }
 
@@ -679,7 +680,7 @@ const Chat = () => {
 
                             </div>
 
-                            <div className={`absolute bottom-3.5 ml-3 emoji-list ${showEmojis ? '' : 'hidden'}`}>
+                            <div className={`absolute bottom-20 ml-4 emoji-list ${showEmojis ? '' : 'hidden'}`}>
                                 <Emoji pickEmoji={pickEmoji} />
                             </div>
 

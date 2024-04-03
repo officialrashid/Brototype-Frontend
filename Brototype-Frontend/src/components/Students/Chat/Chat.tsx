@@ -112,6 +112,7 @@ const Chat = () => {
                 // Handle error: Empty message
                 return;
             }
+            setShowEmojis(false)
             if (type === "oneToOne") {
                 const messageData = {
                     senderId: studentId,
@@ -605,7 +606,7 @@ const Chat = () => {
                                 <p className="text-custom-background ">example chat</p>
                                 <p className="text-custom-background ">example chat</p>
                             </div>
-                            <div className={`absolute bottom-3.5 ml-3 emoji-list ${showEmojis ? '' : 'hidden'}`}>
+                            <div className={`absolute bottom-40 ml-4 emoji-list ${showEmojis ? '' : 'hidden'}`}>
                                 <Emoji pickEmoji={pickEmoji} />
                             </div>
                         </div>
