@@ -13,18 +13,15 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
-    const { chatId,setChatId } = useContext(GlobalContext);
+    const { chatId, setChatId } = useContext(GlobalContext);
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(superleadId);
-                console.log(response, "lll response i ngroup chatess and rediosfe");
+                console.log(response, "lll response in group chatess and rediosfe");
 
                 if (response?.status === true && response?.recipients) {
-
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
-
-
                     // handleStudentClick(0, response.recipients[0]);
                 }
                 console.log(chatUser, ";;;;;00098***&&^^^^^^^^");
@@ -46,8 +43,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
                             recipientId: user.chaterId
                         };
                         const response = await getMessages(data);
-                        console.log(response,"response fetch last message check");
-                        
+                        console.log(response, "response fetch last message check");
+
                         if (response.getMessages?.status === true) {
                             setAllMessage((prevMessages) => [...prevMessages, response.getMessages.messages]);
                             setLastMessage(response.getMessages.lastMessage);
@@ -64,14 +61,14 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
     const handleStudentClick = async (index, chatUser) => {
         try {
-            console.log(chatUser,")))))))))");
-            if(chatUser?.groupName){
+            console.log(chatUser, ")))))))))");
+            if (chatUser?.groupName) {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
-                console.log("join room emittedd",chatUser?._id );
-                socket.emit("joinRoom",chatUser?._id);
-                setChatId(chatUser?._id) 
-            }else{
+                console.log("join room emittedd", chatUser?._id);
+                socket.emit("joinRoom", chatUser?._id);
+                setChatId(chatUser?._id)
+            } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
                 const chatData = {
@@ -79,15 +76,15 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     recipientId: chatUser.studentId || chatUser.chaterId,
                     chaters: chatUser
                 };
-                const response:any = await createChat(chatData);
+                const response: any = await createChat(chatData);
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     console.log("join room emittedd", response?.response?.data?._id || response?.chatExists?.response?._id);
-    
+
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
-                    setChatId(response?.response?.data?._id || response?.chatExists?.response?._id) 
+                    setChatId(response?.response?.data?._id || response?.chatExists?.response?._id)
                 }
             }
-          
+
         } catch (err) {
             console.error("Error handling student click:", err);
         }
@@ -95,38 +92,38 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {chatUser.map((user, index) => (
+            {chatUser?.map((user, index) => (
                 <div
-                    key={user.chaterId}
+                    key={user?.chaterId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, user)}
                 >
                     <div className="flex gap-2 m-2 mt-">
-                        {user.groupName ? (
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src={user.profile} alt="" className="rounded-full " />
+                        {user && user.groupName ? (
+                            <div className="border h-8 w-8 rounded-full mt-2">
+                                <img src={user.profile} alt="" className="rounded-full" />
                             </div>
                         ) : (
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src={user.imageUrl} alt="" className="rounded-full " />
+                            <div className="border h-8 w-8 rounded-full mt-2">
+                                <img src={user?.imageUrl} alt="" className="rounded-full" />
                             </div>
                         )}
 
                         <div className="mt-1 mb-0 ">
-                            {user.groupName ? (
+                            {user && user.groupName ? (
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.groupName} 
+                                    {user?.groupName}
                                 </span>
                             ) : (
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.firstName} {user.lastName}
+                                    {user?.firstName} {user?.lastName}
                                 </span>
                             )}
 
                             <div>
-                                {lastMessage && lastMessage.content &&
+                                {lastMessage && lastMessage?.content &&
                                     <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {lastMessage.content}
+                                        {lastMessage?.content}
                                     </span>
                                 }
                             </div>

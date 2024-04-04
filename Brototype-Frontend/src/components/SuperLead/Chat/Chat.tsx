@@ -73,9 +73,11 @@ const Chat = () => {
         messageRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, [allMesage]);
     useEffect(() => {
-        inputRef.current.selectionEnd = cursorPosition;
+        if (inputRef.current) {
+            inputRef.current.selectionEnd = cursorPosition;
+        }
+    }, [cursorPosition]);
 
-    }, [cursorPosition])
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus();
@@ -142,10 +144,10 @@ const Chat = () => {
                 console.log(messageData, "messageData");
 
                 // Emit message to the server
-                socket.emit('message', messageData);
+                socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
-                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
 
                     if (response.status === true) {
@@ -163,8 +165,8 @@ const Chat = () => {
                     content: message,
                     type: chatType
                 }
-                socket.emit('groupMessage', groupMessageData);
-                socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.emit('groupMessage', groupMessageData);
+                socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
@@ -426,7 +428,7 @@ const Chat = () => {
             const end = message.substring(ref.selectionStart);
             const msg = start + emoji + end;
             setMessage(msg);
-            setChatType("textChat");
+            setChatType("emojiChat");
             setCursorPosition(start.length + emoji.length);
 
             // Delay focusing on the input to ensure it's rendered
@@ -672,6 +674,47 @@ const Chat = () => {
                                             {/* Or, display DOC */}
                                             {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
                                         </div>
+                                    ) : message.type === "emojiChat" ? (
+                                        <>
+                                            {message.senderFirstName && message.senderLastName ? (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
+                                                >
+                                                    <div className={`w-fit h-auto  mb-0 ${isSender(message) ? 'bg-Average' : "bg-white"}  rounded-sm relative`}
+                                                        onMouseEnter={() => handleMouseEnter(index)}
+                                                        onMouseLeave={() => handleMouseLeave(index)}
+                                                    >
+                                                        <p className={`text-xs font-roboto m-3 ${isSender(message) ? 'text-white' : 'text-black'}`}>
+                                                            {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
+                                                        </p>
+
+                                                        <p className={`text-xl font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+
+                                                        {isSender(message) && messageHoverIndex === index && (
+                                                            <>
+
+                                                                <div className="absolute right-0 top-0 mt-1 mr-1 cursor-pointer" onMouseEnter={(e) => handleDeleteMessage(e, message._id)}>
+                                                                    <img src="/dropdown.png" alt="" className="w-5 h-auto mb-0" />
+                                                                    <DeleteMessageModal isVisible={deleteMessage} onClose={() => { setDeleteMessage(false) }} socket={socket} messageId={messageId} chatId={student?._id} type={"group"} changeModalStatus={changeModalStatus} />
+                                                                </div>
+
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ) : (
+                                                <div
+                                                    key={index}
+                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                >
+                                                    <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
+                                                        <p className={`text-xl font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                        </>
                                     ) : null
                                 ))}
                                 <div ref={scroll}></div>

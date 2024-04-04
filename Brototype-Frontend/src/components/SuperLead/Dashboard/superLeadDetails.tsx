@@ -47,7 +47,7 @@ const SuperLeadDetails =() => {
                 <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                    <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Advisors</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">100</h1>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">10</h1>
             
 
                <div className="m-3 ml-6  ">
@@ -127,7 +127,7 @@ const SuperLeadDetails =() => {
            <div className="bg-white  rounded-xl border border-gray-300 hover hover:border-2 border-gray-300">
                    
                    <p className='font-roboto ml-14 mt-4 text-sm text-gray-500'>Pending</p>
-                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">220</h1>
+                   <h1 className="font-roboto text-2xl ml-14 font-medium mt-1 text-md">5</h1>
             
 
                <div className="m-3 ml-6  ">

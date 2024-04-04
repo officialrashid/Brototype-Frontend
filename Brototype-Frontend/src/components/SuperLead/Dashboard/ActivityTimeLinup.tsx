@@ -47,9 +47,9 @@ const ActivityTimeLinup = () => {
             </div>
             <div className="flex flex-row mt-5 ml-5">
               <h1 className={`font-roboto text-sm mt-2 text-gray-400 tex-sm`}>{data.startTime}</h1>
-              <span className="font-roboto text-xs inline-flex items-center h-6 rounded-md bg-pink-50 px-3 py-1  font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer ml-5 mt-2" onClick={() => markAsComplete(index)}>
+              {/* <span className="font-roboto text-xs inline-flex items-center h-6 rounded-md bg-pink-50 px-3 py-1  font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer ml-5 mt-2" onClick={() => markAsComplete(index)}>
                  Complete
-              </span>
+              </span> */}
             </div>
             
           </div>

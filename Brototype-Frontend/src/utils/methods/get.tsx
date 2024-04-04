@@ -1,14 +1,18 @@
 import { LayoutGroup } from "framer-motion";
-import Api from "../baseUrl/baseUrl";
 import studentApi from "../baseUrl/studentBaseUrl"
+import reviewerApi from "../baseUrl/reviewerBaseUrl"
+import authenticationApi from "../baseUrl/authenticationBaseUrl"
+import fumigationApi from "../baseUrl/fumigationBaseUrl"
 import superleadApi from "../baseUrl/superleadBaseUrl"
+import taskApi from "../baseUrl/taskBaseUrl"
+import chatApi from "../baseUrl/baseUrl"
 ////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
 
 
   try {
-    const response = await Api.get('/api/fumigation/getEnquery');
+    const response = await fumigationApi.get('/api/fumigation/getEnquery');
     return response;
   } catch (error) {
     console.error("Error in getEnquiriesApi:", error);
@@ -103,7 +107,7 @@ export const getReviewDetails = async (data: { batchId: string; studentId: strin
 export const getScheduleEvents = async (reviewerId: string) => {
   try {
 
-    const response = await Api.get(`/api/reviewer/get-schedule-events/${reviewerId}`);
+    const response = await reviewerApi.get(`/api/reviewer/get-schedule-events/${reviewerId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -112,7 +116,7 @@ export const getScheduleEvents = async (reviewerId: string) => {
 export const getTimeLineUp = async (data: { reviewerId: string; dayTimeLine: string; }) => {
   try {
 
-    const response = await Api.get(`/api/reviewer/get-day-timeLine`, { params: data });
+    const response = await reviewerApi.get(`/api/reviewer/get-day-timeLine`, { params: data });
     console.log(response, "resposne get metho");
     if (response.data.sortedResponse) {
       return response.data.sortedResponse;
@@ -127,7 +131,7 @@ export const getTimeLineUp = async (data: { reviewerId: string; dayTimeLine: str
 export const getReviewerDetails = async (reviewerId: string) => {
   try {
 
-    const response = await Api.get(`/api/reviewer/get-reviewer-details/${reviewerId}`);
+    const response = await reviewerApi.get(`/api/reviewer/get-reviewer-details/${reviewerId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -136,7 +140,7 @@ export const getReviewerDetails = async (reviewerId: string) => {
 export const getReviewerProfile = async (reviewerId: string) => {
   try {
 
-    const response = await Api.get(`/api/reviewer/get-reviewer-profile/${reviewerId}`);
+    const response = await reviewerApi.get(`/api/reviewer/get-reviewer-profile/${reviewerId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -145,7 +149,7 @@ export const getReviewerProfile = async (reviewerId: string) => {
 export const getReviewTakeCount = async (reviewerId: string) => {
   try {
 
-    const response = await Api.get(`/api/reviewer/review-take-count/${reviewerId}`);
+    const response = await reviewerApi.get(`/api/reviewer/review-take-count/${reviewerId}`);
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -159,7 +163,7 @@ export const getUpdateTask = async (studentId: string) => {
 
   try {
 
-    const response = await Api.get(`/api/task/get-update-task/${studentId}`);
+    const response = await taskApi.get(`/api/task/get-update-task/${studentId}`);
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -170,7 +174,7 @@ export const getEditTaskDetails = async (data: { studentId: string, mainQuestion
 
   try {
 
-    const response = await Api.get(`/api/task/get-edit-task-details`, { params: data });
+    const response = await taskApi.get(`/api/task/get-edit-task-details`, { params: data });
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -179,7 +183,7 @@ export const getEditTaskDetails = async (data: { studentId: string, mainQuestion
 
 export const getPersonalWorkout = async (week: string) => {
   try {
-    const response = await Api.get(`/api/task/get-personalWorkout-task/${week}`);
+    const response = await taskApi.get(`/api/task/get-personalWorkout-task/${week}`);
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -187,7 +191,7 @@ export const getPersonalWorkout = async (week: string) => {
 }
 export const getmiscellaneousWorkout = async (week: string) => {
   try {
-    const response = await Api.get(`/api/task/get-miscellaneousWorkout-task/${week}`);
+    const response = await taskApi.get(`/api/task/get-miscellaneousWorkout-task/${week}`);
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -198,7 +202,7 @@ export const getTechnicalWorkout = async (data:any) => {
   console.log(data,"opp987686877======");
   
   try {
-    const response = await Api.get(`/api/task/get-technicalWorkout-task`,{ params: data });
+    const response = await taskApi.get(`/api/task/get-technicalWorkout-task`,{ params: data });
     return response?.data?.response; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };
@@ -223,7 +227,7 @@ export const getStudentStatus = async (data:{superleadUniqueId:string,currentPag
 
   
   try {
-     const response = await Api.get(`/api/auth/get-all-students-status`,{params:data})
+     const response = await authenticationApi.get(`/api/auth/get-all-students-status`,{params:data})
      return response?.data;
   } catch (error) {
    
@@ -232,7 +236,7 @@ export const getStudentStatus = async (data:{superleadUniqueId:string,currentPag
 }
 export const getHubWiseStudentsDetails = async (uniqueId:string) =>{
   try {
-     const response = await Api.get(`/api/auth/get-hubwise-students-details/${uniqueId}`)
+     const response = await authenticationApi.get(`/api/auth/get-hubwise-students-details/${uniqueId}`)
      return response?.data;
   } catch (error) {
    
@@ -241,7 +245,7 @@ export const getHubWiseStudentsDetails = async (uniqueId:string) =>{
 }
 export const getAllReviewers = async (currentPage:number) =>{
   try {
-     const response = await Api.get(`/api/reviewer/get-all-reviewers-profile/${currentPage}`)
+     const response = await reviewerApi.get(`/api/reviewer/get-all-reviewers-profile/${currentPage}`)
      return response?.data?.response;
   } catch (error) {
    
@@ -250,7 +254,7 @@ export const getAllReviewers = async (currentPage:number) =>{
 }
 export const getReviewerStatus = async () =>{
   try {
-     const response = await studentApi.get(`/api/auth/get-all-reviewers-status`)
+     const response = await authenticationApi.get(`/api/auth/get-all-reviewers-status`)
      return response?.data;
   } catch (error) {
    
@@ -261,7 +265,7 @@ export const getAllFumigationStudents = async (data:{hubLocation:string,currentP
  
   try {
    
-     const response = await studentApi.get(`/api/fumigation/get-all-fumigation-students`,{params:data})
+     const response = await fumigationApi.get(`/api/fumigation/get-all-fumigation-students`,{params:data})
      return response?.data?.response;
   } catch (error) {
    
@@ -271,7 +275,7 @@ export const getAllFumigationStudents = async (data:{hubLocation:string,currentP
 export const getSuperleadHubLocation = async (uniqueId:string) =>{
  
   try {
-     const response = await Api.get(`/api/auth/get-superlead-hub-location/${uniqueId}`)
+     const response = await authenticationApi.get(`/api/auth/get-superlead-hub-location/${uniqueId}`)
      return response?.data?.response;
   } catch (error) {
    
@@ -281,7 +285,7 @@ export const getSuperleadHubLocation = async (uniqueId:string) =>{
 export const getBestReviewers = async () =>{
  
   try {
-     const response = await Api.get(`/api/reviewer/get-best-reviewers`)
+     const response = await reviewerApi.get(`/api/reviewer/get-best-reviewers`)
      return response?.data;
   } catch (error) {
    
@@ -291,7 +295,7 @@ export const getBestReviewers = async () =>{
 export const getReviewCountAnalyze = async () =>{
  
   try {
-     const response = await Api.get(`/api/reviewer/get-review-count-analyze`)
+     const response = await reviewerApi.get(`/api/reviewer/get-review-count-analyze`)
      return response?.data?.response;
   } catch (error) {
    
@@ -301,7 +305,7 @@ export const getReviewCountAnalyze = async () =>{
 export const getStudentsAndPlacedStudents = async (uniqueId:string) =>{
  
   try {
-     const response = await studentApi.get(`/api/auth/get-students-and-placed-students/${uniqueId}`)
+     const response = await authenticationApi.get(`/api/auth/get-students-and-placed-students/${uniqueId}`)
      return response?.data;
   } catch (error) {
    
@@ -311,7 +315,7 @@ export const getStudentsAndPlacedStudents = async (uniqueId:string) =>{
 export const getSuperleadProfile = async (superleadId:string) =>{
  
   try {
-     const response = await Api.get(`/api/superlead/get-superlead-profile/${superleadId}`)
+     const response = await superleadApi.get(`/api/superlead/get-superlead-profile/${superleadId}`)
      return response?.data;
   } catch (error) {
    
@@ -332,7 +336,7 @@ export const getPerPageStudents = async (data:{superleadUniqueId:string,perPage:
 export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,perPage:number}) =>{
 
    try {
-      const response = await Api.get(`/api/auth/get-per-page-students-status`,{params:data})
+      const response = await authenticationApi.get(`/api/auth/get-per-page-students-status`,{params:data})
       return response?.data;
    } catch (error) {
     
@@ -342,7 +346,7 @@ export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,per
  export const getPerPageReviewers = async (perPage:number) =>{
 
   try {
-     const response = await Api.get(`/api/reviewer/get-per-page-reviewers/${perPage}`,)
+     const response = await reviewerApi.get(`/api/reviewer/get-per-page-reviewers/${perPage}`,)
      return response?.data?.response;
   } catch (error) {
    
@@ -352,7 +356,7 @@ export const getPerPageStudentStatus = async (data:{superleadUniqueId:string,per
 export const getPerPageFumiagtionStudents = async (data:{hubLocation:string,selectedPerPage:number}) =>{
 
   try {
-     const response = await studentApi.get(`/api/fumigation/get-per-page-students`,{params:data})
+     const response = await fumigationApi.get(`/api/fumigation/get-per-page-students`,{params:data})
      return response?.data?.response;
   } catch (error) {
    
@@ -373,7 +377,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getAllChatRecipients = async (initiatorId:string) =>{
 
     try {
-       const response = await Api.get(`/api/chat-and-video/get-all-chat-recipients/${initiatorId}`)
+       const response = await chatApi.get(`/api/chat-and-video/get-all-chat-recipients/${initiatorId}`)
        return response?.data?.getAllChatRecipients
        ;
     } catch (error) {
@@ -384,7 +388,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getMessages = async (data:{initiatorId:string,recipientId:string}) =>{
 
     try {
-       const response = await Api.get(`/api/chat-and-video/get-messages`,{params:data})
+       const response = await chatApi.get(`/api/chat-and-video/get-messages`,{params:data})
        return response?.data;
     } catch (error) {
      
@@ -394,7 +398,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getGroupMessages = async (data:{groupId:string,senderId:string}) =>{
 
     try {
-       const response = await Api.get(`/api/chat-and-video/get-group-messages`,{params:data})
+       const response = await chatApi.get(`/api/chat-and-video/get-group-messages`,{params:data})
        return response?.data;
     } catch (error) {
      
@@ -416,7 +420,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getActivityEvents = async (superleadId:string) =>{
 
     try {
-       const response = await Api.get(`/api/superlead/get-activity-events/${superleadId}`)
+       const response = await superleadApi.get(`/api/superlead/get-activity-events/${superleadId}`)
        return response?.data;
     } catch (error) {
      
@@ -426,7 +430,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getActivityTimeLineup = async (superleadId:string) =>{
 
     try {
-       const response = await Api.get(`/api/superlead/get-activity-timelineup/${superleadId}`)
+       const response = await superleadApi.get(`/api/superlead/get-activity-timelineup/${superleadId}`)
        return response?.data;
     } catch (error) {
      
@@ -436,7 +440,7 @@ export const getAllStudents = async (uniqueId:string) =>{
   export const getGroupMembersDetails = async (groupId:string) =>{
 
     try {
-       const response = await Api.get(`/api/chat-and-video/get-group-members-details/${groupId}`)
+       const response = await chatApi.get(`/api/chat-and-video/get-group-members-details/${groupId}`)
        return response?.data;
     } catch (error) {
      

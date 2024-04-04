@@ -1,7 +1,12 @@
 import Api from "../baseUrl/baseUrl";
 import { AxiosResponse } from "axios";
 import studentApi from "../baseUrl/studentBaseUrl"
-
+import reviewerApi from "../baseUrl/reviewerBaseUrl"
+import authenticationApi from "../baseUrl/authenticationBaseUrl"
+import fumigationApi from "../baseUrl/fumigationBaseUrl"
+import superleadApi from "../baseUrl/superleadBaseUrl"
+import taskApi from "../baseUrl/taskBaseUrl"
+import chatApi from "../baseUrl/baseUrl"
 //***********  fumigation service Api  **********/
 // Enquirie interface
 interface EnquiryData {
@@ -70,7 +75,7 @@ interface updateEducationDetails {
 //********* */ Enquirie Apis ***********////
 export const EnquiriesApi = async (data: EnquiryData): Promise<AxiosResponse> => {
   try {
-    const response = await Api.post('/api/fumigation/enquery', data);
+    const response = await fumigationApi.post('/api/fumigation/enquery', data);
     return response;
   } catch (error) {
     console.error("Error in EnquiriesApi:", error);
@@ -86,7 +91,7 @@ export const invigilatorLogin = async (data: invigilatorLogin): Promise<AxiosRes
 
   try {
 
-    const response = await Api.post('/api/fumigation/invigilator-login', data);
+    const response = await fumigationApi.post('/api/fumigation/invigilator-login', data);
     return response
   } catch (error) {
     console.log("Error in the invigilatorLogin", error);
@@ -97,7 +102,7 @@ export const invigilatorLogin = async (data: invigilatorLogin): Promise<AxiosRes
 
 export const invigilatorGoogleLogin = async (email: string) => {
   try {
-    const response = await Api.post('/api/fumigation/invigilator-google-login', email)
+    const response = await fumigationApi.post('/api/fumigation/invigilator-google-login', email)
     return response
   } catch (err) {
     return { status: false, message: "Some issue in Google Sign in" }
@@ -105,7 +110,7 @@ export const invigilatorGoogleLogin = async (email: string) => {
 }
 export const createInvigilator = async (data: invigilatorData) => {
   try {
-    const response = await Api.post('/api/fumigation/create-invigilator', data)
+    const response = await fumigationApi.post('/api/fumigation/create-invigilator', data)
     return response;
   } catch (err) {
     return { status: false, message: "Some issue in createInvigilator" }
@@ -119,7 +124,7 @@ export const createInvigilator = async (data: invigilatorData) => {
 export const createBatch = async (data: createBatch) => {
 
   try {
-    const response = await Api.post('/api/fumigation/create-batch', data)
+    const response = await fumigationApi.post('/api/fumigation/create-batch', data)
     return response
   } catch (err) {
     return { status: false, message: "Some isuues in Create Batch" }
@@ -137,7 +142,7 @@ export const updatePersonalDetails = async (data: updatePersonalDetails, student
     }
     console.log(personalData, "personalData");
 
-    const resposne = await Api.post('/api/student/update-personal-details', personalData)
+    const resposne = await studentApi.post('/api/student/update-personal-details', personalData)
     return resposne;
   } catch (err) {
     return { status: false, message: "some issue in personal deatils update" }
@@ -150,7 +155,7 @@ export const updateAddressDetails = async (data: updateAddressDetails, studentId
       data,
       studentId
     }
-    const resposne = await Api.post('/api/student/update-address-details', addressData)
+    const resposne = await studentApi.post('/api/student/update-address-details', addressData)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -163,7 +168,7 @@ export const updateEducationDetails = async (data: updateEducationDetails, stude
       data,
       studentId
     }
-    const resposne = await Api.post('/api/student/update-education-details', educationData)
+    const resposne = await studentApi.post('/api/student/update-education-details', educationData)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -172,7 +177,7 @@ export const updateEducationDetails = async (data: updateEducationDetails, stude
 }
 export const requestExtention = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/student/request-extention', data)
+    const resposne = await studentApi.post('/api/student/request-extention', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -184,7 +189,7 @@ export const studentLogin = async (data: studentLogin): Promise<AxiosResponse> =
 
   try {
 
-    const response = await Api.post('/api/auth/student-login', data);
+    const response = await authenticationApi.post('/api/auth/student-login', data);
     return response
   } catch (error) {
     console.log("Error in the Student Login", error);
@@ -197,7 +202,7 @@ export const secondExtendRequest = async (extendId: string) => {
   try {
 
 
-    const response = await Api.post(`/api/student/second-extend-request/${extendId}`,);
+    const response = await studentApi.post(`/api/student/second-extend-request/${extendId}`,);
 
     return response
   } catch (error) {
@@ -210,7 +215,7 @@ export const updateGovernmentApprovedId = async (data: any) => {
   try {
     console.log(data, "gevernmrntId comngggg");
 
-    const resposne = await Api.post('/api/student/update-governmentId', data)
+    const resposne = await studentApi.post('/api/student/update-governmentId', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -221,7 +226,7 @@ export const updateGovernmentApprovedId = async (data: any) => {
 ///// ****** reviewer-sevice post datas api section /////
 export const createEvents = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/reviewer/schedule-event', data)
+    const resposne = await reviewerApi.post('/api/reviewer/schedule-event', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -231,7 +236,7 @@ export const createEvents = async (data: any) => {
 }
 export const reviewerLogin = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/auth/reviewer-login', data)
+    const resposne = await authenticationApi.post('/api/auth/reviewer-login', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -245,7 +250,7 @@ export const updateReviewerWorkDetails = async (data: any, reviewerId: string) =
       data,
       reviewerId
     }
-    const resposne = await Api.post('/api/reviewer/update-work-details', workData)
+    const resposne = await reviewerApi.post('/api/reviewer/update-work-details', workData)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -259,7 +264,7 @@ export const updatePersonalWorkout = async (data: any) => {
   console.log(data, "datasssssssss234343433");
 
   try {
-    const resposne = await Api.post('/api/task/update-personal-workout', data)
+    const resposne = await taskApi.post('/api/task/update-personal-workout', data)
     return resposne.data
   } catch (err) {
     return { status: false, message: "some issue in task  pdate" }
@@ -269,7 +274,7 @@ export const updatePersonalWorkout = async (data: any) => {
 }
 export const updateTechnicalWorkout = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/task/update-technical-workout', data)
+    const resposne = await taskApi.post('/api/task/update-technical-workout', data)
     return resposne.data
   } catch (err) {
     return { status: false, message: "some issue in task  pdate" }
@@ -279,7 +284,7 @@ export const updateTechnicalWorkout = async (data: any) => {
 }
 export const updateMiscellaneousWorkout = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/task/update-miscellaneous-workout', data)
+    const resposne = await taskApi.post('/api/task/update-miscellaneous-workout', data)
     return resposne.data
   } catch (err) {
     return { status: false, message: "some issue in task  pdate" }
@@ -293,7 +298,7 @@ export const superleadLogin = async (data: any) => {
   console.log(data, "data uniqueId in superlEadsss");
 
   try {
-    const resposne = await Api.post('/api/auth/superlead-login', data)
+    const resposne = await authenticationApi.post('/api/auth/superlead-login', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
@@ -304,7 +309,7 @@ export const superleadLogin = async (data: any) => {
 export const addReviewers = async (data: any) => {
 
   try {
-    const resposne = await studentApi.post('/api/auth/add-reviewer', data)
+    const resposne = await authenticationApi.post('/api/auth/add-reviewer', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -315,7 +320,7 @@ export const addReviewers = async (data: any) => {
 export const addStudents = async (data: any) => {
 
   try {
-    const resposne = await studentApi.post('/api/auth/add-student', data)
+    const resposne = await authenticationApi.post('/api/auth/add-student', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -326,7 +331,7 @@ export const addStudents = async (data: any) => {
 export const addAdvisors = async (data: any) => {
 
   try {
-    const resposne = await studentApi.post('/api/auth/add-advisor', data)
+    const resposne = await authenticationApi.post('/api/auth/add-advisor', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -344,7 +349,7 @@ export const createChat = async (data: any) => {
 
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/create-chat', data)
+    const resposne = await chatApi.post('/api/chat-and-video/create-chat', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -355,7 +360,7 @@ export const createChat = async (data: any) => {
 export const sendMessage = async (data: any) => {
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/send-message', data)
+    const resposne = await chatApi.post('/api/chat-and-video/send-message', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -368,7 +373,7 @@ export const createActivityEvents = async (data: any) => {
   console.log(data, "superlead eventsss");
 
   try {
-    const resposne = await Api.post('/api/superlead/create-activity-event', data)
+    const resposne = await superleadApi.post('/api/superlead/create-activity-event', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -381,7 +386,7 @@ export const storeChatAudio = async (data: any) => {
   console.log(data, "superlead eventsss");
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/store-chat-audio', data)
+    const resposne = await chatApi.post('/api/chat-and-video/store-chat-audio', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -393,7 +398,7 @@ export const storeChatImage = async (data: any) => {
   console.log(data, "superlead eventsss");
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/store-chat-image', data)
+    const resposne = await chatApi.post('/api/chat-and-video/store-chat-image', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -405,7 +410,7 @@ export const storeChatVideo = async (data: any) => {
   console.log(data, "superlead eventsss");
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/store-chat-video', data)
+    const resposne = await chatApi.post('/api/chat-and-video/store-chat-video', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -417,7 +422,7 @@ export const storeChatDocument = async (data: any) => {
   console.log(data, "superlead eventsss");
 
   try {
-    const resposne = await Api.post('/api/chat-and-video/store-chat-document', data)
+    const resposne = await chatApi.post('/api/chat-and-video/store-chat-document', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
@@ -426,7 +431,7 @@ export const storeChatDocument = async (data: any) => {
 }
 export const createGroupChat = async (data: any) => {
   try {
-    const resposne = await Api.post('/api/chat-and-video/create-group-chat', data)
+    const resposne = await chatApi.post('/api/chat-and-video/create-group-chat', data)
     return resposne?.data
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
