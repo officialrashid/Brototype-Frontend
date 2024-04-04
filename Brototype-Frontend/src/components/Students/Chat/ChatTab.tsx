@@ -126,6 +126,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
                                 {chatUser.firstName} {chatUser.lastName}
                             </span>
+                          
                             <div>
                                 {lastMessage && lastMessage.content && (
                                     <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
@@ -139,8 +140,13 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
 
 
-                    <div className="m-4">
-                        <span className="text-gray-600 text-sm font-roboto text-white">6m</span>
+                    <div className="m-2 mr-3 m-0">
+                        <div className="">
+                        <span className={` text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
+                        <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
+                           10
+                        </div>
+                        </div>
                     </div>
                 </div>
             ))}
