@@ -124,10 +124,10 @@ const Chat = () => {
                 console.log("yyyyyyyyyyyyyyyyyyy");
 
                 // Emit message to the server
-                socket.emit('message', messageData);
+                socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
-                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
@@ -145,8 +145,8 @@ const Chat = () => {
                     content: message,
                     type: chatType
                 }
-                socket.emit('groupMessage', groupMessageData);
-                socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.emit('groupMessage', groupMessageData);
+                socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
@@ -294,11 +294,11 @@ const Chat = () => {
                 };
                 console.log(messageData, "messageData messageData messageData");
 
-                socket.emit('message', messageData);
+                socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
 
                 // Listen for response from the server
-                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
 
                     if (response.status === true) {
@@ -336,11 +336,11 @@ const Chat = () => {
                 }
                 console.log(groupMessageData, "messageData messageData messageData");
 
-                socket.emit('groupMessage', groupMessageData);
+                socket?.emit('groupMessage', groupMessageData);
                 setRecordedAudioBlob(null);
 
                 // Listen for response from the server
-                socket.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
+                socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
 
 
                     if (response.status === true) {
@@ -353,8 +353,6 @@ const Chat = () => {
                 });
             }
         }
-
-
     };
     const changeModalStatus = () => {
         if (modalStatus) {
@@ -394,13 +392,9 @@ const Chat = () => {
         }
     }
     return (
-
-
         <>
             <GroupInformationModal isVisible={groupInfo} onClose={() => { setGroupInfo(false) }} changeModalStatus={changeModalStatus} groupId={groupId} groupDetails={student} />
             <div className="flex border shadow-md  mt-10  m-10  mr-4 ml-4 item  h-38rem" onClick={() => changeModalStatus()}>
-
-
                 <div className="border-r w-1/2 bg-white ">
                     <div className="m-5 flex gap-3">
                         <div>
@@ -435,10 +429,10 @@ const Chat = () => {
                 </div>
 
                 {student && (
-                    <div className="  border-r w-full bg-white h-20 mb-0" >
-                        <div className="border-b ">
-                            <div className="flex justify-between ">
-                                <div className="flex gap-2 m-2 ">
+                    <div className="border-r w-full bg-white h-20 mb-0" >
+                        <div className="border-b">
+                            <div className="flex justify-between">
+                                <div className="flex gap-2 m-2">
                                     {student.groupName ? (
                                         <div className="border h-12 w-12 rounded-full  mt-3" onClick={() => handleGroupInfo(student?._id)}>
                                             <img src={student?.profile} alt="" className="rounded-full" />
@@ -452,7 +446,7 @@ const Chat = () => {
                                     <div className="mt-5"><span className="text-md  font-semibold font-roboto">{student?.firstName} {student?.lastName} {student?.groupName}</span>
 
                                         <div>
-                                            {online.some(onlineUser => onlineUser.chaterId === student.chaterId && onlineUser.isOnline) ? (
+                                            {online.some(onlineUser => onlineUser?.chaterId === student.chaterId && onlineUser?.isOnline) ? (
                                                 <div>
                                                     <span className="text-gray-600 text-sm font-roboto">Active Now</span>
                                                 </div>
@@ -589,20 +583,20 @@ const Chat = () => {
                                                 {/* Add additional <source> elements for other video formats if needed */}
                                             </video>
                                         </div>
-                                    ) : message.type === "documentChat" ? (
+                                    ) : message?.type === "documentChat" ? (
                                         <div
                                             key={index}
                                             className={`flex gap-5 m-5 mb-0 mt-10 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                         >
                                             {/* Display PDF */}
-                                            <embed src={message.content} type="application/pdf" width="500" height="600" />
+                                            <embed src={message?.content} type="application/pdf" width="500" height="600" />
 
                                             {/* Or, display DOC */}
                                             {/* <iframe src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(message.content)}`} width="500" height="600" frameborder="0"></iframe> */}
                                         </div>
-                                    ) : message.type === "emojiChat" ? (
+                                    ) : message?.type === "emojiChat" ? (
                                         <>
-                                        {message.senderFirstName && message.senderLastName ? (
+                                        {message?.senderFirstName && message?.senderLastName ? (
                                             <div
                                                 key={index}
                                                 className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end ml-48' : 'justify-start mr-48'}`}
@@ -658,7 +652,6 @@ const Chat = () => {
                                         </div>
                                     ) : (
                                         <>
-
                                             <div className="relative">
                                                 <textarea
                                                     className="font-roboto border px-10 h-10 py-2 resize-none overflow-hidden outline-none max-h-40 rounded-md w-full"
@@ -674,12 +667,8 @@ const Chat = () => {
                                                 </div>
                                             </div>
                                         </>
-
                                     )}
-
                                 </div>
-
-
                                 {student.groupName ? (
                                     <div className="m-1 mt-0 cursor-pointor  relative  bottom-6">
                                         <div className="flex gap-1">
@@ -738,40 +727,17 @@ const Chat = () => {
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 rounded-full">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.768 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                                                 </svg>
-
                                                 {/* </div> */}
-
                                             </div>
                                         </div>
                                     </div>
                                 )}
-
-
-
-
-
-
-
                             </div>
-
-
-
-
                         </div>
-
-
                     </div>
                 )}
-
-
-
-            
-
-
-
             </div>
             <ChatMediaModal isVisible={selectMedia} onClose={() => { setSelectMedia(false) }} changeModalStatus={changeModalStatus} handleMessageChange={handleMessageChange} />
-
         </>
 
     )

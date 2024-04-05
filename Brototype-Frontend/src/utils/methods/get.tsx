@@ -447,5 +447,15 @@ export const getAllStudents = async (uniqueId:string) =>{
     }
   
   }
+  /// last work pendinggsss
+  export const getRecipientsUnreadMessageCount = async (initiatorId:string) =>{
+
+    try {
+       const response = await chatApi.get(`/api/chat-and-video/get-unread-message-count/${initiatorId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
   
+  }
   

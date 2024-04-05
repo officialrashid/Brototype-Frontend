@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
+import { getAllChatRecipients, getMessages, getRecipientsUnreadMessageCount } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { RootState } from "../../../redux-toolkit/store";
 import { createChat } from "../../../utils/methods/post";
@@ -20,6 +20,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(studentId);
+  
                 if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
                     // handleStudentClick(0, response.recipients[0]);
@@ -32,7 +33,17 @@ const ChatTab = ({ socket }: { socket: any }) => {
         };
         fetchAllChatRecipients();
     }, [studentId]);
+    useEffect(() => {
+        const fetchRecipientsUnreadMessageCount = async  () => {
+            try {
+            const respone = await getRecipientsUnreadMessageCount(studentId)
+            
+            } catch (error) {
 
+            }
+        }
+        fetchRecipientsUnreadMessageCount()
+    }, [])
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -64,12 +75,12 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
     const handleStudentClick = async (index: number, chatUser: any) => {
         try {
-            if(chatUser?.groupName){
+            if (chatUser?.groupName) {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
-                console.log("join room event emittedd",chatUser?._id );
+                console.log("join room event emittedd", chatUser?._id);
                 socket.emit("joinRoom", chatUser?._id);
-            }else{
+            } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
                 const chatData = {
@@ -83,7 +94,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
                 }
             }
-          
+
         } catch (err) {
             console.error("Error handling student click:", err);
         }
@@ -105,47 +116,47 @@ const ChatTab = ({ socket }: { socket: any }) => {
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {chatUser.groupName} 
+                                    {chatUser.groupName}
                                 </span>
                                 <div>
                                     {lastMessage && lastMessage.content && (
                                         <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content} 
+                                            {lastMessage.content}
                                         </span>
                                     )}
                                 </div>
                             </div>
                         </div>
-                    ): (
+                    ) : (
                         <div className="flex gap-2 m-2 mt-">
 
-                        <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={chatUser.imageUrl} alt="" className="rounded-full " />
-                        </div>
-                        <div className="mt-1 mb-0">
-                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {chatUser.firstName} {chatUser.lastName}
-                            </span>
-                          
-                            <div>
-                                {lastMessage && lastMessage.content && (
-                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {lastMessage.content} hellooo
-                                    </span>
-                                )}
+                            <div className="border h-8 w-8 rounded-full mt-2 ">
+                                <img src={chatUser.imageUrl} alt="" className="rounded-full " />
+                            </div>
+                            <div className="mt-1 mb-0">
+                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                    {chatUser.firstName} {chatUser.lastName}
+                                </span>
+
+                                <div>
+                                    {lastMessage && lastMessage.content && (
+                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                            {lastMessage.content} hellooo
+                                        </span>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div> 
                     )}
 
 
 
                     <div className="m-2 mr-3 m-0">
                         <div className="">
-                        <span className={` text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
-                        <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
-                           10
-                        </div>
+                            <span className={` text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
+                            <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
+                                10
+                            </div>
                         </div>
                     </div>
                 </div>
