@@ -33,17 +33,17 @@ const ChatTab = ({ socket }: { socket: any }) => {
         };
         fetchAllChatRecipients();
     }, [studentId]);
-    useEffect(() => {
-        const fetchRecipientsUnreadMessageCount = async  () => {
-            try {
-            const respone = await getRecipientsUnreadMessageCount(studentId)
+    // useEffect(() => {
+    //     const fetchRecipientsUnreadMessageCount = async  () => {
+    //         try {
+    //         const respone = await getRecipientsUnreadMessageCount(studentId)
             
-            } catch (error) {
+    //         } catch (error) {
 
-            }
-        }
-        fetchRecipientsUnreadMessageCount()
-    }, [])
+    //         }
+    //     }
+    //     fetchRecipientsUnreadMessageCount()
+    // }, [])
     useEffect(() => {
         const fetchMessages = async () => {
             try {

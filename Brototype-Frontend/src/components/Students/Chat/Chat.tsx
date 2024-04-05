@@ -294,11 +294,11 @@ const Chat = () => {
                 };
                 console.log(messageData, "messageData messageData messageData");
 
-                socket?.emit('message', messageData);
+                socket.emit('message', messageData);
                 setRecordedAudioBlob(null);
 
                 // Listen for response from the server
-                socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
+                socket.on('messageResponse', (response: { status: boolean; message: any; }) => {
 
 
                     if (response.status === true) {
