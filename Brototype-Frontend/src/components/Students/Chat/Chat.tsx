@@ -13,6 +13,7 @@ import ChatMediaModal from "./ChatMediaModal";
 import GroupInformationModal from "./GroupInformation";
 import { Smile } from "lucide-react";
 import Emoji from "./emoji/emojis"
+import GlobalContext from "../../../context/GlobalContext";
 
 
 
@@ -43,11 +44,12 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const inputRef = useRef(null);
+    const { setUnreadReload } = useContext(GlobalContext);
     useEffect(() => {
         if (!socket || !studentId) return;
 
         socket.on("getOnlineUser", (users: any) => {
-            console.log(users, "online usersssss comingggc");
+
             setOnline(users)
             const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
             console.log(currentTime, "time updation callingggg yarr");
@@ -59,7 +61,7 @@ const Chat = () => {
         };
     }, [socket, studentId]);
     socket?.on("currentOnlineUser", (users: any) => {
-        console.log(users, "online usersssss comingggc");
+
         setOnline(users)
     });
     useEffect(() => {
@@ -131,6 +133,7 @@ const Chat = () => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
+                        setUnreadReload(true)
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -227,12 +230,15 @@ const Chat = () => {
             const handleReceivedMessage = (data: any) => {
                 console.log("Received messagesssssssssssssss:", data);
                 console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content.content);
+
                 setAllMessage(prev => {
                     console.log('Previous state:', prev);
                     const newState = [...prev, data.content];
                     console.log('New state:', newState);
                     return newState;
                 });
+           
+                setUnreadReload(true)
             };
 
             socket.on("received", handleReceivedMessage);
@@ -422,7 +428,7 @@ const Chat = () => {
                         <Students socket={socket} />
                     ) : activeTab === "chat" ? (
 
-                        <ChatTab socket={socket} />
+                        <ChatTab socket={socket}  />
                     ) : null}
 
 

@@ -1,4 +1,4 @@
-import { createRef, useCallback, useEffect, useRef, useState } from "react"
+import { createRef, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import EmojiPicker from 'emoji-picker-react';
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
@@ -15,6 +15,7 @@ import GroupInformationModal from "./GroupInformation";
 import DeleteMessageModal from "./DeleteMessageModal";
 import { Smile, Image } from 'lucide-react'
 import Emoji from "./emoji/emojis"
+import GlobalContext from "../../../context/GlobalContext";
 const Chat = () => {
 
     const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
@@ -45,6 +46,7 @@ const Chat = () => {
     const [showEmojis, setShowEmojis] = useState(false)
     const [cursorPosition, setCursorPosition] = useState()
     const [online, setOnline] = useState([])
+    const { setUnreadReload } = useContext(GlobalContext);
     // const inputRef: any = createRef()
     const inputRef = useRef(null);
     useEffect(() => {
@@ -170,6 +172,7 @@ const Chat = () => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
+                        setUnreadReload(true)
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -248,6 +251,7 @@ const Chat = () => {
                     console.log('New state:', newState);
                     return newState;
                 });
+                setUnreadReload(true)
             };
 
             socket.on("received", handleReceivedMessage);

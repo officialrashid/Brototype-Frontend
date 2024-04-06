@@ -31,7 +31,9 @@ interface GlobalContextType {
   isOnline : any[],
   setIsOnline: () => void;
   declareSocket : any,
-  setDeclareSocket : () => void
+  setDeclareSocket : () => void;
+  unreadReload: boolean; // Adjusted type to boolean
+  setUnreadReload: (reload: boolean) => void; // Adjusted type to boolean
 }
 const GlobalContext = React.createContext<GlobalContextType>({
   monthIndex: 0,
@@ -59,7 +61,9 @@ const GlobalContext = React.createContext<GlobalContextType>({
   isOnline: [],
   setIsOnline : () => {},
   declareSocket : null,
-  setDeclareSocket : () => {}
+  setDeclareSocket : () => {},
+  unreadReload : false,
+  setUnreadReload:() => {}
 });
 
 export default GlobalContext;

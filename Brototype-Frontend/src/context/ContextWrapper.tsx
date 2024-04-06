@@ -45,6 +45,7 @@ const ContextWrapper = (props:any) => {
     const [chatId,setChatId] = useState(" ")
     const [isOnline, setIsOnline] = useState<any[]>([]);
     const [declareSocket, setDeclareSocket] = useState<any>(null);
+    const [unreadReload, setUnreadReload] = useState<boolean>(false);
     const filteredEvents = useMemo(() => {
       // Filter logic here using savedEvents
       // For example:
@@ -88,6 +89,8 @@ const ContextWrapper = (props:any) => {
         setIsOnline,
         declareSocket,
         setDeclareSocket,
+        unreadReload,
+        setUnreadReload,
         }}>
             {props.children}
        </GlobalContext.Provider>

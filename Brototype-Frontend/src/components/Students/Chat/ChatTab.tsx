@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages, getRecipientsUnreadMessageCount } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { RootState } from "../../../redux-toolkit/store";
 import { createChat } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
+import React from "react";
+import GlobalContext from "../../../context/GlobalContext";
 // import { useSocket } from "../../../hooks/useSocket";
-const ChatTab = ({ socket }: { socket: any }) => {
+const ChatTab = ({ socket }: { socket: any}) => {
 
     const dispatch = useDispatch();
 
@@ -15,16 +17,17 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
-
+    const [unreadMsgCount, setUnreadMsgCount] = useState([])
+    const { chatId, setChatId,unreadReload,setUnreadReload } = useContext(GlobalContext);
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(studentId);
-  
+
                 if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
                     // handleStudentClick(0, response.recipients[0]);
-                    console.log(response.recipients[0], "{}{}{}{}{");
+                    console.log(response, "{}{}{}{}{");
 
                 }
             } catch (error) {
@@ -34,16 +37,23 @@ const ChatTab = ({ socket }: { socket: any }) => {
         fetchAllChatRecipients();
     }, [studentId]);
     useEffect(() => {
-        const fetchRecipientsUnreadMessageCount = async  () => {
+        const fetchRecipientsUnreadMessageCount = async () => {
             try {
-            const respone = await getRecipientsUnreadMessageCount(studentId)
-            
+                const response = await getRecipientsUnreadMessageCount(studentId)
+                console.log(response, "get Unread Message Counttttttt");
+                if (response?.getUnreadMsgCount?.status === true) {
+                    setUnreadMsgCount(response?.getUnreadMsgCount?.unreadCounts)
+                    setUnreadReload(false)
+                } else {
+                    setUnreadMsgCount([])
+                    setUnreadReload(false)
+                }
             } catch (error) {
 
             }
         }
         fetchRecipientsUnreadMessageCount()
-    }, [])
+    }, [studentId,unreadReload===true,socket])
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -99,15 +109,40 @@ const ChatTab = ({ socket }: { socket: any }) => {
             console.error("Error handling student click:", err);
         }
     };
+    useEffect(() => {
+        if (socket) {
+            const handleReceivedMessage = (data: any) => {
+                console.log("Received messagesssssssssssssss:", data);
+                console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content.content);
 
+                setAllMessage(prev => {
+                    console.log('Previous state:', prev);
+                    const newState = [...prev, data.content];
+                    console.log('New state:', newState);
+                    return newState;
+                });
+           
+                setUnreadReload(true)
+            };
+
+            socket.on("received", handleReceivedMessage);
+
+            return () => {
+                // Clean up socket listener when component unmounts
+                socket.off("received", handleReceivedMessage);
+            };
+        }
+    }, [socket]);
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((chatUser: any, index: number) => (
+              
                 <div
                     key={chatUser.chaterId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, chatUser)}
                 >
+                      {console.log(chatUser,"sceneeeeee")}
                     {chatUser.groupName ? (
                         <div className="flex gap-2 m-2 mt-">
 
@@ -141,7 +176,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                                 <div>
                                     {lastMessage && lastMessage.content && (
                                         <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content} hellooo
+                                            {lastMessage.content}
                                         </span>
                                     )}
                                 </div>
@@ -149,19 +184,28 @@ const ChatTab = ({ socket }: { socket: any }) => {
                         </div>
                     )}
 
+                    {unreadMsgCount.map((unread: any) => (
+                        <React.Fragment key={unread.chaterId}>
+                               {console.log(chatUser.chaterId,unread.chaterId,"[[[+++++++++")}
+                            {(chatUser.chaterId === unread.chaterId || chatUser._id === unread.chaterId) && (
+                             
+                                <div className="m-2 mr-3 m-0">
+                                    <div className="">
+                                        <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
+                                        <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
+                                            {unread.unreMsgCount}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </React.Fragment>
+                    ))}
 
 
-                    <div className="m-2 mr-3 m-0">
-                        <div className="">
-                            <span className={` text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
-                            <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
-                                10
-                            </div>
-                        </div>
-                    </div>
                 </div>
             ))}
         </div>
+
     );
 };
 
