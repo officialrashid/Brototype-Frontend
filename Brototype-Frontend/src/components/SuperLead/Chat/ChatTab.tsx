@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllChatRecipients, getMessages } from "../../../utils/methods/get";
+import { getAllChatRecipients, getMessages, getRecipientsUnreadMessageCount } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
@@ -32,7 +32,17 @@ const ChatTab = ({ socket }: { socket: any }) => {
         };
         fetchAllChatRecipients();
     }, [superleadId]);
+    useEffect(() => {
+        const fetchRecipientsUnreadMessageCount = async  () => {
+            try {
+            const respone = await getRecipientsUnreadMessageCount(superleadId)
+            
+            } catch (error) {
 
+            }
+        }
+        fetchRecipientsUnreadMessageCount()
+    }, [])
     useEffect(() => {
         const fetchMessages = async () => {
             try {
