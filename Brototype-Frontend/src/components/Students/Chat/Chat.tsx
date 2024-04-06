@@ -1,6 +1,5 @@
-import { SetStateAction, useContext, useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
-
 import { getGroupMessages, getMessages } from "../../../utils/methods/get";
 import Students from "./Superleads";
 import ChatTab from "./ChatTab";
@@ -18,7 +17,7 @@ import GlobalContext from "../../../context/GlobalContext";
 
 
 const Chat = () => {
-    const socket: Socket<DefaultEventsMap, DefaultEventsMap> | null = useSocket();
+    const socket: Socket<DefaultEventsMap,DefaultEventsMap> | null = useSocket();
     console.log(socket, 'sockettttt');
 
     const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)

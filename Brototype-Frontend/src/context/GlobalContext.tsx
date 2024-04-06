@@ -1,4 +1,5 @@
 import React from "react";
+import { boolean } from "yup";
 
 
 interface Action {
@@ -34,6 +35,10 @@ interface GlobalContextType {
   setDeclareSocket : () => void;
   unreadReload: boolean; // Adjusted type to boolean
   setUnreadReload: (reload: boolean) => void; // Adjusted type to boolean
+  clicked: boolean
+  setClicked : (clicked: boolean) => void;
+  clickedChaterId : string;
+  setClickedChaterId : (clicked:string) => void
 }
 const GlobalContext = React.createContext<GlobalContextType>({
   monthIndex: 0,
@@ -63,7 +68,11 @@ const GlobalContext = React.createContext<GlobalContextType>({
   declareSocket : null,
   setDeclareSocket : () => {},
   unreadReload : false,
-  setUnreadReload:() => {}
+  setUnreadReload:() => {},
+  clicked:false,
+  setClicked:()=>{},
+  clickedChaterId:"",
+  setClickedChaterId:()=>{}
 });
 
 export default GlobalContext;

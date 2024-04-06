@@ -7,6 +7,7 @@ import { createChat } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
 import React from "react";
 import GlobalContext from "../../../context/GlobalContext";
+import { setUnreadMsgCountZero } from "../../../utils/methods/patch";
 // import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = ({ socket }: { socket: any}) => {
 
@@ -98,10 +99,14 @@ const ChatTab = ({ socket }: { socket: any}) => {
                     recipientId: chatUser.superleadId || chatUser.chaterId,
                     chaters: chatUser
                 };
+                // Initialize newChatId variable
                 const response = await createChat(chatData);
+                let newChatId = null;
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                    newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
                     console.log("join room event emittedd", response?.response?.data?._id || response?.chatExists?.response?._id);
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
+                    setUnreadMsgCountZeroFunction(chatUser,newChatId,"oneToOne")
                 }
             }
 
@@ -133,6 +138,21 @@ const ChatTab = ({ socket }: { socket: any}) => {
             };
         }
     }, [socket]);
+    const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
+        console.log(chatUser,"setUnreadMsgCountZeroFunction setUnreadMsgCountZeroFunction");
+        console.log(chatId,"chatId chatId chatId");
+        console.log(type,"chatType chatType chatType");
+       const data = {
+           initiatorId: studentId,
+           recipientId: chatUser.superleadId || chatUser.chaterId,
+           chatId: chatId,
+           type: type
+       };
+       const res = await setUnreadMsgCountZero(data);
+       if(res.response.status===true &&res.response.message==="Unread message count zero updated successfully"){
+        setUnreadReload(true)
+    }
+   }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((chatUser: any, index: number) => (
