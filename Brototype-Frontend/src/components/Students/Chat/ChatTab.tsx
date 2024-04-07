@@ -55,7 +55,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
             }
         }
         fetchRecipientsUnreadMessageCount()
-    }, [studentId,unreadReload===true,socket])
+    }, [studentId,unreadReload,socket])
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -120,19 +120,19 @@ const ChatTab = ({ socket }: { socket: any}) => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                  console.log("kadaniittunndddd");
-                  
-                setUnreadReload(true)
+                console.log(data, "Received notification");
+                setUnreadReload(true);
             };
-
+    
+            // Attach the event listener for "notification" event
             socket.on("notification", handleReceivedMessage);
-
+    
+            // Clean up the event listener when the component unmounts
             return () => {
-                // Clean up socket listener when component unmounts
                 socket.off("notification", handleReceivedMessage);
             };
         }
-    }, [socket]);
+    }, [socket, setUnreadReload]);
     const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
         console.log(chatUser,"setUnreadMsgCountZeroFunction setUnreadMsgCountZeroFunction");
         console.log(chatId,"chatId chatId chatId");

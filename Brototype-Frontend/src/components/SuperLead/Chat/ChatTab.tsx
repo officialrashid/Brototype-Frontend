@@ -49,7 +49,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
             }
         }
         fetchRecipientsUnreadMessageCount()
-    }, [superleadId, unreadReload===true, socket])
+    }, [superleadId, unreadReload, socket])
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -130,21 +130,20 @@ const ChatTab = ({ socket }: { socket: any }) => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                  console.log("kadaniittunndddd");
-                  
-                setUnreadReload(true)
+                console.log(data, "Received notification");
+                setUnreadReload(true);
             };
-
+    
+            // Attach the event listener for "notification" event
             socket.on("notification", handleReceivedMessage);
-
+    
+            // Clean up the event listener when the component unmounts
             return () => {
-                // Clean up socket listener when component unmounts
                 socket.off("notification", handleReceivedMessage);
             };
         }
-    }, [socket]);
-
- 
+    }, [socket, setUnreadReload]);
+    
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
