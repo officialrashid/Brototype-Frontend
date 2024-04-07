@@ -115,5 +115,15 @@ export const updateEvents = async (data:any)=>{
   
   
   }
+  export const setGroupUnreadMsgCountZero = async (data: any) => {
+    try {
+      const resposne = await chatApi.patch('/api/chat-and-video/update-group-unread-msg-zero', data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }
 
   

@@ -111,9 +111,6 @@ const ChatTab = ({ socket }: { socket: any }) => {
     };
     
     const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
-         console.log(chatUser,"setUnreadMsgCountZeroFunction setUnreadMsgCountZeroFunction");
-         console.log(chatId,"chatId chatId chatId");
-         console.log(type,"chatType chatType chatType");
         const data = {
             initiatorId: superleadId,
             recipientId: chatUser.studentId || chatUser.chaterId,

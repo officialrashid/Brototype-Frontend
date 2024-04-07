@@ -7,7 +7,7 @@ import { createChat } from "../../../utils/methods/post";
 import ChatMediaModal from "./ChatMediaModal";
 import React from "react";
 import GlobalContext from "../../../context/GlobalContext";
-import { setUnreadMsgCountZero } from "../../../utils/methods/patch";
+import { setGroupUnreadMsgCountZero, setUnreadMsgCountZero } from "../../../utils/methods/patch";
 // import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = ({ socket }: { socket: any}) => {
 
@@ -93,6 +93,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 setUnreadChaterId(chatUser?._id);
                 console.log("join room event emittedd", chatUser?._id);
                 socket.emit("joinRoom", chatUser?._id);
+                setUnreadMsgCountZeroFunction(chatUser,chatUser?._id,"group")
             } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
@@ -134,19 +135,26 @@ const ChatTab = ({ socket }: { socket: any}) => {
         }
     }, [socket, setUnreadReload]);
     const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
-        console.log(chatUser,"setUnreadMsgCountZeroFunction setUnreadMsgCountZeroFunction");
-        console.log(chatId,"chatId chatId chatId");
-        console.log(type,"chatType chatType chatType");
-       const data = {
-           initiatorId: studentId,
-           recipientId: chatUser.superleadId || chatUser.chaterId,
-           chatId: chatId,
-           type: type
-       };
-       const res = await setUnreadMsgCountZero(data);
-       if(res.response.status===true &&res.response.message==="Unread message count zero updated successfully"){
-        setUnreadReload(true)
-    }
+        if(type==="oneToOne"){
+            const data = {
+                initiatorId: studentId,
+                recipientId: chatUser.superleadId || chatUser.chaterId,
+                chatId: chatId,
+                type: type
+            };
+            const res = await setUnreadMsgCountZero(data);
+            if(res.response.status===true &&res.response.message==="Unread message count zero updated successfully"){
+             setUnreadReload(true)
+         }
+        }else{
+            const data = {
+                groupId : chatId,
+                senderId : studentId,
+                type: type
+            }
+            const res = await setGroupUnreadMsgCountZero(data)
+        }
+ 
    }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
