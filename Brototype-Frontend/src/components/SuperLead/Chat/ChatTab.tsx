@@ -49,7 +49,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
             }
         }
         fetchRecipientsUnreadMessageCount()
-    }, [superleadId, unreadReload, socket])
+    }, [superleadId, unreadReload===true, socket])
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -130,35 +130,21 @@ const ChatTab = ({ socket }: { socket: any }) => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                setAllMessage(prev => {
-                    const newState = [...prev, data.content];
-                    return newState;
-                });
+                  console.log("kadaniittunndddd");
+                  
                 setUnreadReload(true)
             };
 
-            socket.on("received", handleReceivedMessage);
+            socket.on("notification", handleReceivedMessage);
 
             return () => {
-                socket.off("received", handleReceivedMessage);
+                // Clean up socket listener when component unmounts
+                socket.off("notification", handleReceivedMessage);
             };
         }
     }, [socket]);
 
-    // const updateUnreadMsgCount = async (recipientId: string, type: string) => {
-    //     const data = {
-    //         initiatorId: superleadId,
-    //         recipientId: recipientId,
-    //         chatId: chatId,
-    //         type: type
-    //     }
-    //     try {
-    //         const response = await setUnreadMsgCountZero(data)
-    //         console.log(response, "Unread message count updated successfully.");
-    //     } catch (error) {
-    //         console.error("Error updating unread message count:", error);
-    //     }
-    // }
+ 
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
@@ -209,7 +195,8 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     {/* Render unread message count for the clicked user */}
                     {unreadMsgCount.map((unread: any) => (
                         <React.Fragment key={unread.chaterId}>
-                            {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId ? (
+                            {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
+                                
                                 <div className="m-2 mr-3 m-0">
                                     <div className="">
                                         <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>

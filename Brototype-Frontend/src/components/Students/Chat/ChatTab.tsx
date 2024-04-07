@@ -20,6 +20,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
     const [lastMessage, setLastMessage] = useState({});
     const [unreadMsgCount, setUnreadMsgCount] = useState([])
     const { chatId, setChatId,unreadReload,setUnreadReload } = useContext(GlobalContext);
+    const [unreadChaterId, setUnreadChaterId] = useState<string>("");
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
@@ -89,11 +90,13 @@ const ChatTab = ({ socket }: { socket: any}) => {
             if (chatUser?.groupName) {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
+                setUnreadChaterId(chatUser?._id);
                 console.log("join room event emittedd", chatUser?._id);
                 socket.emit("joinRoom", chatUser?._id);
             } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
+                setUnreadChaterId(chatUser?.chaterId);
                 const chatData = {
                     initiatorId: studentId,
                     recipientId: chatUser.superleadId || chatUser.chaterId,
@@ -117,24 +120,16 @@ const ChatTab = ({ socket }: { socket: any}) => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                console.log("Received messagesssssssssssssss:", data);
-                console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content.content);
-
-                setAllMessage(prev => {
-                    console.log('Previous state:', prev);
-                    const newState = [...prev, data.content];
-                    console.log('New state:', newState);
-                    return newState;
-                });
-           
+                  console.log("kadaniittunndddd");
+                  
                 setUnreadReload(true)
             };
 
-            socket.on("received", handleReceivedMessage);
+            socket.on("notification", handleReceivedMessage);
 
             return () => {
                 // Clean up socket listener when component unmounts
-                socket.off("received", handleReceivedMessage);
+                socket.off("notification", handleReceivedMessage);
             };
         }
     }, [socket]);
@@ -155,76 +150,71 @@ const ChatTab = ({ socket }: { socket: any}) => {
    }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {chatUser.map((chatUser: any, index: number) => (
-              
-                <div
-                    key={chatUser.chaterId}
-                    className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
-                    onClick={() => handleStudentClick(index, chatUser)}
-                >
-                      {console.log(chatUser,"sceneeeeee")}
-                    {chatUser.groupName ? (
-                        <div className="flex gap-2 m-2 mt-">
-
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src={chatUser.profile} alt="" className="rounded-full " />
-                            </div>
-                            <div className="mt-1 mb-0">
-                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {chatUser.groupName}
-                                </span>
-                                <div>
-                                    {lastMessage && lastMessage.content && (
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content}
-                                        </span>
-                                    )}
-                                </div>
+        {chatUser.map((user: any, index: number) => (
+            <div
+                key={user.chaterId}
+                className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
+                onClick={() => handleStudentClick(index, user)}
+            >
+                {user.groupName ? (
+                    <div className="flex gap-2 m-2 mt-">
+                        <div className="border h-8 w-8 rounded-full mt-2">
+                            <img src={user.profile} alt="" className="rounded-full" />
+                        </div>
+                        <div className="mt-1 mb-0">
+                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                {user.groupName}
+                            </span>
+                            <div>
+                                {lastMessage && lastMessage.content && (
+                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                        {lastMessage.content}
+                                    </span>
+                                )}
                             </div>
                         </div>
-                    ) : (
-                        <div className="flex gap-2 m-2 mt-">
-
-                            <div className="border h-8 w-8 rounded-full mt-2 ">
-                                <img src={chatUser.imageUrl} alt="" className="rounded-full " />
-                            </div>
-                            <div className="mt-1 mb-0">
-                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {chatUser.firstName} {chatUser.lastName}
-                                </span>
-
-                                <div>
-                                    {lastMessage && lastMessage.content && (
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content}
-                                        </span>
-                                    )}
-                                </div>
+                    </div>
+                ) : (
+                    <div className="flex gap-2 m-2 mt-">
+                        <div className="border h-8 w-8 rounded-full mt-2">
+                            <img src={user.imageUrl} alt="" className="rounded-full" />
+                        </div>
+                        <div className="mt-1 mb-0">
+                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                {user.firstName} {user.lastName}
+                            </span>
+                            <div>
+                                {lastMessage && lastMessage.content && (
+                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                        {lastMessage.content}
+                                    </span>
+                                )}
                             </div>
                         </div>
-                    )}
+                    </div>
+                )}
 
-                    {unreadMsgCount.map((unread: any) => (
-                        <React.Fragment key={unread.chaterId}>
-                               {console.log(chatUser.chaterId,unread.chaterId,"[[[+++++++++")}
-                            {(chatUser.chaterId === unread.chaterId || chatUser._id === unread.chaterId) && (
-                             
-                                <div className="m-2 mr-3 m-0">
-                                    <div className="">
-                                        <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
-                                        <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
-                                            {unread.unreMsgCount}
-                                        </div>
+                {/* Render unread message count for the clicked user */}
+                {unreadMsgCount.map((unread: any) => (
+                    <React.Fragment key={unread.chaterId}>
+                        {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
+                            
+                            <div className="m-2 mr-3 m-0">
+                                <div className="">
+                                    <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
+                                    <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
+                                        {unread.unreMsgCount}
                                     </div>
                                 </div>
-                            )}
-                        </React.Fragment>
-                    ))}
-
-
-                </div>
-            ))}
-        </div>
+                            </div>
+                        ) : (
+                           null
+                        )}
+                    </React.Fragment>
+                ))}
+            </div>
+        ))}
+    </div>
 
     );
 };

@@ -154,8 +154,9 @@ const Chat = () => {
 
                     if (response.status === true) {
                         console.log("Message sent successfully");
-
+                        
                         setMessage(""); // Clear the message input field
+                        setUnreadReload(true)
                     } else {
                         console.error("Failed to send message:", response.message);
                     }
