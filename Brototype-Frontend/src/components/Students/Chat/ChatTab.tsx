@@ -30,7 +30,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
                     // handleStudentClick(0, response.recipients[0]);
                     console.log(response, "{}{}{}{}{");
-
+                     
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
@@ -82,18 +82,18 @@ const ChatTab = ({ socket }: { socket: any}) => {
             }
         };
         fetchMessages();
-    }, [chatUser]);
+    }, [chatUser,studentId]);
 
 
     const handleStudentClick = async (index: number, chatUser: any) => {
         try {
-            if (chatUser?.details?.groupName) {
+            if (chatUser?.groupName) {
                 setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser?.details));
-                setUnreadChaterId(chatUser?.details?._id);
-                console.log("join room event emittedd", chatUser?.details?._id);
-                socket.emit("joinRoom", chatUser?.details?._id);
-                setUnreadMsgCountZeroFunction(chatUser,chatUser?.details._id,"group")
+                dispatch(setchatOppositPersonData(chatUser));
+                setUnreadChaterId(chatUser?._id);
+                console.log("join room event emittedd", chatUser?._id);
+                socket.emit("joinRoom", chatUser?._id);
+                setUnreadMsgCountZeroFunction(chatUser,chatUser?._id,"group")
             } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser?.details));
@@ -153,7 +153,9 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 type: type
             }
             const res = await setGroupUnreadMsgCountZero(data)
-            console.log(res,"res res resres res res");
+            if(res?.response?.status===true && res?.response?.message==="Group member unread message count zero updated successfully"){
+                setUnreadReload(true)
+            }
             
         }
  
@@ -162,18 +164,18 @@ const ChatTab = ({ socket }: { socket: any}) => {
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((user: any, index: number) => (
                 <div
-                    key={user.details.chaterId}
+                    key={index}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, user)}
                 >
-                    {user.details.groupName ? (
+                    {user?.groupName ? (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2">
-                                <img src={user.details.profile} alt="" className="rounded-full" />
+                                <img src={user?.profile} alt="" className="rounded-full" />
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.details.groupName}
+                                    {user?.groupName}
                                 </span>
                                 <div>
                                     {lastMessage && lastMessage.content && (
@@ -207,7 +209,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                     {/* Render unread message count for the clicked user */}
                     {unreadMsgCount.map((unread: any) => (
                         <React.Fragment key={unread.chaterId}>
-                            {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
+                            {(user?.details?.chaterId === unread.chaterId || user?._id === unread.chaterId) && user?.details?.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
                                 
                                 <div className="m-2 mr-3 m-0">
                                     <div className="">

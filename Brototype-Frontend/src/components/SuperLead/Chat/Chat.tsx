@@ -154,7 +154,7 @@ const Chat = () => {
 
                     if (response.status === true) {
                         console.log("Message sent successfully");
-                        
+
                         setMessage(""); // Clear the message input field
                         setUnreadReload(true)
                     } else {
@@ -173,7 +173,7 @@ const Chat = () => {
                     console.log(response, 'respnseeeeeeeeeeeee');
 
                     if (response.status === true) {
-                           setUnreadReload(true)
+                        setUnreadReload(true)
                         console.log("Message sent successfully");
 
                         setMessage(""); // Clear the message input field
@@ -440,7 +440,16 @@ const Chat = () => {
 
         }
     }
-
+    function formatTime(dateString) {
+        const date = new Date(dateString);
+        const timeString = date.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true
+        });
+        return timeString;
+      }
+      
 
 
     return (
@@ -589,10 +598,16 @@ const Chat = () => {
                                             ) : (
                                                 <div
                                                     key={index}
-                                                    className={`flex gap-5 m-5 mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
+                                                    className={`flex gap-5 m-5  mb-0 mt-3 ${isSender(message) ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     <div className={`w-fit ${isSender(message) ? 'bg-Average' : "bg-white"} mb-0 h-10 rounded-sm`}>
-                                                        <p className={`text-sm font-roboto m-3 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                        <p className={`text-sm font-roboto m-3 ml-2  mt-1 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
+                                                            <p className="text-small item text-end">
+                                                                {message?.createdAt ? formatTime(message.createdAt) : ''}
+                                                            </p>
+
+                                                        </p>
+
                                                     </div>
                                                 </div>
                                             )}

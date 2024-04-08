@@ -99,3 +99,7 @@ thead {
 .table-container {
   min-width: 800px; /* Set a minimum width based on your content */
 }
+.text-small {
+  font-size: 0.55rem; /* Adjust the font size as needed */
+  
+}
