@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useMutation from "../../../hooks/useMutation";
 import * as Yup from 'yup';
 import { useFormik } from "formik";
@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllStudents, getAllSuperleads } from "../../../utils/methods/get";
 import { createGroupChat } from "../../../utils/methods/post";
 import { toast } from "react-toastify";
+import GlobalContext from "../../../context/GlobalContext";
 
 
 
@@ -21,6 +22,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
   if (!isVisible) {
     return null
   }
+  
   const dispatch = useDispatch();
   const [next, setNext] = useState(false);
   const [chatParticipantsDetails, setGroupParticipantsDetails] = useState<any[]>([]);
@@ -114,6 +116,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
         console.log(response,"response in group chateee");
         if(response?.createGroupChat?.status===true){
           toast.success("Group Created Successfully")
+   
         }else{
           toast.error("Group Not Created,Please Try Again")
         }
