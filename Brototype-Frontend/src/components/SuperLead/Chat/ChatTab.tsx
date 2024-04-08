@@ -22,8 +22,10 @@ const ChatTab = ({ socket }: { socket: any }) => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(superleadId);
+                console.log(response,"lllllll responseeeeeee 000000*****^^^^^");
+                
                 if (response?.status === true && response?.recipients) {
-                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
+                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
@@ -77,24 +79,24 @@ const ChatTab = ({ socket }: { socket: any }) => {
 
     const handleStudentClick = async (index: number, chatUser: any) => {
         try {
-            if (chatUser?.groupName) {
+            if (chatUser?.details.groupName) {
                 setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser));
-                socket.emit("joinRoom", chatUser?._id);
-                setChatId(chatUser?._id);
-                setUnreadChaterId(chatUser?._id);
+                dispatch(setchatOppositPersonData(chatUser.details));
+                socket.emit("joinRoom", chatUser?.details._id);
+                setChatId(chatUser?.details?._id);
+                setUnreadChaterId(chatUser?.details?._id);
                 setClicked(true);
                 setChatType("group");
             } else {
                 setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser));
-                setUnreadChaterId(chatUser?.chaterId);
+                dispatch(setchatOppositPersonData(chatUser.details));
+                setUnreadChaterId(chatUser?.details?.chaterId);
                 setClicked(true);
                 setChatType("oneToOne");
                 const chatData = {
                     initiatorId: superleadId,
-                    recipientId: chatUser.studentId || chatUser.chaterId,
-                    chaters: chatUser
+                    recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId,
+                    chaters: chatUser.details
                 };
                 const response: any = await createChat(chatData);
                 let newChatId = null; // Initialize newChatId variable
@@ -113,7 +115,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
         const data = {
             initiatorId: superleadId,
-            recipientId: chatUser.studentId || chatUser.chaterId,
+            recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId,
             chatId: chatId,
             type: type
         };
@@ -146,18 +148,18 @@ const ChatTab = ({ socket }: { socket: any }) => {
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((user: any, index: number) => (
                 <div
-                    key={user.chaterId}
+                    key={user.details.chaterId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, user)}
                 >
-                    {user.groupName ? (
+                    {user.details.groupName ? (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2">
-                                <img src={user.profile} alt="" className="rounded-full" />
+                                <img src={user.details.profile} alt="" className="rounded-full" />
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.groupName}
+                                    {user.details.groupName}
                                 </span>
                                 <div>
                                     {lastMessage && lastMessage.content && (
@@ -171,11 +173,11 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2">
-                                <img src={user.imageUrl} alt="" className="rounded-full" />
+                                <img src={user.details.imageUrl} alt="" className="rounded-full" />
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.firstName} {user.lastName}
+                                    {user.details.firstName} {user.details.lastName}
                                 </span>
                                 <div>
                                     {lastMessage && lastMessage.content && (

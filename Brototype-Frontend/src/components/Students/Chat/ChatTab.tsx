@@ -27,7 +27,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 const response = await getAllChatRecipients(studentId);
 
                 if (response.status === true) {
-                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients, ...response.initiatorGroups]);
+                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
                     // handleStudentClick(0, response.recipients[0]);
                     console.log(response, "{}{}{}{}{");
 
@@ -87,21 +87,21 @@ const ChatTab = ({ socket }: { socket: any}) => {
 
     const handleStudentClick = async (index: number, chatUser: any) => {
         try {
-            if (chatUser?.groupName) {
+            if (chatUser?.details?.groupName) {
                 setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser));
-                setUnreadChaterId(chatUser?._id);
-                console.log("join room event emittedd", chatUser?._id);
-                socket.emit("joinRoom", chatUser?._id);
-                setUnreadMsgCountZeroFunction(chatUser,chatUser?._id,"group")
+                dispatch(setchatOppositPersonData(chatUser?.details));
+                setUnreadChaterId(chatUser?.details?._id);
+                console.log("join room event emittedd", chatUser?.details?._id);
+                socket.emit("joinRoom", chatUser?.details?._id);
+                setUnreadMsgCountZeroFunction(chatUser,chatUser?.details._id,"group")
             } else {
                 setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser));
-                setUnreadChaterId(chatUser?.chaterId);
+                dispatch(setchatOppositPersonData(chatUser?.details));
+                setUnreadChaterId(chatUser?.details?.chaterId);
                 const chatData = {
                     initiatorId: studentId,
-                    recipientId: chatUser.superleadId || chatUser.chaterId,
-                    chaters: chatUser
+                    recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId,
+                    chaters: chatUser.details
                 };
                 // Initialize newChatId variable
                 const response = await createChat(chatData);
@@ -138,7 +138,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
         if(type==="oneToOne"){
             const data = {
                 initiatorId: studentId,
-                recipientId: chatUser.superleadId || chatUser.chaterId,
+                recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId,
                 chatId: chatId,
                 type: type
             };
@@ -153,76 +153,78 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 type: type
             }
             const res = await setGroupUnreadMsgCountZero(data)
+            console.log(res,"res res resres res res");
+            
         }
  
    }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-        {chatUser.map((user: any, index: number) => (
-            <div
-                key={user.chaterId}
-                className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
-                onClick={() => handleStudentClick(index, user)}
-            >
-                {user.groupName ? (
-                    <div className="flex gap-2 m-2 mt-">
-                        <div className="border h-8 w-8 rounded-full mt-2">
-                            <img src={user.profile} alt="" className="rounded-full" />
-                        </div>
-                        <div className="mt-1 mb-0">
-                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {user.groupName}
-                            </span>
-                            <div>
-                                {lastMessage && lastMessage.content && (
-                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {lastMessage.content}
-                                    </span>
-                                )}
+            {chatUser.map((user: any, index: number) => (
+                <div
+                    key={user.details.chaterId}
+                    className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
+                    onClick={() => handleStudentClick(index, user)}
+                >
+                    {user.details.groupName ? (
+                        <div className="flex gap-2 m-2 mt-">
+                            <div className="border h-8 w-8 rounded-full mt-2">
+                                <img src={user.details.profile} alt="" className="rounded-full" />
                             </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="flex gap-2 m-2 mt-">
-                        <div className="border h-8 w-8 rounded-full mt-2">
-                            <img src={user.imageUrl} alt="" className="rounded-full" />
-                        </div>
-                        <div className="mt-1 mb-0">
-                            <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {user.firstName} {user.lastName}
-                            </span>
-                            <div>
-                                {lastMessage && lastMessage.content && (
-                                    <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                        {lastMessage.content}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Render unread message count for the clicked user */}
-                {unreadMsgCount.map((unread: any) => (
-                    <React.Fragment key={unread.chaterId}>
-                        {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
-                            
-                            <div className="m-2 mr-3 m-0">
-                                <div className="">
-                                    <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
-                                    <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
-                                        {unread.unreMsgCount}
-                                    </div>
+                            <div className="mt-1 mb-0">
+                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                    {user.details.groupName}
+                                </span>
+                                <div>
+                                    {lastMessage && lastMessage.content && (
+                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                            {lastMessage.content}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                        ) : (
-                           null
-                        )}
-                    </React.Fragment>
-                ))}
-            </div>
-        ))}
-    </div>
+                        </div>
+                    ) : (
+                        <div className="flex gap-2 m-2 mt-">
+                            <div className="border h-8 w-8 rounded-full mt-2">
+                                <img src={user.details.imageUrl} alt="" className="rounded-full" />
+                            </div>
+                            <div className="mt-1 mb-0">
+                                <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
+                                    {user.details.firstName} {user.details.lastName}
+                                </span>
+                                <div>
+                                    {lastMessage && lastMessage.content && (
+                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
+                                            {lastMessage.content}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Render unread message count for the clicked user */}
+                    {unreadMsgCount.map((unread: any) => (
+                        <React.Fragment key={unread.chaterId}>
+                            {(user.chaterId === unread.chaterId || user._id === unread.chaterId) && user.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
+                                
+                                <div className="m-2 mr-3 m-0">
+                                    <div className="">
+                                        <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
+                                        <div className={`rounded-full text-xs item items-center flex justify-center font-roboto w-6 h-6 mt-1 ${selectedStudentIndex === index ? 'bg-white text-black' : 'bg-Average text-white'}`}>
+                                            {unread.unreMsgCount}
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                               null
+                            )}
+                        </React.Fragment>
+                    ))}
+                </div>
+            ))}
+        </div>
 
     );
 };
