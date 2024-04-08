@@ -158,7 +158,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
   };
   return (
     <>
-      <section className=" inset-0  w-2/3 ml-96 items-center justify-center p-3 sm:p-5 mt-36 absolute z-50">
+      <section className=" inset-0  w-2/3 ml-96 items-center justify-center p-3 sm:p-5 mt-72 absolute z-50">
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg">
             <h1 className="font-roboto m-5 mb-0 ml-8 font-semibold text-sm">{next ? 'Add Members' : 'Create Group Chat'}</h1>
