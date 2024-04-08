@@ -9,7 +9,7 @@ import React from "react";
 import GlobalContext from "../../../context/GlobalContext";
 import { setGroupUnreadMsgCountZero, setUnreadMsgCountZero } from "../../../utils/methods/patch";
 // import { useSocket } from "../../../hooks/useSocket";
-const ChatTab = ({ socket }: { socket: any}) => {
+const ChatTab = ({ socket }: { socket: any }) => {
 
     const dispatch = useDispatch();
 
@@ -19,8 +19,9 @@ const ChatTab = ({ socket }: { socket: any}) => {
     const [allMessage, setAllMessage] = useState([]);
     const [lastMessage, setLastMessage] = useState({});
     const [unreadMsgCount, setUnreadMsgCount] = useState([])
-    const { chatId, setChatId,unreadReload,setUnreadReload } = useContext(GlobalContext);
+    const { chatId, setChatId, unreadReload, setUnreadReload } = useContext(GlobalContext);
     const [unreadChaterId, setUnreadChaterId] = useState<string>("");
+    const [online, setOnline] = useState([])
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
@@ -29,7 +30,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
                     // handleStudentClick(0, response.recipients[0]);
-                     
+
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
@@ -37,6 +38,20 @@ const ChatTab = ({ socket }: { socket: any}) => {
         };
         fetchAllChatRecipients();
     }, [studentId]);
+    useEffect(() => {
+        if (!socket || !studentId) return;
+
+        socket.on("getOnlineUser", (users: any) => {
+            // console.log(users, "online usersssss comingggc");
+            setOnline(users)
+            const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            socket.emit("getCurrentOnlineUser");
+        });
+
+        return () => {
+            socket.off("getOnlineUser");
+        };
+    }, [socket, studentId]);
     useEffect(() => {
         const fetchRecipientsUnreadMessageCount = async () => {
             try {
@@ -53,7 +68,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
             }
         }
         fetchRecipientsUnreadMessageCount()
-    }, [studentId,unreadReload,socket])
+    }, [studentId, unreadReload, socket])
     useEffect(() => {
         const fetchMessages = async () => {
             try {
@@ -80,7 +95,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
             }
         };
         fetchMessages();
-    }, [chatUser,studentId]);
+    }, [chatUser, studentId]);
 
 
     const handleStudentClick = async (index: number, chatUser: any) => {
@@ -90,7 +105,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 dispatch(setchatOppositPersonData(chatUser));
                 setUnreadChaterId(chatUser?._id);
                 socket.emit("joinRoom", chatUser?._id);
-                setUnreadMsgCountZeroFunction(chatUser,chatUser?._id,"group")
+                setUnreadMsgCountZeroFunction(chatUser, chatUser?._id, "group")
             } else {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser?.details));
@@ -106,7 +121,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
-                    setUnreadMsgCountZeroFunction(chatUser,newChatId,"oneToOne")
+                    setUnreadMsgCountZeroFunction(chatUser, newChatId, "oneToOne")
                 }
             }
 
@@ -120,18 +135,18 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 console.log(data, "Received notification");
                 setUnreadReload(true);
             };
-    
+
             // Attach the event listener for "notification" event
             socket.on("notification", handleReceivedMessage);
-    
+
             // Clean up the event listener when the component unmounts
             return () => {
                 socket.off("notification", handleReceivedMessage);
             };
         }
     }, [socket, setUnreadReload]);
-    const setUnreadMsgCountZeroFunction = async (chatUser:any,chatId:string,type:string) =>{
-        if(type==="oneToOne"){
+    const setUnreadMsgCountZeroFunction = async (chatUser: any, chatId: string, type: string) => {
+        if (type === "oneToOne") {
             const data = {
                 initiatorId: studentId,
                 recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId,
@@ -139,23 +154,23 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 type: type
             };
             const res = await setUnreadMsgCountZero(data);
-            if(res.response.status===true &&res.response.message==="Unread message count zero updated successfully"){
-             setUnreadReload(true)
-         }
-        }else{
+            if (res.response.status === true && res.response.message === "Unread message count zero updated successfully") {
+                setUnreadReload(true)
+            }
+        } else {
             const data = {
-                groupId : chatId,
-                senderId : studentId,
+                groupId: chatId,
+                senderId: studentId,
                 type: type
             }
             const res = await setGroupUnreadMsgCountZero(data)
-            if(res?.response?.status===true && res?.response?.message==="Group member unread message count zero updated successfully"){
+            if (res?.response?.status === true && res?.response?.message === "Group member unread message count zero updated successfully") {
                 setUnreadReload(true)
             }
-            
+
         }
- 
-   }
+
+    }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((user: any, index: number) => (
@@ -184,18 +199,27 @@ const ChatTab = ({ socket }: { socket: any}) => {
                         </div>
                     ) : (
                         <div className="flex gap-2 m-2 mt-">
-                            <div className="border h-8 w-8 rounded-full mt-2">
+                            <div className="border h-8 w-8 rounded-full mt-2 relative">
                                 <img src={user.details.imageUrl} alt="" className="rounded-full" />
+                                {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
+                                    <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
+                                ) : (
+                                    <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-red-400 border-2 border-white"></div>
+                                )}
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
                                     {user.details.firstName} {user.details.lastName}
                                 </span>
                                 <div>
-                                    {lastMessage && lastMessage.content && (
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {lastMessage.content}
-                                        </span>
+                                {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
+                                        <div>
+                                            <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                        </div>
+                                    ) : (
+                                        <div>
+                                            <span className="text-gray-600 text-sm font-roboto">Offline</span>
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -206,7 +230,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                     {unreadMsgCount.map((unread: any) => (
                         <React.Fragment key={unread.chaterId}>
                             {(user?.details?.chaterId === unread.chaterId || user?._id === unread.chaterId) && user?.details?.chaterId !== unreadChaterId && unread.unreMsgCount > 0 ? (
-                                
+
                                 <div className="m-2 mr-3 m-0">
                                     <div className="">
                                         <span className={`text-gray-600 text-sm font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>6m</span>
@@ -216,7 +240,7 @@ const ChatTab = ({ socket }: { socket: any}) => {
                                     </div>
                                 </div>
                             ) : (
-                               null
+                                null
                             )}
                         </React.Fragment>
                     ))}

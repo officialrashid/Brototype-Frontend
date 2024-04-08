@@ -576,7 +576,11 @@ const Chat = () => {
                                                             {isSender(message) ? 'You' : `${message?.senderFirstName} ${message?.senderLastName}`}
                                                         </p>
 
-                                                        <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}</p>
+                                                        <p className={`text-sm font-roboto m-3 mt-0 ${isSender(message) ? 'text-white' : "text-black"}`}>{message?.content}
+                                                        <p className="text-small item text-end">
+                                                                {message?.createdAt ? formatTime(message.createdAt) : ''}
+                                                            </p>
+                                                        </p>
 
                                                         {isSender(message) && messageHoverIndex === index && (
                                                             <>

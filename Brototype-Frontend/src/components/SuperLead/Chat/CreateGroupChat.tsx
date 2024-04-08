@@ -22,7 +22,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
   if (!isVisible) {
     return null
   }
-  
+  const { setUnreadReload } = useContext(GlobalContext);
   const dispatch = useDispatch();
   const [next, setNext] = useState(false);
   const [chatParticipantsDetails, setGroupParticipantsDetails] = useState<any[]>([]);
@@ -116,7 +116,7 @@ const CreateGroupChat = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
         console.log(response,"response in group chateee");
         if(response?.createGroupChat?.status===true){
           toast.success("Group Created Successfully")
-   
+           setUnreadReload(true)
         }else{
           toast.error("Group Not Created,Please Try Again")
         }
