@@ -29,7 +29,6 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
                     // handleStudentClick(0, response.recipients[0]);
-                    console.log(response, "{}{}{}{}{");
                      
                 }
             } catch (error) {
@@ -42,7 +41,6 @@ const ChatTab = ({ socket }: { socket: any}) => {
         const fetchRecipientsUnreadMessageCount = async () => {
             try {
                 const response = await getRecipientsUnreadMessageCount(studentId)
-                console.log(response, "get Unread Message Counttttttt");
                 if (response?.getUnreadMsgCount?.status === true) {
                     setUnreadMsgCount(response?.getUnreadMsgCount?.unreadCounts)
                     setUnreadReload(false)
@@ -91,7 +89,6 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 setSelectedStudentIndex(index);
                 dispatch(setchatOppositPersonData(chatUser));
                 setUnreadChaterId(chatUser?._id);
-                console.log("join room event emittedd", chatUser?._id);
                 socket.emit("joinRoom", chatUser?._id);
                 setUnreadMsgCountZeroFunction(chatUser,chatUser?._id,"group")
             } else {
@@ -108,7 +105,6 @@ const ChatTab = ({ socket }: { socket: any}) => {
                 let newChatId = null;
                 if (response?.response?.data?._id || response?.chatExists?.response?._id) {
                     newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
-                    console.log("join room event emittedd", response?.response?.data?._id || response?.chatExists?.response?._id);
                     socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
                     setUnreadMsgCountZeroFunction(chatUser,newChatId,"oneToOne")
                 }

@@ -56,7 +56,6 @@ const Chat = () => {
             // console.log(users, "online usersssss comingggc");
             setOnline(users)
             const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-            console.log(currentTime, "time updation callingggg yarr");
             socket.emit("getCurrentOnlineUser");
         });
 
@@ -93,7 +92,6 @@ const Chat = () => {
     const handleMessageChange = (event: string, type: string) => {
 
         try {
-            console.log(type, "typeeeee chat typeee");
             if (type === "textChat") {
                 const message = event?.target?.value
                 setChatType("textChat")
@@ -170,7 +168,7 @@ const Chat = () => {
                 }
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
-                    console.log(response, 'respnseeeeeeeeeeeee');
+              
 
                     if (response.status === true) {
                         setUnreadReload(true)
@@ -190,14 +188,14 @@ const Chat = () => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-            console.log("fetcMessage workinggg");
+    
 
             try {
                 const data = {
                     initiatorId: superleadId,
                     recipientId: student?.chaterId || student.studentId
                 }
-                console.log(data, "bvvcfgvghh");
+              
 
                 const response = await getMessages(data)
                 if (response.getMessages.status === true) {
@@ -222,10 +220,10 @@ const Chat = () => {
                     senderId: superleadId,
                 };
 
-                console.log(data, "bvvcfgvghh");
+            
 
                 const response = await getGroupMessages(data);
-                console.log(response, "dnbfdfbdf response in group messagessss");
+               
 
                 if (response?.getMessages?.status === true) {
                     setAllMessage(response?.getMessages?.messages);
@@ -244,8 +242,7 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                console.log("Received messagesssssssssssssss:", data);
-                console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content);
+          
                 setAllMessage(prev => {
                     console.log('Previous state:', prev);
                     const newState = [...prev, data.content];
@@ -266,7 +263,7 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleDeletedMessage = (data: any) => {
-                console.log("deleted messagesssssssssssssss:", data);
+              
                 if (data.status === true && data.message === "message deleted successfullt") {
                     // Filter out the deleted message from the state array
                     setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
@@ -291,7 +288,7 @@ const Chat = () => {
     };
 
     const addAudioElement = async (blob: any, type: string) => {
-        console.log(type, ";;;;;;;;;;;;;;");
+ 
 
         if (type === "oneToOne") {
             setRecordedAudioBlob(blob);
@@ -305,20 +302,20 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
-            console.log(response, "response response response");
+   
 
             if (response?.status === true) {
-                console.log("kerri vice il chat ill");
+     
 
                 const voiceChat = response?.chatData?.audioUrl
-                console.log(voiceChat, "voiceChat vice il chat ill");
+              
                 const messageData = {
                     senderId: superleadId,
                     receiverId: student.studentId || student.chaterId,
                     content: voiceChat,
                     type: "voiceChat"
                 };
-                console.log(messageData, "messageData messageData messageData");
+     
                 socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
@@ -347,20 +344,20 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", superleadId);
             const response = await storeChatAudio(formData)
-            console.log(response, "response response response");
+      
 
             if (response?.status === true) {
-                console.log("kerri vice il chat ill");
+ 
 
                 const voiceChat = response?.chatData?.audioUrl
-                console.log(voiceChat, "voiceChat vice il chat ill");
+             
                 const messageData = {
                     groupId: student?._id,
                     senderId: superleadId,
                     content: voiceChat,
                     type: "voiceChat"
                 };
-                console.log(messageData, "messageData messageData messageData");
+               
                 socket?.emit('groupMessage', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
@@ -400,7 +397,7 @@ const Chat = () => {
 
 
     const handleMouseEnter = (index: number) => {
-        console.log(index, "lllllllll");
+
 
         setMessageHoverIndex(index);
     }
@@ -410,9 +407,7 @@ const Chat = () => {
     }
     const handleDeleteMessage = (e: any, messageId: string) => {
         e.preventDefault()
-        console.log("calinggggg");
-
-        console.log(messageId, "{}{}{*******");
+  
 
         setMessageId(messageId)
         setDeleteMessage(true)
@@ -424,7 +419,7 @@ const Chat = () => {
 
     const pickEmoji = (emojiObject: any) => {
         const { emoji } = emojiObject;
-        console.log(emoji, "Selected Emoji");
+
 
         if (inputRef.current) {
             const ref: any = inputRef.current;
@@ -440,7 +435,7 @@ const Chat = () => {
 
         }
     }
-    function formatTime(dateString) {
+    function formatTime(dateString: string | number | Date) {
         const date = new Date(dateString);
         const timeString = date.toLocaleTimeString('en-US', {
           hour: 'numeric',

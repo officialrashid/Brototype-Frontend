@@ -51,7 +51,6 @@ const Chat = () => {
 
             setOnline(users)
             const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-            console.log(currentTime, "time updation callingggg yarr");
             socket.emit("getCurrentOnlineUser");
         });
  
@@ -85,17 +84,12 @@ const Chat = () => {
     };
     const handleMessageChange = (event: string, type: string) => {
         try {
-            console.log(type, "typeeeee chat typeee");
             if (type === "textChat") {
                 const message = event?.target?.value
-                console.log(message, "smhcjhfhdhjdfgdhfdh");
                 setChatType("textChat")
                 setMessage(message)
             } else if (type === "imageChat") {
-                console.log(event, "{}{}{}{}{}{}{");
-
                 const message = event
-                console.log(message, "smhcjhfhdhjdfgdhfdh");
                 setChatType("imageChat")
                 setMessage(message)
             }
@@ -121,15 +115,12 @@ const Chat = () => {
                     content: message,
                     type: chatType
                 };
-                console.log(messageData, "messageDatas");
-                console.log("yyyyyyyyyyyyyyyyyyy");
-
                 // Emit message to the server
                 socket?.emit('message', messageData);
                 setRecordedAudioBlob(null);
                 // Listen for response from the server
                 socket?.on('messageResponse', (response: { status: boolean; message: any; }) => {
-                    console.log(response, 'respnseeeeeeeeeeeee');
+         
 
                     if (response.status === true) {
                   
@@ -150,8 +141,6 @@ const Chat = () => {
                 }
                 socket?.emit('groupMessage', groupMessageData);
                 socket?.on('groupMessageResponse', (response: { status: boolean; message: any; }) => {
-                    console.log(response, 'respnseeeeeeeeeeeee');
-
                     if (response.status === true) {
                         console.log("Message sent successfully");
 
@@ -176,11 +165,7 @@ const Chat = () => {
                     initiatorId: studentId,
                     recipientId: student?.chaterId || student.superleadId
                 }
-                console.log(data, "bvvcfgvghh");
-
                 const response = await getMessages(data)
-                console.log(response, "dnbfdfbdf");
-
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
                     setLastMessage(response.getMessages.lastMessage)
@@ -206,11 +191,7 @@ const Chat = () => {
                     senderId: studentId,
 
                 }
-                console.log(data, "bvvcfgvghh");
-
                 const response = await getGroupMessages(data)
-                console.log(response, "dnbfdfbdf response in group messagessss");
-
                 if (response.getMessages.status === true) {
                     setAllMessage(response.getMessages.messages)
                     setLastMessage(response.getMessages.lastMessage)
@@ -228,9 +209,6 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                console.log("Received messagesssssssssssssss:", data);
-                console.log("Received messagesssssssssssssss cotennnnnnnnnn:", data.content.content);
-
                 setAllMessage(prev => {
                     console.log('Previous state:', prev);
                     const newState = [...prev, data.content];
@@ -252,7 +230,6 @@ const Chat = () => {
     useEffect(() => {
         if (socket) {
             const handleDeletedMessage = (data: any) => {
-                console.log("deleted messagesssssssssssssss:", data);
                 if (data.status === true && data.message === "message deleted successfullt") {
                     // Filter out the deleted message from the state array
                     setAllMessage(prevMessages => prevMessages.filter(message => message._id !== data.messageId));
@@ -274,7 +251,6 @@ const Chat = () => {
         return message.senderId === studentId;
     };
     const addAudioElement = async (blob: any, type: string) => {
-        console.log(type, ";;;;;;;;;");
 
         if (type === "oneToOne") {
             setRecordedAudioBlob(blob);
@@ -288,8 +264,6 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", studentId);
             const response = await storeChatAudio(formData)
-            console.log(response, "response response response");
-
             if (response?.status === true) {
                 const voiceChat = response?.chatData?.audioUrl
                 const messageData = {
@@ -298,8 +272,6 @@ const Chat = () => {
                     content: voiceChat,
                     type: "voiceChat"
                 };
-                console.log(messageData, "messageData messageData messageData");
-
                 socket.emit('message', messageData);
                 setRecordedAudioBlob(null);
 
@@ -317,8 +289,6 @@ const Chat = () => {
                 });
             }
         } else if (type === "group") {
-            console.log("kadanityud");
-
             setRecordedAudioBlob(blob);
             const url = URL.createObjectURL(blob);
             const audio = document.createElement("audio");
@@ -330,7 +300,7 @@ const Chat = () => {
             formData.append("audio", audioFile);
             formData.append("senderId", studentId);
             const response = await storeChatAudio(formData)
-            console.log(response, "response response response");
+  
 
             if (response?.status === true) {
                 const voiceChat = response?.chatData?.audioUrl
@@ -340,7 +310,7 @@ const Chat = () => {
                     content: voiceChat,
                     type: "voiceChat"
                 }
-                console.log(groupMessageData, "messageData messageData messageData");
+      
 
                 socket?.emit('groupMessage', groupMessageData);
                 setRecordedAudioBlob(null);

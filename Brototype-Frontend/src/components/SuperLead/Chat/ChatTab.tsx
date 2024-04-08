@@ -22,7 +22,6 @@ const ChatTab = ({ socket }: { socket: any }) => {
         const fetchAllChatRecipients = async () => {
             try {
                 const response = await getAllChatRecipients(superleadId);
-                console.log(response,"lllllll responseeeeeee 000000*****^^^^^");
                 
                 if (response?.status === true && response?.recipients) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
@@ -39,7 +38,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
         const fetchRecipientsUnreadMessageCount = async () => {
             try {
                 const response = await getRecipientsUnreadMessageCount(superleadId)
-                console.log(response,"llllllll ******&&&&&&");
+              
                 
                 if (response?.getUnreadMsgCount?.status === true) {
                     setUnreadMsgCount(response?.getUnreadMsgCount?.unreadCounts)
@@ -128,8 +127,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 setUnreadReload(true)
             }
         }else{
-            console.log("else ilnkeriii",chatUser,chatId,type);
-            
+  
             const data = {
                 groupId : chatId,
                 senderId : superleadId,
@@ -146,7 +144,6 @@ const ChatTab = ({ socket }: { socket: any }) => {
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
-                console.log(data, "Received notification");
                 setUnreadReload(true);
             };
     
