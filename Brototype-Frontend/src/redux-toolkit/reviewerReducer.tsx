@@ -9,8 +9,6 @@ const reviewerSlice = createSlice({
   
   reducers: {
     setReviewerData: (state, action) => {
-        console.log(action.payload,"[][][[][]]]]");
-        
       state.reviewerData = action.payload;
     },
  

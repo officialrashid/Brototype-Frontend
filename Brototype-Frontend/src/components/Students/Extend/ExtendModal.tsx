@@ -27,6 +27,8 @@ const validationSchema = Yup.object().shape({
 
 
 const ExtendModal = ({ isVisible, isClose }) => {
+  console.log("callingg modaleeeeeee");
+  
   const [extend, setExtend] = useState({});
   const advisorId = "657aa5093476c843c28a377b";
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
@@ -54,7 +56,7 @@ const ExtendModal = ({ isVisible, isClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
+      fullName: `${extend.firstName || ''} ${extend.lastName || ''}`,
       batch: extend.batch || '',
       domain: extend.domain || '',
       currentWeek: extend.currentWeek || '',
@@ -96,8 +98,8 @@ const ExtendModal = ({ isVisible, isClose }) => {
 
   return (
     <>
-      <div className="bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
-        <div className="border border-gray-200 m-5 rounded-lg shadow-2xl w-2/5 bg-white">
+      <div className=" backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
+        <div className="border border-gray-200 m-5 rounded-lg shadow-2xl w-2/5 bg-white z-40">
           <div className="flex justify-between">
             <div></div>
             <div className="ml- mr-4 mt-4">

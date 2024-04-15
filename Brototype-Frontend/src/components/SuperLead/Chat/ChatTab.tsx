@@ -20,19 +20,22 @@ const ChatTab = ({ socket }: { socket: any }) => {
     const [chatType, setChatType] = useState("")
     const [online, setOnline] = useState([])
     useEffect(() => {
-        const fetchAllChatRecipients = async () => {
+        const fetchChatData = async () => {
             try {
-                const response = await getAllChatRecipients(superleadId);
-
-                if (response?.status === true && response?.recipients) {
-                    setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
+                if (superleadId) {
+                    const response = await getAllChatRecipients(superleadId);
+                    if (response?.status === true && response?.recipients) {
+                        setChatUser(response.recipients);
+                        setUnreadReload(false)
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
             }
         };
-        fetchAllChatRecipients();
-    }, [superleadId]);
+        fetchChatData();
+    }, [superleadId,unreadReload, socket]);
+    
 
 
     useEffect(() => {
