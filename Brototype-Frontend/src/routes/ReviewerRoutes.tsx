@@ -5,6 +5,7 @@ import Calender from '../pages/Reviewer/Calender';
 import ReviewerProfile from '../pages/Reviewer/ReviewerProfile';
 import ReviewerSignIn from "../pages/Reviewer/SignIn";
 import Navigationbar from '../components/LandingPage/Navbar';
+import Chat from '../pages/Reviewer/Chat';
 function ReviewerRoutes() {
   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
 
@@ -23,6 +24,7 @@ function ReviewerRoutes() {
             <Route path="/" element={reviewerAccessToken ? <ReviewerDashboard /> : <ReviewerSignIn />} />
             <Route path="/schedule" element={reviewerAccessToken ? <Calender /> : <ReviewerSignIn />} />
             <Route path="/reviewerProfile" element={reviewerAccessToken ?  <ReviewerProfile /> : <ReviewerSignIn />} />
+            <Route path="/chat" element={reviewerAccessToken ?  <Chat /> : <ReviewerSignIn />} />
           </Routes>
         </div>
       </div>

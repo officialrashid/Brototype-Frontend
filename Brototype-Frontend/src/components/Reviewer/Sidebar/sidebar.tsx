@@ -24,7 +24,9 @@ function Sidebar() {
         if(title==='Profile'){
           navigate('/reviewer/reviewerProfile')
         }
-       
+        if(title==='Chat'){
+          navigate('/reviewer/chat')
+        }
       };
  const navigate=useNavigate()
     const dispatch=useDispatch()

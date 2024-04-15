@@ -1,121 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChatRecipients, getMessages, getRecipientsUnreadMessageCount } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
+import { RootState } from "../../../redux-toolkit/store";
 import { createChat } from "../../../utils/methods/post";
-import { useSocket } from "../../../hooks/useSocket";
+import ChatMediaModal from "./ChatMediaModal";
+import React from "react";
 import GlobalContext from "../../../context/GlobalContext";
 import { setGroupUnreadMsgCountZero, setUnreadMsgCountZero } from "../../../utils/methods/patch";
-
+// import { useSocket } from "../../../hooks/useSocket";
 const ChatTab = ({ socket }: { socket: any }) => {
+
     const dispatch = useDispatch();
-    const superleadId = useSelector((state) => state?.superlead?.superleadData?.superleadId);
+
+    const reviewerId:any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
     const [chatUser, setChatUser] = useState<any[]>([]);
-    const [selectedStudentIndex, setSelectedStudentIndex] = useState<number | null>(null);
-    const [allMessage, setAllMessage] = useState<any[]>([]);
-    const [lastMessage, setLastMessage] = useState<any>({});
-    const { chatId, setChatId, unreadReload, setUnreadReload, setClicked } = useContext(GlobalContext);
-    const [unreadMsgCount, setUnreadMsgCount] = useState<any[]>([]);
+    const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
+    const [allMessage, setAllMessage] = useState([]);
+    const [lastMessage, setLastMessage] = useState({});
+    const [unreadMsgCount, setUnreadMsgCount] = useState([])
+    const { chatId, setChatId, unreadReload, setUnreadReload } = useContext(GlobalContext);
     const [unreadChaterId, setUnreadChaterId] = useState<string>("");
-    const [chatType, setChatType] = useState("")
     const [online, setOnline] = useState([])
     useEffect(() => {
         const fetchAllChatRecipients = async () => {
             try {
-                const response = await getAllChatRecipients(superleadId);
+                const response = await getAllChatRecipients(reviewerId);
 
-                if (response?.status === true && response?.recipients) {
+                if (response.status === true) {
                     setChatUser(prevChatUser => [...prevChatUser, ...response.recipients]);
+                    // handleStudentClick(0, response.recipients[0]);
+
                 }
             } catch (error) {
                 console.error("Error fetching chat recipients:", error);
             }
         };
         fetchAllChatRecipients();
-    }, [superleadId]);
-
-
+    }, [reviewerId]);
     useEffect(() => {
-        const fetchRecipientsUnreadMessageCount = async () => {
-            try {
-                const response = await getRecipientsUnreadMessageCount(superleadId)
-
-
-                if (response?.getUnreadMsgCount?.status === true) {
-                    setUnreadMsgCount(response?.getUnreadMsgCount?.unreadCounts)
-                    setUnreadReload(false)
-                } else {
-                    setUnreadMsgCount([])
-                    setUnreadReload(false)
-                }
-            } catch (error) {
-                console.error("Error fetching recipients' unread message count:", error);
-            }
-        }
-        fetchRecipientsUnreadMessageCount()
-    }, [superleadId, unreadReload, socket])
-
-    useEffect(() => {
-        const fetchMessages = async () => {
-            try {
-                if (chatUser.length > 0) {
-                    const messagesPromises = chatUser.map(async (user) => {
-                        const data = {
-                            initiatorId: superleadId,
-                            recipientId: user.chaterId
-                        };
-                        const response = await getMessages(data);
-                        if (response.getMessages?.status === true) {
-                            setAllMessage((prevMessages) => [...prevMessages, response.getMessages.messages]);
-                            setLastMessage(response.getMessages.lastMessage);
-                        }
-                    });
-                    await Promise.all(messagesPromises);
-                }
-            } catch (error) {
-                console.error("Error fetching messages:", error);
-            }
-        };
-        fetchMessages();
-    }, [chatUser, superleadId]);
-
-    const handleStudentClick = async (index: number, chatUser: any) => {
-        try {
-            if (chatUser?.groupName) {
-                setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser));
-                socket.emit("joinRoom", chatUser?._id);
-                setChatId(chatUser?._id);
-                setUnreadChaterId(chatUser?._id);
-                setClicked(true);
-                setChatType("group");
-                setUnreadMsgCountZeroFunction(chatUser, chatUser._id, "group")
-            } else {
-                setSelectedStudentIndex(index);
-                dispatch(setchatOppositPersonData(chatUser.details));
-                setUnreadChaterId(chatUser?.details?.chaterId);
-                setClicked(true);
-                setChatType("oneToOne");
-                const chatData = {
-                    initiatorId: superleadId,
-                    recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId ||  chatUser?.details?.reviewerId,
-                    chaters: chatUser.details
-                };
-                const response: any = await createChat(chatData);
-                let newChatId = null; // Initialize newChatId variable
-                if (response?.response?.data?._id || response?.chatExists?.response?._id) {
-                    newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
-                    socket.emit("joinRoom", newChatId);
-                    setChatId(newChatId);
-                    setUnreadMsgCountZeroFunction(chatUser, newChatId, "oneToOne")
-                }
-            }
-        } catch (err) {
-            console.error("Error handling student click:", err);
-        }
-    };
-    useEffect(() => {
-        if (!socket || !superleadId) return;
+        if (!socket || !reviewerId) return;
 
         socket.on("getOnlineUser", (users: any) => {
             // console.log(users, "online usersssss comingggc");
@@ -127,37 +51,88 @@ const ChatTab = ({ socket }: { socket: any }) => {
         return () => {
             socket.off("getOnlineUser");
         };
-    }, [socket, superleadId]);
-    const setUnreadMsgCountZeroFunction = async (chatUser: any, chatId: string, type: string) => {
-        if (type === "oneToOne") {
-            const data = {
-                initiatorId: superleadId,
-                recipientId: chatUser?.details?.studentId || chatUser?.details?.chaterId ||  chatUser?.details?.reviewerId,
-                chatId: chatId,
-                type: type
-            };
-            const res = await setUnreadMsgCountZero(data);
-            if (res.response.status === true && res.response.message === "Unread message count zero updated successfully") {
-                setUnreadReload(true)
-            }
-        } else {
+    }, [socket, reviewerId]);
+    useEffect(() => {
+        const fetchRecipientsUnreadMessageCount = async () => {
+            try {
+                const response = await getRecipientsUnreadMessageCount(reviewerId)
+                if (response?.getUnreadMsgCount?.status === true) {
+                    setUnreadMsgCount(response?.getUnreadMsgCount?.unreadCounts)
+                    setUnreadReload(false)
+                } else {
+                    setUnreadMsgCount([])
+                    setUnreadReload(false)
+                }
+            } catch (error) {
 
-            const data = {
-                groupId: chatId,
-                senderId: superleadId,
-                type: type
-            }
-            const res = await setGroupUnreadMsgCountZero(data)
-            if (res?.response?.status === true && res?.response?.message === "Group member unread message count zero updated successfully") {
-                setUnreadReload(true)
             }
         }
-    }
+        fetchRecipientsUnreadMessageCount()
+    }, [reviewerId, unreadReload, socket])
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                if (chatUser.length > 0) { // Check if chatUser array is not empty
+                    // Iterate through chatUser array to fetch messages for each chat user
+                    for (const user of chatUser) {
+                        const data = {
+                            initiatorId: reviewerId,
+                            recipientId: user.chaterId // Access chaterId from each chat user object
+                        };
+                        const response = await getMessages(data);
+                        if (response.getMessages.status === true) {
+                            // Update state for each chat user separately
+                            setAllMessage(prevState => [...prevState, response.getMessages.messages]);
+                            setLastMessage(response.getMessages.lastMessage);
+                        } else {
+                            setAllMessage([]);
+                            setLastMessage({});
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+        };
+        fetchMessages();
+    }, [chatUser, reviewerId]);
 
 
+    const handleStudentClick = async (index: number, chatUser: any) => {
+        try {
+            if (chatUser?.groupName) {
+                setSelectedStudentIndex(index);
+                dispatch(setchatOppositPersonData(chatUser));
+                setUnreadChaterId(chatUser?._id);
+                socket.emit("joinRoom", chatUser?._id);
+                setUnreadMsgCountZeroFunction(chatUser, chatUser?._id, "group")
+            } else {
+                setSelectedStudentIndex(index);
+                dispatch(setchatOppositPersonData(chatUser?.details));
+                setUnreadChaterId(chatUser?.details?.chaterId);
+                const chatData = {
+                    initiatorId: reviewerId,
+                    recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId || chatUser?.details?.studentId,
+                    chaters: chatUser.details
+                };
+                // Initialize newChatId variable
+                const response = await createChat(chatData);
+                let newChatId = null;
+                if (response?.response?.data?._id || response?.chatExists?.response?._id) {
+                    newChatId = response?.response?.data?._id || response?.chatExists?.response?._id;
+                    socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
+                    setUnreadMsgCountZeroFunction(chatUser, newChatId, "oneToOne")
+                }
+            }
+
+        } catch (err) {
+            console.error("Error handling student click:", err);
+        }
+    };
     useEffect(() => {
         if (socket) {
             const handleReceivedMessage = (data: any) => {
+                console.log(data, "Received notification");
                 setUnreadReload(true);
             };
 
@@ -170,8 +145,32 @@ const ChatTab = ({ socket }: { socket: any }) => {
             };
         }
     }, [socket, setUnreadReload]);
+    const setUnreadMsgCountZeroFunction = async (chatUser: any, chatId: string, type: string) => {
+        if (type === "oneToOne") {
+            const data = {
+                initiatorId: reviewerId,
+                recipientId: chatUser?.details?.superleadId || chatUser?.details?.chaterId || chatUser?.details?.studentId ,
+                chatId: chatId,
+                type: type
+            };
+            const res = await setUnreadMsgCountZero(data);
+            if (res.response.status === true && res.response.message === "Unread message count zero updated successfully") {
+                setUnreadReload(true)
+            }
+        } else {
+            const data = {
+                groupId: chatId,
+                senderId: reviewerId,
+                type: type
+            }
+            const res = await setGroupUnreadMsgCountZero(data)
+            if (res?.response?.status === true && res?.response?.message === "Group member unread message count zero updated successfully") {
+                setUnreadReload(true)
+            }
 
+        }
 
+    }
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
             {chatUser.map((user: any, index: number) => (
@@ -180,21 +179,20 @@ const ChatTab = ({ socket }: { socket: any }) => {
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
                     onClick={() => handleStudentClick(index, user)}
                 >
-                    {user.groupName ? (
+                    {user?.groupName ? (
                         <div className="flex gap-2 m-2 mt-">
                             <div className="border h-8 w-8 rounded-full mt-2">
-                                <img src={user.profile} alt="" className="rounded-full" />
+                                <img src={user?.profile} alt="" className="rounded-full" />
                             </div>
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                    {user.groupName}
+                                    {user?.groupName}
                                 </span>
                                 <div>
-                                    
+                  
                                         <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            {user.description}
+                                          {user.description}
                                         </span>
-                                  
                                 </div>
                             </div>
                         </div>
@@ -203,25 +201,24 @@ const ChatTab = ({ socket }: { socket: any }) => {
                             <div className="border h-8 w-8 rounded-full mt-2 relative">
                                 <img src={user.details.imageUrl} alt="" className="rounded-full" />
                                 {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
-                                <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
+                                    <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-green-400 border-2 border-white"></div>
                                 ) : (
                                     <div className="absolute bottom-0 right-0 rounded-full w-3 h-3 bg-red-400 border-2 border-white"></div>
                                 )}
                             </div>
-
                             <div className="mt-1 mb-0">
                                 <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
                                     {user.details.firstName} {user.details.lastName}
                                 </span>
                                 <div>
-                                    {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            Active Now
-                                        </span>
+                                {online.some(onlineUser => onlineUser.chaterId === user?.details?.chaterId && onlineUser.isOnline === true) ? (
+                                        <div>
+                                            <span className="text-gray-600 text-sm font-roboto">Active Now</span>
+                                        </div>
                                     ) : (
-                                        <span className={`text-gray-600 font-roboto text-xs ${selectedStudentIndex === index ? 'text-white' : 'text-black'}`}>
-                                            Offline
-                                        </span>
+                                        <div>
+                                            <span className="text-gray-600 text-sm font-roboto">Offline</span>
+                                        </div>
                                     )}
                                 </div>
                             </div>
@@ -249,6 +246,7 @@ const ChatTab = ({ socket }: { socket: any }) => {
                 </div>
             ))}
         </div>
+
     );
 };
 

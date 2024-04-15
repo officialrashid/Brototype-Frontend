@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllStudents } from "../../../utils/methods/get";
+import { getAllChatReviewers, getAllStudents } from "../../../utils/methods/get";
 import { setchatOppositPersonData } from "../../../redux-toolkit/chatOppositPersonDataReducer";
 import { createChat } from "../../../utils/methods/post";
 import { useSocket } from "../../../hooks/useSocket";
@@ -11,21 +11,23 @@ const Students = ({socket}:{socket:any}) => {
     const dispatch = useDispatch();
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
-    const [students, setStudents] = useState([]);
+    const [reviewers, setReviewers] = useState([]);
     const [selectedStudentIndex, setSelectedStudentIndex] = useState(null);
 
     useEffect(() => {
         const fetchStudents = async () => {
-            const response = await getAllStudents(superleadUniqueId);
+            const response = await getAllChatReviewers();
+            console.log(response,"response in chateeee in reviewreeeee");
+            
             if (response.status === true) {
-                setStudents(response.response);
+                setReviewers(response.response);
                 // handleStudentClick(0, response.response[0]);
             }
         };
         fetchStudents();
     }, []);
 
-    const handleStudentClick = async (index: number, student: any) => {
+    const handleStudentClick = async (index: number, reviewer: any) => {
         try {
             if (!socket) {
                 console.error("Socket is null. Connection might not be established.");
@@ -33,17 +35,17 @@ const Students = ({socket}:{socket:any}) => {
             }
 
             setSelectedStudentIndex(index);
-            dispatch(setchatOppositPersonData(student));
+            dispatch(setchatOppositPersonData(reviewer));
             const chatData = {
                 initiatorId: superleadId,
-                recipientId: student.studentId || student.chaterId || student.reviewerId,
-                chaters: student
+                recipientId: reviewer.studentId || reviewer.chaterId || reviewer.reviewerId,
+                chaters: reviewer
             };
             const response = await createChat(chatData);
             console.log(response,"response response in hateee");
             
             if (response?.response?.data?._id || response?.chatExists?.response?._id) {
-                console.log("emitted join roommmmm");
+                console.log("emitted join roommmmm",response?.response?.data?._id || response?.chatExists?.response?._id);
                 
                 socket.emit("joinRoom", response?.response?.data?._id || response?.chatExists?.response?._id);
             }
@@ -70,19 +72,19 @@ const Students = ({socket}:{socket:any}) => {
 
     return (
         <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-            {students.map((student, index) => (
+            {reviewers.map((reviewer, index) => (
                 <div
-                    key={student.studentId}
+                    key={reviewer.reviewerId}
                     className={`flex justify-between bg-${selectedStudentIndex === index ? 'dark' : 'light'}-highBlue m-5 rounded-md`}
-                    onClick={() => handleStudentClick(index, student)}
+                    onClick={() => handleStudentClick(index, reviewer)}
                 >
                     <div className="flex gap-2 m-2 mt-">
                         <div className="border h-8 w-8 rounded-full mt-2 ">
-                            <img src={student.imageUrl} alt="" className="rounded-full " />
+                            <img src={reviewer.imageUrl} alt="" className="rounded-full " />
                         </div>
                         <div className="mt-1 mb-0">
                             <span className={`text-sm font-medium font-roboto ${selectedStudentIndex === index ? 'text-white' : 'text-dark'}`}>
-                                {student.firstName} {student.lastName}
+                                {reviewer.firstName} {reviewer.lastName}
                             </span>
 
                             <div>

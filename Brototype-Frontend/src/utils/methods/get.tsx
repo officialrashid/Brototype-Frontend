@@ -458,4 +458,13 @@ export const getAllStudents = async (uniqueId:string) =>{
     }
   
   }
+  export const getAllChatReviewers = async () =>{
+
+    try {
+       const response = await reviewerApi.get(`/api/reviewer/get-all-chat-reviewers`)
+       return response?.data;
+    } catch (error) {
+     
+    }
   
+  }

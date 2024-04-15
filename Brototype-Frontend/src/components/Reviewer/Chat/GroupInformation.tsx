@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import useMutation from "../../../hooks/useMutation";
-import * as Yup from 'yup';
-import { useFormik } from "formik";
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllChatReviewers, getAllStudents, getAllSuperleads, getGroupMembersDetails, getGroupMessages } from "../../../utils/methods/get";
+import { useSelector} from 'react-redux';
+import { getAllStudents, getAllSuperleads, getGroupMembersDetails, getGroupMessages } from "../../../utils/methods/get";
 import ActionModal from "./ActionModal";
-import { tree } from "d3";
 import { updateGroupMembers } from "../../../utils/methods/patch";
 import { toast } from "react-toastify";
+import { RootState } from "../../../redux-toolkit/store";
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -21,11 +18,13 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
     return null
   }
   const superleadUniqueId = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
+  console.log(superleadUniqueId,"superleadUiqueIdssss");
+  
   const [selectedChatDetails, setSelectedChatDetails] = useState<any[]>([]);
   const [participants, setParticipants] = useState<any[]>([]);
   const [admins, setAdmins] = useState<any[]>([]);
   const student: any = useSelector((state: any) => state?.chat?.chatOppositPersonData)
-  const superleadId: any = useSelector((state: any) => state?.superlead?.superleadData?.superleadId);
+  const reviewerId:any = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [allMesage, setAllMessage] = useState([])
   const [grouInfoOrNot, setGroupInfoOrNot] = useState(true)
   const [members, setMembers] = useState([])
@@ -60,20 +59,17 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
       try {
         const students = await getAllStudents(superleadUniqueId);
         const superleads = await getAllSuperleads();
-        const reviewers = await getAllChatReviewers()
-        console.log(reviewers.status,"reviewrssssssssss000s0s00s0ss0s0s00s");
-        
-        if (students?.status === true && superleads?.status === true && reviewers?.status===true) {
-          console.log("keriiiiiiiiiii8888888777777*******");
-          
-          const combinedResponses = [...superleads.result, ...students.response, ...reviewers?.response];
+        console.log(students,"studetsssssssssss");
+        console.log(superleads?.result,"responseeee suerlessdeee");
+        if (students?.status === true && superleads?.status === true) {
+          const combinedResponses = [...students?.response,...superleads?.result];
           console.log(combinedResponses, "llllll");
 
           setGroupParticipantsDetails(combinedResponses);
           combinedResponses.map((chatDetails, index) => {
 
-            if (chatDetails.superleadId === superleadId) {
-              setAdmins(prevState => [...prevState, chatDetails.superleadId])
+            if (chatDetails.reviewerId === reviewerId) {
+              setAdmins(prevState => [...prevState, chatDetails.reviewerId])
             }
           })
         }
@@ -90,7 +86,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
       try {
         const data = {
           groupId: student?._id,
-          senderId: superleadId,
+          senderId: reviewerId,
 
         }
         console.log(data, "bvvcfgvghh");
@@ -136,28 +132,26 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
   }
 
   const handleCheckboxChange = (chatDetails: any) => {
-    console.log(chatDetails,"itemssssssss itemsss");
-    
     const index = selectedChatDetails.findIndex((item) =>
-      (item.studentId && item.studentId === chatDetails.studentId) ||
+      (item.reviewerId && item.reviewerId === chatDetails.reviewerId) ||
       (item.superleadId && item.superleadId === chatDetails.superleadId) ||
-      (item.reviewerId && item.reviewerId === chatDetails.reviewerId)
+      (item.studentId && item.studentId === chatDetails.studentId)
     );
 
     if (index === -1) {
       // If the chatDetails is not already selected, add it to the selectedChatDetails state
       setSelectedChatDetails(prevState => [...prevState, chatDetails]);
-      // Also add the corresponding studentId or superleadId to the participants state
-      setParticipants(prevState => [...prevState, chatDetails.studentId || chatDetails.superleadId || chatDetails?.reviewerId]);
+      // Also add the corresponding reviewerId or superleadId to the participants state
+      setParticipants(prevState => [...prevState, chatDetails.reviewerId || chatDetails.superleadId || chatDetails.studentId  ]);
     } else {
       // If the chatDetails is already selected, remove it from the selectedChatDetails state
       const updatedSelectedChatDetails = [...selectedChatDetails];
       updatedSelectedChatDetails.splice(index, 1);
       setSelectedChatDetails(updatedSelectedChatDetails);
 
-      // Remove the corresponding studentId or superleadId from the participants state if it exists
+      // Remove the corresponding reviewerId or superleadId from the participants state if it exists
       const updatedParticipants = participants.filter(id =>
-        id !== chatDetails.studentId && id !== chatDetails.superleadId && id !== chatDetails.reviewerId
+        id !== chatDetails.reviewerId && id !== chatDetails.superleadId && id !== chatDetails.studentId
       );
       setParticipants(updatedParticipants);
     }
@@ -177,7 +171,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
 
   return (
     <>
-      <section className="w-2/3 ml-96 items-center justify-center p-3 sm:p-5 mt-56 absolute z-50 mb-0" onClick={() => changeActionModalStatus()}>
+      <section className="w-2/3 ml-48 items-center justify-center p-3 sm:p-5 mt-32 absolute z-50 mb-0" onClick={() => changeActionModalStatus()}>
         <div className="mx-auto max-w-screen-xl px-4 lg:px-12">
           <div className="relative overflow-hidden border bg-white shadow-md sm:rounded-lg">
             {grouInfoOrNot === true ? (
@@ -302,9 +296,10 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
                           </tr>
                         </thead>
                         <tbody>
-                          {/* Render participants not in the group */}
+  
                           {chatParticipantsDetails
-                            .filter(chatDetails => !members.some(member => member.chaterId === chatDetails.studentId || member.chaterId === chatDetails.superleadId || member.chaterId === chatDetails.reviewerId))
+                         
+                            .filter(chatDetails => !members.some(member => member?.chaterId === chatDetails?.superleadId || member?.chaterId === chatDetails?.reviewerId || member?.chaterId === chatDetails?.studentId))
                             .map((chatDetails, index) => (
                               <tr key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td className="flex items-center px-6 py-4 whitespace-nowrap">
@@ -313,12 +308,12 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
                                     <div className="text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
                                   </div>
                                 </td>
-                                {chatDetails?.studentId ? (
-                                  <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
+                                {chatDetails?.reviewerId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">reviewer</td>
                                 ) : chatDetails.superleadId ? (
                                   <td className="px-6 py-4 text-sm font-roboto item text-center">superlead</td>
-                                ) : chatDetails?.reviewerId ? (
-                                  <td className="px-6 py-4 text-sm font-roboto item text-center">reviewer</td>
+                                ) : chatDetails.studentId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
                                 ):null}
                                 <td className="px-6 py-4 text-sm font-roboto item text-center">
                                   <input type="checkbox" name="selected" id="selected" onClick={() => handleCheckboxChange(chatDetails)} />
@@ -328,7 +323,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
             
                           {/* Render participants already in the group */}
                           {chatParticipantsDetails
-                            .filter(chatDetails => members.some(member => member.chaterId === chatDetails.studentId || member.chaterId === chatDetails.superleadId || member.chaterId === chatDetails.reviewerId))
+                            .filter(chatDetails => members.some(member =>member.chaterId === chatDetails.superleadId || member.chaterId === chatDetails.reviewerId || member.chaterId === chatDetails.studentId))
                             .map((chatDetails, index) => (
                               <tr key={index} className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td className="flex items-center px-6 py-4 whitespace-nowrap">
@@ -337,12 +332,12 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
                                     <div className="text-sm font-roboto">{chatDetails.firstName} {chatDetails.lastName}</div>
                                   </div>
                                 </td>
-                                {chatDetails?.studentId ? (
+                                {chatDetails?.reviewerId ? (
                                   <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
                                 ) : chatDetails.superleadId ? (
                                   <td className="px-6 py-4 text-sm font-roboto item text-center">superlead</td>
-                                ) : chatDetails.reviewerId ? (
-                                  <td className="px-6 py-4 text-sm font-roboto item text-center">reviewer</td>
+                                ) : chatDetails.studentId ? (
+                                  <td className="px-6 py-4 text-sm font-roboto item text-center">student</td>
                                 ):null}
                               <td className="px-6 py-4 text-xs font-roboto item text-center font-italic">
                                   <p>already added to the group</p>
@@ -418,7 +413,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
                               <tr key="" className="bg-white  dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                                 <td className="flex items-center px-6 py-4 whitespace-nowrap">
                                   <img className="w-8 h-8 rounded-full" src={member?.imageUrl} />
-                                  {member?.chaterId === superleadId ? (
+                                  {member?.chaterId === reviewerId ? (
                                     <div className="ps-3">
                                       <div className="text-sm font-roboto">Your Account</div>
                                     </div>
@@ -437,7 +432,7 @@ const GroupInformationModal = ({ isVisible, onClose, changeModalStatus, groupId,
                                   </td>
                                 ) : (
                                   <React.Fragment>
-                                    {admins.includes(superleadId) && (
+                                    {admins.includes(reviewerId) && (
                                       <td className="px-6 py-4 text-sm font-roboto item text-center">
                                         {member.chaterId === actionChaterId && (
                                           <>
