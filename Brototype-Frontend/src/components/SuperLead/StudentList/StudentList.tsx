@@ -95,7 +95,7 @@ const StudentList = () => {
 
         // Create regular expression for case-insensitive search
         const regex = new RegExp(query, 'i');
-        console.log(filteredData, "mnnbnnmbbmnmm");
+
 
         if (filteredData.length > 0) {
 

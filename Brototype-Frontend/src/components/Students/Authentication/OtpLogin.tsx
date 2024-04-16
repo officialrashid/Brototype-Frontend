@@ -46,7 +46,7 @@ const StudentOtpPage: FunctionComponent = () => {
 
 
     useEffect(() => {
-  console.log(otpData?.studentData?.studentId,"bfjvhdfgjgdfjghdfjgdfhjhgdhgdfjhgdfj123456789000000000");
+  console.log(otpData?.studentData?.batchId,"bfjvhdfgjgdfjghdfjgdfhjhgdhgdfjhgdfj123456789000000000");
   
         localStorage.removeItem('otpSent')
         studentIdRef.current = otpData?.studentData?.studentId;

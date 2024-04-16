@@ -22,6 +22,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
   let personalWorkoutsArray;
   let technicalWorkoutsArray;
   let miscellaneousWorkoutsArray;
+  let domain: string;
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
 
   useEffect(() => {
@@ -37,10 +38,14 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
           const [profileData] = response?.data?.response;
           const fullDomainName = profileData.domain;
           if (!fullDomainName) {
+            console.log("keriyanuuuuuuuuuuuu dommnn");
+            
+            setNoTaskMessage("No workouts available.beacause your techLead not update task")
             toast.warn("Your Domain Not Found. Please Update Your Profile");
           } else {
-            const domain = fullDomainName.replace(/developer$/i, '');
+             domain = fullDomainName.replace(/developer$/i, '');
             if (!domain) {
+              setNoTaskMessage("Your Domain Not Found. Please Update Your Profile")
               toast.warn("Some Issue In Task Fetch. Please Try After Some Time");
             } else {
               const data = {
@@ -123,8 +128,11 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[], taskType: string) => {
 
+ 
     if (!Array.isArray(workouts)) {
       return <p className='text-center font-roboto text-red-700'>No workouts available.beacause your techLead not update task</p>;
+    }else if (taskType==="technical" && !domain){
+      return <p className='text-center font-roboto text-red-700'>Your Domain Not Found. Please Update Your Profile</p>;
     }
     if(noTaskMessage){
       return <p className='text-center font-roboto text-red-700'>{noTaskMessage}</p>;

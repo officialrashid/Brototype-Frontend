@@ -8,11 +8,11 @@ import { RootState } from "../../../redux-toolkit/store";
 const StudentGraph = () => {
   const [studentDetails, setStudentDetails] = useState("")
   const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
+  const batchId:any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
   useEffect(() => {
 
     const fetchAllPerformance = async () => {
       try {
-        const batchId = "657aa5093476c843c28a377d";
         const data = {
           batchId,
           studentId,

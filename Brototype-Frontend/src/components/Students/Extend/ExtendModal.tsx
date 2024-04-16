@@ -32,10 +32,10 @@ const ExtendModal = ({ isVisible, isClose }) => {
   const [extend, setExtend] = useState({});
   const advisorId = "657aa5093476c843c28a377b";
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const batchId: any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
   useEffect(() => {
     const fetchExtendDetails = async () => {
       try {
-        const batchId = "657aa5093476c843c28a377d";
         const data = {
           batchId,
           studentId,

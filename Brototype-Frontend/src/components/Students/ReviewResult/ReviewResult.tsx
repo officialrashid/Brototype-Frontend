@@ -21,7 +21,7 @@ const ReviewResult = () => {
     const [Communication, setCommunication] = useState(false);
     const [ToatlScore, setTotalScore] = useState(false);
     const [week, setWeek] = useState("");
-    const batchId = "657aa5093476c843c28a377d";
+    const batchId: any = useSelector((state: any) => state?.student?.studentData?.batchId);
     const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
     useEffect(() => {
         const fetchReviewDetails = async () => {
@@ -135,84 +135,89 @@ const ReviewResult = () => {
                         </thead>
                     </table>
                 </div>
-                {reviewDetails.map((data, index) => (
-                    <div className='mx-auto p-2 mb-2' key={index}>
-                        <table className="w-full text-sm text-center divide-y divide-y-8 border table-fixed border-gray-400 rounded-md font-roboto">
-                            <tbody>
-                                <tr key={index}>
-                                    <td className="w-1/4 px-5 py-6">
-                                        {data?.week}
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        {data.reviewer}
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        {data.advisor}
-                                    </td>
-                                    <td className="w-1/4 px-5 pr-10 py-6">
-                                        {data.date}
-                                    </td>
-                                    <td className="w-1/4 px-5 right-32 py-6">
-
-                                        <span
-                                            style={{ marginLeft: '-4rem' }}
-                                            className={`inline-flex items-center rounded-md ${data.reviewScore < 10 ? 'bg-blue-50' :
-                                                data.reviewScore > 9 && data.reviewScore <= 10 ? 'bg-orange-50' :
-                                                    data.reviewScore > 10 && data.reviewScore <= 12 ? 'bg-yellow-50' : 'bg-green-50'
-                                                } px-2 py-1 text-xs font-medium ${data.reviewScore < 10 ? 'text-blue-700' :
-                                                data.reviewScore > 9 && data.reviewScore <= 10 ? 'text-orange-700' :
-                                                    data.reviewScore > 10 && data.reviewScore <= 12 ? 'text-yellow-700' : 'text-green-700'
-                                                } ring-1 ring-inset ${data.reviewScore < 10 ? 'ring-blue-700/10' :
-                                                data.reviewScore > 9 && data.reviewScore <= 10 ? 'ring-orange-700/10' :
-                                                    data.reviewScore > 10 && data.reviewScore <= 12 ? 'ring-yellow-700/10' : 'ring-green-700/10'
-                                                } cursor-pointer`}
-                                           
-                                        >
-                                            {data.reviewScore < 10
-                                                ? 'Repeat'
-                                                : data.reviewScore > 9 && data.reviewScore <= 10
-                                                    ? 'Critical'
-                                                    : data.reviewScore > 10 && data.reviewScore <= 12
-                                                        ? 'Need Improvement'
-                                                        : 'Task Done'}
-                                        </span>
-
-
-                                    </td>
-
-
-                                    <td className="w-1/4 px-5 right-32 py-6">
-                                        <span
-                                            style={{ marginLeft: '-4rem' }}
-                                            className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openPendingTopicsModal(data?.week)}>view</span>
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6" >
-                                        <span
-                                            style={{ marginLeft: '-4rem' }}
-                                            className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openNextWeekUpdationModal(data?.week)}>view</span>
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        <span
-                                            style={{ marginLeft: '-4rem' }}
-                                            className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openPersonalWorkoutsModal(data?.week)} >view</span>
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openMiscellaneousWorkoutModal(data?.week)}>view</span>
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openCommunicationModal(data?.week)}>view</span>
-                                    </td>
-                                    <td className="w-1/4 px-5 py-6">
-                                        <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openTotalScoreModal(data?.week)} >view</span>
-                                    </td>
-                                    {/* <td className="w-1/4 px-5 py-6">
-                                        <span className={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10 cursor-pointer`} onClick={() => openTotalScoreModal(data?.week)} >Repeat</span>
-                                    </td> */}
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                ))}
+                {reviewDetails.length > 0 && (
+                    <>
+                    {reviewDetails.map((data, index) => (
+                        <div className='mx-auto p-2 mb-2' key={index}>
+                            <table className="w-full text-sm text-center divide-y divide-y-8 border table-fixed border-gray-400 rounded-md font-roboto">
+                                <tbody>
+                                    <tr key={index}>
+                                        <td className="w-1/4 px-5 py-6">
+                                            {data?.week}
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            {data.reviewer}
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            {data.advisor}
+                                        </td>
+                                        <td className="w-1/4 px-5 pr-10 py-6">
+                                            {data.date}
+                                        </td>
+                                        <td className="w-1/4 px-5 right-32 py-6">
+    
+                                            <span
+                                                style={{ marginLeft: '-4rem' }}
+                                                className={`inline-flex items-center rounded-md ${data.reviewScore < 10 ? 'bg-blue-50' :
+                                                    data.reviewScore > 9 && data.reviewScore <= 10 ? 'bg-orange-50' :
+                                                        data.reviewScore > 10 && data.reviewScore <= 12 ? 'bg-yellow-50' : 'bg-green-50'
+                                                    } px-2 py-1 text-xs font-medium ${data.reviewScore < 10 ? 'text-blue-700' :
+                                                    data.reviewScore > 9 && data.reviewScore <= 10 ? 'text-orange-700' :
+                                                        data.reviewScore > 10 && data.reviewScore <= 12 ? 'text-yellow-700' : 'text-green-700'
+                                                    } ring-1 ring-inset ${data.reviewScore < 10 ? 'ring-blue-700/10' :
+                                                    data.reviewScore > 9 && data.reviewScore <= 10 ? 'ring-orange-700/10' :
+                                                        data.reviewScore > 10 && data.reviewScore <= 12 ? 'ring-yellow-700/10' : 'ring-green-700/10'
+                                                    } cursor-pointer`}
+                                               
+                                            >
+                                                {data.reviewScore < 10
+                                                    ? 'Repeat'
+                                                    : data.reviewScore > 9 && data.reviewScore <= 10
+                                                        ? 'Critical'
+                                                        : data.reviewScore > 10 && data.reviewScore <= 12
+                                                            ? 'Need Improvement'
+                                                            : 'Task Done'}
+                                            </span>
+    
+    
+                                        </td>
+    
+    
+                                        <td className="w-1/4 px-5 right-32 py-6">
+                                            <span
+                                                style={{ marginLeft: '-4rem' }}
+                                                className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openPendingTopicsModal(data?.week)}>view</span>
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6" >
+                                            <span
+                                                style={{ marginLeft: '-4rem' }}
+                                                className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openNextWeekUpdationModal(data?.week)}>view</span>
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            <span
+                                                style={{ marginLeft: '-4rem' }}
+                                                className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openPersonalWorkoutsModal(data?.week)} >view</span>
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openMiscellaneousWorkoutModal(data?.week)}>view</span>
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openCommunicationModal(data?.week)}>view</span>
+                                        </td>
+                                        <td className="w-1/4 px-5 py-6">
+                                            <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 cursor-pointer" onClick={() => openTotalScoreModal(data?.week)} >view</span>
+                                        </td>
+                                        {/* <td className="w-1/4 px-5 py-6">
+                                            <span className={`inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10 cursor-pointer`} onClick={() => openTotalScoreModal(data?.week)} >Repeat</span>
+                                        </td> */}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    ))}  
+                    </>
+                )}
+              
             </div>
             <PendingTopicsModal
                 isVisible={pendingTopics}

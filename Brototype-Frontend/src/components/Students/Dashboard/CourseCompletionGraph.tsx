@@ -9,10 +9,10 @@ const CourseCompletionGraph = () => {
     const [courseCompletion, setCourseCompletion] = useState(0);
     const navigate = useNavigate()
     const studentId:any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
+    const batchId:any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
     useEffect(() => {
         const fetchCourseCompletion = async () => {
-            const batchId = "657aa5093476c843c28a377d";
-      console.log(studentId,"stduentId coming in redux stire");
+            
            
             const data = {
                 batchId,

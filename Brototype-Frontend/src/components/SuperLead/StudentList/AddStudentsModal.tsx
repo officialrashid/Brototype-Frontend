@@ -58,6 +58,8 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
           return "not enter the details"
         }
         const response = await addStudents(values)
+        console.log(response,"responsee");
+        
          if(response?.status===true){
           toast.success("Student Created Succefully")
           onClose();

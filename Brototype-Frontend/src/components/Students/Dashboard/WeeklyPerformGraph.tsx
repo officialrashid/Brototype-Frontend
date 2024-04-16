@@ -15,13 +15,12 @@ const WeeklyPerformGraph = () => {
   const [reviewPerformance, setReviewPerformance] = useState([]);
   const [loading, setLoading] = useState(true);
   const studentId = useSelector((state: RootState) => state?.student?.studentData?.studentId);
-
+  const batchId:any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
   useEffect(() => {
     fetchData();
   }, [selectWeek, studentId]);
 
   const fetchData = async () => {
-    const batchId = "657aa5093476c843c28a377d";
     const data = {
       batchId,
       studentId,
