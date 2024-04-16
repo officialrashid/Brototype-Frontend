@@ -1,6 +1,6 @@
 
 import { useState } from 'react'
-import logo from '../../Advisor /assets/images/logo-black.png'
+// import logo from '../../Advisor /assets/images/logo-black.png'
 import Nav from '../Nav/Nav'
 import OptionsModal from './OptionsModal'
 import { useSelector } from 'react-redux'
@@ -40,7 +40,7 @@ const Navigation = () => {
           <ul className="flex items-center justify-between">
             <li className="flex items-center">
               <a href="https://flowbite.com" className="flex items-center">
-                <img src={logo} className="h-8" alt="Flowbite Logo" />
+                {/* <img src={logo} className="h-8" alt="Flowbite Logo" /> */}
               </a>
             </li>
             {
@@ -67,7 +67,7 @@ const Navigation = () => {
         </div>
 
       </nav>
-      <Nav />
+       <Nav />
       <OptionsModal isVisible={optionsModal} onClose={() => setOptionsModal(false)}  />
     </>
   )

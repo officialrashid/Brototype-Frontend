@@ -10,8 +10,6 @@ const chatOppositPersonDataSlice = createSlice({
   
   reducers: {
     setchatOppositPersonData: (state, action) => {
-        console.log(action.payload,"[][][[][]]]]");
-        
       state.chatOppositPersonData = action.payload;
     },
     setChatDependecies:(state,action)=>{

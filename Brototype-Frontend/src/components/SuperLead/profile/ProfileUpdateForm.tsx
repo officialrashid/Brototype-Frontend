@@ -185,12 +185,9 @@ const ProfileUpdateForm = () => {
         formData.append('pastYourWorkedCompany', values.pastYourWorkedCompany);
         formData.append('yearOfExpereience', values.yearOfExpereience); // Corrected key name
         formData.append('superleadId', superleadId);
-        console.log(formData, "forData comingggggggggggggggggggggggggggggg");
+
         if(action === "edit"){
-          console.log("keriiiiitttoooo");
-          
           const response = await updateSuperleadProfile(formData)
-          console.log(response,"responseee");
           if(response.status===true){
             toast.success("profile updated successfully")
            

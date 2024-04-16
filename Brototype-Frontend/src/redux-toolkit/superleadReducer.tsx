@@ -9,13 +9,9 @@ const superleadSlice = createSlice({
   
   reducers: {
     setSuperleadData: (state, action) => {
-      console.log(action.payload, "[][][[][]]]]");
-
       state.superleadData = action.payload;
     },
     setSuperleadProfileImage: (state, action) => { // Corrected action name
-      console.log(action.payload, "[][][[][]]]]");
-      console.log(typeof action.payload, "[][][[][]]]]");
       state.superleadProfileImage = action.payload;
     }
   }

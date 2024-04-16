@@ -7,7 +7,14 @@ import studentReducer from './studentReducer';
 import reviewerReducer from './reviewerReducer';
 import superleadReducer from './superleadReducer';
 import chatOppositPersonDataReducer from './chatOppositPersonDataReducer';
-
+import company from "./companySlice";
+import course from "./courseSlice";
+import branch from "./branchSlice";
+import content from "./contentSlice";
+import control from "./controlSlice";
+import advisorStudentReducer from './studentSlice'
+import advisorReviewerReducer from "./reviewerSlice";
+import coordinatorReducer from "./coordinatorSlice"
 const persistConfig = {
   key: 'root',
   storage,
@@ -16,11 +23,19 @@ const persistConfig = {
 const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
-   otp : otpReducer,
-   student:studentReducer,
-   reviewer: reviewerReducer,
-   superlead: superleadReducer,
-   chat : chatOppositPersonDataReducer,
+    otp: otpReducer,
+    student: studentReducer,
+    reviewer: reviewerReducer,
+    superlead: superleadReducer,
+    chat: chatOppositPersonDataReducer,
+    companyReducer: company,
+    courseReducer: course,
+    branchReducer: branch,
+    contentReducer: content,
+    navigation: control,
+    adviosrReviewer:advisorReviewerReducer,
+    advisorStudent:advisorStudentReducer,
+    coordinator:coordinatorReducer
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;
