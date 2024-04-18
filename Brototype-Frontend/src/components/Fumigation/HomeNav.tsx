@@ -1,8 +1,8 @@
 
 import  { useState } from 'react';
 
-import PendingStudents from '../Fumigation/PendingStudents';
-import Batches from './Batches';
+import PendingStudents from './Batch-student';
+import Batches from './Batch';
 type TableType = 'batches' | 'pendingStudents';
 const HomeNav = () => {
 

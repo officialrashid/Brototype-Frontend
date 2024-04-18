@@ -14,7 +14,10 @@ import content from "./contentSlice";
 import control from "./controlSlice";
 import advisorStudentReducer from './studentSlice'
 import advisorReviewerReducer from "./reviewerSlice";
-import coordinatorReducer from "./coordinatorSlice"
+import coordinatorReducer from "./coordinatorSlice";
+import enquiryReducer from "./enquirySlice";
+import batchSliceReducer from "./batchSlice";
+import invigilatorReducer from "./invigilatorSlice";
 const persistConfig = {
   key: 'root',
   storage,
@@ -35,7 +38,10 @@ const persistedReducer = persistReducer(
     navigation: control,
     adviosrReviewer:advisorReviewerReducer,
     advisorStudent:advisorStudentReducer,
-    coordinator:coordinatorReducer
+    coordinator:coordinatorReducer,
+    enquiries:enquiryReducer,
+    batch:batchSliceReducer,
+    invigilator:invigilatorReducer
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;
