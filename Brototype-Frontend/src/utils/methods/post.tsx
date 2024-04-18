@@ -317,11 +317,24 @@ export const addReviewers = async (data: any) => {
 
 
 }
+// export const addStudents = async (data: any) => {
+
+//   try {
+//     const resposne = await authenticationApi.post('/api/auth/add-student', data)
+//     return resposne?.data
+//   } catch (err) {
+//     return { status: false, message: "some issue in the add Reviewer" }
+//   }
+
+
+// }
 export const addStudents = async (data: any) => {
 
   try {
-    const resposne = await authenticationApi.post('/api/auth/add-student', data)
-    return resposne?.data
+    const resposne = await fumigationApi.post('/api/fumigation/superlead-add-student', data)
+    console.log(resposne,"999999999");
+    
+    return resposne?.data?.sendDataAuthServResponse
   } catch (err) {
     return { status: false, message: "some issue in the add Reviewer" }
   }

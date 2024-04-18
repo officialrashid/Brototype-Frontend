@@ -58,14 +58,16 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
           return "not enter the details"
         }
         const response = await addStudents(values)
-        console.log(response,"responsee");
+        console.log(response,"responseeeeeee");
         
          if(response?.status===true){
           toast.success("Student Created Succefully")
           onClose();
-         }else{
-          toast.warn("Student Created not Success")
+         }else if(response?.status===false && response?.message==="student not created because of batch not found"){
+          toast.warn("Student Created not Success, because batch not found")
           onClose()
+         } else{
+          toast.warn("Student Created not Success,Try again")
          }
        onClose()
       } catch (error) {
