@@ -18,7 +18,7 @@ const ReviewerDashboard = () => {
             <TimeLineUp/>
        
             <Graph/>
-            {/* <ScheduleTimeCard /> */}
+            <ScheduleTimeCard />
             {/* <UpcomingReviews/> */}
 
         </div>
