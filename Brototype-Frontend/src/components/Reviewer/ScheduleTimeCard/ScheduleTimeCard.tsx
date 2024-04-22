@@ -11,25 +11,58 @@ const ScheduleTimeCard = () => {
       try {
         const response = await getScheduleEvents(reviewerId);
         if (response && response.response && response.response[0] && response.response[0].events) {
-          const sortedEvents = response.response[0].events.sort((a: any, b: any) => {
-            const earliestDateA: Date = new Date(Math.min(...(a.date || []).map((d: string) => new Date(d))));
-            const earliestDateB: Date = new Date(Math.min(...(b.date || []).map((d: string) => new Date(d))));
-            return earliestDateA.getTime() - earliestDateB.getTime();
-          });
-
-          const eventsWithRatio = sortedEvents.map((event: { bookedEvents: { length: number; filter: (arg0: (item: any) => any) => { (): any; new(): any; length: number; }; }; }) => {
+          const currentDate = new Date(); // Get the current date
+          const sortedEvents = response.response[0].events
+            .map((event: any) => ({
+              ...event,
+              date: event.date[0].split('-').map((d: string) => parseInt(d)), // Convert date string to array of numbers
+            }))
+            .sort((a: any, b: any) => {
+              const earliestDateA: Date = new Date(a.date[2], a.date[1] - 1, a.date[0]);
+              const earliestDateB: Date = new Date(b.date[2], b.date[1] - 1, b.date[0]);
+              return earliestDateA.getTime() - earliestDateB.getTime();
+            });
+    
+          const eventsWithRatio = sortedEvents.map((event: any) => {
             const bookedEventsLength = event?.bookedEvents?.length || 0;
             const bookedTrueCount = event?.bookedEvents?.filter((item: any) => item.booked).length || 0;
             const timeSlotRatio = bookedEventsLength !== 0 ? Math.round((bookedTrueCount / bookedEventsLength) * 100) : 0;
             return { ...event, timeSlotRatio };
           });
-
-          setScheduleEvents(eventsWithRatio);
+    
+          // Filter events occurring on the current date
+          const currentDayEvents = eventsWithRatio.filter((event: any) => {
+            const eventDate = new Date(event.date[2], event.date[1] - 1, event.date[0]);
+            return isSameDay(eventDate, currentDate); // Define isSameDay function to compare only day, month, and year
+          });
+    
+          // Filter events occurring after the current date
+          const futureEvents = eventsWithRatio.filter((event: any) => {
+            const eventDate = new Date(event.date[2], event.date[1] - 1, event.date[0]);
+            return eventDate > currentDate; // Include events occurring after the current date
+          });
+    
+          // Merge the two arrays
+          const allEvents = [...currentDayEvents, ...futureEvents];
+    
+          setScheduleEvents(allEvents);
         }
       } catch (err) {
         console.error('Error fetching schedule events:', err);
       }
     };
+    
+    // Define a helper function to compare dates (day, month, and year only)
+    function isSameDay(date1: Date, date2: Date) {
+      return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+      );
+    }
+    
+    
+    
 
     fetchScheduleEvents();
   }, [reviewerId]);
@@ -41,7 +74,7 @@ const ScheduleTimeCard = () => {
           <div className="border-b-2 h-32 rounded-md m-4 relative bg-blue-100">
             {/* Content */}
             {(() => {
-              const dateStr = (event.date || []).join('-'); // Join array elements into a string
+              const dateStr = event.date.join('-'); // Join array elements into a string
               const dateParts = dateStr.split('-');
               const [day, month, year] = dateParts.length === 3 ? dateParts : ['', '', ''];
               const parsedDate = new Date(`${year}-${month}-${day}`);
