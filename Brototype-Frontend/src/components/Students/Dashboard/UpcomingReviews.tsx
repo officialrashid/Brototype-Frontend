@@ -47,6 +47,7 @@ const UpcomingReviews = () => {
   return (
     <>
       <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
+      <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
         <div className="flex m-2 gap-2">
 
           <div className="px-4  border border-2px rounded-md hover:bg-custom-background py-1 cursor-pointer font-roboto"><span className="text-center
@@ -137,7 +138,7 @@ const UpcomingReviews = () => {
 
 
       </div>
-      <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
+   
     </>
 
   );

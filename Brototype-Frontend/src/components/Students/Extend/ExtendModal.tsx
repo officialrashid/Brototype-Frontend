@@ -4,8 +4,9 @@ import { useFormik } from "formik";
 import { batch, useSelector } from "react-redux";
 import { requestExtention } from "../../../utils/methods/post";
 import { toast } from 'react-toastify';
-import * as Yup from 'yup'; // Import yup
+import * as Yup from 'yup';
 import 'react-toastify/dist/ReactToastify.css';
+
 interface FormValues {
   fullName: string;
   batch: string;
@@ -14,8 +15,8 @@ interface FormValues {
   extendDays: string;
   extendReason: string;
 }
+
 const validationSchema = Yup.object().shape({
-  // Define validation rules
   extendDays: Yup.string()
     .trim()
     .required('Extend days is required')
@@ -25,14 +26,12 @@ const validationSchema = Yup.object().shape({
     .required('Extend reason is required'),
 });
 
-
 const ExtendModal = ({ isVisible, isClose }) => {
-  console.log("callingg modaleeeeeee");
-  
   const [extend, setExtend] = useState({});
   const advisorId = "657aa5093476c843c28a377b";
-  const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
+  const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const batchId: any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
+
   useEffect(() => {
     const fetchExtendDetails = async () => {
       try {
@@ -40,7 +39,6 @@ const ExtendModal = ({ isVisible, isClose }) => {
           batchId,
           studentId,
         };
-
         const response = await getExtendDetails(data);
         setExtend(response.data);
       } catch (err) {
@@ -48,7 +46,6 @@ const ExtendModal = ({ isVisible, isClose }) => {
       }
     };
 
-    // Call fetchExtendDetails only when the modal is visible
     if (isVisible) {
       fetchExtendDetails();
     }
@@ -72,48 +69,40 @@ const ExtendModal = ({ isVisible, isClose }) => {
           extendDays: formik.values.extendDays,
           extendReason: formik.values.extendReason,
           fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
-          batch : extend.batch || '',
-          domain : extend.domain || '',
-          currentWeek : extend.currentWeek
+          batch: extend.batch || '',
+          domain: extend.domain || '',
+          currentWeek: extend.currentWeek
         };
-        const response = await requestExtention(body)
-         if(response.status===201){
-          console.log(response,"reposne extend request");
-          
-          toast.success("Your Request have been successfully")
+        const response = await requestExtention(body);
+        if (response.status === 201) {
+          toast.success("Your Request have been successfully");
           isClose();
-         }
-    
-        // After submitting, you might want to close the modal
- 
+        }
       } catch (err) {
         console.error('Error submitting form:', err);
-        // Handle the error, e.g., set an error state
       }
     },
-    
   });
 
   if (!isVisible) return null;
 
   return (
-    <>
-      <div className=" backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
-        <div className="border border-gray-200 m-5 rounded-lg shadow-2xl w-2/5 bg-white z-40">
-          <div className="flex justify-between">
-            <div></div>
-            <div className="ml- mr-4 mt-4">
-              <span onClick={() => { isClose() }} className="cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </span>
-            </div>
+    <div className="fixed inset-0 flex justify-center items-center z-50">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-2xl w-2/5">
+        <div className="flex justify-between">
+          <div></div>
+          <div className="ml-4 mt-4">
+            <span onClick={isClose} className="cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </span>
           </div>
-          <div className="text-center">
-            <div><span className="font-semibold font-roboto text-md mb-2">Extend request</span></div>
-          </div>
-          <div className="m-5 mt-6">
+        </div>
+        <div className="text-center">
+          <div><span className="font-semibold font-roboto text-md mb-2">Extend request</span></div>
+        </div>
+        <div className="m-5 mt-6">
             <div>
               <input
                 type="text"
@@ -166,21 +155,16 @@ const ExtendModal = ({ isVisible, isClose }) => {
               ) : null}
             </div>
           </div>
-          <div className="flex justify-between m-6">
-            <div></div>
-            <div>
-              <button className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={isClose}>
-                Cancel
-              </button>
-              <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={formik.handleSubmit}>
-                Submit
-              </button>
-
-            </div>
-          </div>
+        <div className="flex justify-between m-6">
+          <button className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={isClose}>
+            Cancel
+          </button>
+          <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={formik.handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -373,6 +373,17 @@ export const getAllStudents = async (uniqueId:string) =>{
   }
 
 }
+export const getPendingStudents = async (uniqueId:string) =>{
+
+  try {
+     const response = await fumigationApi.get(`/api/fumigation/get-pending-students/${uniqueId}`)
+     return response?.data;
+  } catch (error) {
+   
+  }
+
+}
+
   //////// GET METHOD FOR CHAT-AND-VIDEO SERVICES /////
   export const getAllChatRecipients = async (initiatorId:string) =>{
 
