@@ -37,6 +37,8 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
         if (response?.data?.status) {
           const [profileData] = response?.data?.response;
           const fullDomainName = profileData.domain;
+          console.log(fullDomainName,"fullDomainNameeeeeeee");
+          
           if (!fullDomainName) {
             console.log("keriyanuuuuuuuuuuuu dommnn");
             
@@ -44,7 +46,11 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
             toast.warn("Your Domain Not Found. Please Update Your Profile");
           } else {
              domain = fullDomainName.replace(/developer$/i, '');
+             console.log(domain,"seconddomain log");
+             
             if (!domain) {
+              console.log("keriii != vllllll");
+              
               setNoTaskMessage("Your Domain Not Found. Please Update Your Profile")
               toast.warn("Some Issue In Task Fetch. Please Try After Some Time");
             } else {
@@ -52,12 +58,19 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
                 domain,
                 weekName
               };
-              const response = await getTechnicalWorkout(data);
-              if(!response){
+              const response = await getTechnicalWorkout(data)
+              console.log(response,"responseee in  get technical wprkoutsss");
+              
+              if(response.status===true){
+                console.log("response il keri taaaa666666");
+                
+                setTechnicalWorkouts(response.response[0].technicalWorkouts);
+                setTechnicalWorkoutsNestedQuestion(response.response[0].technicalWorkoutNestedQuestions);
+             
+              }else{
                 setNoTaskMessage("No workouts available.beacause your techLead not update task")
               }
-              setTechnicalWorkouts(response.response[0].technicalWorkouts);
-              setTechnicalWorkoutsNestedQuestion(response.response[0].technicalWorkoutNestedQuestions);
+   
             }
           }
         } else {
@@ -128,11 +141,10 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[], taskType: string) => {
 
- 
+ console.log(taskType,"taslTypeeeeee");
+ console.log(domain,"domaineeeeeeee");
     if (!Array.isArray(workouts)) {
       return <p className='text-center font-roboto text-red-700'>No workouts available.beacause your techLead not update task</p>;
-    }else if (taskType==="technical" && !domain){
-      return <p className='text-center font-roboto text-red-700'>Your Domain Not Found. Please Update Your Profile</p>;
     }
     if(noTaskMessage){
       return <p className='text-center font-roboto text-red-700'>{noTaskMessage}</p>;

@@ -39,14 +39,22 @@ console.log(mainQuestionNumber,"modal MainQuestions");
     const fetchEditTaskDetails = async () => {
       try {
         if (modalType === 'Edit') {
+          console.log(questions,"questionssssssss");
+          
           const data = {
             studentId,
             mainQuestionNumber,
             taskType,
             weekName,
           };
+          console.log(
+            studentId,
+            mainQuestionNumber,
+            taskType,
+            weekName,"{}{}{}{_____++++++++++++");
+          
           const response = await getEditTaskDetails(data);
-          console.log(response.data[0]);
+          console.log(response.data[0],"LLLLLLLLLOOOOOIIII GET EDITTASKEEEE");
           if (response) {
             response.data[0].map((editData: any, index: number) => {
               formik.setFieldValue(`answers.${editData.nestedQuestionNumber}`, editData.answer);
