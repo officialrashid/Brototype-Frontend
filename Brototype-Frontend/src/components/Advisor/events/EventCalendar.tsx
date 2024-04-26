@@ -8,7 +8,6 @@ const localizer = momentLocalizer(moment)
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { axiosInstance } from '../services/api/apiClient'
 import DeleteEvent from './DeleteEvent'
 import { deleteEvents } from '../../../redux-toolkit/coordinatorSlice'
 
@@ -100,7 +99,7 @@ setModal(false)
    }
   }
 
-  const orgEvents=coordinatorData.events.map((event)=>{
+  const orgEvents=coordinatorData.events?.map((event:any)=>{
     return {title:event.eventType,start:event.startDate,end:event.endDate}
   })
 
@@ -223,8 +222,7 @@ setModal(false)
       endAccessor="end"
       style={{ height: 1000,width:750}}
       events={orgEvents}
-      className=''
-    />
+      className=''/>
 
   </div>
 

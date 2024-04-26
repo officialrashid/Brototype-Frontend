@@ -9,7 +9,7 @@ import ReviewerComp from '../components/Advisor/reviewer/ReviewerComp'
 import Account from '../components/Advisor/account/Account'
 import ExtPage from '../components/Advisor/extend-request/ExtPage'
 import Student from '../components/Advisor/students/Student'
-import Reviewer from '../components/Advisor/schedule/Reviewers'
+import Reviewer from '../components/Advisor/schedule /Reviewer'
 import Chat from '../components/Advisor/chat/Chat'
 import SignIn from '../components/Advisor/components/SignIn'
 import Footer from '../components/Advisor/components/Footer'
@@ -50,7 +50,7 @@ user?<Navigation/>:   <SignIn/>
       
      <Route path='/dashboard/' element={<Dashboard/>}></Route>
      <Route path='/reviews/' element={<Scheduled/>}></Route>
-     <Route path='/schedule/doamin-reviewer/:domain' element={<Reviewer/>}></Route>
+     <Route path='/schedule/domain-reviewer/:domain' element={<Reviewer/>}></Route>
      <Route path='/reviewers/' element={<ReviewerComp/>}></Route>
      <Route path='/account/' element={<Account/>}></Route>
      <Route path='/events/' element={<EventCalendar/>}></Route>

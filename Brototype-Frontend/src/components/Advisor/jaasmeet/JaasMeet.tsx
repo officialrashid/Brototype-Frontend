@@ -34,7 +34,7 @@ const generateToken=async()=>{
 
     if(!meetState) return (
         <>
-        <button className='bg-black text-white px-4 rounded-md  py-1' onClick={()=>{generateToken()}}>Start meet</button>
+        <button className='bg-black text-white px-4 rounded-md  py-1' onClick={()=>{generateToken()}}>Start </button>
         
         </>
     )

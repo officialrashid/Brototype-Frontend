@@ -1,16 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import LogOutModal from "./LogOutModal"
+import CreateTask from "../Scheduled/CreateTask"
+import { useDispatch, useSelector } from "react-redux"
+import { activeSideNav } from "../../../redux-toolkit/coordinatorSlice"
 
 const SideNav=()=>{
-
+  const [createTask,setCreateTask]=useState(false)
   const [logOutModal,setLogOutModal]=useState(false)
     const navigate=useNavigate()
-  
-  
-    const [activeTab,setActiveTab]=useState(1)
+    const dispatch=useDispatch()
+     const tab=useSelector(state=>state.coordinator.sideNav)
+    const [activeTab,setActiveTab]=useState(tab)
   
     const handleTabClick=(tabIndex:any)=>{
+        dispatch(activeSideNav(tabIndex))
       setActiveTab(tabIndex)
       if(tabIndex==1){
         navigate('/advisor/dashboard/')
@@ -21,7 +25,7 @@ const SideNav=()=>{
   
     
       if(tabIndex==3){
-          navigate('/advisor/scheduled-review/')
+          navigate('/advisor/scheduled-review')
       }
     
       if(tabIndex==4){
@@ -45,6 +49,11 @@ if(tabIndex==9){
 
   
     }
+
+    useEffect(()=>{
+      handleTabClick(tab)
+
+    },[activeTab])
   
       return (
           <>
@@ -322,6 +331,22 @@ if(tabIndex==9){
      Account
      
      </li>
+     <li className="    px-2  py-2 mb-2 flex gap-2  "  onClick={()=>{setCreateTask(true)}} >
+           {activeTab==10?<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+</svg>
+: <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-6">
+<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+</svg>
+
+     
+   }
+          
+     
+     
+  Add Task
+     
+     </li>
      <li className="    px-2  py-2 mb-2 flex gap-2" onClick={()=>{setLogOutModal(true)}} >
      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
@@ -347,6 +372,7 @@ if(tabIndex==9){
   
    {/* </div> */}
    <LogOutModal isVisible={logOutModal} onClose={()=>{setLogOutModal(false)}}/>
+   <CreateTask isVisible={createTask} onClose={()=>{setCreateTask(false)}}/>
   </>
     
   

@@ -7,7 +7,6 @@ import WebContentPage from "../components/Admin/WebContent/WebContentPage"
 import Counsellor from "../components/Admin/Counsellor/Counsellor"
 import Course from "../components/Admin/Courses/Course"
 import Branch from "../components/Admin/branches/Branch"
-import Enquiry from "./components/Enquiry"
 import EnquiryComp from "../components/Admin/enquiries/Enquiry"
 import Data from "../components/Admin/Data/Data"
 

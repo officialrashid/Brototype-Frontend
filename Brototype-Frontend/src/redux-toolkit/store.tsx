@@ -18,6 +18,8 @@ import coordinatorReducer from "./coordinatorSlice";
 import enquiryReducer from "./enquirySlice";
 import batchSliceReducer from "./batchSlice";
 import invigilatorReducer from "./invigilatorSlice";
+import advisorReducer from './advisorReducer';
+import reviewSlice from './reviewSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -30,6 +32,7 @@ const persistedReducer = persistReducer(
     student: studentReducer,
     reviewer: reviewerReducer,
     superlead: superleadReducer,
+    advisor: advisorReducer,
     chat: chatOppositPersonDataReducer,
     companyReducer: company,
     courseReducer: course,
@@ -41,7 +44,8 @@ const persistedReducer = persistReducer(
     coordinator:coordinatorReducer,
     enquiries:enquiryReducer,
     batch:batchSliceReducer,
-    invigilator:invigilatorReducer
+    invigilator:invigilatorReducer,
+    review:reviewSlice
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;

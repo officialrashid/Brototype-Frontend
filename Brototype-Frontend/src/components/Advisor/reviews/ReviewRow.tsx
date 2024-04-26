@@ -1,11 +1,44 @@
+import { useState } from "react"
+import TaskUpdate from "../Scheduled/TaskUpdate"
 import JaasMeet from "../jaasmeet/JaasMeet"
 import { axiosInstance } from "../services/api/apiClient"
-
+import { useDispatch } from "react-redux"
+import { changeFrame } from "../../../redux-toolkit/reviewSlice"
+import TaskView from "../Scheduled/TaskView"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
 const ReviewRow=()=>{
+  const [taskView,setTaskView]=useState(false)
+  const [taskModal,setTaskModal]=useState(false)
+  const [frame,setFrame]=useState(false)
+  const createFullFrame=()=>{
 
+  }
+  const handleToast=(message:any,error:any)=>{
+    if(!error){
+      toast.success(message, {
+        position: 'top-center',
+        autoClose: 3500
+      });
+//setModal(false)
+    }
+    else{
+      toast.error(message, {
+        position: 'top-center',
+        autoClose: 3000
+      });
+
+
+    
+   }
+  }
+
+  const dispatch=useDispatch()
 
     const handleMeetLink= async ()=>{
+
+dispatch(changeFrame(true))
 
        // window.open('https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/my-meet','_blank')
          
@@ -46,22 +79,30 @@ haiiii
         <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
        what
         </th>
-       
-        <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-        <button className="bg-black text-white px-6 rounded-md  py-1">View</button>
+        <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
+        <button className="bg-black text-white px-3 rounded-md  py-1" onClick={()=>{setTaskView(true)}}>View</button>
         </th>
+        <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
+        <button className="bg-black text-white px-3 rounded-md  py-1" onClick={()=>{setTaskModal(true)}}>Update</button>
+        </th>
+     
         <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
-        {/* <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{handleMeetLink()}}>Start</button> */}
-        <JaasMeet/>
+        <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{handleMeetLink()}}>Start</button>
+        {/* <JaasMeet/> */}
+        </th>
+          
+        <th scope="col" className="w-1/4 px-4 py-6 text-center ">
+        <button className="bg-black text-white px-3 rounded-md  py-1">Cancel</button>
         </th>
        
       </tr>
     </thead>
   </table>
 </div>
+<TaskView isVisible={taskView} onClose={()=>{setTaskView(false)}} />
         
-
-        
+<TaskUpdate  isVisible={taskModal} onClose={()=>{setTaskModal(false)}} handleToast={handleToast}/>
+<ToastContainer/>  
         </>
     )
 }

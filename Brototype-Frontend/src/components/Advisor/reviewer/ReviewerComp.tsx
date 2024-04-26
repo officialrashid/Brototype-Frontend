@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react"
 import SearchBar from "../components/SearchBar"
 import { useDispatch, useSelector } from "react-redux"
 import { getReviewerData } from "../../../redux-toolkit/reviewerSlice"
@@ -11,13 +11,13 @@ interface Istudent{
   id:string
   name:string,
  }
- let reviewersData= useSelector(state=>state.reviewer.reviewerData)
+ let reviewersData= useSelector(state=>state?.reviewer?.reviewerData)
 console.log(reviewersData,'innnnnnn page');
 const [filteredData,setFilteredData]=useState(reviewersData)
 const getSearch=(value:string)=>{
   console.log(value),'searchInput';
   let filter
- filter = reviewersData.filter(reviewer=>{return  reviewer.name.toLowerCase().includes(value.toLowerCase())})
+ filter = reviewersData?.filter(reviewer=>{return  reviewer?.name?.toLowerCase()?.includes(value?.toLowerCase())})
   
    
 
@@ -61,7 +61,7 @@ const reviewers=[
             <div className="grid grid-cols-4 gap-2 m-3  " >
 
               {
-               filteredData?.map(reviewer=>{
+               filteredData?.map((reviewer: { id: Key | null | undefined; name: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined })=>{
                   return (
                     <div className="border border-2px  rounded-lg w-full mb-2 bg-white" key={reviewer.id}>
                     <div className=" border-b  h-20 bg-slate-400  rounded-t-lg">

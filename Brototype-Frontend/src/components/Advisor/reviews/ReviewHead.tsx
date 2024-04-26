@@ -21,12 +21,22 @@ const ReviewHead=()=>{
         <th scope="col" className="w-1/4 px-5 py-7 text-center ">
 Date
         </th>
-        <th scope="col" className="w-1/4 px-5 py-7 text-center ">
-         Profile
-        </th>
-        <th scope="col" className="w-1/4 px-5 py-7 text-center  rounded-r-md ">
+        <th scope="col" className="w-1/4 px-5 py-7 text-center   ">
+          view
+   
+   </th>
+        <th scope="col" className="w-1/4 px-5 py-7 text-center   ">
+          task
+   
+   </th>
+        <th scope="col" className="w-1/4 px-5 py-7 text-center   ">
    meet
         </th>
+        <th scope="col" className="w-1/4 px-5 py-7 text-center rounded-r-md">
+         Cancel
+        </th>
+      
+      
        
       </tr>
     </thead>

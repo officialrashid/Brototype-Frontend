@@ -5,6 +5,7 @@ const coordinatorSlice=createSlice({
     initialState:{
        coordinatorData:{},
        topCoordinators:[],
+        sideNav : 1
 
     },
     reducers:{
@@ -36,6 +37,13 @@ const coordinatorSlice=createSlice({
             
             
            //return action.payload
+        },
+        activeSideNav:(state,action)=>{
+            console.log(action.payload,'acccc');
+            
+            state.sideNav=action.payload
+       
+            
         }
 
     }
@@ -43,5 +51,5 @@ const coordinatorSlice=createSlice({
 
 })
 
-export const {getCoordinatorData,getTopCoordinators,deleteEvents,editEvents}=coordinatorSlice.actions
+export const {getCoordinatorData,getTopCoordinators,deleteEvents,editEvents,activeSideNav}=coordinatorSlice.actions
 export default coordinatorSlice.reducer

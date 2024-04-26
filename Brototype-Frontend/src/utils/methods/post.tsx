@@ -453,3 +453,14 @@ export const createGroupChat = async (data: any) => {
 
 }
 
+//***** Advisor Authentication Section */
+export const advisorLogin = async (data: any) => {
+  try {
+    const resposne = await authenticationApi.post('/api/auth/advisor-login', data)
+    return resposne
+  } catch (err) {
+    return { status: false, message: "some issue in the Address details update" }
+  }
+
+
+}

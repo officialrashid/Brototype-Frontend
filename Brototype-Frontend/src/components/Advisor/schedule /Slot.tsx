@@ -1,11 +1,166 @@
+import axios from "axios";
+import { useEffect, useState } from "react"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import Api from "../../../utils/baseUrl/reviewerBaseUrl";
+import { useSelector } from "react-redux";
+
+const Slot=({isVisible,onClose,events,eventId})=>{
+
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+      const bookReview=async (slotId:string,handleToast:Function)=>{
+
+        console.log(advisorId,slotId,'rrrrr')
+        console.log(eventId,'eeee')
+        
+     
+         const response=await Api.post('/api/reviewer/update-particular-date-events',{advisorId,slotId,eventId})
+         
 
 
 
-const Slot=({isVisible,onClose})=>{
+        
+        handleToast('Review Booked successfully')
+        console.log(slotId,'slottt');
+
+        
+
+      }
+
+      const handleToast=(message:any,error:any)=>{
+        if(!error){
+          toast.success(message, {
+            position: 'top-center',
+            autoClose: 3500
+          });
+    //setModal(false)
+        }
+        else{
+          toast.error(message, {
+            position: 'top-center',
+            autoClose: 3000
+          });
+    
+    
+        
+       }
+      }
+
+      
+      const [slotEvent,setSlotEvent]=useState([])
+        //  const getTimeDifference=(startTime:any,endTime:any)=>{
+        //   console.log(startTime,endTime);
+          
+        //   const splitStart=startTime
+        //   const splitEnd=endTime
+        //   const start=new Date((`01/01/2024 ${splitStart}`))
+        //   const end=new Date((`01/01/2024 ${splitEnd}`))
+        //   const timeDifferenceInmillisecond=end.getTime()-start.getTime()
+        //   const timeInHours=timeDifferenceInmillisecond/(1000*60*60)
+        //   return timeInHours
+        //  }
+
+      // const generateTimeSlots=()=>{
+
+      //   let startTime="09:00"
+      //   let endTime="10:00"
+      //   let slots=[]
+
+      //   let currentTime=startTime
+      //   while(currentTime<endTime){
+      //     let slotStarTime=currentTime
+      //     let slotEndTime
+
+      //     const [hour,minute]=currentTime.split(":").map(Number)
+      //     console.log([hour,minute]);
+          
+      //     const nextMinute=(minute+30)%60
+      //     const nextHour=hour+Math.floor((minute+30)/60)
+      //     slotEndTime=`${String(nextHour).padStart(2, '0')}:${String(nextMinute).padStart(2, '0')}`
+      //     slots.push({startTime:slotStarTime,endTime:slotEndTime})
+
+      //     currentTime=slotEndTime
+      //   }
+
+      //   return slots
+
+      // }
+
+      const dataArray = [
+        {
+          _id: "123",
+          slotStartTime: "9:00 am",
+          slotEndTime: "9:30 am",
+          reviewStatus: false,
+          booked: true,
+          studentId: "student123",
+          coordinatorId: "coord123"
+        },
+        {
+          _id: "124",
+          slotStartTime: "10:00 am",
+          slotEndTime: "10:30 am",
+          reviewStatus: false,
+          booked: false,
+          studentId: "student124",
+          coordinatorId: "coord124"
+        },
+        {
+          _id: "125",
+          slotStartTime: "11:00 am",
+          slotEndTime: "11:30 am",
+          reviewStatus: false,
+          booked: false,
+          studentId: "student125",
+          coordinatorId: "coord125"
+        },
+        {
+          _id: "126",
+          slotStartTime: "12:00 pm",
+          slotEndTime: "12:30 pm",
+          reviewStatus: false,
+          booked: false,
+          studentId: "student126",
+          coordinatorId: "coord126"
+        },
+        {
+          _id: "127",
+          slotStartTime: "1:00 pm",
+          slotEndTime: "1:30 pm",
+          reviewStatus: false,
+          booked: false,
+          studentId: "student127",
+          coordinatorId: "coord127"
+        }
+      ];
+       const [reviewSlots,setReviewSlots]=useState([])
+       
+      useEffect(()=>{
+        //console.log(generateTimeSlots(),'vvdsds');
+        
+        
+//         const slots=events.filter((timeSlot:any)=>{
+//           return timeSlot.id==eventId
+//         })
+// console.log(slots);
+
+        //setSlotEvent(slots)
+       setReviewSlots(events)
+
+       console.log(events,'eventsss');
+       
+
+      },[])
+
+     
+
     if(!isVisible) return null
     return (
         <>
-
+{
+  console.log(slotEvent,'slottt')
+  
+}
 <div className="fixed inset-0 bg-opacity-10   bg-black/60 flex justify-center  items-center overflow-y-scroll overflow-hidden z-40 ">
         <div className="border border-2px m-3 w-1/3 rounded-md bg-white"  >
 <div className="flex justify-between m-3 ">
@@ -18,106 +173,75 @@ const Slot=({isVisible,onClose})=>{
 </div>
 </div>
 <div className="border border-2px m-3 rounded-md py-2 px-2 mt-2">
-  <span>Total 2 hours available</span>
+  <span>Time slot(s) available</span>
 
 </div>
-  <div className="flex justify-between m-3 gap-4">
-     <div className="flex w-full ">
-   <div className="border border-gray-400 text-center w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:00 am</span>
-
-  </div>
-
-</div>
-<div className="text-center py-1.5 mt-2" >
-  <span>-</span>
-</div>
-<div className="border border-gray-400 text-center   w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:30 am</span>
-
-  </div>
-
-</div>
-
-   
-
+{
+   console.log(events,'e')
+}
+{
+ 
+  
+  events?.map((slot)=>{
+    return (
+      <div className="flex justify-between m-3 gap-4">
+      <div className="flex w-full ">
+    <div className="border border-gray-400 text-center w-1/2 ">
+   <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
+     <span  >{slot.startTime}</span>
+ 
+   </div>
+ 
  </div>
- <div className='mt-2'>
-    <button className="bg-black text-white  rounded-md px-6 py-2">Book</button>
-   
+ <div className="text-center py-1.5 mt-2" >
+   <span>-</span>
  </div>
-
-
-
-  </div>
-   <div className="flex justify-between m-3 gap-4">
-     <div className="flex w-full ">
-   <div className="border border-gray-400 text-center w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:00 am</span>
-
-  </div>
-
-</div>
-<div className="text-center py-1.5 mt-2" >
-  <span>-</span>
-</div>
-<div className="border border-gray-400 text-center   w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:30 am</span>
-
-  </div>
-
-</div>
-
-   
-
+ <div className="border border-gray-400 text-center   w-1/2 ">
+   <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
+     <span>{slot.endTime}</span>
+ 
+   </div>
+ 
  </div>
- <div className='mt-2'>
-    <button className="bg-black text-white  rounded-md px-6 py-2">Book</button>
+ 
+    
+ 
+  </div>
+  <div className=' flex jusitify-center items-center'>
+    {
+      
+      
+      slot.booked&&advisorId!=='123'? <button className="bg-gray-500 text-black text-sm  rounded-md border border-bg-salte-500 px-6 py-2 "  onClick={()=>{bookReview(slot._id,handleToast)}} disabled={slot.booked}>
+       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" className="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+</svg>
+    </button>: advisorId==='123'?<button  className="bg-black text-white  rounded-md px-6 py-2 "  onClick={()=>{bookReview(slot._id,handleToast)}} >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" className="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+</svg>
+
+</button>:<button  className="bg-black text-white  rounded-md px-6 py-2 "  onClick={()=>{bookReview(slot._id,handleToast)}} >
    
- </div>
+   <svg  xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" className="w-6 h-6">
+ <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+</svg>
 
-
-
+</button>
+    }
+    
   </div>
-   <div className="flex justify-between m-3 gap-4">
-     <div className="flex w-full ">
-   <div className="border border-gray-400 text-center w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:00 am</span>
-
-  </div>
-
-</div>
-<div className="text-center py-1.5 mt-2" >
-  <span>-</span>
-</div>
-<div className="border border-gray-400 text-center   w-1/2 ">
-  <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-    <span>10:30 am</span>
-
-  </div>
-
-</div>
-
-   
-
- </div>
- <div className='mt-2'>
-    <button className="bg-black text-white  rounded-md px-6 py-2">Book</button>
-   
- </div>
-
-
-
-  </div>
+ 
+ 
+ 
+   </div>
+    )
+  })
+}
+ 
 
 </div>
 </div>
-
+<ToastContainer/>
         
         </>
     )

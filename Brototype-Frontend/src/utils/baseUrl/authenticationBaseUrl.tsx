@@ -3,7 +3,7 @@ import TokenValidCheck from "../../tokenValidCheck/tokenValidCheck";
 
 axios.defaults.withCredentials = true;
 const Api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:6001", 
+  baseURL: "http://localhost:6002", 
 });
 
 let userRole: string | null; // Variable to store user role globally

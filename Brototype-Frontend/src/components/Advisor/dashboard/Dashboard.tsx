@@ -91,7 +91,7 @@ console.log(coordinatorData,'');
   </div>
     </div>
       <div className="border border-gray-400  h-20 w-20  flex  items-center justify-center"  >
-      <img src={profile} className=" h-20 w-20" alt="" />
+      <img  className=" h-20 w-20" alt="" />
     
     </div>
   
