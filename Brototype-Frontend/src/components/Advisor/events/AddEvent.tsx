@@ -170,7 +170,6 @@ const dispatch=useDispatch()
       </div>
       </div>
       <div>
-      
           <div>
       
       <div className="max-w-[16rem] mx-auto grid grid-cols-2 gap-4">

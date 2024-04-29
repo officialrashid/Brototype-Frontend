@@ -5,6 +5,10 @@ import * as Yup from 'yup'
 
 
 const TaskUpdate=({isVisible,onClose,handleToast})=>{
+
+  const advisorId='123'
+  const bookedadvisorId='123'
+const disable= advisorId!==bookedadvisorId
   const inititalValues={
    reviewStatus:"",
    personalScore:"",
@@ -72,8 +76,8 @@ try{
 <div className="border border-black py-1.5 m-4  ml-2 mr-2 mb-2 rounded-md w-full">
   <div className="flex gap-4 m-2 justify-around">
     <div>
-    <Field type="radio" name="reviewStatus"  className=" accent-black" value="notcompleted" />
-    <span>Not Completed</span>
+    <Field type="radio" name="reviewStatus"  className=" accent-black" value="repeat" />
+    <span> Repeat</span>
 
     </div>
     <div>
@@ -81,6 +85,7 @@ try{
     <span> Completed</span>
 
     </div>
+   
   
  
   </div>
@@ -260,7 +265,7 @@ try{
 <div className="flex justify-between m-2 mt-0">
   <div></div>
   <div>
-      <button type="submit" className="bg-black text-white py-2 px-5 rounded-md m-3">submit</button>
+      <button type="submit" className="bg-black text-white py-2 px-5 rounded-md m-3" disabled={disable}>submit</button>
 <button className="bg-black text-white py-2 px-5 rounded-md m-3">Cancel</button>
 
   </div>

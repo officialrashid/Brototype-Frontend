@@ -24,7 +24,7 @@ const TaskView=({isVisible,onClose})=>{
 </div>
 
 <div className="m-2 border border-2px border-black rounded-md h-28">
-<span>ffheohohowhohohsho</span>
+<span></span>
 </div>
 
 
@@ -37,7 +37,7 @@ const TaskView=({isVisible,onClose})=>{
   </div>
 </div>
 <div className="m-2 border border-2px border-black rounded-md h-44">
-<span>ffheohohowhohohsho</span>
+<span></span>
 </div>
 
  <div className="border border-2px m-2 rounded-md py-2">
@@ -47,7 +47,7 @@ const TaskView=({isVisible,onClose})=>{
   </div>
 </div>
 <div className="m-2 border border-2px border-black rounded-md h-44">
-<span>ffheohohowhohohsho</span>
+<span></span>
 </div>
 
 
