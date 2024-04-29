@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getBestFiveStudents } from "../../../utils/methods/get";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux-toolkit/store";
@@ -11,8 +11,8 @@ const BatchBestStudents = () => {
     const fetchBestStudents = async () => {
       try {
         const response = await getBestFiveStudents(batchId);
-        console.log(response.data.topStudents, "cbvhjvd");
-        setBestStudents(response?.data?.topStudents || []);
+        const bestStudentsData = response?.data?.topStudents || [];
+        setBestStudents(bestStudentsData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -22,7 +22,7 @@ const BatchBestStudents = () => {
   }, [batchId]); // Update the effect to run when batchId changes
 
   return (
-    <div className="w-22.5rem h-72 bg-white right-6 mb-48rem mt-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute  overflow-y-auto">
+    <div className="w-22.5rem h-72 bg-white right-6 mb-48rem mt-5 rounded-xl shadow-xl border border-gray-300 hover hover:border-2 border-gray-300 absolute overflow-y-auto">
       <h1 className="ml-3 mt-2 text-sm font-poppins font-medium">Your Batch Best Students</h1>
       {bestStudents.length > 0 ? (
         <div className="flex flex-row justify-between p-2 border-b mt-3">
@@ -30,15 +30,38 @@ const BatchBestStudents = () => {
             <h1 className="text-sm text-gray-400 font-roboto">Names</h1>
             {bestStudents.map((student: any, index: number) => {
               const studentData = student.split(",");
-              const imageUrl = studentData[1].trim().split(": ")[1];
-              const studentName = studentData[2].trim().split(": ")[1];
-              return (
-                <div key={index} className="flex items-center">
-                  <img src={imageUrl} alt="" className="w-8 h-8 rounded-full mt-3" />
-                  <p className="text-sm text-gray-400 font-roboto ml-3 mt-3">{studentName}</p>
-                </div>
-              );
+              if (studentData.length >= 3) {
+                const imageUrl = studentData[1]?.trim().split(": ")[1];
+                const studentName = studentData[2]?.trim().split(": ")[1];
+                if (imageUrl && studentName) {
+                  return (
+                    <div key={index} className="flex items-center">
+                      <img src={imageUrl} alt="" className="w-8 h-8 rounded-full mt-3" />
+                      <p className="text-sm text-gray-400 font-roboto ml-3 mt-3">{studentName}</p>
+                    </div>
+                  );
+                }
+                // No need for an else block here, continue to the next iteration
+              } else {
+                return (
+                  <div key={index}>
+                    <p className="text-sm font-roboto">Error: Invalid Student Data Format</p>
+                  </div>
+                );
+              }
             })}
+            {/* Add the No Best Student Available image and message if no valid students */}
+            {bestStudents.every((student: string) => {
+              const studentData = student.split(",");
+              const imageUrl = studentData[1]?.trim().split(": ")[1];
+              const studentName = studentData[2]?.trim().split(": ")[1];
+              return !imageUrl || !studentName;
+            }) && (
+              <div className="flex justify-center mb-0">
+                <img src="/noBestStudent.jpg" alt="" className="w-64 h-60 mb-0" />
+                <p className="item text-center text-sm font-roboto ">No Best 5 Students In Your Batch </p>
+              </div>
+            )}
           </div>
 
           <div className="">

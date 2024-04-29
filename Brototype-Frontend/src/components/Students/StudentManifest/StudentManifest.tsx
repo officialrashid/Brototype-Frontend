@@ -17,12 +17,13 @@ const StudentManifest = () => {
   const [setEducation, setEducationUpdate] = useState(false);
   const [setGovernmentId, setGevernmentIdUpdate] = useState(false);
   const [profileInfo, setProfileInfo] = useState({});
+  const [profileModalVisible, setProfileModalVisible] = useState(false);
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
 
 
   useEffect(() => {
     fetchStudentProfile();
-  }, [setPersonalInfo, setPersonalInfoUpdate]);
+  }, [profileModalVisible]);
   const exampleData = {
     imageUrl: 'example-image-url',
     firstName: 'Muhammed',
@@ -67,7 +68,12 @@ const StudentManifest = () => {
     }
   };
 
+const handleProfileUpdateSuccess = () =>{
+  console.log("callingggggggggggggggggggggggg");
+  
+   setProfileModalVisible(true)
 
+}
   return (
     <>
       <div className="bg-custom-background">
@@ -344,11 +350,11 @@ const StudentManifest = () => {
 
         </div>
       </div>
-      <ProfileUpdateModal isVisible={setProfile} onClose={() => { setProfileUpdate(false) }} />
-      <PersonalInfoModal isVisible={setPersonalInfo} onClose={() => { setPersonalInfoUpdate(false) }} />
-      <AddressModal isVisible={setAddress} onClose={() => { setAddressUpdate(false) }} />
-      <EducationModal isVisible={setEducation} onClose={() => { setEducationUpdate(false) }} />
-      <GovernmentApprovelIdModal isVisible={setGovernmentId} onClose={() => { setGevernmentIdUpdate(false) }} />
+      <ProfileUpdateModal isVisible={setProfile} onClose={() => { setProfileUpdate(false) }} handleProfileUpdateSuccess={() =>handleProfileUpdateSuccess()} />
+      <PersonalInfoModal isVisible={setPersonalInfo} onClose={() => { setPersonalInfoUpdate(false) }} handleProfileUpdateSuccess={() =>handleProfileUpdateSuccess()} />
+      <AddressModal isVisible={setAddress} onClose={() => { setAddressUpdate(false) }} handleProfileUpdateSuccess={() =>handleProfileUpdateSuccess()}/>
+      <EducationModal isVisible={setEducation} onClose={() => { setEducationUpdate(false) }} handleProfileUpdateSuccess={() =>handleProfileUpdateSuccess()}/>
+      <GovernmentApprovelIdModal isVisible={setGovernmentId} onClose={() => { setGevernmentIdUpdate(false) }} handleProfileUpdateSuccess={() =>handleProfileUpdateSuccess()} />
     </>
   );
 }

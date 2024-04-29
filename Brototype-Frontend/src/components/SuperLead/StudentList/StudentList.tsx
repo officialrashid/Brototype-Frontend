@@ -26,46 +26,65 @@ const StudentList = () => {
     const pageRange = 4;
     const superleadUniqueId: string = useSelector((state: any) => state?.superlead?.superleadData?.uniqueId) || localStorage.getItem("superleadUniqueId");
     useEffect(() => {
-
-
         const fetchData = async () => {
             try {
                 const data = {
                     superleadUniqueId,
                     currentPage
-                }
+                };
+    
                 const response = await getStudents(data);
                 const studentStatus = await getStudentStatus(data);
+    
+                console.log(response, "student response in current page");
+                console.log(studentStatus, "student status response in current page");
+    
                 if (response.status === true && studentStatus.status === true) {
-                    const combinedData: any = [];
-
-                    response.response.students.forEach((student: { studentId: any; firstName: any; lastName: any; batch: any; domain: any; imageUrl: any; }) => {
-                        const matchedStatus = studentStatus.response.response.find((status: { studentId: any; }) => status.studentId === student.studentId);
-                        const matchedWeek = response.response.studentCurrentWeek.find((week: { studentId: any; }) => week.studentId === student.studentId);
-
-                        if (matchedStatus && matchedWeek) {
-                            combinedData.push({
-                                studentId: student.studentId,
-                                imageUrl: student.imageUrl,
-                                firstName: student.firstName,
-                                lastName: student.lastName,
-                                batch: student.batch,
-                                domain: student.domain,
-                                currentWeek: matchedWeek.currentWeek,
-                                isStatus: matchedStatus.isStatus
-                            });
-                        }
+                    const combinedData = [];
+    
+                    // Create a map of student data for quick lookup
+                    const studentDataMap = {};
+                    response.response.students.forEach((student) => {
+                        studentDataMap[student.studentId] = {
+                            imageUrl: student.imageUrl,
+                            currentWeek: student.lastWeek,
+                            domain: student.domain
+                        };
                     });
-
+    
+                    // Combine student data with their statuses
+                    studentStatus.response.response.forEach((status) => {
+                        const studentId = status.studentId;
+                        const studentData = studentDataMap[studentId];
+    
+                        // If student data exists, use it; otherwise, use default values
+                        const imageUrl = studentData ? studentData.imageUrl : 'https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png';
+                        const currentWeek = studentData ? studentData.currentWeek : 0;
+                        const domain = studentData ? studentData.domain : 'Not Update';
+    
+                        combinedData.push({
+                            studentId: studentId,
+                            imageUrl: imageUrl,
+                            currentWeek: currentWeek,
+                            domain: domain,
+                            firstName: status.name || 'Unknown',
+                            batch: status.batch || 'Unknown',
+                            isStatus: status.isStatus
+                        });
+                    });
+    
+                    console.log(combinedData, "This is the combined student data");
+    
                     setStudentsData(combinedData);
                 }
-            } catch (err) {
+            } catch (error) {
+                console.error(error);
                 // Handle errors
             }
         };
-
+    
         fetchData();
-    }, [reload, currentPage]);
+    }, [superleadUniqueId, currentPage, getStudents, getStudentStatus,onclose,reload]);
 
 
     const handleActionChange = (studentId: string) => {
@@ -517,23 +536,23 @@ const StudentList = () => {
                                                 <td className="px-4 py-3 text-ms font-roboto">{student?.batch}</td>
                                                 <td className="px-4 py-3 text-sm font-roboto">{student?.domain}</td>
                                                 <td key={index} className="px-4 py-3 text-sm font-roboto">{student.currentWeek}</td>
-                                                {student.isStatus === "Active" ? (
+                                                {student?.isStatus === "Active" ? (
                                                     <td className="px-4 py-3" key={index}>
                                                         <span className="font-roboto inline-flex items-center rounded-md bg-bgsuperLead px-2 py-1 text-xs font-medium text-dark-highBlue cursor-pointer mt-3 text-sm font-robtot">Active</span>
                                                     </td>
-                                                ) : student.isStatus === "Terminate" ? (
+                                                ) : student?.isStatus === "Terminate" ? (
                                                     <td className="px-4 py-3" key={index}>
                                                         <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Terminate</span>
                                                     </td>
-                                                ) : student.isStatus === "Suspend" ? (
+                                                ) : student?.isStatus === "Suspend" ? (
                                                     <td className="px-4 py-3" key={index}>
                                                         <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-gray-10 text-Outstanding ring-Outstanding font-roboto text-xs">Suspend</span>
                                                     </td>
-                                                ) : student.isStatus === "Quit" ? (
+                                                ) : student?.isStatus === "Quit" ? (
                                                     <td className="px-4 py-3" key={index}>
                                                         <span className="focus:outline-none text-red-500 hover:text-white bg-red-100 px-2 py-1 hover:bg-red-500 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-xs  mb-2 font-roboto dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-purple-900">Quit</span>
                                                     </td>
-                                                ) : student.isStatus === "Placed" ? (
+                                                ) : student?.isStatus === "Placed" ? (
                                                     <td className="px-4 py-3" key={index}>
                                                         <span className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset cursor-pointer bg-blue-10 text-Poor ring-Poor font-roboto">Placed</span>
                                                     </td>

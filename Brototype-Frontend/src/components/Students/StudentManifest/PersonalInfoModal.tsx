@@ -22,7 +22,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> = ({ isVisible, onClose }) => {
+const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void,handleProfileUpdateSuccess: () =>void }> = ({ isVisible, onClose ,handleProfileUpdateSuccess}) => {
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object({
     dateOfBirth: Yup.string().required('Date of Birth is required').test('valid-date', 'Invalid date', function (value) {
@@ -68,6 +68,7 @@ const PersonalInfoModal: React.FC<{ isVisible: boolean; onClose: () => void }> =
         console.log(response, "response coming to the frontend");
          if(response.data.status===true){
           toast.success("personal details update successfully")
+          handleProfileUpdateSuccess()
          }else{
           toast.error("personal details update not done,something went wrong")
          }

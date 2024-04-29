@@ -13,13 +13,17 @@ interface FormValues {
   pincode: string;
 
 }
-
+interface ProfileUpdateModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  handleProfileUpdateSuccess: () => void; // Add this prop for handling successful profile update
+}
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <p className="text-sm font-roboto text-red-700 mt-3 ml-3">
     {children}
   </p>
 );
-const AddressModal = ({ isVisible, onClose }) => {
+const AddressModal : React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose, handleProfileUpdateSuccess }) => {
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object({
     houseName: Yup.string().trim().required('house Name is required'),
@@ -48,6 +52,7 @@ const AddressModal = ({ isVisible, onClose }) => {
         console.log(response, "response coming to the frontend update Address");
         if(response.data.status===true){
           toast.success("address details update successfully")
+          handleProfileUpdateSuccess()
        }else{
           toast.error("address details update not done,something went wrong")
        }

@@ -6,8 +6,13 @@ import { useState } from 'react';
 import { updateGovernmentApprovedId } from '../../../utils/methods/post';
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-
-const AddressModal = ({ isVisible, onClose }) => {
+interface ProfileUpdateModalProps {
+    isVisible: boolean;
+    onClose: () => void;
+    handleProfileUpdateSuccess: () => void; // Add this prop for handling successful profile update
+  }
+  
+const AddressModal :React.FC<ProfileUpdateModalProps>= ({ isVisible, onClose ,handleProfileUpdateSuccess}) => {
     const studentId = useSelector((state) => state?.student?.studentData?.studentId);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
@@ -39,6 +44,7 @@ const AddressModal = ({ isVisible, onClose }) => {
                 
                 if(response.data.status===true){
                     toast.success('governmentId updated successfully!');
+                    handleProfileUpdateSuccess()
                 }else{
                     toast.error('governmentId update not done,something went wrong')
                 }

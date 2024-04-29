@@ -40,6 +40,8 @@ const ExtendModal = ({ isVisible, isClose }) => {
           studentId,
         };
         const response = await getExtendDetails(data);
+        console.log(response,"extend detailssss debugging section");
+        
         setExtend(response.data);
       } catch (err) {
         console.error('Error fetching extend details:', err);
@@ -53,10 +55,10 @@ const ExtendModal = ({ isVisible, isClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      fullName: `${extend.firstName || ''} ${extend.lastName || ''}`,
-      batch: extend.batch || '',
-      domain: extend.domain || '',
-      currentWeek: extend.currentWeek || '',
+      fullName: `${extend?.firstName || ''} ${extend?.lastName || ''}`,
+      batch: extend?.batch || '',
+      domain: extend?.domain || '',
+      currentWeek: extend?.currentWeek || '',
       extendDays: '',
       extendReason: '',
     } as FormValues,

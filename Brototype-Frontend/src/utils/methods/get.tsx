@@ -101,6 +101,15 @@ export const getReviewDetails = async (data: { batchId: string; studentId: strin
     return { status: false, message: "There is some issue" };
   }
 }
+export const getDashboardStudentDetails = async (studentId:string) => {
+  try {
+
+    const response = await authenticationApi.get(`/api/auth/get-student-dashboard-details/${studentId}`);
+    return response.data; // Assuming your API response has a 'data' property
+  } catch (err) {
+    return { status: false, message: "There is some issue" };
+  }
+}
 
 
 ////****** get methods for reviewer sectiob */

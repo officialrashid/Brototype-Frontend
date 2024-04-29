@@ -7,10 +7,15 @@ import { toast } from "react-toastify";
 
 const validFileTypes = ['image/jpg', 'image/jpeg', 'image/png'];
 
+// ProfileUpdateModal.tsx
 interface ProfileUpdateModalProps {
   isVisible: boolean;
   onClose: () => void;
+  handleProfileUpdateSuccess: () => void; // Add this prop for handling successful profile update
 }
+
+// StudentManifest.tsx
+
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <p className="text-sm font-roboto text-red-700 mt-3 ml-3">
@@ -18,7 +23,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose, handleProfileUpdateSuccess }) => {
   const studentId:any = useSelector((state: any) => state?.student?.studentData?.studentId);
   const validationSchema = Yup.object().shape({
     selectedFile: Yup.mixed()
@@ -100,7 +105,9 @@ const ProfileUpdateModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onCl
         const response = await uploadImage(formData);
         if(response?.data?.status===true){
            toast.success("profile updated successfully")
+           handleProfileUpdateSuccess()
            onClose();
+      
         }else{
           toast.error("profile updated not done,something went wrong")
           onClose();

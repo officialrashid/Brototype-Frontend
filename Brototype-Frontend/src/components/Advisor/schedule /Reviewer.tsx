@@ -40,25 +40,28 @@ const [reviewers,setReviewers]=useState([])
     const [slots,setSlots]=useState([])
     const [reviewerId,setReviewerId]=useState('')
    const getReviewerEvents=async (id:string)=>{
-    console.log('helooo');
+    console.log('helooo',id,"thidis udddd");
     if(reviewerId===id){
       setReviewerId("")
     }
     else{
-      const response=await Api.get('/api/reviewer/get-particular-date-events/658b2fcbc4e61a5bab23060f')
+      const response=await Api.get(`/api/reviewer/get-particular-date-events/${id}`)
 
       console.log(response.data.response.events,']]]]]]]]]');
 
       
       if(response.data){
     
+    console.log("{}{}888888");
     
         
         setEvents(response.data.response.events)
-        //setActive(true)
+        setActive(true)
+        
         
       
         setReviewerId(id)
+        console.log(reviewerId,'reviewerD');
 
     }
      
@@ -136,14 +139,15 @@ console.log(data[0].bookedEvents,'data');
           <div className="flex  flex-wrap justify-center">
           {
             
-         reviewerId===reviewer._id?events.map((timeEvent)=>{
+            
+         reviewerId==reviewer.reviewerId?events.map((timeEvent)=>{
             {count}
             return (
           <div className="border border-gray-400 m-10 rounded-sm w-1/2 bg-gray-300 w-1/4  " onClick={()=>{handleSlotModal(timeEvent._id)}}>
             <div className="border border-gray-400  bg-white rounded-md ml-2 mr-2 text-center py-1.5 bg-white shadow-lg mt-2 font-bold ">
-            {timeEvent.date[count]
+            {/* {timeEvent.date[count]
             
-            }
+            } */}
             {count+1}
       </div>
            <div  className="flex justify-between m-2  mt-1 py-2 cursor-pointer">
@@ -192,7 +196,7 @@ console.log(data[0].bookedEvents,'data');
  
 
 
- <Slot isVisible={modal} events={slots} eventId={eventId} onClose={()=>{setModal(false)}}/>
+ <Slot isVisible={modal} events={slots} eventId={eventId} onClose={()=>{setModal(false)}} reviewerId={reviewerId}/>
         
         </>
     )
