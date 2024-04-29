@@ -1,4 +1,5 @@
 import { useState } from "react"
+
 import TaskUpdate from "../Scheduled/TaskUpdate"
 import JaasMeet from "../jaasmeet/JaasMeet"
 import { axiosInstance } from "../services/api/apiClient"
@@ -8,13 +9,16 @@ import TaskView from "../Scheduled/TaskView"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
-const ReviewRow=()=>{
+const ReviewRow=({reviewData})=>{
   const [taskView,setTaskView]=useState(false)
   const [taskModal,setTaskModal]=useState(false)
   const [frame,setFrame]=useState(false)
   const createFullFrame=()=>{
 
   }
+
+
+
   const handleToast=(message:any,error:any)=>{
     if(!error){
       toast.success(message, {
@@ -58,7 +62,7 @@ dispatch(changeFrame(true))
     }
     return(
         <>
-              <div className='mx-auto pt-2 mb-1 mt-2' >
+              <div className='mx-auto pt-2 mb-1 mt-' >
   <table className="w-full text-sm text-left divide-y divide-y-8 table-fixed  rounded-full">
     <thead className="text-md text-gray-700 bg-gray-100  dark:text-gray-800 " >
       <tr className="   ">

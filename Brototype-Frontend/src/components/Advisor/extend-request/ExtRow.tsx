@@ -2,7 +2,7 @@
 
 
 
-const ExtRow=()=>{
+const ExtRow=({extData})=>{
     return (
         <>
              <div className='mx-auto pt-2 mb-2 mt-2' >

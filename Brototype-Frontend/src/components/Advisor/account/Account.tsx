@@ -4,7 +4,7 @@ import PerformanceGraph from "../dashboard/PerformanceGraph"
 import ProfileEditModal from "./ProfileEditModal"
 import { useState } from "react"
 import { useSelector } from "react-redux"
-
+import AddEvent from "../events/AddEvent"
  
 
 
@@ -129,7 +129,7 @@ const Account=()=>{
     </div>
     <div className="flex gap-4">
       <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
     </div>
    </div>
 
@@ -149,7 +149,7 @@ const Account=()=>{
     </div>
     <div className="flex gap-4">
       <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
     </div>
    </div>
 
@@ -169,7 +169,7 @@ const Account=()=>{
     </div>
     <div className="flex gap-4">
       <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
     </div>
    </div>
 
@@ -189,7 +189,7 @@ const Account=()=>{
     </div>
     <div className="flex gap-4">
       <button className="border bg-darkBlue rounded-md px-8 py-1 text-sm text-white">Start</button>
-      <button className="border  rounded-md text-sm px-2 text-black">Re-schedule</button>
+      <button className="border  rounded-md text-sm px-2 text-black">Cancel</button>
     </div>
    </div>
 
