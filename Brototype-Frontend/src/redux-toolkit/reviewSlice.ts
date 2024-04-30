@@ -17,6 +17,8 @@ const reviewSlice=createSlice({
             })
         },
         changeFrame:(state,action)=>{
+            console.log(action.payload,"[[[[");
+            
             state.changeScreen=action.payload
         },
         getScheduledReviewData:(state,action)=>{

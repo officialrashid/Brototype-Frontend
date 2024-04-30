@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 // import ExtendModal from "../Extend/ExtendModal";
 import ReactGA from 'react-ga';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAdvisorDetails, getRequestExtendDetails, getReviews } from "../../../utils/methods/get";
 import { updateMeetUrl } from "../../../utils/methods/patch";
+import { changeFrame } from "../../../redux-toolkit/reviewSlice";
 const UpcomingReviews = () => {
   const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [reviewes, setReviewes] = useState([])
+  const dispatch = useDispatch()
   let meetingUrl : string ;
   useEffect(() => {
     const fetchReviews = async () => {
@@ -46,7 +48,8 @@ const UpcomingReviews = () => {
     fetchReviews();
   }, []);
   const handleMeetStart = async (advisorId:string,reviewId:string,meetingUrl:string) =>{
-        const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
+    dispatch(changeFrame(true))
+        // const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
   }
   return (
     <>

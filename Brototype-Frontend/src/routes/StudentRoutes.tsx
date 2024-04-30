@@ -15,6 +15,7 @@ import Chat from "../pages/Students/Chat"
 import GlobalContext from '../context/GlobalContext';
 import { useSocket } from '../hooks/useSocket';
 import { useDispatch, useSelector } from 'react-redux';
+import JaasMeet from '../components/Advisor/jaasmeet/JaasMeet';
 
 interface StudentRoutesProps {
   // Define any props if required
@@ -37,6 +38,7 @@ interface RootState {
 }
 
 function StudentRoutes() {
+  const changeScreen = useSelector((state)=>state?.review?.changeScreen)
   const studentId: any = useSelector((state: RootState) => state?.student?.studentData?.studentId);
     const [studentAccessToken,setStudentAccessToken] = useState("")
     useEffect(()=>{
@@ -98,6 +100,8 @@ function StudentRoutes() {
 
   return (
     <>
+     {changeScreen?<JaasMeet/>:
+    <>
     <Navigationbar/>
     <div className="bg-custom-background">
       <div className="bg-white">
@@ -118,6 +122,8 @@ function StudentRoutes() {
         </div>
       </div>
     </div>
+   </>
+}
     </>
   );
 }

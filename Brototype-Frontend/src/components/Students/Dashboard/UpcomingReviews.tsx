@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import ExtendModal from "../Extend/ExtendModal";
 import ReactGA from 'react-ga';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getAdvisorDetails, getRequestExtendDetails, getStudentReview } from "../../../utils/methods/get";
 import { updateMeetUrl } from "../../../utils/methods/patch";
+import { changeFrame } from "../../../redux-toolkit/reviewSlice";
 const UpcomingReviews = () => {
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const [extendRequests, setExtendRequests] = useState([])
   const [newRequest, setNewRequets] = useState(false)
   const [studentReview,setStudentReview] = useState({})
+  const dispatch = useDispatch()
   useEffect(() => {
     console.log("keriyannuuuuu");
     ReactGA.pageview(window.location.pathname);
@@ -81,27 +83,15 @@ const UpcomingReviews = () => {
   },[])
   
   const handleMeetStart = async (advisorId:string,reviewId:string,meetingUrl:string) =>{
-    const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
+    console.log(advisorId,reviewId,meetingUrl,"<><><><><>");
+    dispatch(changeFrame(true))
+    // const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
 }
   return (
     <>
       <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
         <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
-        {/* <div className="flex m-2 gap-2">
 
-          <div className="px-4  border border-2px rounded-md hover:bg-custom-background py-1 cursor-pointer font-roboto"><span className="text-center
-    " onClick={() => trackreview('week1')}> Upcoming</span></div>
-          <div className="px-4  border  border-2px rounded-md cursor-pointer  hover:bg-custom-background  py-1 font-roboto "><span className="text-center
-    "> Re-scheduled</span></div>
-          <div className="px-4  border border-2px rounded-md hover:bg-custom-background  py-1 cursor-pointer font-roboto"><span className="text-center
-    "> Postponded</span></div>
-          <div className="px-4  border border-2px rounded-md hover:bg-custom-background  py-1 cursor-pointer font-roboto"><span className="text-center
-    "> Cancelled</span></div>
-
-
-
-
-        </div> */}
         <div className='mx-auto p-2 mt-4 '>
           <table className="w-full text-sm text-left  table-fixed">
             <thead className="text-xs text-gray-700 uppercase bg-custom-background shadow-xl dark:text-gray font-roboto">
@@ -157,7 +147,12 @@ const UpcomingReviews = () => {
 
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                  <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={(()=>handleMeetStart(data?.data?.advisorId,data?.data?.reviewId,data.data.meetingUrl))}>Join Meet</span>
+                  {studentReview[0]?.response?.reviews?.meetingLink != null ? (
+                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={(()=>handleMeetStart(studentReview[0]?.response?.coordinatorId,studentReview[0]?.response?.reviews?._id,""))}>Join Meet</span>
+                  ):(
+                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={(()=>handleMeetStart(studentReview[0]?.response?.coordinatorId,studentReview[0]?.response?.reviews?._id,""))}>Start Meet</span>
+                  )}
+
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center">
                   {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? (
