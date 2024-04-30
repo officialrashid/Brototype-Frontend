@@ -14,13 +14,13 @@ Api.interceptors.request.use(
     // Retrieve the user role from local storage
     userRole = localStorage.getItem('role');
 
-    // Set headers based on the user's role
-    // if (userRole === 'invigilator') {
-    //   const invigilatorToken = localStorage.getItem("invigilatorAccessToken");
-    //   if (invigilatorToken) {
-    //     config.headers.Authorization = `${invigilatorToken}`;
-    //   }
-    // }
+   // Set headers based on the user's role
+    if (userRole === 'invigilator') {
+      const invigilatorToken = localStorage.getItem("invigilatorAccessToken");
+      if (invigilatorToken) {
+        config.headers.Authorization = `${invigilatorToken}`;
+      }
+    }
     if (userRole === 'student') {
       const studentJwtToken = localStorage.getItem("studentAccessToken");
       const studentCustomToken = localStorage.getItem("studentIdToken");

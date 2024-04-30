@@ -186,20 +186,29 @@ const [deleteModal,setDeleteModal]=useState(false)
   
   const filterStudents=(filter:string)=>{
 
-    console.log(id,fumigationType,'elllllllcehehhhe');
+    if(activeTab==1){
+      fumigationType='mock'
     
+      }else{
+        fumigationType='final'
+      }
      
     if(filter=='passed'){
 
 
       console.log("passed students");
       
-      axios.get(`http://localhost:3002/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType:'mock'}}).then(res=>{
+      axios.get(`http://localhost:3002/api/fumigation/get-passed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
-    console.log("batch passed student",res.data.response.mockPassedStudents);
+    console.log("batch passed student",res.data);
     
     //filteredStudents=res.data.response.mockPassedStudents
-  dispatch(getBatchStudent(res.data.response.mockPassedStudents))
+    if(fumigationType==="mock"){
+      dispatch(getBatchStudent(res.data.response.mockPassedStudents))
+    }else{
+      dispatch(getBatchStudent(res.data.response.finalPassedStudents))
+    }
+
 
    // console.log(res);
     // if(res.status==201){
@@ -207,25 +216,21 @@ const [deleteModal,setDeleteModal]=useState(false)
     // }
   
      })
-    }
-  
-  
-  
-     
-  
-    else if(filter == 'failed'){
-console.log('failed studentsssss');
+    }else if(filter == 'failed'){
 
-      
-      axios.get(`http://localhost:3002/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType:'mock'}}).then(res=>{
+
+      axios.get(`http://localhost:3002/api/fumigation/get-failed-students`,{params:{batchId:id,fumigationType}}).then(res=>{
   
-    console.log(" failed batch studentssss",res.data.response.mockFailedstudents);
     
-    
-    console.log(res);
-    if(res.status==201){
-      //filteredStudents=res.data.response.mockPassedStudents
-      dispatch(getBatchStudent(res.data.response.mockFailedstudents))
+    if(res.data.response.status===true){
+      if(fumigationType==="mock"){
+        dispatch(getBatchStudent(res.data.response.mockFailedStudents))
+      }else{
+        console.log(res.data.response,"pppp");
+        
+        dispatch(getBatchStudent(res.data.response.finalFailedStudents))
+      }
+     
     }
   
     })
@@ -263,28 +268,6 @@ console.log('failed studentsssss');
        
         <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
          
-            <nav className='mt-8'>
-                <ul className='flex  flex-wrap  justify-center space-x-24'>
-                    <li> <span>BCE-141 All Students</span></li>
-                    <li>
-    <label className="flex items-center space-x-2">
-      <input type="radio"  checked name="radio-group"  className=" accent-black form-radio h-4 w-4 text-black border-gray-300 focus:ring-black bg-black"  />
-      <span>Mock</span>
-    </label>
-  </li>
-  <li>
-    <label className="flex items-center space-x-2">
-      <input type="radio" name="radio-group" className=" accent-black form-radio h-4 w-4 text-black border-gray-300 focus:ring-black bg-black"/>
-      <span>Fumigation</span>
-    </label>
-  </li>
-                     <li> <a href="http://"> <span>Passed students</span></a></li>
-                    <li> <a href="http://"> <span>Failed students</span></a></li>
-                    <li> <button className='bg-black px-2 py-2 rounded-2xl text-white flex items-center'><span className='text-sm' >Add student</span></button></li>
-                    
-
-                </ul>
-            </nav>
 <BoxTab onTabChange={handleTabChange}/>
          
        

@@ -6,6 +6,7 @@ import { getScheduledReviewData } from "../../../redux-toolkit/reviewSlice"
 import { useDispatch, useSelector } from "react-redux"
 import axios from "axios"
 const Review = () => {
+    const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
     const dispatch = useDispatch()
     const scheduledReviewDatas = useSelector(state => state?.review?.scheduledData)
     const [filteredData, setFilteredData] = useState(scheduledReviewDatas)
@@ -29,7 +30,7 @@ const Review = () => {
     }
     useEffect(() => {
         const getStudentDetails = async () => {
-            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews/65ed8fc3afcda5149bbf0166`)
+            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews/${advisorId}`)
             console.log(studentData, 'studenrnttttt');
 
             dispatch(getScheduledReviewData(studentData.data))

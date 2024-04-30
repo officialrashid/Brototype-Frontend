@@ -5,10 +5,12 @@ const ScheduledRow=({reviewData})=>{
   console.log(reviewData,'revieew')
 
   const navigate=useNavigate()
+  { console.log(reviewData,'revieeu0u')}
     return (
         <>
 {
   
+ 
   
   reviewData?.map((student)=>{
    return (

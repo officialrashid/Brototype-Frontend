@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import ExtendModal from "../Extend/ExtendModal";
 import ReactGA from 'react-ga';
 import { useSelector } from "react-redux";
-import { getRequestExtendDetails } from "../../../utils/methods/get";
+import { getRequestExtendDetails, getStudentReview } from "../../../utils/methods/get";
 const UpcomingReviews = () => {
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const [extendRequests, setExtendRequests] = useState([])
@@ -45,10 +45,15 @@ const UpcomingReviews = () => {
 
     fetchExtendDetails();
   }, []);
+
   useEffect(() => {
     const fetchStudentReview = async () => {
       try {
+        console.log(studentId,"useEffect student inside the review");
+        
         const response = await getStudentReview(studentId)
+        console.log(response,"+++++++++++????????????????????????");
+        
       } catch (error) {
 
       }

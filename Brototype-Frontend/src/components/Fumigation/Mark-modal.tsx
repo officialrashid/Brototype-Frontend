@@ -276,27 +276,29 @@ const handleCommnField=()=>{
 
         <Formik initialValues={patternInitialValues} validationSchema={patternValidationSchema}  onSubmit={async (values,{resetForm,setStatus})=>{
 
-          //try {
+          try {
             console.log(values,"pattern");
-            let {startTime,endTime}=values
+            let {patternStartTime,patternEndTime}=values
+            const startTime = patternStartTime;
+            const endTime = patternEndTime
             let type:string="Pattern"
-            
-                  // let response= await  axios.post('http://localhost:3002/api/fumigation/add-student-Mark',{startTime,endTime,pattern,type,fumigationType,studentId,batchId})
+            let invigilatorId="1234444"
+                  let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{startTime,endTime,type,fumigationType,invigilatorId,studentId,batchId})
                  
-                  // console.log(response);
+                  console.log(response);
             
-                  // if(response.status){
-                  //   resetForm();
-                  // setStatus('staus updated sucessfully')
+                  if(response.status){
+                    resetForm();
+                  setStatus('staus updated sucessfully')
                
-                  // }
+                  }
                   
                 
             
-                  //
-                //}// catch (err) {
-                  // Handle any errors here
-                //}
+                  
+                } catch (err) {
+      
+                }
 
         }} >
 
@@ -354,12 +356,13 @@ const handleCommnField=()=>{
           <Formik initialValues={arrayInitialValues} validationSchema={validationSchema} onSubmit={async (values, {resetForm,setStatus})=>{
 
 try {
-  console.log(values);
+  console.log(values,"valuessssssssssssssss");
   let type:string="Array"
 
-  let {startTime,endTime}=values
+  let {arrayStartTime,arrayEndTime}=values
  
-
+const startTime = arrayStartTime;
+const endTime =  arrayEndTime
 
   
      let invigilatorId="1234444"
@@ -437,7 +440,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http:/localhost:3002/api/fumigation/add-student-Mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:commnMark})
        
         console.log(response);
   
@@ -503,7 +506,7 @@ console.log(values,"ooops");
 try {
   console.log(values,'communicationnnnnn');
   let {oopsMark}=values
-  let type:string="Communication"
+  let type:string="Oops"
 
   
  
@@ -512,7 +515,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http:/localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
        
         console.log(response);
   

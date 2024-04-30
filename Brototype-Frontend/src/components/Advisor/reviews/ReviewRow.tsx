@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
 const ReviewRow = ({ reviewData }: { reviewData: any }) => {
+
   const [taskView, setTaskView] = useState(false)
   const [taskModal, setTaskModal] = useState(false)
   const [frame, setFrame] = useState(false)
@@ -73,7 +74,7 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
        
         
       
-      reviewData.map((reviewData: any, index: number) => {
+      reviewData?.map((reviewData: any, index: number) => {
         return (
           <div className='mx-auto pt-2 mb-1 mt-' >
           <table className="w-full text-sm text-left divide-y divide-y-8 table-fixed  rounded-full">

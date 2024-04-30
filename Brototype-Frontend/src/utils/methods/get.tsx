@@ -7,6 +7,7 @@ import superleadApi from "../baseUrl/superleadBaseUrl"
 import taskApi from "../baseUrl/taskBaseUrl"
 import chatApi from "../baseUrl/baseUrl"
 import reviewApi from "../baseUrl/reviewBaseUrl"
+import axios from "axios";
 ////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
@@ -497,13 +498,15 @@ export const getPendingStudents = async (uniqueId:string) =>{
        const response = await reviewerApi.get(`/api/reviewer/get-reviewes/${reviewerId}`)
        return response?.data;
     } catch (error) {
-     
+      
     }
   
   }
   export const getStudentReview = async (studentId:string) =>{
 
     try {
+      console.log(studentId,"studnet id in get student review api function");
+      
        const response = await reviewApi.get(`/review/student-review/${studentId}`)
        return response?.data;
     } catch (error) {
