@@ -286,8 +286,8 @@ const handleCommnField=()=>{
                   // console.log(response);
             
                   // if(response.status){
-                    resetForm();
-                  setStatus('staus updated sucessfully')
+                  //   resetForm();
+                  // setStatus('staus updated sucessfully')
                
                   // }
                   
@@ -351,24 +351,25 @@ const handleCommnField=()=>{
         {
 
           arrayField&&<>
-          <Formik initialValues={arrayInitialValues} validationSchema={validationSchema} onSubmit={async (values, {resetForm})=>{
+          <Formik initialValues={arrayInitialValues} validationSchema={validationSchema} onSubmit={async (values, {resetForm,setStatus})=>{
 
 try {
   console.log(values);
   let type:string="Array"
-  let fumigationType
+
   let {startTime,endTime}=values
  
 
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http:/localhost:3002/api/fumigation/add-student-Mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
+        let response= await  axios.patch('http://localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId})
        
         console.log(response,'arraymark');
   
         if(response.status){
           resetForm();
+          setStatus('staus updated sucessfully')
         }
         
       
@@ -431,8 +432,8 @@ try {
 
   
  
-let startTime=''
-let endTime=''
+ let startTime=''
+ let endTime=''
 
   
      let invigilatorId="1234444"
@@ -511,7 +512,7 @@ try {
 
   
      let invigilatorId="1234444"
-        let response= await  axios.patch('http:/localhost:3002/api/fumigation/add-student-Mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
+        let response= await  axios.patch('http:/localhost:3002/api/fumigation/add-students-mark',{type,fumigationType,studentId,startTime,endTime,invigilatorId,batchId,mark:oopsMark})
        
         console.log(response);
   

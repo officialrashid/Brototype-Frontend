@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import axios from "axios";
 import { getEnquiryData } from "../../redux-toolkit/enquirySlice";
 import { useDispatch, useSelector } from "react-redux";
-import store from "./redux/store";
 
 const StudentModal=({isVisible,onClose,students,batchId})=>{
 
@@ -71,7 +70,7 @@ console.log(students);
 
     console.log(batchId,studentId,"adddto batchhhhhhhh");
     
-         let response=await axios.post('http://localhost:3002/api/fumigation/add-students',{batchId,studentId})
+         let response=await axios.patch('http://localhost:3002/api/fumigation/add-students',{batchId,studentId})
           console.log(batchId,studentId,"heleloo my bacth id,");
 
           if(response.status){
@@ -100,7 +99,7 @@ console.log(students);
         
         
 
-<div className="fixed inset-0  bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden ">
+<div className="fixed inset-0  bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
   <div className="w-[1200px] flex flex-col max-h-[80vh] p-2  " >
     
    <div className="self-end">

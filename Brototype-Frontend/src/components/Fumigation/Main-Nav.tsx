@@ -22,17 +22,17 @@ const navigate=useNavigate()
       const handleTabClick=(tabIndex:any)=>{
         setActiveTab(tabIndex)
         if(tabIndex==1){
-            navigate('/batch/')
+            navigate('/fumigation/batch/')
         }
 
         // if(tabIndex==2){
         //     navigate('/fumigation-record/ ')
         // }
         if(tabIndex==2){
-            navigate('/current-invigilators/ ')
+            navigate('/fumigation/current-invigilators/ ')
         }
         if(tabIndex==3){
-            navigate('/pending-students/ ')
+            navigate('/fumigation/pending-students/ ')
         }
 
       }

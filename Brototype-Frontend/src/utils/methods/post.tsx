@@ -91,7 +91,7 @@ export const invigilatorLogin = async (data: invigilatorLogin): Promise<AxiosRes
 
   try {
 
-    const response = await fumigationApi.post('/api/fumigation/invigilator-login', data);
+    const response = await fumigationApi.post('/api/fumigation/invigilator-login',data);
     return response
   } catch (error) {
     console.log("Error in the invigilatorLogin", error);

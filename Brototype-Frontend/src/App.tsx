@@ -12,32 +12,35 @@ import AdvisorRoutes from './routes/AdvisorRoutes';
 import SuperLeadRoutes from "./routes/SuperLeadRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
 import AdvisorAuthRoutes from './routes/AdvisorAuthRoutes'
+import FumigationRoutes from './routes/fumigationRoutes';
 function App() {
 
   return (
     <Router>
 
-    <Routes>
-      <Route path="/" element={<Navbar />} />
-      <Route path="/invigilator" element={<Login />} />
-      <Route path="/fumigation" element={<Navigation />} />
-      <Route path="/otpLogin" element={<OtpComponet />} />
-      <Route path="/otpTestLogin" element={<OtpComponet />} />
-      <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes/>} />
-      <Route path="/studentIn/*" element={<AuthenticationRoutes/>} />
-      <Route path="/advisorIn/*" element={<AdvisorAuthRoutes/>} />
-      <Route path="/superleadIn/*" element={<SuperleadAuthRoutes/>} />
+      <Routes>
+        <Route path="/" element={<Navbar />} />
+        <Route path="/invigilator" element={<Login />} />
 
-      <Route path="/reviewer/*" element={<ReviewerRoutes />} />
-  
-      {/* Nested StudentRoutes */}
-      <Route path="/student/*" element={<StudentRoutes />} />
-      <Route path="/advisor/*" element={<AdvisorRoutes />} />
-      <Route path="/superlead/*" element={<SuperLeadRoutes />} />
-      <Route path="/admin/*" element={<AdminRoutes />} />
-    </Routes>
+        <Route path="/otpLogin" element={<OtpComponet />} />
+        <Route path="/otpTestLogin" element={<OtpComponet />} />
 
-</Router>
+        <Route path="/reviewerIn/*" element={<ReviewerAuthRoutes />} />
+        <Route path="/studentIn/*" element={<AuthenticationRoutes />} />
+        <Route path="/advisorIn/*" element={<AdvisorAuthRoutes />} />
+        <Route path="/superleadIn/*" element={<SuperleadAuthRoutes />} />
+
+        <Route path="/reviewer/*" element={<ReviewerRoutes />} />
+
+        {/* Nested StudentRoutes */}
+        <Route path="/student/*" element={<StudentRoutes />} />
+        <Route path="/advisor/*" element={<AdvisorRoutes />} />
+        <Route path="/superlead/*" element={<SuperLeadRoutes />} />
+        <Route path="/admin/*" element={<AdminRoutes />} />
+        <Route path="/fumigation/*" element={<FumigationRoutes />} />
+      </Routes>
+
+    </Router>
   );
 }
 

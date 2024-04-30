@@ -2,7 +2,7 @@ import dayjs, { Dayjs } from "dayjs";
 import React, { useContext, useEffect, useState } from "react";
 import { getMonth } from "../ScheduleTime/Utils";
 import GlobalContext from "../../../context/GlobalContext";
-import { getTimeLineUp } from "../../../utils/methods/get";
+import { getAdvisorDetails, getTimeLineUp } from "../../../utils/methods/get";
 import { useSelector } from "react-redux";
 
 interface Event {
@@ -58,13 +58,27 @@ const TimeLineUp: React.FC = () => {
       console.log(events, "response vannu makkaleee ev");
       if(events.status===true){
         console.log("set aaayannuu");
-        
+        const combinedData:any = []; // Array to store combined review and advisor data
         const formattedDate = selectedDate.format("DD-MM-YYYY");
         const filteredEvents = events.allBookedEvents;
-        console.log(events.allBookedEvents
-          ,"matchingEvents");
-        
-        setFilteredEvents(filteredEvents);
+        console.log(filteredEvents ,"filteredEvents filteredEvents t");
+        for (const data of filteredEvents) {
+          // Fetch advisor details for each review
+          const advisorDetails = await getAdvisorDetails(data.advisorId);
+          console.log(advisorDetails, "advisorDetails response");
+          // Check if advisor details were fetched successfully
+          if (advisorDetails.status === true && advisorDetails.response.length > 0) {
+            // Combine review data with advisor details
+            const timeLineUpData = {
+              data,
+              advisorName: `${advisorDetails.response[0].firstName} ${advisorDetails.response[0].lastName}`,
+              phone: advisorDetails.response[0].phone
+            };
+            // Push the combined data to the array
+            combinedData.push(timeLineUpData);
+          }
+        }
+        setFilteredEvents(combinedData)
       }else if(events.status===false){
         console.log("ketttt");
         
@@ -108,21 +122,21 @@ const TimeLineUp: React.FC = () => {
 
               {filteredEvents.length > 0 ? (
                 filteredEvents.map((evt, index) => (
-                  <div key={index} className={`w-72 h-18 border ${evt.status ? 'border-blue-100' : 'border-blue-100'} ml-4 mt-3 rounded-xl`}>
-                    <ol className={`absolute ml-2  border-s  ${evt.status ? 'border-green-500' : 'border-red-500'} dark:border-blue-700 ${filteredEvents.length === 0 ? 'h-0' : (index === filteredEvents.length - 1 ? 'h-10' : '')}`}>
+                  <div key={index} className={`w-72 h-18 border ${evt.data.status ? 'border-blue-100' : 'border-blue-100'} ml-4 mt-3 rounded-xl`}>
+                    <ol className={`absolute ml-2  border-s  ${evt.data.status ? 'border-green-500' : 'border-red-500'} dark:border-blue-700 ${filteredEvents.length === 0 ? 'h-0' : (index === filteredEvents.length - 1 ? 'h-10' : '')}`}>
                       <li className="mb-16 ms-4 ">
-                        <div className={`absolute -start-1.5 mt-7 h-3 w-3 rounded-full border ${evt.status ? 'border-white bg-green-500 dark:border-blue-900 dark:bg-blue-700' : 'border-white bg-red-500 dark:border-gray-900 dark:bg-gray-700'}`}></div>
+                        <div className={`absolute -start-1.5 mt-7 h-3 w-3 rounded-full border ${evt.data.status ? 'border-white bg-green-500 dark:border-blue-900 dark:bg-blue-700' : 'border-white bg-red-500 dark:border-gray-900 dark:bg-gray-700'}`}></div>
                         <a href="#" className="inline-flex items-center px-4 py-2 text-sm"> </a>
                       </li>
                     </ol>
                     <div className="flex items-start">
                       <div className={`bg-blue-100 h-18 w-20 rounded-md`}>
-                        <p className="mt-1 ml-4 text-sm font-roboto text-blue-600">{evt.startTime}</p>
+                        <p className="mt-1 ml-4 text-sm font-roboto text-blue-600">{evt.data.startTime}</p>
                         <p className="ml-9 text-sm font-roboto text-blue-600">-</p>
-                        <p className="mb-2 ml-4 text-sm font-roboto text-blue-600">{evt.endTime}</p>
+                        <p className="mb-2 ml-4 text-sm font-roboto text-blue-600">{evt.data.endTime}</p>
                       </div>
                       <div className="flex flex-col ml-2 mt-5">
-                        <h1 className={`font-roboto text-sm mt-2 text-black`}>event booking for Yen</h1>
+                        <h1 className={`font-roboto text-sm mt-2 text-black`}>{evt.advisorName} Booked This Event</h1>
                       </div>
                     </div>
                   </div>

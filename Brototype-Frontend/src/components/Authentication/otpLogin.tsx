@@ -149,7 +149,7 @@ const OtpPage: FunctionComponent = () => {
                     localStorage.setItem('role', invigilator)
                     dispatch(setOtpData(invigilatorData))
                     toast.success("OTP LOGIN SUCCESS")
-                    navigate("/fumigation")
+                    navigate("/fumigation/home")
 
                 }).catch((error: any) => {
                     if (error.code === 'auth/invalid-verification-code') {

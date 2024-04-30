@@ -90,9 +90,9 @@ console.log(filteredStudents,);
 useEffect(()=>{
 
   console.log('first callleddddddddddddddd',id);
-  
+  const batchId = id
 
-  axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${id}`).then(res=>{
+  axios.get(`http://localhost:3002/api/fumigation/get-batchwise-students/${batchId}`).then(res=>{
 
   console.log("batch student",res.data);
   
@@ -150,25 +150,23 @@ const [deleteModal,setDeleteModal]=useState(false)
 
 
 
-  const removeStudent=(id)=>{
-    console.log(id,"deleeee");
+  const removeStudent=(studentId:string)=>{
+    console.log(studentId,"deleeee");
   
     
        
     try {
-      
-  
-      
-  
-  
-  
-          
+     
         // Make a request to the backend to clear the session and cookies
-      //axios.get(`http://localhost:3002/api/fumigation/delete-invigilator/${id}`).then(res=>{
+       const data = {
+        studentId :studentId,
+         batchId : id 
+       }
+      axios.delete(`http://localhost:3002/api/fumigation/remove-batchwise-students`,{ params: data }).then(res=>{
           console.log('hhuhhuh');
-       // ))
-        //})
-        dispatch(removeStudents(id))
+
+        })
+        dispatch(removeStudents(studentId))
         setDeleteModal(false)
     
         // Navigate to the sign-in page or any other desired destination
@@ -265,7 +263,7 @@ console.log('failed studentsssss');
        
         <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
          
-            {/* <nav className='mt-8'>
+            <nav className='mt-8'>
                 <ul className='flex  flex-wrap  justify-center space-x-24'>
                     <li> <span>BCE-141 All Students</span></li>
                     <li>
@@ -286,7 +284,7 @@ console.log('failed studentsssss');
                     
 
                 </ul>
-            </nav> */}
+            </nav>
 <BoxTab onTabChange={handleTabChange}/>
          
        

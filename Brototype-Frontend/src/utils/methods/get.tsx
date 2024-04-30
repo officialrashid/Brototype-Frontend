@@ -6,6 +6,7 @@ import fumigationApi from "../baseUrl/fumigationBaseUrl"
 import superleadApi from "../baseUrl/superleadBaseUrl"
 import taskApi from "../baseUrl/taskBaseUrl"
 import chatApi from "../baseUrl/baseUrl"
+import reviewApi from "../baseUrl/reviewBaseUrl"
 ////********   get enquirie methods  *****////
 
 export const getEnquiryStudents = async () => {
@@ -488,3 +489,40 @@ export const getPendingStudents = async (uniqueId:string) =>{
     }
   
   }
+
+  ////// ****** Fetch Reviewes ********* //////
+  export const getReviews = async (reviewerId:string) =>{
+
+    try {
+       const response = await reviewerApi.get(`/api/reviewer/get-reviewes/${reviewerId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
+  export const getStudentReview = async (studentId:string) =>{
+
+    try {
+       const response = await reviewApi.get(`/review/student-review/${studentId}`)
+       return response?.data;
+    } catch (error) {
+     
+    }
+  
+  }
+  
+
+  /// *** Get Apis In Advisors ****////
+  export const  getAdvisorDetails = async (advisorId:string) =>{
+
+    try {
+       const response = await authenticationApi.get(`/api/auth/get-advisor-details/${advisorId}`)
+       return response?.data?.response;
+    } catch (error) {
+     
+    }
+  
+  }
+
+

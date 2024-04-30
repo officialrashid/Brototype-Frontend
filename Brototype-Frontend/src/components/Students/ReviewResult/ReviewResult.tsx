@@ -27,7 +27,6 @@ const ReviewResult = () => {
         const fetchReviewDetails = async () => {
 
             try {
-                const batchId = "657aa5093476c843c28a377d";
                 const data = {
                     studentId,
                     batchId

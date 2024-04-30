@@ -45,6 +45,8 @@ const SignIn = () => {
 
         if (response) {
           // Parse the phone number from the response
+          console.log(response,"{{{___)(********^^^^^^^^^^^");
+          
           phone = parseInt(response?.data?.response?.verifyInvigilator?.phone); // conver to phone Number to interger
           const otpData = {
             invigilatorId: response?.data?.response?.verifyInvigilator?._id,
@@ -56,8 +58,12 @@ const SignIn = () => {
           signInWithCustomToken(auth, otpData?.customToken) // check the invigilator custom Token
             .then((userCredential) => { // 
               // User signed in successfully
+              console.log(userCredential,";;;:::::::PP*******");
+              
               const user = userCredential.user;
+              console.log(user,";;;:::::::PP******* user user");
               if (user) {
+                console.log(user,";;;:::::::PP******* user user keriiiii***");
                 dispatch(setOtpData(otpData))
                 navigate('/otpTestLogin')
               }

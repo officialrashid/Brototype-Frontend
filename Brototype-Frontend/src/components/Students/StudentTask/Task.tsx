@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 
 const Task = () => {
   const studentId = useSelector((state) => state?.student?.studentData?.studentId);
-  const batchId = "657aa5093476c843c28a377d";
+  const batchId: any = useSelector((state: any) => state?.student?.studentData?.batchId);
   const navigate = useNavigate();
   const [taskView, setTaskView] = useState([]);
 

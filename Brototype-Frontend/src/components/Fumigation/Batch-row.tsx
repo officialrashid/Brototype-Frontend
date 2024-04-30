@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react"
 import StudentModal from "./Student-Modal"
 import axios from "axios"
-import Batch from "./Batch"
 import BatchModal from "./Batch-Modal"
 import { Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getBatchData } from "../../redux-toolkit/batchSlice"
-import EditForm from "./Edit-form"
+
 
 const BatchRow=()=>{
   const [record,setRecord]=useState({})
@@ -97,7 +96,7 @@ console.log(res.data.response);
   <thead className=" text-gray-700  bg-gray-100 shadow-2xl dark:text-gray-800">
     <tr className=' flex justify-between '>
       <th scope="col" className="px-12 py-7">
-      <Link to={`/view-batch/${batch.id}`}> {batch.name}</Link>
+      <Link to={`/fumigation/view-batch/${batch.id}`}> {batch.name}</Link>
        
       </th>
      

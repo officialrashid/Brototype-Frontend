@@ -1,6 +1,5 @@
 import { useEffect } from "react"
 import axios from "axios"
-import { getIndividualMark } from "../../redux-toolkit/batchSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const ModalTable=({isTableVisble,onTableClose})=>{

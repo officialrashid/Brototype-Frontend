@@ -11,13 +11,17 @@ const reviewSlice=createSlice({
     reducers:{
         getReviewData:(state,action)=>{
             state.reviewData=action.payload.map((student:any)=>{
-           return {studentId:student._id,name:student.firstName,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id}
+                console.log(student,'studentsjnnf');
+                
+           return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id}
             })
         },
         changeFrame:(state,action)=>{
             state.changeScreen=action.payload
         },
         getScheduledReviewData:(state,action)=>{
+            console.log(action.payload,'payload');
+            
             state.scheduledData = action.payload.filter((data:any)=>{
                 return data.reviewStatus == "scheduled"
             })

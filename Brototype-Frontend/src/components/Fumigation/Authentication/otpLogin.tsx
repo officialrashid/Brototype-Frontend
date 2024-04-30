@@ -2,7 +2,6 @@ import React, { useState, useEffect, FunctionComponent, useRef } from 'react';
 import { signInWithPhoneNumber } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { auth } from '../../../firebase/config';
 import { RecaptchaVerifier } from 'firebase/auth';
 import otpLoginPng from "../../../public/otpLogin.png"
 import { setOtpData } from "../../../redux-toolkit/otpReducer"
@@ -155,7 +154,7 @@ const OtpPage: FunctionComponent = () => {
                     localStorage.setItem('role', invigilator)
                     dispatch(setOtpData(invigilatorData))
                     toast.success("OTP LOGIN SUCCESS")
-                    navigate("/fumigation")
+                    navigate("/home")
 
                 }).catch((error: any) => {
                     if (error.code === 'auth/invalid-verification-code') {

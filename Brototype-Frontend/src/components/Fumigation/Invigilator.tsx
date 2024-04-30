@@ -22,15 +22,9 @@ console.log(invigilators,"data printed inv");
     
     const fetchInvigilatorData= async ()=>{
         try{
-            //const response= await axios.get('http://localhost:3002/api/fumigation/')
-            //console.log("response-invigilator",response.data)
+          
 
-           let  data=[{id:1,name:"mohmmad rashid",email:"rashid@gamil.com",phone:8921974845,batch:"BCE-55"},
-            {id:2,name:"mohmmad rashid",email:"rashid@gamil.com",phone:8921974845,batch:"BCE-55"},
-            {id:3,name:"mohmmad rashid",email:"rashid@gamil.com",phone:8921974845,batch:"BCE-55"},
-            {id:4,name:"mohmmad rashid",email:"rashid@gamil.com",phone:8921974845,batch:"BCE-55"},
-            {id:5,name:"mohmmad rashid",email:"rashid@gamil.com",phone:8921974845,batch:"BCE-55"}
-          ]
+     
           const response = await axios.get("http://localhost:3002/api/fumigation/get-all-invigilators")
           console.log(response?.data?.response,"{}{}{}{}{}{");
           
@@ -46,25 +40,18 @@ console.log(invigilators,"data printed inv");
 //remove
 
 
-const removeInv=(id)=>{
-  console.log("deleeee");
+const removeInv=(invigilatorId:string)=>{
+  console.log("deleeee",invigilatorId,"llllllllllll");
 
   
      
   try {
     
-
-    
-
-
-
-        
-      // Make a request to the backend to clear the session and cookies
-    //axios.get(`http://localhost:3002/api/fumigation/delete-invigilator/${id}`).then(res=>{
+    axios.delete(`http://localhost:3002/api/fumigation/remove-invigilators/${invigilatorId}`).then(res=>{
         console.log('hhuhhuh');
-     // ))
-      //})
-      dispatch(removeInvigilator(id))
+   
+      })
+      dispatch(removeInvigilator(invigilatorId))
       setDeleteModal(false)
   
       // Navigate to the sign-in page or any other desired destination

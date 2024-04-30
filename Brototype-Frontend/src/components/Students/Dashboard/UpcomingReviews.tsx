@@ -4,7 +4,9 @@ import ReactGA from 'react-ga';
 import { useSelector } from "react-redux";
 import { getRequestExtendDetails } from "../../../utils/methods/get";
 const UpcomingReviews = () => {
+  const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const [extendRequests, setExtendRequests] = useState([])
+  const [newRequest, setNewRequets] = useState(false)
   useEffect(() => {
     console.log("keriyannuuuuu");
     ReactGA.pageview(window.location.pathname);
@@ -23,7 +25,7 @@ const UpcomingReviews = () => {
 
 
   };
-  const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
+
   useEffect(() => {
     const fetchExtendDetails = async () => {
       try {
@@ -43,11 +45,20 @@ const UpcomingReviews = () => {
 
     fetchExtendDetails();
   }, []);
-  const [newRequest, setNewRequets] = useState(false)
+  useEffect(() => {
+    const fetchStudentReview = async () => {
+      try {
+        const response = await getStudentReview(studentId)
+      } catch (error) {
+
+      }
+    }
+    fetchStudentReview()
+  })
   return (
     <>
       <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
-      <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
+        <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
         <div className="flex m-2 gap-2">
 
           <div className="px-4  border border-2px rounded-md hover:bg-custom-background py-1 cursor-pointer font-roboto"><span className="text-center
@@ -138,7 +149,7 @@ const UpcomingReviews = () => {
 
 
       </div>
-   
+
     </>
 
   );

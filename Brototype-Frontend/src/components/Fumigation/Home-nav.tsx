@@ -42,7 +42,7 @@ const HomeNav=()=>{
 {/* <MainNav/>  */}
        
         <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl min-h-screen mt-8 '>
-          {/* <SubNav/> */}
+          <SubNav/>
 
 
 <TableHead/>

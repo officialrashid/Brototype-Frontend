@@ -47,7 +47,7 @@ const Review = () => {
         <>
             <ReviewSearchBar searchFn={searchFn} />
             <ReviewHead />
-            {<ReviewRow reviewData={filteredData} />}
+            <ReviewRow reviewData={filteredData} />
         </>
     )
 }

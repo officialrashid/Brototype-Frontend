@@ -13,6 +13,7 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   const [taskView, setTaskView] = useState(false)
   const [taskModal, setTaskModal] = useState(false)
   const [frame, setFrame] = useState(false)
+  const[meetState,setMeetState]=useState(false)
   const createFullFrame = () => {
 
   }
@@ -40,10 +41,13 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   const dispatch = useDispatch()
 
   const handleMeetLink = async () => {
+    console.log('meet');
+    
+    setMeetState(true)
 
-    dispatch(changeFrame(true))
+     //dispatch(changeFrame(true))
 
-    // window.open('https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/my-meet','_blank')
+   // window.open('https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/my-meet','_blank')
 
     //  try{
     //     const response=await   axiosInstance.get('/create-meet/1234')
@@ -61,27 +65,36 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   }
   return (
     <>
-      {reviewData.map((reviewData: any, index: number) => {
-        <div className='mx-auto pt-2 mb-1 mt-' >
+    {
+    console.log(reviewData,'reviewData')
+
+    }
+      {
+       
+        
+      
+      reviewData.map((reviewData: any, index: number) => {
+        return (
+          <div className='mx-auto pt-2 mb-1 mt-' >
           <table className="w-full text-sm text-left divide-y divide-y-8 table-fixed  rounded-full">
             <thead className="text-md text-gray-700 bg-gray-100  dark:text-gray-800 " >
               <tr className="   ">
 
                 <th scope="col" className="w-1/4 px-4 py-6  text-center rounded-l-lg   " style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  {reviewData.name}
+                  {reviewData.name} {reviewData.lastName}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center">
-                  hello
+                  {reviewData.batch}
 
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  haiiii
+                  {reviewData.startTime}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  what
+                 {reviewData.domain}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  what
+                  {reviewData.scheduledDate}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
                   <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskView(true) }}>View</button>
@@ -91,8 +104,8 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
-                  <button className="bg-black text-white px-4 rounded-md  py-1" onClick={() => { handleMeetLink() }}>Start</button>
-                  {/* <JaasMeet/> */}
+              <JaasMeet/>
+                 
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center ">
@@ -103,6 +116,8 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
             </thead>
           </table>
         </div>
+        )
+       
       })}
       <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }} />
 

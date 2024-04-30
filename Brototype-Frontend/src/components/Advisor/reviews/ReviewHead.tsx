@@ -13,7 +13,7 @@ const ReviewHead=()=>{
        Batch
         </th>
         <th scope="col" className="w-1/4 px-5 py-7 text-center ">
-        Week
+        Start Time
         </th>
         <th scope="col" className="w-1/4 px-5 py-7 text-center ">
       Domain

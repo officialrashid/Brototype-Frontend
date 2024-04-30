@@ -2,12 +2,14 @@ import { useNavigate } from "react-router-dom"
 
 
 const ScheduledRow=({reviewData})=>{
-
+  console.log(reviewData,'revieew')
 
   const navigate=useNavigate()
     return (
         <>
 {
+  
+  
   reviewData?.map((student)=>{
    return (
     <div className='mx-auto pt-2 mb-1 mt-2' >

@@ -22,7 +22,8 @@ const ScheduleTimeCard = () => {
               const earliestDateB: Date = new Date(b.date[2], b.date[1] - 1, b.date[0]);
               return earliestDateA.getTime() - earliestDateB.getTime();
             });
-    
+           console.log(sortedEvents,"this is sorted eventsss");
+           
           const eventsWithRatio = sortedEvents.map((event: any) => {
             const bookedEventsLength = event?.bookedEvents?.length || 0;
             const bookedTrueCount = event?.bookedEvents?.filter((item: any) => item.booked).length || 0;
@@ -44,7 +45,8 @@ const ScheduleTimeCard = () => {
     
           // Merge the two arrays
           const allEvents = [...currentDayEvents, ...futureEvents];
-    
+           console.log(allEvents,"all Eventssssssssss");
+           
           setScheduleEvents(allEvents);
         }
       } catch (err) {

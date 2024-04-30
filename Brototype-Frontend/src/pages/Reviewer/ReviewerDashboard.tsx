@@ -3,7 +3,7 @@ import Sidebar from "../../components/Reviewer/Sidebar/sidebar";
 import TimeLineUp from "../../components/Reviewer/Dashboard/TimeLineUp";
 import Graph from "../../components/Reviewer/Dashboard/Graph";
 import Rating from "../../components/Reviewer/Dashboard/Rating";
-import UpcomingReviews from "../../components/Students/Dashboard/UpcomingReviews";
+import UpcomingReviews from "../../components/Reviewer/Dashboard/UpcomingReviews";
 import ScheduleTimeCard from "../../components/Reviewer/ScheduleTimeCard/ScheduleTimeCard";
 import ReviewerDetails from "../../components/Reviewer/Dashboard/ReviewerDetails"
 import ReviewerProfile from "../../components/Reviewer/Dashboard/ReviewerProfile";
