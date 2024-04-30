@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom"
 const Reviewer=()=>{
 console.log("PPPPPPPPPP()(***&&&&&&&");
 
-  const {domain}=useParams()
+  const {domain,reviewId}=useParams()
   let count=0
   console.log(domain,":::::::");
 const [reviewers,setReviewers]=useState([])
@@ -196,7 +196,7 @@ console.log(data[0].bookedEvents,'data');
  
 
 
- <Slot isVisible={modal} events={slots} eventId={eventId} onClose={()=>{setModal(false)}} reviewerId={reviewerId}/>
+ <Slot isVisible={modal} events={slots} eventId={eventId} onClose={()=>{setModal(false)}} reviewerId={reviewerId} reviewId={reviewId}/>
         
         </>
     )

@@ -50,7 +50,7 @@ user?<Navigation/>:   <SignIn/>
       
      <Route path='/dashboard/' element={<Dashboard/>}></Route>
      <Route path='/reviews/' element={<Scheduled/>}></Route>
-     <Route path='/schedule/domain-reviewer/:domain' element={<Reviewer/>}></Route>
+     <Route path='/schedule/domain-reviewer/:domain/:reviewId' element={<Reviewer/>}></Route>
      <Route path='/reviewers/' element={<ReviewerComp/>}></Route>
      <Route path='/account/' element={<Account/>}></Route>
      <Route path='/events/' element={<EventCalendar/>}></Route>

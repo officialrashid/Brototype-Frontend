@@ -23,51 +23,55 @@ const ReviewerList = () => {
     useEffect(() => {
         const fetchReviewers = async () => {
             try {
-                const response = await getAllReviewers(currentPage)
-                const reviewerStatus = await getReviewerStatus()
-
-                if (response?.status === true || reviewerStatus.status == true) {
-
-
-                    const combinedData: any = [];
-
-                    response.response.forEach((reviewer: { reviewerId: any; firstName: any; lastName: any; email: any; phone: any; age: any; gender: any; skills: any; PrefferedDomainsForReview: any, CurrentWorkingCompanyName: any, experience: any, imageUrl: any }) => {
-                        const matchedStatus = reviewerStatus.response?.find((status: { _id: any; }) => status._id === reviewer.reviewerId);
-
-
-                        if (matchedStatus) {
-                            combinedData.push({
-                                reviewerId: reviewer.reviewerId,
-                                imageUrl: reviewer.imageUrl,
-                                firstName: reviewer.firstName,
-                                lastName: reviewer.lastName,
-                                email: reviewer.email,
-                                phone: reviewer.phone,
-                                age: reviewer.age,
-                                gender: reviewer.gender,
-                                skills: reviewer.skills,
-                                PrefferedDomainsForReview: reviewer.PrefferedDomainsForReview,
-                                CurrentWorkingCompanyName: reviewer.CurrentWorkingCompanyName,
-                                experience: reviewer.experience,
-                                status: matchedStatus.isStatus
-
-
-                            });
-                        }
-
-
+                const response = await getAllReviewers(currentPage);
+                const reviewerStatus = await getReviewerStatus();
+                
+                if (response?.status === true || reviewerStatus.status === true) {
+                    const combinedData:any = [];
+                
+                    // Create a map of reviewer data for quick lookup
+                    const reviewerDataMap:any = {};
+                    response.response.forEach((reviewer:any) => {
+                        reviewerDataMap[reviewer.reviewerId.toString()] = {
+                            imageUrl: reviewer.imageUrl, // Default image URL
+                            gender: reviewer.gender ,// Default gender
+                        };
                     });
-                    console.log(combinedData, "mnbhbbbm");
-
-                    setReviewers(combinedData)
+                
+                    // Include all users from reviewerStatus.response, even if not found in response.response
+                    reviewerStatus.response.forEach((status:any) => {
+    
+                        const reviewerData = reviewerDataMap[status._id.toString()] || {}; // Convert status ID to string before accessing the map
+                        console.log("Reviewer Data:", reviewerData.imageUrl); 
+                    
+                        // If reviewer data exists, use it; otherwise, use default values
+                        const imageUrl = reviewerData.imageUrl || 'https://demos.themeselection.com/sneat-bootstrap-html-admin-template/assets/img/avatars/1.png';
+                        const gender = reviewerData.gender || '---';
+                    
+                        combinedData.push({
+                            reviewerId: status._id,
+                            imageUrl: imageUrl,
+                            firstName: status.firstName || 'Unknown',
+                            lastName: status.lastName || 'Unknown',
+                            email: status.email || 'Unknown',
+                            phone: status.phone || 'Unknown',
+                            gender: gender || '---',
+                            status: status.isStatus || 'Unknown' // Default status to 'Unknown' if not provided
+                        });
+                    });
+                    
+                
+                    console.log(combinedData, "This is the combined reviewer data");
+                
+                    setReviewers(combinedData);
                 }
-
             } catch (error) {
-                toast.warn("Internal Server Error,please try after some time")
+                toast.warn("Internal Server Error, please try after some time")
             }
         }
-        fetchReviewers()
-    }, [reload,currentPage])
+        fetchReviewers();
+    }, [reload, currentPage]);
+    
     const handleActionChange = (reviewerId: string) => {
 
         try {

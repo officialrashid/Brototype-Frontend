@@ -6,7 +6,7 @@ import Api from "../../../utils/baseUrl/reviewerBaseUrl";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux-toolkit/store";
 
-const Slot = ({ isVisible, onClose, events, eventId ,reviewerId}) => {
+const Slot = ({ isVisible, onClose, events, eventId ,reviewerId,reviewId}) => {
   const [slotEvent, setSlotEvent] = useState([])
   const [reviewSlots, setReviewSlots] = useState([])
   const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
@@ -18,7 +18,7 @@ const Slot = ({ isVisible, onClose, events, eventId ,reviewerId}) => {
 console.log(reviewerId,'reviewerID')
 const bookStatus=true
 
-    const response = await Api.patch('/api/reviewer/update-particular-date-events', {reviewerId ,eventId,bookedEventId,advisorId,bookStatus })
+    const response = await Api.patch('/api/reviewer/update-particular-date-events', {reviewerId ,eventId,bookedEventId,advisorId,bookStatus,reviewId })
     handleToast('Review Booked successfully')
   }
 
