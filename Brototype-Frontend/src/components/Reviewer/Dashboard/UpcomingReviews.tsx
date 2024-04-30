@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import ReactGA from 'react-ga';
 import { useSelector } from "react-redux";
 import { getAdvisorDetails, getRequestExtendDetails, getReviews } from "../../../utils/methods/get";
+import { updateMeetUrl } from "../../../utils/methods/patch";
 const UpcomingReviews = () => {
   const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [reviewes, setReviewes] = useState([])
- 
+  let meetingUrl : string ;
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -44,7 +45,9 @@ const UpcomingReviews = () => {
     };
     fetchReviews();
   }, []);
-  
+  const handleMeetStart = async (advisorId:string,reviewId:string,meetingUrl:string) =>{
+        const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
+  }
   return (
     <>
       <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
@@ -105,7 +108,7 @@ const UpcomingReviews = () => {
 
                   </th>
                   <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Join Meet</span>
+                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={(()=>handleMeetStart(data?.data?.advisorId,data?.data?.reviewId,data.data.meetingUrl))}>Join Meet</span>
                   </th>
                   {data.data.status === true ? (
                     <th scope="col" className="w-1/4 px-4 py-6 text-center  ">
@@ -136,6 +139,8 @@ const UpcomingReviews = () => {
 }
 
 export default UpcomingReviews;
+
+
 
 
 

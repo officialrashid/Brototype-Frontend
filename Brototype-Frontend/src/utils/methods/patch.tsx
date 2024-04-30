@@ -7,6 +7,7 @@ import fumigationApi from "../baseUrl/fumigationBaseUrl"
 import superleadApi from "../baseUrl/superleadBaseUrl"
 import taskApi from "../baseUrl/taskBaseUrl"
 import chatApi from "../baseUrl/baseUrl"
+import reviewApi from "../baseUrl/reviewBaseUrl"
 export const updateEvents = async (data:any)=>{
     console.log(data,")()((&&&&&&&&");
     
@@ -126,4 +127,20 @@ export const updateEvents = async (data:any)=>{
   
   }
 
+//// *** Review Api Section ******/////
+  export const updateMeetUrl = async (advisorId: string,reviewId:string,meetingUrl:string) => {
+    try {
+      const data = {
+        advisorId,
+        reviewId,
+        meetingUrl
+      }
+      const resposne = await reviewApi.patch('/review/update-meeting-link',data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }
   

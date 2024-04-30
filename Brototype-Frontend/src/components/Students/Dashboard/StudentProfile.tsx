@@ -68,7 +68,7 @@ const StudentProfile = () => {
           
             <div className="w-72 h-36 absolute top-3 left-32">
               <h1 className="item text-center text-xl font-semibold mt-10 font-roboto">{profileInfo?.name ?? "Muhammed Rashid"}</h1>
-              <h4 className="item text-center mt-1 text-gray-500 mt-2 text-sm font-roboto">{`${manifestInfo?.domain}developer`?? "eg:-Mernstack developer"}</h4>
+              <h4 className="item text-center mt-1 text-gray-500 mt-2 text-sm font-roboto">{`${manifestInfo?.domain} developer`?? "eg:-Mernstack developer"}</h4>
               <div className="item text-center gap-3 mt-3">
                 <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">{profileInfo?.batch ?? "BCE55"}</span>
                 <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer ml-2">Remote</span>
