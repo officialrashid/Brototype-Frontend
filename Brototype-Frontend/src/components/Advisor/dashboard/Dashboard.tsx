@@ -85,7 +85,7 @@ console.log(coordinatorData,'');
               <div className=" border   rounded-lg  m-4 mt-0  mb-0 h-fit bg-white  shadow-lg">
     <div className="flex justify-between m-4 ">
         <div>
-  <span className="font-semibold text-lg font-roboto">Helloo coordinator !!!!!</span>
+  <span className="font-semibold  text-lg font-roboto">Helloo coordinator !!!!!</span>
   <div className="mt-1">
     <span className="font-roboto" >Complete your task</span>
   </div>
@@ -106,7 +106,7 @@ console.log(coordinatorData,'');
               <Box coordinator={coordinatorData}/>
               <div className="border border-2px  m-2 mx-auto rounded-md  bg-white   shadow-lg" >
     <div className="flex m-2 ">
-      <div> <span  className="font-semibold font-roboto"> Shared Reviews</span>
+      <div> <span  className="font-medium  font-roboto"> Shared Reviews</span>
    <div className="mt-4">
      <span className="text-4xl font-roboto"> {coordinatorData?.shared?coordinatorData.shared:0}</span>
    </div>
@@ -143,7 +143,7 @@ console.log(coordinatorData,'');
   </div>
   <div className="border border-2px  m-2 mx-auto rounded-md  bg-white   shadow-lg" >
     <div className="flex m-2 ">
-      <div> <span className="font-semibold font-roboto">  Weekly Task</span>
+      <div> <span className="font-medium  font-roboto">  Weekly Task</span>
    <div className="mt-3">
      <span className="text-4xl font-roboto">{coordinatorData?.weeklyTask?coordinatorData.weeklyTask:0}</span>
    </div>
@@ -157,7 +157,7 @@ console.log(coordinatorData,'');
   </div>
   <div className="border border-2px  m-2 mx-auto rounded-md  bg-white   shadow-lg" >
     <div className="flex m-2  ">
-      <div> <span className="font-semibold font-roboto"> Total reviews </span>
+      <div> <span className="font-medium  font-roboto"> Total reviews </span>
    <div className="mt-3">
      <span className="text-4xl font-roboto"> {coordinatorData?.totalReviews?coordinatorData.totalReviews:0}</span>
    </div>
@@ -176,7 +176,7 @@ console.log(coordinatorData,'');
   
           <div className="border   rounded-md  x  m-2 mt-4 mb-4 bg-white   shadow-lg">
           <div className="ml-2 mt-4 text-center">
-                  <span className="font-semibold font-roboto">Task completion</span>
+                  <span className="font-medium  font-roboto">Task completion</span>
               </div>
           <ReactApexChart options={options} series={series}   type="radialBar" width={200} height={200}  />
           <div className="text-center ">
@@ -189,14 +189,14 @@ console.log(coordinatorData,'');
           
              <div className="border m-4 mt-2  rounded-md bg-white  shadow-lg">
               <div className="m-2">
-                  <span className="font-semibold font-roboto">Weekly summary</span>
+                  <span className="font-medium font-roboto">Weekly summary</span>
               </div>
            <WeeklySummary/>  
           </div>
              
           <div className="border m-4 mt-6 rounded-md bg-white  shadow-lg ">
               <div className="m-2">
-                  <span className="font-semibold font-roboto">Performance Graph</span>
+                  <span className="font-medium  font-roboto">Performance Graph</span>
               </div>
           <PerformanceGraph graphHeight={206}/>
           </div>

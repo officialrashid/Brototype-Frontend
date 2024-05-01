@@ -20,27 +20,27 @@ const ScheduledRow=({reviewData})=>{
         <tr className="   ">
     
           <th scope="col" className="w-1/4 px-4 py-6  text-center rounded-l-lg   " style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
-        {student.name}
+        {student?.name}
           </th>
           <th scope="col" className="w-1/4 px-4 py-6 text-center">
-              {student.batch}
+              {student?.batch}
          
           </th>
           <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
-4
+
               </th>
           <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
-          {student.domain}
+          {student?.domain}
           </th>
           <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal',wordWrap: 'break-word',  textOverflow: 'ellipsis' }}>
-          {student.scheduledDate}
+          {student?.scheduledDate}
           </th>
          
           <th scope="col" className="w-1/4 px-4 py-6 text-center ">
           <button className="bg-black text-white px-6 rounded-md  py-1">View</button>
           </th>
           <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
-          <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{navigate(`/advisor/schedule/domain-reviewer/${student.domain}/${student.reviewId}`)}}>Schedule</button>
+          <button className="bg-black text-white px-4 rounded-md  py-1"  onClick={()=>{navigate(`/advisor/schedule/domain-reviewer/${student?.domain}/${student.reviewId}`)}}>Schedule</button>
           </th>
          
         </tr>

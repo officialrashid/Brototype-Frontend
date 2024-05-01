@@ -4,7 +4,7 @@ import * as Yup from 'yup'
 
 
 
-const TaskUpdate=({isVisible,onClose,handleToast})=>{
+const TaskUpdate=({isVisible,onClose,handleToast,reviewId,slotId,reviewerId,coordinatorId,eventId,studentId})=>{
 
   const advisorId='123'
   const bookedadvisorId='123'
@@ -15,7 +15,11 @@ const disable= advisorId!==bookedadvisorId
    technicalScore:"",
    reviewScore:"",
   miscellaneousScore:"",
-  pendingTopics:""
+  pendingTopics:"",
+  miscellaneousReview:"",
+  technicalReview:"",
+  personalReview:"",
+  nextweekUpdation:""
 
   }
 
@@ -25,7 +29,12 @@ const disable= advisorId!==bookedadvisorId
     technicalScore:Yup.number().required('Technical score is required').max(10, 'Marks cannot exceed 10'),
     reviewScore:Yup.number().required('Review score is required').max(20, 'Marks cannot exceed 20'),
     miscellaneousScore:Yup.number().required('Miscellaneous score is required').max(10, 'Marks cannot exceed 10'),
-    pendingTopics:Yup.string().required('Pending topics are required')
+    pendingTopics:Yup.string().required('Pending topics are required'),
+    miscellaneousReview:Yup.string().required('feedback  required'),
+    technicalReview:Yup.string().required('feedback  required'),
+    personalReview:Yup.string().required('feedback  required'),
+    nextweekUpdation:Yup.string().required('updations are required')
+  
    
     
   })
@@ -35,11 +44,14 @@ if(!isVisible) return null
     return (
         <>
         <Formik onSubmit={async(values,{resetForm,setStatus})=>{
+         
+const reviewDetails={...values,reviewId,slotId,reviewerId,coordinatorId,eventId,studentId}
+console.log(reviewDetails,'details');
 
-          console.log(values,'valuessssss');
-          
+        
 try{
-  const response=axios.post('http://localhost:30000/task-service/update-task')
+
+  const response=axios.post('http://localhost:4000/api/student/add-student-review-result',reviewDetails)
 
 }catch(error){
   console.log(error,'errror');
@@ -57,7 +69,7 @@ try{
         }} initialValues={inititalValues} validationSchema={validationSchema}>
 <Form>
 <div className="z-40 fixed inset-0 flex  justify-center overflow-hidden  bg-black/60 overflow-y-scroll  py-14">
-<div className="border m-4 rounded-md  bg-white h-fit w-2/5">
+<div className="border m-4 rounded-md  bg-white h-fit w-1/2">
   <div className="flex justify-between m-2 mb-4 mt-3">
     <div></div>
      <div onClick={()=>{onClose()}} ><span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6 stroke-slate-400">
@@ -159,7 +171,7 @@ try{
   </div>
 
 </div>
-<div className="m-4 mt-0">
+<div className="m-4 mt-0 mb-0">
   <div className="flex gap-3"> 
       <div className=" w-full">
       <ErrorMessage name="miscellaneousScore" className="text-red-500"/>
@@ -167,6 +179,34 @@ try{
 
      <div className=" w-full">
      <ErrorMessage name="reviewScore" className="text-red-500"/>
+  </div>
+  
+
+  </div>
+
+</div>
+<div className="m-4 mb-2">
+  <div className="flex gap-3"> 
+      <div className=" w-full">
+    <Field as="textarea" name="miscellaneousReview" rows="8" type="text" className="border border-black w-full   rounded-sm outline-black" placeholder="Enter miscellaneous workout score  "/>
+  </div>
+ 
+     <div className=" w-full">
+   <Field as="textarea" name="technicalReview" rows="8" type="text" className="border border-black w-full rounded-sm outline-black" placeholder="Enter review score "/>
+  </div>
+
+
+  </div>
+
+</div>
+<div className="m-4 mt-0">
+  <div className="flex gap-3"> 
+      <div className=" w-full">
+      <ErrorMessage name="miscellaneousReview" className="text-red-500"/>
+  </div>
+
+     <div className=" w-full">
+     <ErrorMessage name="technicalReview" className="text-red-500"/>
   </div>
   
 
@@ -185,6 +225,25 @@ try{
   </div>
 
 </div> */}
+<div className="m-4 mb-0">
+  <div className="flex gap-3"> 
+     <div className="w-full">
+
+     <Field as="textarea" name="personalReview" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+</div>
+
+{/* <div className="w-full">
+
+  <Field as="textarea" name="pending2" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+</div> */}
+    
+
+  </div>
+
+</div>
+<div className="ml-4">
+<ErrorMessage name="personalReview" className="text-blue-500"/>
+</div>
 
 <div className="m-4 mb-0">
   <div className="flex gap-3"> 
@@ -204,6 +263,25 @@ try{
 </div>
 <div className="ml-4">
 <ErrorMessage name="pendingTopics" className="text-blue-500"/>
+</div>
+<div className="m-4 mb-0">
+  <div className="flex gap-3"> 
+     <div className="w-full">
+
+     <Field as="textarea" name="nextweekUpdation" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+</div>
+
+{/* <div className="w-full">
+
+  <Field as="textarea" name="pending2" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+</div> */}
+    
+
+  </div>
+
+</div>
+<div className="ml-4">
+<ErrorMessage name="nextweekUpdation" className="text-blue-500"/>
 </div>
 {/* <div className="m-4">
   <div className="flex gap-3"> 

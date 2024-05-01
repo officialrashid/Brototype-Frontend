@@ -10,10 +10,18 @@ const reviewSlice=createSlice({
     },
     reducers:{
         getReviewData:(state,action)=>{
+            console.log(action.payload,'reviewDatafifjsjofjsoj');
+            
             state.reviewData=action.payload.map((student:any)=>{
                 console.log(student,'studentsjnnfcccscs');
+               
+        if(student.reviewStatus=='notcompleted'){
+            return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id,scheduledDate:student.scheduledDate}
+
+        }
+
                 
-           return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id,scheduledDate:student.scheduledDate}
+                
             })
         },
         changeFrame:(state,action)=>{
@@ -24,8 +32,8 @@ const reviewSlice=createSlice({
         getScheduledReviewData:(state,action)=>{
             console.log(action.payload,'payload');
             
-            state.scheduledData = action.payload.filter((data:any)=>{
-                return data.reviewStatus == "scheduled"
+            state.scheduledData = action.payload.map((data:any)=>{
+                return {name:data.name,scheduledDate:data.scheduledDate,batch:data.batch,reviewerId:data.reviewerId,reviewId:data._id,slotId:data.slotId,eventId:data.eventId,domain:data.domain,startTime:data.startTime,meetingLink:data.meetingLink,studentId:data.studentId}
             })
         }
     }

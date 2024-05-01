@@ -44,10 +44,10 @@ const TopPerformers=()=>{
       <div className="sticky top-0 z-10    bg-white top-fixed rounded-md">
        <div className=' mt-2 sticky flex justify-between'>
      <div className='ml-2 mt-0'>
-     <span className='  font-semibold font-roboto'>Top Performers</span>
+     <span className='  font-meduim font-roboto'>Top Performers</span>
      </div>
      <div className='mr-3'>
-       <span className='font-bold text-sm font-roboto'>view all</span>
+       <span className='font-meduim text-sm font-roboto'>view all</span>
      </div>
       
        

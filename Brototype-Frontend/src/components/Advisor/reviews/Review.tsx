@@ -30,7 +30,8 @@ const Review = () => {
     }
     useEffect(() => {
         const getStudentDetails = async () => {
-            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews/${advisorId}`)
+         const scheduled:Boolean=true
+            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews?coordinatorId=65ed8fc3afcda5149bbf0166&type=scheduled`,)
             console.log(studentData, 'studenrnttttt');
 
             dispatch(getScheduledReviewData(studentData.data))
@@ -48,7 +49,7 @@ const Review = () => {
         <>
             <ReviewSearchBar searchFn={searchFn} />
             <ReviewHead />
-            <ReviewRow reviewData={filteredData} />
+            {scheduledReviewDatas.length?<ReviewRow reviewData={filteredData} />:<div className="text-center  font-bold m-10"><h1>There is no scheduled reviews</h1></div>}
         </>
     )
 }

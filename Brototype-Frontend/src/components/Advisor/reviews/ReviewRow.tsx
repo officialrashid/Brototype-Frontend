@@ -41,8 +41,16 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
 
     }
   }
+  const [studentId,setstudentId]=useState('')
+  const [reviewerId,setReviewerId]=useState('')
+  const [eventId,setEventId]=useState('')
+  const [reviewId,setReviewId]=useState('')
+  const [slotId,setSlotId]=useState('')
+const updateReviewDetail=(studentId:string,reviewerId:string,eventId:string,reviewId:string,slotId:string)=>{
+  setstudentId(studentId), setReviewerId(reviewerId), setEventId(eventId),setReviewId(reviewId),setSlotId(slotId)
 
 
+}
 
   const updateMeetLInk=async (reviewId:string,advisorId:string,meetLink:string)=>{
 
@@ -52,7 +60,7 @@ const response = await axios.patch('http://localhost:6001/review/update-meeting-
 if(response){
   console.log(response);
   
-  dispatch(changeFrame(true))
+  dispatch(changeFrame(false))
 
 }
 
@@ -60,7 +68,6 @@ if(response){
 
   const handleMeetLink = async () => {
     console.log('meet');
-    
     setMeetState(true)
 
      //dispatch(changeFrame(true))
@@ -83,10 +90,7 @@ if(response){
   }
   return (
     <>
-    {
-    console.log(reviewData,'reviewData')
-
-    }
+   
       {
        
         
@@ -99,37 +103,38 @@ if(response){
               <tr className="   ">
 
                 <th scope="col" className="w-1/4 px-4 py-6  text-center rounded-l-lg   " style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  {reviewData.name} {reviewData.lastName}
+                  {reviewData?.name} {reviewData.lastName}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center">
-                  {reviewData.batch}
+                  {reviewData?.batch}
 
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  {reviewData.startTime}
+                  {reviewData?.startTime}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                 {reviewData.domain}
+                 {reviewData?.domain}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  {reviewData.scheduledDate}
+                  {reviewData?.scheduledDate}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
                   <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskView(true) }}>View</button>
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true) }}>Update</button>
+                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true),updateReviewDetail(reviewData.studentId,reviewData.reviewerId,reviewData.eventId,reviewData.reviewId,reviewData.slotId)}}>Update</button>
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
               {
-                reviewData.meetingLink==null?<button className="bg-black text-white px-3 rounded-md  py-1"onClick={()=>{updateMeetLInk(reviewData.reviewId,advisorId,`https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${advisorId}`)}}>Start</button>:<button className="bg-black text-white px-3 rounded-md  py-1" onClick={location.href=`${reviewData.meetingLink}`}>Join</button>
+                reviewData?.meetingLink==null?<button className="bg-black text-white px-3 rounded-md  py-1"onClick={()=>{updateMeetLInk(reviewData?.reviewId,advisorId,`https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${advisorId}`)}}>Start</button>:<button className="bg-black text-white px-3 rounded-md  py-1">Join</button>
               }
                  
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                  
+                <button className="bg-black text-white px-3 rounded-md  py-1">Cancel</button>
+              
                 </th>
 
               </tr>
@@ -139,9 +144,9 @@ if(response){
         )
        
       })}
-      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }} />
+      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }}  />
 
-      <TaskUpdate isVisible={taskModal} onClose={() => { setTaskModal(false) }} handleToast={handleToast} />
+      <TaskUpdate isVisible={taskModal} onClose={() => { setTaskModal(false) }} handleToast={handleToast} reviewId={reviewId} slotId={slotId} reviewerId={reviewerId} coordinatorId={advisorId} eventId={eventId} studentId={studentId} />
       <ToastContainer />
     </>
   )

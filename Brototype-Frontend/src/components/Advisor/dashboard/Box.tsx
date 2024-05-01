@@ -42,7 +42,7 @@ const Box=({coordinator})=>{
   <div className="flex m-2 ">
     <div> <span className="font-meduim font-roboto">Today's Task </span>
  <div className="mt-3">
-   <span className="text-4xl">{coordinator?.todaysReview?coordinator.todaysReview:0}</span>
+   <span className="text-3xl font-medium">{coordinator?.todaysReview?coordinator.todaysReview:0}</span>
  </div>
     </div>
     <div className=" mt-4 ml-6 border-darkBlue w-20 h-20 rounded-full border-4 "  > 
