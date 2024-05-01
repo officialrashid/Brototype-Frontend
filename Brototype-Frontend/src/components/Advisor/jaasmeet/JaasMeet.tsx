@@ -5,11 +5,11 @@ import { changeFrame } from '../../../redux-toolkit/reviewSlice'
 import { useDispatch } from 'react-redux'
 
 
-const JaasMeet=()=>{
+const JaasMeet=({roomId})=>{
     const dispatch = useDispatch()
     const [meetState,setMeetState]=useState(false)
     const [jwt,setJwt]=useState('')
-    const generateRoomName=()=> `jitsiRoomName${Math.random()*100}-${Date.now()}}`
+    //const generateRoomName=()=> `jitsiRoomName${Math.random()*100}-${Date.now()}}`
 const generateToken=async()=>{
     dispatch(changeFrame(false))
 //   try{
@@ -48,7 +48,7 @@ const generateToken=async()=>{
         <JaaSMeeting
     appId = {'vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e' }
     jwt = {jwt }
-    roomName = { generateRoomName()}
+    roomName = { roomId}
     getIFrameRef = { node => node.style.height = '835px' }
     onReadyToClose={()=>{generateToken()}}
     

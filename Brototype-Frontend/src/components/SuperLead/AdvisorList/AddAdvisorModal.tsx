@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 interface ProfileUpdateModalProps {
   isVisible: boolean;
   onClose: () => void;
+  changeModalStatus : () => void
 }
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -16,7 +17,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const AddAdvisorModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+const AddAdvisorModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose,changeModalStatus }) => {
  
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -59,6 +60,7 @@ const AddAdvisorModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose
          if(response?.status===true){
           toast.success("Advisor Created Succefully")
           onClose();
+          changeModalStatus()
          }else if(response?.status===false && response?.message==="Email or phone already exists"){
           toast.warn("Email or Phone number alrady exist")
           onClose()

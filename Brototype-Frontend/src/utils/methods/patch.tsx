@@ -128,14 +128,27 @@ export const updateEvents = async (data:any)=>{
   }
 
 //// *** Review Api Section ******/////
-  export const updateMeetUrl = async (advisorId: string,reviewId:string,meetingUrl:string) => {
+  export const updateMeetUrl = async (coordinatorId: string,reviewId:string,meetingUrl:string) => {
     try {
       const data = {
-        advisorId,
+        coordinatorId,
         reviewId,
         meetingUrl
       }
       const resposne = await reviewApi.patch('/review/update-meeting-link',data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }
+  
+  //// ******* Advisor Api Sections ////
+
+  export const updateAdvisorStatus = async (data:any) => {
+    try {
+      const resposne = await authenticationApi.patch('/api/auth/update-advisor-status',data)
       return resposne?.data
     } catch (err) {
       return { status: false, message: "some issue in the add Reviewer" }

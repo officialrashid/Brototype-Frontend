@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 interface ProfileUpdateModalProps {
   isVisible: boolean;
   onClose: () => void;
+  changeModalStatus : () =>void
 }
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -16,7 +17,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const AddReviewerModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+const AddReviewerModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose, changeModalStatus }) => {
  
   const validationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -59,6 +60,7 @@ const AddReviewerModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
          if(response?.status===true){
           toast.success("Reviewer Created Succefully")
           onClose();
+          changeModalStatus()
          }else{
           toast.warn("Reviewer Created not Success")
           onClose()

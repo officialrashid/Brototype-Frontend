@@ -535,7 +535,7 @@ const ReviewerList = () => {
                     </div>
                 </div>
             </section>
-            <AddReviewerModal isVisible={addReviewer} onClose={() => { setAddReviewer(false) }} />
+            <AddReviewerModal isVisible={addReviewer} onClose={() => { setAddReviewer(false) }} changeModalStatus={changeModalStatus} />
         </>
     );
 }

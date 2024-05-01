@@ -44,10 +44,10 @@ const TopPerformers=()=>{
       <div className="sticky top-0 z-10    bg-white top-fixed rounded-md">
        <div className=' mt-2 sticky flex justify-between'>
      <div className='ml-2 mt-0'>
-     <span className='  font-semibold '>Top Performers</span>
+     <span className='  font-semibold font-roboto'>Top Performers</span>
      </div>
      <div className='mr-3'>
-       <span className='font-bold text-sm'>view all</span>
+       <span className='font-bold text-sm font-roboto'>view all</span>
      </div>
       
        
@@ -67,7 +67,7 @@ const TopPerformers=()=>{
                <div className="border border-2px  px-1 py-1 rounded-md "><img className='w-10 h-12' src={profile} alt="" /></div>
                 <div className="m-2  ml-0"><span className='text-sm'><p>{performer.fullName.split(' ')[0]}</p></span></div>
                 <div className='flex'>
-                <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400'>83% </span> 
+                <div className="m-2  ml-0"><span className='text-sm font-bold text-color-green-400 font-roboto'>83% </span> 
                 </div>
                 
                 <div className="mt-2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="#f97316" className="w-5 h-5">

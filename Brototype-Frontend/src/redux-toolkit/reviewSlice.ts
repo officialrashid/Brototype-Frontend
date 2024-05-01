@@ -11,9 +11,9 @@ const reviewSlice=createSlice({
     reducers:{
         getReviewData:(state,action)=>{
             state.reviewData=action.payload.map((student:any)=>{
-                console.log(student,'studentsjnnf');
+                console.log(student,'studentsjnnfcccscs');
                 
-           return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id}
+           return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id,scheduledDate:student.scheduledDate}
             })
         },
         changeFrame:(state,action)=>{

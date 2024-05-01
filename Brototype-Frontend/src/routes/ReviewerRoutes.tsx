@@ -7,8 +7,10 @@ import ReviewerSignIn from "../pages/Reviewer/SignIn";
 import Navigationbar from '../components/LandingPage/Navbar';
 import Chat from '../pages/Reviewer/Chat';
 import JaasMeet from '../components/Advisor/jaasmeet/JaasMeet';
+import { useSelector } from 'react-redux';
 
 function ReviewerRoutes() {
+  const reviewerId = useSelector((state: any) => state?.reviewer?.reviewerData?.reviewerId);
   const [reviewerAccessToken, setReviewerAccessToken] = useState('');
   const changeScreen: any = useSelector((state) => state?.review?.changeScreen)
   useEffect(() => {
@@ -18,7 +20,7 @@ function ReviewerRoutes() {
 
   return (
     <>
-      {changeScreen ? <JaasMeet /> :
+      {changeScreen ? <JaasMeet roomId={reviewerId}/> :
         <>
           <Navigationbar />
           <div className="bg-custom-background">
@@ -40,7 +42,5 @@ function ReviewerRoutes() {
 }
 
 export default ReviewerRoutes;
-function useSelector(arg0: (state: any) => any) {
-  throw new Error('Function not implemented.');
-}
+
 

@@ -527,5 +527,14 @@ export const getPendingStudents = async (uniqueId:string) =>{
     }
   
   }
+  export const getAllAdvisors = async () =>{
 
+    try {
+       const response = await authenticationApi.get(`/api/auth/get-all-advisors`)
+       return response?.data?.response;
+    } catch (error) {
+     
+    }
+  
+  }
 

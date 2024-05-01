@@ -3,14 +3,17 @@ import { useState } from "react"
 import TaskUpdate from "../Scheduled/TaskUpdate"
 import JaasMeet from "../jaasmeet/JaasMeet"
 import { axiosInstance } from "../services/api/apiClient"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { changeFrame } from "../../../redux-toolkit/reviewSlice"
 import TaskView from "../Scheduled/TaskView"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
+import axios from "axios"
+import { RootState } from "../../../redux-toolkit/store"
 const ReviewRow = ({ reviewData }: { reviewData: any }) => {
-
+  const dispatch = useDispatch()
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
   const [taskView, setTaskView] = useState(false)
   const [taskModal, setTaskModal] = useState(false)
   const [frame, setFrame] = useState(false)
@@ -39,7 +42,21 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
     }
   }
 
-  const dispatch = useDispatch()
+
+
+  const updateMeetLInk=async (reviewId:string,advisorId:string,meetLink:string)=>{
+
+
+const data={reviewId,advisorId,meetLink}
+const response = await axios.patch('http://localhost:6001/review/update-meeting-link',data)
+if(response){
+  console.log(response);
+  
+  dispatch(changeFrame(true))
+
+}
+
+  }
 
   const handleMeetLink = async () => {
     console.log('meet');
@@ -105,12 +122,14 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
-              <JaasMeet/>
+              {
+                reviewData.meetingLink==null?<button className="bg-black text-white px-3 rounded-md  py-1"onClick={()=>{updateMeetLInk(reviewData.reviewId,advisorId,`https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${advisorId}`)}}>Start</button>:<button className="bg-black text-white px-3 rounded-md  py-1" onClick={location.href=`${reviewData.meetingLink}`}>Join</button>
+              }
                  
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                  <button className="bg-black text-white px-3 rounded-md  py-1">Cancel</button>
+                  
                 </th>
 
               </tr>

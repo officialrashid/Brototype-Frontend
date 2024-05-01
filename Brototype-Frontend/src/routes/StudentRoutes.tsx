@@ -100,7 +100,7 @@ function StudentRoutes() {
 
   return (
     <>
-     {changeScreen?<JaasMeet/>:
+     {changeScreen?<JaasMeet roomId={studentId}/>:
     <>
     <Navigationbar/>
     <div className="bg-custom-background">

@@ -49,7 +49,7 @@ const UpcomingReviews = () => {
   }, []);
   const handleMeetStart = async (advisorId:string,reviewId:string,meetingUrl:string) =>{
     dispatch(changeFrame(true))
-        // const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
+        const response = await updateMeetUrl(advisorId,reviewId,meetingUrl)
   }
   return (
     <>
@@ -111,6 +111,7 @@ const UpcomingReviews = () => {
 
                   </th>
                   <th scope="col" className="w-1/4 px-4 py-6 text-center ">
+                    
                     <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer"onClick={(()=>handleMeetStart(data?.data?.advisorId,data?.data?.reviewId,data.data.meetingUrl))}>Join Meet</span>
                   </th>
                   {data.data.status === true ? (

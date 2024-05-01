@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 interface ProfileUpdateModalProps {
   isVisible: boolean;
   onClose: () => void;
+  changeModalStatus : () => void
 }
 
 const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -16,7 +17,7 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose }) => {
+const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClose,changeModalStatus }) => {
  
   const validationSchema = Yup.object().shape({
     name: Yup.string()
@@ -63,6 +64,7 @@ const AddStudentsModal: React.FC<ProfileUpdateModalProps> = ({ isVisible, onClos
          if(response?.status===true){
           toast.success("Student Created Succefully")
           onClose();
+          changeModalStatus()
          }else if(response?.status===false && response?.message==="student not created because of batch not found"){
           toast.warn("Student Created not Success, because batch not found")
           onClose()

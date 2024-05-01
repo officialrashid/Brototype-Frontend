@@ -616,7 +616,7 @@ const StudentList = () => {
                     </div>
                 </div>
             </section >
-            <AddStudentsModal isVisible={addStudents} onClose={() => { setAddStudents(false) }} />
+            <AddStudentsModal isVisible={addStudents} onClose={() => { setAddStudents(false) }} changeModalStatus={changeModalStatus} />
         </>
     );
 }
