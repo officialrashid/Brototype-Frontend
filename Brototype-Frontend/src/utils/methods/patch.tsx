@@ -156,4 +156,24 @@ export const updateEvents = async (data:any)=>{
   
   
   }
+  export const updateReviewStatus = async (data:any) => {
+    try {
+      const resposne = await reviewerApi.patch('/api/reviewer/update-review-completed-status',data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }
+  export const updateStdtReviewStatus = async (data:any) => {
+    try {
+      const resposne = await authenticationApi.patch('/api/auth/update-review-status',data)
+      return resposne?.data
+    } catch (err) {
+      return { status: false, message: "some issue in the add Reviewer" }
+    }
+  
+  
+  }
   

@@ -464,3 +464,14 @@ export const advisorLogin = async (data: any) => {
 
 
 }
+export const addReviewResult = async (data: any) => {
+  try {
+    const resposne = await studentApi.post('/api/student/add-student-review-result', data)
+    return resposne
+  } catch (err) {
+    return { status: false, message: "some issue in the Address details update" }
+  }
+
+
+}
+
