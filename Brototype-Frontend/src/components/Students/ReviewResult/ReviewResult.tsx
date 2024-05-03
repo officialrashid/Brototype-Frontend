@@ -169,7 +169,7 @@ const ReviewResult = () => {
                                                     } cursor-pointer`}
                                                
                                             >
-                                                {data.reviewScore < 10
+                                                {data.reviewScore < 10 && data.repeat===true
                                                     ? 'Repeat'
                                                     : data.reviewScore > 9 && data.reviewScore <= 10
                                                         ? 'Critical'
