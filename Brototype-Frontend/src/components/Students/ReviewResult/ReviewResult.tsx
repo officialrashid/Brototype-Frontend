@@ -145,10 +145,10 @@ const ReviewResult = () => {
                                             {data?.week}
                                         </td>
                                         <td className="w-1/4 px-5 py-6">
-                                            {data.reviewer}
+                                            {data.reviewerName}
                                         </td>
                                         <td className="w-1/4 px-5 py-6">
-                                            {data.advisor}
+                                            {data.advisorName}
                                         </td>
                                         <td className="w-1/4 px-5 pr-10 py-6">
                                             {data.date}

@@ -76,6 +76,12 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
           eventId,
           studentId
         };
+
+        // Convert specific properties to arrays
+        convertToArrays(reviewDetails);
+
+        console.log(reviewDetails, 'detailsyyy');
+
         try {
           const getInitiatorsDetail = await getInitiatorsDetails(coordinatorId, reviewerId, studentId);
           console.log(getInitiatorsDetail, "getInitiatorsDetail");
@@ -95,7 +101,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
             const concatenatedData = {
               ...reviewDetails, // Merge reviewDetails properties
               advisorName: getInitiatorsDetail.data.advisorName,
-              currentWeek: `week${getInitiatorsDetail.data.currentWeek}`,
+              currentWeek: `week3`,
               reviewerName: getInitiatorsDetail.data.reviewerName,
               batchId: getInitiatorsDetail.data.batchId,
               status : status,
@@ -115,12 +121,13 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               const updateStdStatus={
                 studentId: reviewDetails.studentId,
                 currentWeek : getInitiatorsDetail.data.currentWeek+1,
+                status : status
 
               }
               const updateReviewerStatus = await updateReviewStatus(updateStatus)
                const updateStudenttReviewStatus = await updateStdtReviewStatus(updateStdStatus) 
               if(updateReviewerStatus?.response?.status==true && updateStudenttReviewStatus.response?.status===true){
-                toast.success("review result updated successfully")
+                toast.success("review result updates successfully")
                 onClose()
               }else{
                 toast.error("review status not updated,please try after some time")
