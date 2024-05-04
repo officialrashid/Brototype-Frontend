@@ -10,7 +10,7 @@ const Student=()=>{
 const dispatch=useDispatch()
 
 
-const studentData=useSelector(state=>state.student.studentData)
+const studentData=useSelector(state=>state.students.studentData)
 
 const [filteredData,setFilteredData]=useState(studentData)
 const getSearch=(value:string)=>{
@@ -51,10 +51,12 @@ useEffect(()=>{
         <>
         <SearchBar getSearch={getSearch} />
 
-<div className="grid grid-cols-4 m-2 gap-2">
+{
+  filteredData.length?<div className="text-center m-20 font-bold"><h1>There is no students</h1></div>:<div className="grid grid-cols-4 m-2 gap-2">
 
   {
-    filteredData.map(student=>{
+   
+    filteredData?.map((student:any)=>{
 return (
   <div className="border border-2px  rounded-lg w-full bg-white">
   <div className=" border-b  h-20 bg-slate-400  rounded-t-lg">
@@ -128,6 +130,7 @@ return (
     
 
 </div>
+}
         
         </>
     )

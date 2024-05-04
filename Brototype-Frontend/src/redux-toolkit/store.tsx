@@ -20,6 +20,8 @@ import batchSliceReducer from "./batchSlice";
 import invigilatorReducer from "./invigilatorSlice";
 import advisorReducer from './advisorReducer';
 import reviewSlice from './reviewSlice';
+import studentSlice from './studentSlice';
+import reviewerSlice from './reviewerSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -45,7 +47,9 @@ const persistedReducer = persistReducer(
     enquiries:enquiryReducer,
     batch:batchSliceReducer,
     invigilator:invigilatorReducer,
-    review:reviewSlice
+    review:reviewSlice,
+    students:studentSlice,
+    reviewers:reviewerSlice
   })
 );
 export type RootState = ReturnType<typeof persistedReducer>;

@@ -11,7 +11,7 @@ interface Istudent{
   id:string
   name:string,
  }
- let reviewersData= useSelector(state=>state?.reviewer?.reviewerData)
+ let reviewersData= useSelector(state=>state?.reviewers?.reviewerData)
 console.log(reviewersData,'innnnnnn page');
 const [filteredData,setFilteredData]=useState(reviewersData)
 const getSearch=(value:string)=>{

@@ -16,6 +16,7 @@ import Footer from '../components/Advisor/components/Footer'
 import Review from '../components/Advisor/reviews/Review'
 import { useSelector } from 'react-redux'
 import JaasMeet from '../components/Advisor/jaasmeet/JaasMeet'
+import TasksPage from '../components/Advisor/task/TasksPage'
 
 
 function App() {
@@ -61,6 +62,7 @@ user?:   <SignIn/>
    <Route path='/extend-requests/' element={<ExtPage/>}></Route>
    <Route path='/students/' element={<Student/>}></Route>
    <Route path='/chat/' element={<Chat/>}></Route>
+   <Route path='/tasks/' element={<TasksPage/>}></Route>
   
  </Routes>
     
