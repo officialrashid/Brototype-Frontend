@@ -19,13 +19,16 @@ const ExtHead=()=>{
       Domain
         </th>
         <th scope="col" className="w-1/4 px-5 py-7 text-center ">
-Date
+         Date
         </th>
         <th scope="col" className="w-1/4 px-5 py-7 text-center ">
-    Reason
+        Details
         </th>
         <th scope="col" className="w-1/4 px-5 py-7 text-center  rounded-r-md ">
-        Action
+        Approve
+        </th>
+        <th scope="col" className="w-1/4 px-5 py-7 text-center  rounded-r-md ">
+        Reject
         </th>
        
       </tr>
