@@ -5,7 +5,7 @@ const ScheduledHead=()=>{
       <>
       <div className='mx-auto '>
   <table className="w-full text-sm text-left divide-y divide-y-8  table-auto table-fixed">
-    <thead className="text-xs text-gray-700 uppercase bg-gray-300  dark:text-gray">
+    <thead className="text-xs text-gray-700 uppercase bg-gray-300  dark:text-gray font-roboto">
       <tr>
         <th scope="col" className="w-1/4 px-5 py-7 text-center rounded-l-md   ">
         Name

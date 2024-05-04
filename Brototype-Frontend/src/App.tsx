@@ -12,7 +12,7 @@ import AdvisorRoutes from './routes/AdvisorRoutes';
 import SuperLeadRoutes from "./routes/SuperLeadRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
 import AdvisorAuthRoutes from './routes/AdvisorAuthRoutes'
-import FumigationRoutes from './routes/fumigationRoutes';
+import FumigationRoutes from './routes/FumigationRoutes';
 
 
 function App() {

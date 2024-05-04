@@ -19,6 +19,9 @@ console.log(reviewerId,'reviewerID')
 const bookStatus=true
 
     const response = await Api.patch('/api/reviewer/update-particular-date-events', {reviewerId ,eventId,bookedEventId,advisorId,bookStatus,reviewId })
+
+    console.log(response,'respose from booked');
+    
     handleToast('Review Booked successfully')
   }
 
@@ -97,7 +100,7 @@ const bookStatus=true
                   <div className="flex w-full ">
                     <div className="border border-gray-400 text-center w-1/2 ">
                       <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-                        <span  >{slot.startTime}</span>
+                        <span  className="font-roboto">{slot.startTime}</span>
 
                       </div>
 
@@ -107,7 +110,7 @@ const bookStatus=true
                     </div>
                     <div className="border border-gray-400 text-center   w-1/2 ">
                       <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">
-                        <span>{slot.endTime}</span>
+                        <span className="font-roboto">{slot.endTime}</span>
 
                       </div>
 

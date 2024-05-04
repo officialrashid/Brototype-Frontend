@@ -10,6 +10,8 @@ const UpcomingReviews = () => {
   const [extendRequests, setExtendRequests] = useState([])
   const [newRequest, setNewRequets] = useState(false)
   const [studentReview,setStudentReview] = useState({})
+  const [advisorId,setAdvisorId] = useState("")
+  const [reviewId,setReviewId] = useState("")
   const dispatch = useDispatch()
   useEffect(() => {
     console.log("keriyannuuuuu");
@@ -87,10 +89,15 @@ const UpcomingReviews = () => {
     dispatch(changeFrame(true))
             const response = await updateMeetUrl(coordinatorId,reviewId,meetingLink)
 }
+const handleExtend = (advisorId:string,reviewId:string) =>{
+   setAdvisorId(advisorId)
+   setReviewId(reviewId)
+   setNewRequets(true)
+}
   return (
     <>
       <div className="border m-5 h-fit rounded-xl shadow-sm bg-white">
-        <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} />
+        <ExtendModal isVisible={newRequest} isClose={() => { setNewRequets(false) }} advisorId={advisorId} reviewId={reviewId} />
 
         <div className='mx-auto p-2 mt-4 '>
           <table className="w-full text-sm text-left  table-fixed">
@@ -125,7 +132,7 @@ const UpcomingReviews = () => {
             </thead>
           </table>
         </div>
-        {studentReview[0]?.response.reviews.length ? (
+      
  <div className='mx-auto p-2 mb-2 '>
  <table className="w-full text-sm text-left divide-y divide-y-8 border table-fixed border-gray-400 rounded-md font-roboto ">
    <thead className="text-md text-gray-700 bg-gray-100 shadow-2xl dark:text-gray-800">
@@ -156,7 +163,7 @@ const UpcomingReviews = () => {
        </th>
        <th scope="col" className="w-1/4 px-4 py-6 text-center">
          {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? (
-           <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { setNewRequets(true) }}>Request</span>
+           <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { handleExtend(studentReview[0]?.response?.coordinatorId,studentReview[0]?.response?._id) }}>Request</span>
          ) : "---"}
        </th>
 
@@ -169,12 +176,12 @@ const UpcomingReviews = () => {
    </thead>
  </table>
 </div>
-        ):(
+        {/* ):(
           <div className="m-4">
           <h1 className="item text-center font-roboto">No Scheduled Review Data</h1>
           </div>
         )}
-       
+        */}
 
 
 

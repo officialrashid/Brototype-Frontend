@@ -26,9 +26,8 @@ const validationSchema = Yup.object().shape({
     .required('Extend reason is required'),
 });
 
-const ExtendModal = ({ isVisible, isClose }) => {
+const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
   const [extend, setExtend] = useState({});
-  const advisorId = "657aa5093476c843c28a377b";
   const studentId: string = useSelector((state: any) => state?.student?.studentData?.studentId);
   const batchId: any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
 
@@ -65,17 +64,26 @@ const ExtendModal = ({ isVisible, isClose }) => {
     validationSchema: validationSchema,
     onSubmit: async () => {
       try {
-        const body = {
-          studentId,
-          advisorId,
-          extendDays: formik.values.extendDays,
-          extendReason: formik.values.extendReason,
-          fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
-          batch: extend.batch || '',
-          domain: extend.domain || '',
-          currentWeek: extend.currentWeek
-        };
+        // const body = {
+        //   studentId,
+        //   advisorId,
+        //   extendDays: formik.values.extendDays,
+        //   extendReason: formik.values.extendReason,
+        //   fullName: `${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`,
+        //   batch: extend.batch || '',
+        //   domain: extend.domain || '',
+        //   currentWeek: extend.currentWeek
+        // };
+        const body ={
+          coordinatorId:advisorId,
+          reviewId:reviewId,
+          extendReason : formik.values.extendReason,
+          extendDays : formik.values.extendDays
+
+        }
         const response = await requestExtention(body);
+        console.log(response,"response in new extend request");
+        
         if (response.status === 201) {
           toast.success("Your Request have been successfully");
           isClose();
@@ -106,30 +114,30 @@ const ExtendModal = ({ isVisible, isClose }) => {
         </div>
         <div className="m-5 mt-6">
             <div>
-              <input
+              {/* <input
                 type="text"
                 className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter Full Name"
                 id="fullName"
                 name="fullName"
                 value={`${extend.firstName || ''} ${extend.middleName || ''} ${extend.lastName || ''}`}
-              />
-              <input
+              /> */}
+              {/* <input
                 type="text"
                 className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter your Batch"
                 id="batch"
                 name="batch"
                 value={extend?.batch}
-              />
-              <input
+              /> */}
+              {/* <input
                 type="text"
                 className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter your current week"
                 id="currentWeek"
                 name="currentWeek"
                 value={extend?.currentWeek}
-              />
+              /> */}
               <input
                 type="text"
                 className={`px-5 py-4 shadow-xl border ${formik.touched.extendDays && formik.errors.extendDays ? 'border-red' : 'border-gray-200'} focus:outline-black w-full rounded-lg mb-7 font-roboto`}

@@ -20,8 +20,8 @@ const Scheduled=()=>{
 const dispatch=useDispatch()
     useEffect(()=>{
    const   getStudentDetails=async ()=>{
-        const studentData=await axios.get(`http://localhost:6001/review/assigned-reviews/65ed8fc3afcda5149bbf0166`)
-         console.log(studentData,'studenrnttttt');
+        const studentData=await axios.get(`http://localhost:6001/review/assigned-reviews?coordinatorId=65ed8fc3afcda5149bbf0166&type=schedule`)
+         console.log(studentData,'studenrntttthbcbhajbcjabjt');
          
        dispatch(getReviewData(studentData.data))
 

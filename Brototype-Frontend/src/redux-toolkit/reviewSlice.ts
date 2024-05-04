@@ -15,10 +15,10 @@ const reviewSlice=createSlice({
             state.reviewData=action.payload.map((student:any)=>{
                 console.log(student,'studentsjnnfcccscs');
                
-        if(student.reviewStatus=='notcompleted'){
-            return {studentId:student._id,name:student.name,lastName:student.lastName,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id,scheduledDate:student.scheduledDate}
+      
+            return {studentId:student.studentId,name:student.name,batch:student.batch,currentWeek:student.currentWeek,domain:student.domain,reviewId:student._id,scheduledDate:student.scheduledDate,batchId:student.batchId,profileUrl:student.profileUrl}
 
-        }
+        
 
                 
                 

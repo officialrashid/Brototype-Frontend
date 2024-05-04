@@ -9,9 +9,9 @@ import { updateReviewStatus, updateStdtReviewStatus } from "../../../utils/metho
 
 const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewerId, coordinatorId, eventId, studentId }) => {
 
-  const advisorId = '123'
-  const bookedadvisorId = '123'
-  const disable = advisorId !== bookedadvisorId
+  // const advisorId = ''
+  // const bookedadvisorId = '123'
+
   const inititalValues = {
     reviewStatus: "",
     personalScore: "",
@@ -454,7 +454,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div className="flex justify-between m-2 mt-0">
                 <div></div>
                 <div>
-                  <button type="submit" className="bg-black text-white py-2 px-5 rounded-md m-3" disabled={disable}>submit</button>
+                  <button type="submit" className="bg-black text-white py-2 px-5 rounded-md m-3" >submit</button>
                   <button className="bg-black text-white py-2 px-5 rounded-md m-3">Cancel</button>
 
                 </div>

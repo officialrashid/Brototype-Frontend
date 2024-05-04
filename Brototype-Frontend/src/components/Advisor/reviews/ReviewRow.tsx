@@ -11,7 +11,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import axios from "axios"
 import { RootState } from "../../../redux-toolkit/store"
+import Api from "../../../utils/baseUrl/reviewerBaseUrl"
 const ReviewRow = ({ reviewData }: { reviewData: any }) => {
+
   const dispatch = useDispatch()
   const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
   const [taskView, setTaskView] = useState(false)
@@ -41,6 +43,7 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
 
     }
   }
+  
   const [studentId,setstudentId]=useState('')
   const [reviewerId,setReviewerId]=useState('')
   const [eventId,setEventId]=useState('')
@@ -50,6 +53,22 @@ const updateReviewDetail=(studentId:string,reviewerId:string,eventId:string,revi
   setstudentId(studentId), setReviewerId(reviewerId), setEventId(eventId),setReviewId(reviewId),setSlotId(slotId)
 
 
+}
+
+const cancelReview = async (reviewerId:string,eventId:string,slotId: string,reviewId:string, handleToast: Function) => {
+
+  console.log(advisorId, slotId, 'rrrrr')
+  console.log(eventId, 'eeee')
+  const bookedEventId=slotId
+console.log(reviewerId,'reviewerID')
+console.log(reviewId,'reviewId')
+const bookStatus=false
+    const cancel:boolean=true
+  const response = await Api.patch('/api/reviewer/update-particular-date-events', {reviewerId ,eventId,bookedEventId:slotId,advisorId,bookStatus,reviewId,cancel })
+
+  console.log(response,'respose from booked');
+  
+  handleToast('Review cancelled successfully')
 }
 
   const updateMeetLInk=async (reviewId:string,advisorId:string,meetLink:string)=>{
@@ -87,19 +106,29 @@ if(response){
 
 
     //  }
+
+   
+  
+    
+
+    
+
   }
   return (
     <>
-   
+   {
+        console.log(reviewData,'reviewwwww')
+   }
       {
        
+    
         
       
       reviewData?.map((reviewData: any, index: number) => {
         return (
           <div className='mx-auto pt-2 mb-1 mt-' >
           <table className="w-full text-sm text-left divide-y divide-y-8 table-fixed  rounded-full">
-            <thead className="text-md text-gray-700 bg-gray-100  dark:text-gray-800 " >
+            <thead className="text-md text-gray-700 bg-gray-100  dark:text-gray-800 font-roboto" >
               <tr className="   ">
 
                 <th scope="col" className="w-1/4 px-4 py-6  text-center rounded-l-lg   " style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
@@ -133,7 +162,7 @@ if(response){
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                <button className="bg-black text-white px-3 rounded-md  py-1">Cancel</button>
+                <button className="bg-black text-white px-3 rounded-md  py-1" onClick={()=>{cancelReview(reviewData.reviewerId,reviewData.eventId,reviewData.slotId,reviewData.reviewId,handleToast)}}>Cancel</button>
               
                 </th>
 

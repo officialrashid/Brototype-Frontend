@@ -18,7 +18,7 @@ const StudentGraph = () => {
           studentId,
         };
         const response = await getAllPerformance(data)
-        console.log(response, "responseeee fect");
+        console.log(response, "responseeee fectttttttttt");
 
         setStudentDetails(response.data)
 

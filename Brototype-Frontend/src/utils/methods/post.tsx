@@ -7,6 +7,7 @@ import fumigationApi from "../baseUrl/fumigationBaseUrl"
 import superleadApi from "../baseUrl/superleadBaseUrl"
 import taskApi from "../baseUrl/taskBaseUrl"
 import chatApi from "../baseUrl/baseUrl"
+import reviewApi from "../baseUrl/reviewBaseUrl"
 //***********  fumigation service Api  **********/
 // Enquirie interface
 interface EnquiryData {
@@ -177,7 +178,7 @@ export const updateEducationDetails = async (data: updateEducationDetails, stude
 }
 export const requestExtention = async (data: any) => {
   try {
-    const resposne = await studentApi.post('/api/student/request-extention', data)
+    const resposne = await reviewApi.post('/review/extend-request', data)
     return resposne
   } catch (err) {
     return { status: false, message: "some issue in the Address details update" }
