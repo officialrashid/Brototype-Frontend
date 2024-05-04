@@ -81,10 +81,12 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
           extendDays : formik.values.extendDays
 
         }
+        console.log(body,'bodyyyyy');
+        
         const response = await requestExtention(body);
         console.log(response,"response in new extend request");
         
-        if (response.status === 201) {
+        if (response.status === 200) {
           toast.success("Your Request have been successfully");
           isClose();
         }

@@ -78,6 +78,8 @@ const TimeLineUp: React.FC = () => {
             combinedData.push(timeLineUpData);
           }
         }
+        console.log(combinedData,"combned daartaaaa");
+        
         setFilteredEvents(combinedData)
       }else if(events.status===false){
         console.log("ketttt");

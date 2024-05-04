@@ -33,6 +33,7 @@ const WeeklyPerformGraph = () => {
       console.log(response.response.data, "resposne weekly graph");
 
       const responseData = response.response.data;
+console.log(responseData,"response dataaaa coming weekly grapheee");
 
       // Check if responseData is an array with more than one data point
       if (Array.isArray(responseData) && responseData.length >= 1) {

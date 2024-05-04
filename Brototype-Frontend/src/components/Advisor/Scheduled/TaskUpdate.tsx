@@ -101,7 +101,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
             const concatenatedData = {
               ...reviewDetails, // Merge reviewDetails properties
               advisorName: getInitiatorsDetail.data.advisorName,
-              currentWeek: `week3`,
+              currentWeek: `week2`,
               reviewerName: getInitiatorsDetail.data.reviewerName,
               batchId: getInitiatorsDetail.data.batchId,
               status : status,

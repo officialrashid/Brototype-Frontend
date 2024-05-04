@@ -20,6 +20,7 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   const [taskModal, setTaskModal] = useState(false)
   const [frame, setFrame] = useState(false)
   const[meetState,setMeetState]=useState(false)
+  const [currentWeek,setCurrentWeek] = useState(0)
   const createFullFrame = () => {
 
   }
@@ -107,17 +108,16 @@ if(response){
 
     //  }
 
-   
   
-    
-
-    
-
+  }
+  const handleViewTask = (currentWeek:any) =>{
+    setCurrentWeek(currentWeek)
+      setTaskView(true)
   }
   return (
     <>
    {
-        console.log(reviewData,'reviewwwww')
+        console.log(reviewData,'reviewwwww9999999')
    }
       {
        
@@ -148,7 +148,7 @@ if(response){
                   {reviewData?.scheduledDate}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskView(true) }}>View</button>
+                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { handleViewTask(reviewData.currentWeek) }}>View</button>
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
                   <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true),updateReviewDetail(reviewData.studentId,reviewData.reviewerId,reviewData.eventId,reviewData.reviewId,reviewData.slotId)}}>Update</button>
@@ -173,7 +173,7 @@ if(response){
         )
        
       })}
-      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }}  />
+      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }} currentWeek={currentWeek}  />
 
       <TaskUpdate isVisible={taskModal} onClose={() => { setTaskModal(false) }} handleToast={handleToast} reviewId={reviewId} slotId={slotId} reviewerId={reviewerId} coordinatorId={advisorId} eventId={eventId} studentId={studentId} />
       <ToastContainer />

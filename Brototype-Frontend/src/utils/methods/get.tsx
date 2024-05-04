@@ -88,7 +88,7 @@ export const getExtendDetails = async (data: { batchId: string; studentId: strin
 export const getRequestExtendDetails = async (studentId: string) => {
   try {
 
-    const response = await studentApi.get(`/api/student/get-request-extend/${studentId}`);
+    const response = await reviewApi.get(`/review/student-extend-requests/${studentId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };

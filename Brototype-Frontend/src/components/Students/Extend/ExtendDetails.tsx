@@ -18,6 +18,8 @@ const ExtendDetails = () => {
         const fetchExtendDetails = async () => {
             try {
                 const response = await getRequestExtendDetails(studentId);
+                console.log(response,"get extend detaikssssssssss");
+                
                 if (response) {
                     setExtendRequests(response.response);
                 } else {

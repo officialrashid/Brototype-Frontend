@@ -33,7 +33,7 @@ const reviewSlice=createSlice({
             console.log(action.payload,'payload');
             
             state.scheduledData = action.payload.map((data:any)=>{
-                return {name:data.name,scheduledDate:data.scheduledDate,batch:data.batch,reviewerId:data.reviewerId,reviewId:data._id,slotId:data.slotId,eventId:data.eventId,domain:data.domain,startTime:data.startTime,meetingLink:data.meetingLink,studentId:data.studentId}
+                return {name:data.name,scheduledDate:data.scheduledDate,batch:data.batch,reviewerId:data.reviewerId,reviewId:data._id,slotId:data.slotId,eventId:data.eventId,domain:data.domain,startTime:data.startTime,meetingLink:data.meetingLink,studentId:data.studentId,currentWeek:data.currentWeek}
             })
         }
     }
