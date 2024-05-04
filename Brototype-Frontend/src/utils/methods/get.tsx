@@ -76,10 +76,10 @@ export const getAllPerformance = async (data: { batchId: string; studentId: stri
     return { status: false, message: "There is some issue" };
   }
 }
-export const getExtendDetails = async (data: { batchId: string; studentId: string; }) => {
+export const getExtendDetails = async (studentId:string) => {
   try {
-    console.log(data, "::::::;;;;;;;;");
-    const response = await studentApi.get(`/api/student/get-extend-details`, { params: data });
+
+    const response = await authenticationApi.get(`/api/auth/get-particular-student-profile/${studentId}`);
     return response.data; // Assuming your API response has a 'data' property
   } catch (err) {
     return { status: false, message: "There is some issue" };

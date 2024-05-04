@@ -162,9 +162,9 @@ const handleExtend = (advisorId:string,reviewId:string) =>{
 
        </th>
        <th scope="col" className="w-1/4 px-4 py-6 text-center">
-         {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? (
+         {/* {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? ( */}
            <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { handleExtend(studentReview[0]?.response?.coordinatorId,studentReview[0]?.response?.reviews._id) }}>Request</span>
-         ) : "---"}
+         {/* ) : "---"} */}
        </th>
 
 

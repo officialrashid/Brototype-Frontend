@@ -5,17 +5,29 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useSelector } from "react-redux";
 
 const ReasonViewModal = ({ isVisible, isClose, extendId }) => {
-  const [viewReason, setViewReason] = useState({});
+  const [viewReason, setViewReason] = useState([]);
   const studentId:string = useSelector((state: any) => state?.student?.studentData?.studentId);
   useEffect(() => {
     const fetchExtendDetails = async () => {
+      console.log(extendId,"this is extendidsss");
+      
       try {
         const response = await getRequestExtendDetails(studentId);
+        console.log(response,"respine in get reasonseeeee");
+        
         if (response) {
-          const extendedData = await response.response.find(data => data._id === extendId);
-          if (extendedData) {
-            setViewReason(extendedData);
-          } 
+          const extendedData = response.find((data:any) => {
+            console.log(data,"daaa coming yarrr");
+            
+            if (data?.reviews?._id === extendId) {
+                console.log(data, "oooo");
+                setViewReason(data);
+                return true; // Stop iteration once the item is found
+            }
+            return false; // Continue iteration
+        });
+        
+     
         } else {
           isClose(); // Close the modal if there is an error
         }
@@ -32,6 +44,11 @@ const ReasonViewModal = ({ isVisible, isClose, extendId }) => {
 
   return (
     <>
+    {
+      console.log(viewReason
+        ,"viewrweasoneee")
+      
+    }
       <div className="fixed inset-0 bg-opacity-20 backdrop-blur-sm flex justify-center items-center overflow-y-scroll overflow-hidden z-40">
         <div className="border border-gray-200 m-5 rounded-lg shadow-2xl w-2/5 bg-white">
           <div className="flex justify-between">
@@ -52,7 +69,7 @@ const ReasonViewModal = ({ isVisible, isClose, extendId }) => {
               <textarea
                 cols={30}
                 rows={10}
-                value={viewReason.extendReason || ''}
+                value={viewReason?.reviews?.extendReason}
                 readOnly
                 className="w-full px-5 py-2 border-gray-200 shadow-xl outline-black border border-gray-400 font-roboto"
               ></textarea>

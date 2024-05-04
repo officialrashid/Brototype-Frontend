@@ -14,6 +14,7 @@ interface FormValues {
   currentWeek: string;
   extendDays: string;
   extendReason: string;
+  extendReqWeek:any
 }
 
 const validationSchema = Yup.object().shape({
@@ -38,10 +39,12 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
           batchId,
           studentId,
         };
-        const response = await getExtendDetails(data);
+        const response = await getExtendDetails(studentId);
         console.log(response,"extend detailssss debugging section");
-        
-        setExtend(response.data);
+        if(response?.response?.response){
+          setExtend(response?.response?.response);
+        }
+     
       } catch (err) {
         console.error('Error fetching extend details:', err);
       }
@@ -57,7 +60,7 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
       fullName: `${extend?.firstName || ''} ${extend?.lastName || ''}`,
       batch: extend?.batch || '',
       domain: extend?.domain || '',
-      currentWeek: extend?.currentWeek || '',
+      currentWeek: extend?.currentWeek || 0,
       extendDays: '',
       extendReason: '',
     } as FormValues,
@@ -74,12 +77,12 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
         //   domain: extend.domain || '',
         //   currentWeek: extend.currentWeek
         // };
-        const body ={
+        const body:any ={
           coordinatorId:advisorId,
           reviewId:reviewId,
           extendReason : formik.values.extendReason,
-          extendDays : formik.values.extendDays
-
+          extendDays : formik.values.extendDays,
+          extendReqWeek: extend.currentWeek
         }
         console.log(body,'bodyyyyy');
         
@@ -132,14 +135,14 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
                 name="batch"
                 value={extend?.batch}
               /> */}
-              {/* <input
+              <input
                 type="text"
                 className="px-5 py-4 shadow-xl border border-gray-200 focus:outline-black border-red w-full rounded-lg mb-7 font-roboto"
                 placeholder="Enter your current week"
                 id="currentWeek"
                 name="currentWeek"
                 value={extend?.currentWeek}
-              /> */}
+              />
               <input
                 type="text"
                 className={`px-5 py-4 shadow-xl border ${formik.touched.extendDays && formik.errors.extendDays ? 'border-red' : 'border-gray-200'} focus:outline-black w-full rounded-lg mb-7 font-roboto`}
