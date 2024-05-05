@@ -7,7 +7,8 @@ const reviewSlice=createSlice({
         reviewData:[],
         changeScreen:false,
         scheduledData:[],
-        extendReqData:[]
+        extendReqData:[],
+        tasks:[]
     },
     reducers:{
         getReviewData:(state,action)=>{
@@ -48,10 +49,19 @@ const reviewSlice=createSlice({
                 
             })
 
+        },
+        getTasks:(state,action)=>{
+            console.log(action.payload,'act');
+            
+            state.tasks=action.payload.map((task:any)=>{
+                return {personal:task.personalWorkouts,miscelleaneous:task.miscellaneousWorkouts,technical:task.technicalWorkouts}
+            })
         }
+
+
     }
 })
 
 
-export const {getReviewData,changeFrame,getScheduledReviewData,getExtendRequestData}=reviewSlice.actions
+export const {getReviewData,changeFrame,getScheduledReviewData,getExtendRequestData,getTasks}=reviewSlice.actions
 export default reviewSlice.reducer
