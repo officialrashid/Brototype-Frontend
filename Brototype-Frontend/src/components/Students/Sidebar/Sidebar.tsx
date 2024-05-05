@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
+import { setStudentData } from '../../../redux-toolkit/studentReducer';
+import { useDispatch } from 'react-redux';
 const Sidebar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [sidebar, setSidebar] = useState('Dashboard');
   const [showViewTask, setShowViewTask] = useState(false);
+  const dispatch = useDispatch()
+
   const Menus = [
     { title: "Dashboard", src: "/dashboard (3).png" },
     { title: "Profile", src: "/profile-user.png" },
@@ -13,7 +17,7 @@ const Sidebar = () => {
     { title: "Task", src: "/app (1).png" },
     { title: "Extend", src: "/expired.png" },
     { title: "Chat", src: "/chat (2).png" },
-    { title: "Todo", src: "" },
+    { title: "Logout", src: "/logout.png" },
   ];
 
   const handleChangeSideBar = (title: string) => {
@@ -39,6 +43,27 @@ const Sidebar = () => {
     }
     if (title === 'Chat') {
       navigate('/student/chat');
+    }
+    if (title === 'Logout') {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to perform logout action?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+           dispatch(setStudentData(""))
+           localStorage.removeItem(`studentAccessToken`)
+           localStorage.removeItem("studentCustomToken")
+           localStorage.removeItem('role')
+           localStorage.removeItem('studentIdToken')
+           dispatch(setStudentData(""))
+           navigate('/studentIn')
+        }
+      }
+      )
     }
   };
 
@@ -69,6 +94,7 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
+
     </div>
   );
 };

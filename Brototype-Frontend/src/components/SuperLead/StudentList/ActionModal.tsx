@@ -45,7 +45,8 @@ const navigate = useNavigate()
                 }
             }
         }
-        )}
+        )
+    }
                
         } catch (error) {
             

@@ -19,6 +19,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
   const [modalType, setModalType] = useState("");
   const [noTaskMessage,setNoTaskMessage] = useState("")
   const [answerCount, setAnswerCount] = useState<any[]>([]);
+  const [mainQuestion,setMainQuestion] = useState("")
   let personalWorkoutsArray;
   let technicalWorkoutsArray;
   let miscellaneousWorkoutsArray;
@@ -86,11 +87,14 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
     fetchTasks()
   }, [studentId, taskNumber, weekName,activeModal]);
 
-  const openModal = (questions: any, questionNumber: React.SetStateAction<number>, modalType: string) => {
+  const openModal = (questions: any, questionNumber: React.SetStateAction<number>, question:string ,modalType: string) => {
+    console.log(questionNumber,"This is add question NUmber");
+    
     if (questions.length > 0) {
       setSelectedQuestion(questions);
       setMainQuestionNumber(questionNumber);
-      setModalType(modalType)
+      setMainQuestion(question);
+      setModalType(modalType);
       setActiveModal(true);
     }
   };
@@ -141,8 +145,7 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 
   const renderWorkouts = (workouts: any[], nestedQuestions: any[], taskType: string) => {
 
- console.log(taskType,"taslTypeeeeee");
- console.log(domain,"domaineeeeeeee");
+
     if (!Array.isArray(workouts)) {
       return <p className='text-center font-roboto text-red-700'>No workouts available.beacause your techLead not update task</p>;
     }
@@ -152,6 +155,8 @@ const SubTask = ({ weekName, taskNumber, showStatus }: { weekName: string, taskN
 return (
   <div>
     {workouts.map((question) => {
+
+      
       const currentNestedQuestions = nestedQuestions.filter(nested => nested.mainQuestionNumber === question.Number);
 
       const currentAnswers = answerCount.filter(answer => answer.mainQuestionNumber === question.Number && weekName === answer.week);
@@ -179,11 +184,11 @@ return (
               </div>
               <div>
                 {currentNestedQuestionCount === answersLength ? (
-                  <button className={`bg-blue-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number, 'Edit')}>
+                  <button className={`bg-blue-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number,question.question,'Edit')}>
                     Edit
                   </button>
                 ) : (
-                  <button className={`bg-red-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number, 'Complete')}>
+                  <button className={`bg-red-700 rounded-md px-3 py-1 text-white`} onClick={() => openModal(currentNestedQuestions, question.Number,question.question,'Complete')}>
                     Complete
                   </button>
                 )}
@@ -194,7 +199,7 @@ return (
       );
     })}
 
-    <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={selectedQuestion ? [selectedQuestion] : []} mainQuestionNumber={mainQuestionNumber} weekName={weekName} taskNumber={taskNumber} modalType={modalType} taskType={taskType} />
+    <TaskModal isVisible={activeModal} onclose={() => setActiveModal(false)} questions={selectedQuestion ? [selectedQuestion] : []} mainQuestionNumber={mainQuestionNumber} mainQuestion={mainQuestion} weekName={weekName} taskNumber={taskNumber} modalType={modalType} taskType={taskType} />
 
   </div>
 );

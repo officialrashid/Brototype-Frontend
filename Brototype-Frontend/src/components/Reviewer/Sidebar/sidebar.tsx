@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-
+import { setReviewerData } from '../../../redux-toolkit/reviewerReducer';
 import { useDispatch} from "react-redux";
+import Swal from 'sweetalert2';
 
 function Sidebar() {
     const [sidebar, setSidebar] = useState('Dashboard');
@@ -10,7 +11,7 @@ function Sidebar() {
         { title: "Schedule", src: "/profile-user.png" },
         { title: "Profile", src: "/profile-user.png" },
         { title: "Chat", src: "/chat (2).png" },
-
+        { title: "Logout", src: "/logout.png" },
       ];
       const handleChangeSideBar = (title: string) => {
         setSidebar(title);
@@ -26,6 +27,26 @@ function Sidebar() {
         }
         if(title==='Chat'){
           navigate('/reviewer/chat')
+        }
+        if (title === 'Logout') {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to perform logout action?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No"
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+               localStorage.removeItem(`reviewerAccessToken`)
+               localStorage.removeItem("reviewerCustomToken")
+               localStorage.removeItem('role')
+               localStorage.removeItem('reviewerIdToken')
+               dispatch(setReviewerData(""))
+               navigate('/reviewerIn')
+            }
+          }
+          )
         }
       };
  const navigate=useNavigate()

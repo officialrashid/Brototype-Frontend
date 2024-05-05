@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
+import Swal from "sweetalert2";
+import { setSuperleadData } from "../../../redux-toolkit/superleadReducer";
+import { useDispatch } from "react-redux";
 interface ActionModalProps {
     isVisible: boolean;
     onClose: () => void;
   }
 const OptionsModal: React.FC<ActionModalProps> = ({ isVisible, onClose }) => {
 const navigate = useNavigate()
-
+const dispatch = useDispatch()
     const handleEvent= async (event:any,action:string)=>{
         try {
             event.stopPropagation()
@@ -17,6 +19,25 @@ const navigate = useNavigate()
             }else if(action==='Update Profile'){
               navigate('/superlead/profileUpdate')
               onClose()
+            }else if(action==="Logout"){
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Do you want to perform logout action?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No"
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                       localStorage.removeItem(`studentAccessToken`)
+                       localStorage.removeItem("studentCustomToken")
+                       localStorage.removeItem('role')
+                       localStorage.removeItem('studentIdToken')
+                       dispatch(setSuperleadData(""))
+                       navigate('/studentIn')
+                    }
+                  }
+                  ) 
             }
                
         } catch (error) {

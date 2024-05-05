@@ -10,7 +10,7 @@ import ExtendDetails from '../pages/Students/ExtendDetails';
 import ReviewResult from '../pages/Students/reviewDetails';
 import StudentSignIn from "../pages/Students/SignIn"
 import StudentOtp from "../pages/Students/StudentOtp";
-import Navigationbar from '../components/LandingPage/Navbar';
+import Navigationbar from '../components/Students/Navigation/Navbar';
 import Chat from "../pages/Students/Chat"
 import GlobalContext from '../context/GlobalContext';
 import { useSocket } from '../hooks/useSocket';

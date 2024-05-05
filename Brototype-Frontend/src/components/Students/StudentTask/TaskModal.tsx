@@ -16,6 +16,7 @@ interface TaskModalProps {
   taskNumber: number;
   modalType: string;
   taskType: string;
+  mainQuestion:string
 }
 
 interface FormValues {
@@ -28,11 +29,14 @@ const ErrorText: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   </p>
 );
 
-const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, mainQuestionNumber, weekName, taskNumber, modalType, taskType }) => {
+const TaskModal: React.FC<TaskModalProps> = ({ isVisible, onclose, questions, mainQuestionNumber, mainQuestion, weekName, taskNumber, modalType, taskType }) => {
   if (!isVisible || !questions || questions.length === 0) return null;
-console.log(questions,"modalQuestionsss");
+console.log(questions,"modalQuestionsss,this is questionsssssssssss=======+++++()()()()=-----");
 console.log(mainQuestionNumber,"modal MainQuestions");
+console.log(mainQuestion,"*********((((((********{}******)))))");
+
   const [editData, setEditData] = useState([]);
+  const [nestedQuestion,setNestedQuestion] = useState("")
   const studentId: any = useSelector((state: any) => state?.student?.studentData?.studentId);
   const batchId: any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
 
@@ -115,6 +119,7 @@ console.log(mainQuestionNumber,"modal MainQuestions");
         const workouts = Object.entries(values.answers).map(([nestedQuestionNumber, answer]) => ({
           nestedQuestionNumber,
           answer,
+          nestedQuestion
         }));
 
         console.log('Question and Answer pairs:', workouts);
@@ -125,6 +130,9 @@ console.log(mainQuestionNumber,"modal MainQuestions");
           weekName,
           mainQuestionNumber,
           [`${taskNumber === 1 ? 'personal' : taskNumber === 2 ? 'technical' : 'miscellaneous'}Workouts`]: workouts,
+          mainQuestion,
+          
+
         };
 
         console.log(body, "body log");
@@ -145,7 +153,10 @@ console.log(mainQuestionNumber,"modal MainQuestions");
     },
   });
 
-  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>, questionNumber: string, index: number) => {
+  const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>, questionNumber: string, question:string, index: number) => {
+    console.log(questionNumber,"lllllll");
+    console.log(question,"question numbereeeeeee");
+    setNestedQuestion(question?.Question)
     if (modalType === 'Edit') {
       const updatedEditData = [...editData];  // Create a new array
       updatedEditData[index].answer = e.target.value;  // Update the specific element
@@ -194,7 +205,7 @@ function isLink(str:any) {
                             type="text"
                             id={question.Number}
                             name={question.Number}
-                            onChange={(e) => handleQuestionChange(e, question?.Number, index)}
+                            onChange={(e) => handleQuestionChange(e, question.Number,question, index)}
                             onBlur={formik.handleBlur}
                             value={editData[index]?.answer || ''}
                             className="border border-2px rounded-lg text-sm font-roboto pl-3 outline-none shadow-lg w-full py-5"
@@ -211,7 +222,7 @@ function isLink(str:any) {
                             type="text"
                             id={question.Number}
                             name={question.Number}
-                            onChange={(e) => handleQuestionChange(e, question.Number, index)}
+                            onChange={(e) => handleQuestionChange(e, question.Number,question, index)}
                             onBlur={formik.handleBlur}
                             value={
                                 isLink(formik.values.answers[question.Number]) ? 'Link' : formik.values.answers[question.Number]
