@@ -1,7 +1,19 @@
-
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { setAdvisorData } from "../../../redux-toolkit/advisorReducer"
 
 const LogOutModal=({isVisible,onClose})=>{
     if(!isVisible) return null
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const handleLogout = () =>{
+        localStorage.removeItem(`advisorAccessToken`)
+        localStorage.removeItem("advisorCustomToken")
+        localStorage.removeItem('role')
+        localStorage.removeItem('advisorIdToken')
+        dispatch(setAdvisorData(""))
+        navigate('/advisorIn')
+    }
     return (
         <>
 
@@ -28,7 +40,7 @@ const LogOutModal=({isVisible,onClose})=>{
    <p className="mt-2"><span className="text-md font-md cursor-pointer" onClick={()=>{onClose()}}>Cancel</span></p>
    
 
-   <button className="px-6 py-2 bg-red-800 rounded-md text-white"  >Log out</button>
+   <button className="px-6 py-2 bg-red-800 rounded-md text-white"onClick={()=>handleLogout()}>Log out</button>
 
  </div>
    

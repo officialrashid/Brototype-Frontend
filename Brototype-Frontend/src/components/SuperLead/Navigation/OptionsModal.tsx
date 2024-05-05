@@ -29,12 +29,12 @@ const dispatch = useDispatch()
                     cancelButtonText: "No"
                   }).then(async (result) => {
                     if (result.isConfirmed) {
-                       localStorage.removeItem(`studentAccessToken`)
-                       localStorage.removeItem("studentCustomToken")
+                       localStorage.removeItem(`superleadAccessToken`)
+                       localStorage.removeItem("superleadCustomToken")
                        localStorage.removeItem('role')
-                       localStorage.removeItem('studentIdToken')
+                       localStorage.removeItem('superleadIdToken')
                        dispatch(setSuperleadData(""))
-                       navigate('/studentIn')
+                       navigate('/superleadIn')
                     }
                   }
                   ) 

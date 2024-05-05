@@ -1,15 +1,39 @@
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
-
+import { setOtpData } from "../../redux-toolkit/otpReducer";
 
 
 
 const SettingsModal=({isVisible,closeModal})=>{
-    const handleModalClick = (event) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+    const handleModalClick = (event:any) => {
         // Stop the event propagation when clicking inside the modal
         event.stopPropagation();
       };
 
-
+     const handleLogout = () =>{
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to perform logout action?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No"
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+           localStorage.removeItem(`invigilatorAccessToken`)
+           localStorage.removeItem("invigilatorCustomToken")
+           localStorage.removeItem('role')
+          //  localStorage.removeItem('studentIdToken')
+           dispatch(setOtpData(""))
+           navigate('/invigilator')
+        }
+      }
+      )
+     }
     if(!isVisible) return null
     return (
         <>
@@ -37,7 +61,7 @@ const SettingsModal=({isVisible,closeModal})=>{
   </div>
 
   <div className="  border-t border-gray-300 text-md font-bold cursor-pointer ">
-     <h1 onClick={()=>{LogOut()}}>Log out</h1>
+     <h1 onClick={()=>handleLogout()}>Log out</h1>
   </div>
 </div>
 

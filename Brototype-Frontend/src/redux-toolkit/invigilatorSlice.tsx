@@ -14,7 +14,7 @@ const enquirySlice=createSlice({
             
             console.log(action.payload);
             
-            state.invigilatorData=action.payload.map(invigilator=>{
+            state.invigilatorData=action.payload.map((invigilator: { _id: any; name: any; email: any; phone: any; batch: any; })=>{
                 return {id:invigilator._id,name:invigilator.name,email:invigilator.email,phone:invigilator.phone,batch:invigilator.batch}
             }
                 )
@@ -23,7 +23,7 @@ const enquirySlice=createSlice({
             console.log(action.payload,'sliceeeeeeeeee');
             
             state.invigilatorData=state.invigilatorData.filter(invigilator=>{
-                return invigilator.id !== action.payload
+                return invigilator?.id !== action.payload
             })
 
            
