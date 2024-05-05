@@ -9,7 +9,8 @@ const Review = () => {
     const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
     const dispatch = useDispatch()
     const scheduledReviewDatas = useSelector(state => state?.review?.scheduledData)
-    const [filteredData, setFilteredData] = useState(scheduledReviewDatas)
+    //const [filteredData, setFilteredData] = useState(scheduledReviewDatas)
+    const filteredData:any=[{name:'hhh'}]
     const searchFn = (searInp: string) => {
 
         console.log(searInp, 'hellloo');
@@ -33,8 +34,8 @@ const Review = () => {
          const scheduled:Boolean=true
             const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews?coordinatorId=65ed8fc3afcda5149bbf0166&type=scheduled`,)
             console.log(studentData, 'studenrnttttt');
-
-            dispatch(getScheduledReviewData(studentData.data))
+            const filteredData:any=[{name:'hhh'}]
+            dispatch(getScheduledReviewData(filteredData))
 
 
 

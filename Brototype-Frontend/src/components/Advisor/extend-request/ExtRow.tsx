@@ -3,20 +3,44 @@ import ReqModal from "./ReqModal"
 import ExtActionModal from "./ExtActionModal"
 import ExtRejectModal from "./ExtActionModal"
 import ExtApproveModal from "./ExtApproveModal"
+import axios from "axios"
+import Api from "../../../utils/baseUrl/reviewBaseUrl"
+import { useSelector } from "react-redux"
 
 
 
 
-const ExtRow=({extData})=>{
-  
+const ExtRow=({extData,handleToast})=>{
+  const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
   const [reqModal,setReqModal]=useState(false)
   const [action,setActionModal]=useState(false)
   const [approve,setApprove]=useState(false)
 
-  const rejectFn=()=>{
+  const rejectFn=async()=>{
+
+    const response=await Api.get(`/review/change-extend-request-status?coordinatorId=${advisorId}&reviewId=${68886}&type=reject`)
+    if(response.data.success){
+      handleToast("Request rejected",)
+
+    }
 
   }
-  const approveFn=()=>{
+  const approveFn=async ()=>{
+
+  try{
+    handleToast("Request approved successfully",)
+//     const response=await Api.get(`/review/change-extend-request-status?coordinatorId=${advisorId}&reviewId=${7868}&type=approve`)
+//     if(response.data.success){
+//       handleToast("Request approved successfully",)
+//     }
+// else{
+//   let error=true
+//   handleToast('There is an error while udating',error)
+// }
+  }catch(error){
+    handleToast('There is an error occured',error)
+
+  }
     
   }
 
@@ -60,6 +84,7 @@ haiiii
      <ReqModal isVisible={reqModal} onClose={()=>{setReqModal(false)}}/>   
      <ExtRejectModal  isVisible={action} onClose={()=>{setActionModal(false)}} rejectFn={rejectFn}/>
      <ExtApproveModal isVisible={approve} onClose={()=>{setApprove(false)}} approveFn={approveFn}/>
+
         </>
     )
 }

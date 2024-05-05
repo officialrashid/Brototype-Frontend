@@ -13,7 +13,7 @@ import axios from "axios"
 import { RootState } from "../../../redux-toolkit/store"
 import Api from "../../../utils/baseUrl/reviewerBaseUrl"
 const ReviewRow = ({ reviewData }: { reviewData: any }) => {
-
+  //const reviewData:any=[{name:'hhh'}]
   const dispatch = useDispatch()
   const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
   const [taskView, setTaskView] = useState(false)
