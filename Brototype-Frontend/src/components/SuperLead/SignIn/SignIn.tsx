@@ -191,7 +191,7 @@ const SignIn = () => {
                       {isLoading ? 'Signing In...' : 'Sign in'}
                     </button>
                   </div>
-                  <div>
+                  {/* <div>
 
                     <button
                       onClick={handleGoogleSignIn}
@@ -202,9 +202,9 @@ const SignIn = () => {
                       <img src="/google.png" alt="" className='w-4 mr-3 mt-1' />
                       Google With SignIn
                     </button>
-                  </div>
+                  </div> */}
                   <div className='ml-2'>
-                    <span className='text-sm text-gray-400 ml-2'>This site is protected by reCAPTCHA and the </span>
+                    <span className='text-sm text-gray-400 ml-2 font-roboto'>This site is protected by reCAPTCHA and the </span>
                     <div>
                       <span className=' text-sm text-gray-400 ml-[0.86vw]'>Google Privacy Policy and Terms of Service</span>
                     </div>
