@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react'
 import { axiosInstance } from '../services/api/apiClient'
 import { changeFrame } from '../../../redux-toolkit/reviewSlice'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 
 const JaasMeet=({roomId})=>{
+    const navigate=useNavigate()
     const dispatch = useDispatch()
     const [meetState,setMeetState]=useState(false)
     const [jwt,setJwt]=useState('')
     //const generateRoomName=()=> `jitsiRoomName${Math.random()*100}-${Date.now()}}`
 const generateToken=async()=>{
     dispatch(changeFrame(false))
+    navigate('/advisor/scheduled-review')
 //   try{
 //     const response=await axiosInstance.get('/meet/create-meet/1234')
 //     console.log('called');

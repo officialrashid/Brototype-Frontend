@@ -12,8 +12,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import axios from "axios"
 import { RootState } from "../../../redux-toolkit/store"
 import Api from "../../../utils/baseUrl/reviewerBaseUrl"
+import { useNavigate } from "react-router-dom"
 const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   //const reviewData:any=[{name:'hhh'}]
+  const navigate=useNavigate()
   const dispatch = useDispatch()
   const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
   const [taskView, setTaskView] = useState(false)
@@ -156,7 +158,7 @@ if(response){
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
               {
-                reviewData?.meetingLink==null?<button className="bg-black text-white px-3 rounded-md  py-1"onClick={()=>{updateMeetLInk(reviewData?.reviewId,advisorId,`https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${advisorId}`)}}>Start</button>:<button className="bg-black text-white px-3 rounded-md  py-1">Join</button>
+                reviewData?.meetingLink==null?<button className="bg-black text-white px-3 rounded-md  py-1"onClick={()=>{navigate(`/advisor/start-review/${advisorId}`)}}>Start</button>:<button className="bg-black text-white px-3 rounded-md  py-1">Join</button>
               }
                  
                 </th>
