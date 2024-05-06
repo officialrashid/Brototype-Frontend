@@ -127,7 +127,7 @@ const SignIn = () => {
                   src={logo}
                   alt="Your Company"
                 />
-                <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                <h2 className="mt-8 text-center text-2xl font-roboto font-bold leading-9 tracking-tight text-gray-900">
                   Sign in to your account
                 </h2>
               </div>
@@ -137,7 +137,7 @@ const SignIn = () => {
 
                 <form className="space-y-6" onSubmit={formik.handleSubmit}>
                   <div>
-                    <label htmlFor="uniqueId" className="block text-sm font-medium leading-6 text-gray-900">
+                    <label htmlFor="uniqueId" className="block font-roboto text-sm font-medium leading-6 text-gray-900">
                       Advisor Id
                     </label>
                     <div className="mt-2">
@@ -150,7 +150,7 @@ const SignIn = () => {
                         onChange={formik.handleChange}
                         autoComplete="uniqueId"
                         required
-                        className=" focus:outline-gray-800 block w-full rounded-sm px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
+                        className="font-roboto focus:outline-gray-700 block w-full rounded-sm px-3 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6" />
                     </div>
                   </div>
 
@@ -164,11 +164,11 @@ const SignIn = () => {
                         <input id="remember" aria-describedby="remember" type="checkbox" className="accent-black w-4 h-4 border border-blue-900 rounded bg-blue-100 focus:ring-3 focus:ring-blue-300 dark:bg-blue-900 dark:border-blue-900 dark:focus:ring-blue-900 dark:ring-offset-blue-900 ring-blue-900" />
                       </div>
                       <div className='ml-3 text-sm'>
-                        <label htmlFor="remember" className="text-gray-800 dark:text-gray-400">Remember me</label>
+                        <label htmlFor="remember" className="text-gray-800 dark:text-gray-400 font-roboto">Remember me</label>
                       </div>
                     </div>
                     <div className="text-sm">
-                      <a href="#" className="font-semibold text-black hover:text-red">
+                      <a href="#" className="font-semibold text-black hover:text-red font-roboto">
                         Forgot password?
                       </a>
                     </div>
@@ -178,7 +178,7 @@ const SignIn = () => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="flex w-full justify-center rounded-sm bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 relative"
+                      className="flex w-full font-roboto justify-center rounded-sm bg-black px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 relative"
                     >
                       {isLoading && (
                         <div role="status">
@@ -189,7 +189,7 @@ const SignIn = () => {
                         <span className="sr-only">Loading...</span>
                     </div>
                       )}
-                      {isLoading ? 'Signing In...' : 'Sign in'}
+                      {isLoading ? 'Signing In...' : 'Sign In'}
                     </button>
                   </div>
                   {/* <div>
@@ -205,9 +205,9 @@ const SignIn = () => {
                     </button>
                   </div> */}
                   <div className='ml-2'>
-                    <span className='text-sm text-gray-400 ml-2'>This site is protected by reCAPTCHA and the </span>
+                    <span className='text-sm text-gray-400 ml-2 font-roboto'>This site is protected by reCAPTCHA and the </span>
                     <div>
-                      <span className=' text-sm text-gray-400 ml-[0.86vw]'>Google Privacy Policy and Terms of Service</span>
+                      <span className=' text-sm text-gray-400 ml-[0.86vw] font-roboto'>Google Privacy Policy and Terms of Service</span>
                     </div>
                   </div>
                 </form>
@@ -223,7 +223,7 @@ const SignIn = () => {
       <nav className='bg-white bottom-0 fixed w-full shadow-xl h-12 '>
 
         <nav className=''>
-          <ul className='flex items-center text-gray-500 text-sm pt-4 gap-[1vw] pl-64'>
+          <ul className='flex items-center text-gray-500 text-sm pt-4 gap-[1vw] pl-64 font-roboto'>
             <li> <span className=' '>Copyright © 2023 Brototype</span></li>
             <li>Help center</li>
             <li>Jobs</li>

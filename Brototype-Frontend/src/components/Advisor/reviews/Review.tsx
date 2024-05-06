@@ -9,8 +9,8 @@ const Review = () => {
     const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
     const dispatch = useDispatch()
     const scheduledReviewDatas = useSelector(state => state?.review?.scheduledData)
-    //const [filteredData, setFilteredData] = useState(scheduledReviewDatas)
-    const filteredData:any=[{name:'hhh'}]
+    const [filteredData, setFilteredData] = useState(scheduledReviewDatas)
+    //const filteredData:any=[{name:'hhh'}]
     const searchFn = (searInp: string) => {
 
         console.log(searInp, 'hellloo');
@@ -32,10 +32,12 @@ const Review = () => {
     useEffect(() => {
         const getStudentDetails = async () => {
          const scheduled:Boolean=true
-            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews?coordinatorId=65ed8fc3afcda5149bbf0166&type=scheduled`,)
+            const studentData = await axios.get(`http://localhost:6001/review/assigned-reviews?coordinatorId=${advisorId}&type=scheduled`,)
             console.log(studentData, 'studenrnttttt');
-            const filteredData:any=[{name:'hhh'}]
-            dispatch(getScheduledReviewData(filteredData))
+            //const filteredData:any=[{name:'hhh'}]
+            console.log(studentData.data,'sttt');
+            
+            dispatch(getScheduledReviewData(studentData.data))
 
 
 
