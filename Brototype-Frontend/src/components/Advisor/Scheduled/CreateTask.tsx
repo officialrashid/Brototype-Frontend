@@ -49,7 +49,7 @@ const CreateTask=({isVisible,onClose})=>{
            subquestion3:Yup.string(),
            subquestion4:Yup.string(),
           //  domain:values.taskType==="technical"?Yup.string().required("domain is required"):Yup.string()
-           
+          domain:Yup.string().required("domain is required")
     
              
             

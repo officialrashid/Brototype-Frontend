@@ -50,8 +50,8 @@ const generateToken=async()=>{
 
         <JaaSMeeting
     appId = {'vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e' }
-    jwt = {jwt }
-    roomName = { roomId}
+
+    roomName = {roomId}
     getIFrameRef = { node => node.style.height = '835px' }
     onReadyToClose={()=>{generateToken()}}
     
