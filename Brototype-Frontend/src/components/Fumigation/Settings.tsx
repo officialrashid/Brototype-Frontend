@@ -39,7 +39,7 @@ const SettingsModal=({isVisible,closeModal})=>{
         <>
       
 
-        <div className=" flex inset-0 justify-between  fixed mr-24 z-20  " onClick={()=>{closeModal()}}>
+        <div className=" flex inset-0 justify-between font-roboto fixed mr-24 z-20  " onClick={()=>{closeModal()}}>
             
 <div>
 

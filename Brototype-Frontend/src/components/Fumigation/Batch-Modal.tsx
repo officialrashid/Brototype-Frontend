@@ -43,7 +43,7 @@ const validationSchema=Yup.object({
     return (
         <>
 
-<div className="fixed inset-0 z-10 bg-black/60 bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden ">
+<div className="fixed font-roboto inset-0 z-10 bg-black/60 bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden ">
   <div className="w-[600px] flex flex-col max-h-[80vh]  " >
    <div className="self-end">
     <button className="text-xl text-white justify-between" onClick={() => onClose()}>

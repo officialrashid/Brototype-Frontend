@@ -59,7 +59,7 @@ console.log(markData,"[[[[]]]]]]]]]]");
 
         
         
-        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll  z-20 ">
+        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll  z-20 font-roboto">
   <div className="w-[600px] flex flex-col max-h-[80vh]  " >
    
     

@@ -170,10 +170,8 @@ const ExtendModal = ({ isVisible, isClose,advisorId,reviewId }) => {
               ) : null}
             </div>
           </div>
-        <div className="flex justify-between m-6">
-          <button className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={isClose}>
-            Cancel
-          </button>
+        <div className="flex justify-end m-6">
+       
           <button type="submit" className="border px-4 py-1 rounded-md bg-black text-white font-roboto" onClick={formik.handleSubmit}>
             Submit
           </button>

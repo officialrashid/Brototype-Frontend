@@ -23,6 +23,8 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   const [frame, setFrame] = useState(false)
   const[meetState,setMeetState]=useState(false)
   const [currentWeek,setCurrentWeek] = useState(0)
+  const [domain,setDomain]=useState('')
+  const [studentId,setStudentId]=useState('')
   const createFullFrame = () => {
     dispatch(changeFrame(true))
 
@@ -48,15 +50,16 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
     }
   }
   
-  const [studentId,setstudentId]=useState('')
+  const [studentIds,setstudentId]=useState('')
   const [reviewerId,setReviewerId]=useState('')
   const [eventId,setEventId]=useState('')
   const [reviewId,setReviewId]=useState('')
   const [slotId,setSlotId]=useState('')
-const updateReviewDetail=(studentId:string,reviewerId:string,eventId:string,reviewId:string,slotId:string)=>{
+ 
+const updateReviewDetail=(studentId:string,reviewerId:string,eventId:string,reviewId:string,slotId:string,currentWeek:number)=>{
   setstudentId(studentId), setReviewerId(reviewerId), setEventId(eventId),setReviewId(reviewId),setSlotId(slotId)
 
-
+setCurrentWeek(currentWeek)
 }
 
 const cancelReview = async (reviewerId:string,eventId:string,slotId: string,reviewId:string, handleToast: Function) => {
@@ -113,14 +116,16 @@ if(response){
 
   
   }
-  const handleViewTask = (currentWeek:any) =>{
+  const handleViewTask = (currentWeek:any,domain:any,studentId:any) =>{
     setCurrentWeek(currentWeek)
       setTaskView(true)
+      setDomain(domain)
+      setStudentId(studentId)
   }
   return (
     <>
    {
-        console.log(reviewData,'reviewwwww9999999')
+        console.log(reviewData,'reviewwwwwdatapp')
    }
       {
        
@@ -151,10 +156,10 @@ if(response){
                   {reviewData?.scheduledDate}
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { handleViewTask(reviewData.currentWeek) }}>View</button>
+                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { handleViewTask(reviewData.currentWeek,reviewData.domain,reviewData.studentId) }}>View</button>
                 </th>
                 <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true),updateReviewDetail(reviewData.studentId,reviewData.reviewerId,reviewData.eventId,reviewData.reviewId,reviewData.slotId)}}>Update</button>
+                  <button className="bg-black text-white px-3 rounded-md  py-1" onClick={() => { setTaskModal(true),updateReviewDetail(reviewData.studentId,reviewData.reviewerId,reviewData.eventId,reviewData.reviewId,reviewData.slotId,reviewData.currentWeek)}}>Update</button>
                 </th>
 
                 <th scope="col" className="w-1/4 px-4 py-6 text-center rounded-r-lg ">
@@ -176,9 +181,9 @@ if(response){
         )
        
       })}
-      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }} currentWeek={currentWeek}  />
+      <TaskView isVisible={taskView} onClose={() => { setTaskView(false) }} studentId={studentId} currentWeek={currentWeek} domain={domain} />
 
-      <TaskUpdate isVisible={taskModal} onClose={() => { setTaskModal(false) }} handleToast={handleToast} reviewId={reviewId} slotId={slotId} reviewerId={reviewerId} coordinatorId={advisorId} eventId={eventId} studentId={studentId} />
+      <TaskUpdate isVisible={taskModal} onClose={() => { setTaskModal(false) }} handleToast={handleToast} reviewId={reviewId} slotId={slotId} reviewerId={reviewerId} coordinatorId={advisorId} eventId={eventId} studentId={studentIds} currentWeek={currentWeek} />
       <ToastContainer />
     </>
   )

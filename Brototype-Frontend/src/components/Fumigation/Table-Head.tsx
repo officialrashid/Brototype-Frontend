@@ -3,7 +3,7 @@
 const TableHead=()=>{
     return (
         <>
-         <div className='mx-auto p-2 mt-4'>
+         <div className='mx-auto p-2 mt-4 font-roboto'>
   <table className="w-full text-sm text-left divide-y divide-y-8  table-auto table-fixed">
     <thead className="text-xs text-gray-700 uppercase bg-gray-300 shadow-xl dark:text-gray">
       <tr>

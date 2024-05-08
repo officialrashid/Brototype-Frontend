@@ -99,7 +99,7 @@ console.log(students);
         
         
 
-<div className="fixed inset-0  bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
+<div className="fixed inset-0  font-roboto bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
   <div className="w-[1200px] flex flex-col max-h-[80vh] p-2  " >
     
    <div className="self-end">

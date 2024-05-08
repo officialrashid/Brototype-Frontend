@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { updateReviewStatus, updateStdtReviewStatus } from "../../../utils/methods/patch"
 
 
-const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewerId, coordinatorId, eventId, studentId }) => {
+const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewerId, coordinatorId, eventId, studentId,currentWeek }) => {
 
   // const advisorId = ''
   // const bookedadvisorId = '123'
@@ -101,7 +101,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
             const concatenatedData = {
               ...reviewDetails, // Merge reviewDetails properties
               advisorName: getInitiatorsDetail.data.advisorName,
-              currentWeek: `week2`,
+              currentWeek: `week${currentWeek}`,
               reviewerName: getInitiatorsDetail.data.reviewerName,
               batchId: getInitiatorsDetail.data.batchId,
               status : status,
@@ -143,7 +143,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
 
       }} initialValues={inititalValues} validationSchema={validationSchema}>
         <Form>
-          <div className="z-40 fixed inset-0 flex  justify-center overflow-hidden  bg-black/60 overflow-y-scroll  py-14">
+          <div className="z-40 fixed inset-0 flex  justify-center overflow-hidden  bg-black/60 overflow-y-scroll  py-14 font-roboto">
             <div className="border m-4 rounded-md  bg-white h-fit w-1/2">
               <div className="flex justify-between m-2 mb-4 mt-3">
                 <div></div>
@@ -155,7 +155,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div >
                 <div className="border border-2px m-2 rounded-md py-2">
                   <div className="flex justify-between m-2 ">
-                    <div><span className="font-bold"> Update  review status</span> </div>
+                    <div><span className="font-semibold"> Update  review status</span> </div>
                     <div><svg fill="#ffffff" height="35px" width="" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="-33 -33 396.00 396.00" xml: space="preserve" stroke="#ffffff" stroke-width="0.0033" transform="rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(9.900000000000006,9.900000000000006), scale(0.94)"><rect x="-33" y="-33" width="396.00" height="396.00" rx="198" fill="#0a0a0a" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.66"></g><g id="SVGRepo_iconCarrier"> <path id="XMLID_9_" d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.981,0,165,0z M255.606,205.606 C252.678,208.535,248.839,210,245,210s-7.678-1.464-10.606-4.394l-69.396-69.393l-69.392,69.393c-5.857,5.858-15.355,5.858-21.213,0 c-5.858-5.857-5.858-15.355,0-21.213l79.998-80c2.813-2.813,6.628-4.394,10.606-4.394c3.979,0,7.793,1.58,10.607,4.394l80.002,80 C261.465,190.251,261.465,199.749,255.606,205.606z"></path> </g></svg></div>
                   </div>
                 </div>
@@ -193,7 +193,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               </div>
               <div className="border border-2px m-2 rounded-md py-2">
                 <div className="flex justify-between m-2  ">
-                  <div><span className="font-bold"> Update  student Manifest</span> </div>
+                  <div><span className="font-semibold"> Update  student Manifest</span> </div>
                   <div><svg fill="#ffffff" height="35px" width="" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns: xlink="http://www.w3.org/1999/xlink" viewBox="-33 -33 396.00 396.00" xml: space="preserve" stroke="#ffffff" stroke-width="0.0033" transform="rotate(0)"><g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(9.900000000000006,9.900000000000006), scale(0.94)"><rect x="-33" y="-33" width="396.00" height="396.00" rx="198" fill="#0a0a0a" strokewidth="0"></rect></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC" stroke-width="0.66"></g><g id="SVGRepo_iconCarrier"> <path id="XMLID_9_" d="M165,0C74.019,0,0,74.019,0,165s74.019,165,165,165s165-74.019,165-165S255.981,0,165,0z M255.606,205.606 C252.678,208.535,248.839,210,245,210s-7.678-1.464-10.606-4.394l-69.396-69.393l-69.392,69.393c-5.857,5.858-15.355,5.858-21.213,0 c-5.858-5.857-5.858-15.355,0-21.213l79.998-80c2.813-2.813,6.628-4.394,10.606-4.394c3.979,0,7.793,1.58,10.607,4.394l80.002,80 C261.465,190.251,261.465,199.749,255.606,205.606z"></path> </g></svg></div>
                 </div>
               </div>
@@ -204,7 +204,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
                   </div> */}
 
                   <div className=" w-full">
-                    <Field name="personalScore" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black" placeholder="Enter personal workout score  " />
+                    <Field name="personalScore" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black text-sm" placeholder="Enter personal workout score  " />
                   </div>
 
 
@@ -235,11 +235,11 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div className="m-4 mb-2">
                 <div className="flex gap-3">
                   <div className=" w-full">
-                    <Field name="miscellaneousScore" type="text" className="border border-black w-full px-1 py-3 rounded-sm outline-black" placeholder="Enter miscellaneous workout score  " />
+                    <Field name="miscellaneousScore" type="text" className="border border-black w-full px-1 py-3 rounded-sm outline-black text-sm" placeholder="Enter miscellaneous workout score  " />
                   </div>
 
                   <div className=" w-full">
-                    <Field name="reviewScore" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black" placeholder="Enter review score " />
+                    <Field name="communicationScore" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black text-sm" placeholder="Enter communication score " />
                   </div>
 
             
@@ -249,10 +249,10 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div className="m-4 mb-2">
                 <div className="flex gap-3">
                   <div className=" w-full">
-                    <Field name="communicationScore" type="text" className="border border-black w-full px-1 py-3 rounded-sm outline-black" placeholder="Enter communication score   " />
+                    <Field name="reviewScore" type="text" className="border border-black w-full px-1 py-3 rounded-sm outline-black text-sm" placeholder="Enter review score   " />
                   </div>
                   <div className=" w-full">
-                    <Field name="totalWeeks" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black" placeholder="Enter this student domain total week in your course " />
+                    <Field name="totalWeeks" type="text" className="border border-black px-1 py-3 w-full rounded-sm outline-black text-sm" placeholder="Enter this student domain total week in your course " />
                   </div>
 
               
@@ -278,7 +278,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div className="m-4 mb-2">
                 <div className="flex gap-3">
                   <div className=" w-full">
-                    <Field as="textarea" name="miscellaneousReview" rows="8" type="text" className="border border-black w-full   rounded-sm outline-black" placeholder="Enter miscellaneous workout score  " />
+                  <Field as="textarea" name="pendingTopics" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full text-sm" placeholder="Enter pending topics "></Field>
                   </div>
 
                   {/* <div className=" w-full">
@@ -320,7 +320,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
                 <div className="flex gap-3">
                   <div className="w-full">
 
-                    <Field as="textarea" name="personalReview" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+                    <Field as="textarea" name="personalReview" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full text-sm" placeholder="Enter personal wrokout review "></Field>
                   </div>
 
                   {/* <div className="w-full">
@@ -339,8 +339,8 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
               <div className="m-4 mb-0">
                 <div className="flex gap-3">
                   <div className="w-full">
+                  <Field as="textarea" name="miscellaneousReview" rows="8" type="text" className="border border-black w-full   rounded-sm outline-black text-sm" placeholder="Enter miscellaneous workout review  " />
 
-                    <Field as="textarea" name="pendingTopics" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
                   </div>
 
                   {/* <div className="w-full">
@@ -360,7 +360,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
                 <div className="flex gap-3">
                   <div className="w-full">
 
-                    <Field as="textarea" name="nextweekUpdation" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter pending topics "></Field>
+                    <Field as="textarea" name="nextweekUpdation" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full text-sm" placeholder="Enter nextweek updation"></Field>
                   </div>
 
                   {/* <div className="w-full">
@@ -379,7 +379,7 @@ const TaskUpdate = ({ isVisible, onClose, handleToast, reviewId, slotId, reviewe
                 <div className="flex gap-3">
                   <div className="w-full">
 
-                    <Field as="textarea" name="communicationReview" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full " placeholder="Enter Communication Review "></Field>
+                    <Field as="textarea" name="communicationReview" id="" cols="37" rows="8" className="border border-gray-400 rounded-sm outline-black w-full text-sm" placeholder="Enter communication Review "></Field>
                   </div>
 
                   {/* <div className="w-full">

@@ -85,7 +85,7 @@ const bookStatus=true
             </div>
           </div>
           <div className="border border-2px m-3 rounded-md py-2 px-2 mt-2">
-            <span>Time slot(s) available</span>
+            <span className="font-roboto">Time slot(s) available</span>
 
           </div>
           {
@@ -106,7 +106,7 @@ const bookStatus=true
 
                     </div>
                     <div className="text-center py-1.5 mt-2" >
-                      <span>-</span>
+                      <span className="font-roboto">-</span>
                     </div>
                     <div className="border border-gray-400 text-center   w-1/2 ">
                       <div className=" border border-gray-300 m-2 py-1.5 bg-gray-300 rounded-sm">

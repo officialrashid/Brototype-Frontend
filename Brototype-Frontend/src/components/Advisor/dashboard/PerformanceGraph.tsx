@@ -1,7 +1,10 @@
 import ReactApexChart from "react-apexcharts"
+import { useSelector } from "react-redux";
 
 const PerformanceGraph=({graphHeight})=>{
-
+  const advisorId: any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId);
+  console.log(advisorId,"lllllllll");
+  
    const  series= [{
         name: 'series1',
         data: [31, 40, 28, 51, 42, 109, 100]

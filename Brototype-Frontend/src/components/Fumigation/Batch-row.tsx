@@ -67,11 +67,11 @@ console.log(res.data.response);
 
 
 
-        <div className='border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
+        <div className='border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 font-roboto'>
           
             <div className="mt-6 mr-16 ml-14 mb-4">
             <ul className='flex  justify-between'>
-            <li><span className="text-xl font-bold">All Batches</span></li>
+            <li><span className="text-xl font-semibold">All Batches</span></li>
             <li><button className='rounded-md bg-white border border-black  text-black px-4 py-2  font-bold transition duration-300 ease-in-out'  onClick={()=>{
                 setAddBatchModal(true) 
             }} > Add  Batch</button></li>
@@ -142,7 +142,7 @@ console.log(res.data.response);
            
             
             </div>
-             <StudentModal isVisible={showStudentModal} onClose={()=>{setShowStudentModal(false)} } batchId={selectedBatch} /> 
+             <StudentModal isVisible={showStudentModal} onClose={() => { setShowStudentModal(false) } } batchId={selectedBatch} students={undefined} /> 
 
              <BatchModal isVisible={addBatch}  onClose={()=>{setAddBatchModal(false),setRecord({})}} batchRecord={record} />
            

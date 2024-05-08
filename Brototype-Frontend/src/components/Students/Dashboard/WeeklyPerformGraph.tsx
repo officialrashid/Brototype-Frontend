@@ -177,7 +177,13 @@ console.log(responseData,"response dataaaa coming weekly grapheee");
             height={250}
           />
         ) : (
-          <p>No data available for the selected week.</p>
+          <div className="flex items-center justify-center mb-0">
+          <img src="/noBestStudent.jpg" alt="" className="w-64 h-22rem mb-0" />
+          <p className="text-center text-sm font-roboto">No Weekly Performance.</p>
+        </div>
+        
+        
+
         )}
       </div>
     </div>

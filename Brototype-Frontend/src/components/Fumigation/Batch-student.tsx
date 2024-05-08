@@ -285,7 +285,7 @@ const handlePassedStudents = (batchId:string,fumigationType:string) =>{
     return (
         <>
        
-        <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
+        <div className='font-roboto border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
          
 <BoxTab onTabChange={handleTabChange}/>
          
@@ -293,16 +293,16 @@ const handlePassedStudents = (batchId:string,fumigationType:string) =>{
 <nav className=" mt-8"> 
             <ul className="flex flex-grid flex-wrap  justify-between m-4">
               <li>
-                <button className="border border-black px-5 py-2 text-black rounded-md hover:bg-black hover:text-white" onClick={()=>handlePassedStudents(id,"final")}>Confirm Passed Students</button>
+                <button className="border border-black px-5 py-2 text-black rounded-md hover:bg-black hover:text-white text-sm" onClick={()=>handlePassedStudents(id,"final")}>Confirm Passed Students</button>
               </li>
               <li>
-                <button className="border border-black px-5 py-2 text-black rounded-md hover:bg-black hover:text-white" onClick={()=>{filterStudents('all')}}>All  students</button>
+                <button className="border border-black px-5 py-2 text-black rounded-md hover:bg-black hover:text-white text-sm" onClick={()=>{filterStudents('all')}}>All  students</button>
               </li>
               <li>
-                <button className="border border-black px-3 py-2 text-black rounded-md hover:bg-black hover:text-white" onClick={()=>{filterStudents('passed')}}> Passed student</button>
+                <button className="border border-black px-3 py-2 text-black rounded-md hover:bg-black hover:text-white text-sm" onClick={()=>{filterStudents('passed')}}> Passed student</button>
               </li>
               <li>
-                <button className="border border-black px-3 py-2 text-black rounded-md hover:bg-black hover:text-white" onClick={()=>{filterStudents('failed')}}>Failed student</button>
+                <button className="border border-black px-3 py-2 text-black rounded-md hover:bg-black hover:text-white text-sm" onClick={()=>{filterStudents('failed')}}>Failed student</button>
               </li>
               <li className='relative'>
                <input type="search" name="" id="" className=" pl-2 placeholder-left w-full  border border-black px-16 py-2 rounded-md placeholder-left w-full outline-none focus:border-red-700 appearance-none"  onChange={(e)=>{studentSearch(e.target.value)}} placeholder="search"/>
@@ -389,7 +389,7 @@ const handlePassedStudents = (batchId:string,fumigationType:string) =>{
  
     return(
 
-      <div className='mx-auto p-2 mb-2'>
+      <div className='mx-auto p-2 mb-2 font-roboto'>
       <table className="w-full text-sm text-left divide-y divide-y-8 border table-fixed border-gray-400 ">
         <thead className="text-md text-gray-700 bg-gray-100 shadow-2xl dark:text-gray-800">
           <tr>

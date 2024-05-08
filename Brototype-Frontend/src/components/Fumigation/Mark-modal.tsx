@@ -212,7 +212,7 @@ const handleCommnField=()=>{
     if(!isVisible) return null
     return (
         <>
-        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center    overflow-hidden z-10 ">
+        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center    overflow-hidden z-10 font-roboto">
   <div className="w-[600px] flex flex-col max-h-[80vh]  " >
    
 
@@ -234,7 +234,7 @@ const handleCommnField=()=>{
         <li>
             <span><button
             type="submit"
-            onClick={handleArrayField}       className={`shadow-xl text-black  hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${arrayField?'bg-red-500 text-gray-500 ring-2 ring-black':' '}`}
+            onClick={handleArrayField}       className={`shadow-xl text-black  hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${arrayField?'bg-black text-gray-500 ring-2 ring-black':' '}`}
           >
             Array
           </button></span>
@@ -243,7 +243,7 @@ const handleCommnField=()=>{
             <span><button
             type="submit"
             onClick={handlePatternField}  
-            className={`shadow-xl text-black bg-gray-400 hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${patternField?'bg-red-500 text-gray-500 ring-2 ring-black':' '}`}
+            className={`shadow-xl text-black bg-gray-400 hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${patternField?'bg-black text-gray-500 ring-2 ring-black':' '}`}
           >
             Pattern
           </button></span>
@@ -251,7 +251,7 @@ const handleCommnField=()=>{
         <li>
             <span><button
             type="submit"
-            onClick={handleOopsField}     className={`shadow-xl text-black bg-gray-400 hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${oopsField?'bg-red-500 text-gray-500 ring-2 ring-black':' '}`}
+            onClick={handleOopsField}     className={`shadow-xl text-black bg-gray-400 hover:text-white hover:bg-black focus:ring-2 focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${oopsField?'bg-black text-gray-500 ring-2 ring-black':' '}`}
           >
             OOPs
           </button></span>
@@ -259,7 +259,7 @@ const handleCommnField=()=>{
         <li>
             <span><button
             type="submit"
-            onClick={handleCommnField}   className={`shadow-xl text-black bg-gray-400 hover:bg-black focus:ring-2 hover:text-white focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${commnField?'bg-red-500 text-gray-500 ring-2 ring-black':' '}`}
+            onClick={handleCommnField}   className={`shadow-xl text-black bg-gray-400 hover:bg-black focus:ring-2 hover:text-white focus:outline-none focus:ring-black font-medium rounded-lg text-md px-5 py-2.5 text-center border border-black dark:bg-white dark:hover-bg-black dark:focus:ring-black ${commnField?'bg-black text-gray-500 ring-2 ring-black':' '}`}
            >
             Communication
           </button></span>
@@ -321,7 +321,7 @@ const handleCommnField=()=>{
   type="text"
   name="patternEndTime"
   id="patternEndTime"
-  className="shadow-xl mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
+  className="shadow-xl font-roboto mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
   placeholder="Enter a  end time in this format HH:MM"
 
 />
@@ -332,7 +332,7 @@ const handleCommnField=()=>{
           <button 
             type="submit" 
             
-            className="shadow-xl text-white bg-gray-400 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
+            className="shadow-xl font-roboto text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
           >
       {patternRecord?'Update':'Submit'}
           </button>
@@ -402,7 +402,7 @@ const endTime =  arrayEndTime
   type="text"
   name="arrayEndTime"
   id="arrayEndTime"
-  className="shadow-xl mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
+  className="shadow-xl font-roboto mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
   placeholder="Enter a end time"
   
 />
@@ -412,7 +412,7 @@ const endTime =  arrayEndTime
           <button 
             type="submit" 
            
-            className="shadow-xl text-white bg-gray-400 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
+            className="shadow-xl text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
           >
             {arrayRecord?'Update':'Submit'}
           </button>
@@ -466,7 +466,7 @@ try {
   type="text"
   name="commnMark"
   id="commnmark"
-  className="shadow-xl mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
+  className="shadow-xl font-roboto mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
   placeholder="Enter a communication mark out of 10"
 
 />
@@ -476,7 +476,7 @@ try {
           <button 
             type="submit" 
           
-            className="shadow-xl text-white bg-gray-400 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
+            className="shadow-xl text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
           >
              {commnRecord?'Update':'Submit'}
           </button>
@@ -550,7 +550,7 @@ try {
   type="text"
   name="oopsMark"
   id="oopsMark"
-  className="shadow-xl mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
+  className="shadow-xl font-roboto mb-4 focus:outline-black bg-white border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-5 dark:bg-white dark:border-gray-500 dark:placeholder-gray-400 dark:text-black"
   placeholder="Enter a oops mark out of 10"
 
 />
@@ -560,7 +560,7 @@ try {
           <button 
             type="submit" 
            
-            className="shadow-xl text-white bg-gray-400 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
+            className="shadow-xl font-roboto text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
           >
          {oopsRecord?'Update':'Submit'}
           </button>

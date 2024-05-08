@@ -39,7 +39,7 @@ const navigate=useNavigate()
 
     return (
         <>
-         <div className="bg-white-200 shadow-xl pt-24 " >
+         <div className="bg-white-200 shadow-xl pt-24 font-roboto" >
             <div >
                 <nav className="pt-2">
                     <ul className="max-w-screen-xl flex flex-wrap mx-auto justify-between  ">

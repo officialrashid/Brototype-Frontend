@@ -18,7 +18,7 @@ const Record = () => {
   return (
     <>
 
-      <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 '>
+      <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4 font-roboto'>
 
         {/* <nav className='mt-8'>
                 <ul className='flex  flex-wrap  justify-center space-x-24'>
@@ -47,7 +47,7 @@ const Record = () => {
 
 
 
-        <div className='mx-auto p-2  mt-4 '>
+        <div className='mx-auto p-2  mt-4 font-roboto'>
           <div className="mb-4">
             <input type="search" name="" onChange={(e) => { handleSearch(e, studentList) }} className="p-8 py-2 border border-gray-500   outline-none  foucus:border-black " placeholder="search..." id="" />
             <button className="absolute top-0 right-0 mt-2 mr-2 px-2 py-1 text-gray-600 focus:outline-none">

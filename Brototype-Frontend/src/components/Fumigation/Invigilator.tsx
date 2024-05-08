@@ -76,7 +76,7 @@ const removeInv=(invigilatorId:string)=>{
     return (
         <>
        
-        <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4  '>   
+        <div className=' border border-gray-400 rounded-lg w-full max-w-7xl mx-auto shadow-xl  mt-4  font-roboto'>   
  <div className='mx-auto p-2 mt-4'>
   <table className="w-full text-sm text-left divide-y divide-y-8  table-auto table-fixed">
     <thead className="text-xs text-gray-700 uppercase bg-gray-300 shadow-xl dark:text-gray">

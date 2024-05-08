@@ -33,7 +33,7 @@ const SubNav=()=>{
             </nav> */}
 <BoxTab/>
 
-            <nav className=" mt-8"> 
+            <nav className=" mt-8 font-roboto"> 
             <ul className="flex flex-grid flex-wrap  justify-between m-4">
               <li>
                 <button className="border border-black px-5 py-2 text-black rounded-md hover:bg-black hover:text-white" onClick={()=>{setShowModal(true)}} > Add student</button>

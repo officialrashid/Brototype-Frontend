@@ -132,63 +132,64 @@ const UpcomingReviews = () => {
             </thead>
           </table>
         </div>
+        {studentReview.length > 0 ? (
+ <div className='mx-auto p-2 mb-2 '>
+ <table className="w-full text-sm text-left divide-y divide-y-8 border table-fixed border-gray-400 rounded-md font-roboto ">
+   <thead className="text-md text-gray-700 bg-gray-100 shadow-2xl dark:text-gray-800">
+     <tr className="">
+       <th scope="col" className="w-1/4 px-4 py-6  text-center " style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>Week 1
 
-        <div className='mx-auto p-2 mb-2 '>
-          <table className="w-full text-sm text-left divide-y divide-y-8 border table-fixed border-gray-400 rounded-md font-roboto ">
-            <thead className="text-md text-gray-700 bg-gray-100 shadow-2xl dark:text-gray-800">
-              <tr className="">
-                <th scope="col" className="w-1/4 px-4 py-6  text-center " style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>Week 1
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center">{studentReview[0]?.response?.reviews?.scheduledDate}
 
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center">{studentReview[0]?.response?.reviews?.scheduledDate}
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
+         {studentReview[0]?.response?.reviews?.startTime}
 
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>
-                  {studentReview[0]?.response?.reviews?.startTime}
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>{studentReview[0]?.advisorName}
 
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>{studentReview[0]?.advisorName}
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>{studentReview[0]?.phone}
 
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center" style={{ whiteSpace: 'normal', wordWrap: 'break-word', textOverflow: 'ellipsis' }}>{studentReview[0]?.phone}
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center ">
+         {studentReview[0]?.response?.reviews?.meetingLink != null ? (
+           <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={(() => handleMeetStart(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews?._id, ""))}>Join Meet</span>
+         ) : (
+           <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={(() => handleMeetStart(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews?._id, `https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${studentId}`))}>Start Meet</span>
+         )}
 
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center ">
-                  {studentReview[0]?.response?.reviews?.meetingLink != null ? (
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={(() => handleMeetStart(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews?._id, ""))}>Join Meet</span>
-                  ) : (
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={(() => handleMeetStart(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews?._id, `https://8x8.vc/vpaas-magic-cookie-40d1ade414824ac88ae740a12fcf994e/${studentId}`))}>Start Meet</span>
-                  )}
-
-                </th>
-                <th scope="col" className="w-1/4 px-4 py-6 text-center">
-                  {/* {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? ( */}
-                  <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { handleExtend(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews._id) }}>Request</span>
-                  {/* ) : "---"} */}
-                </th>
-
-
-                {studentReview[0]?.response?.reviews?.reviewStatus === "scheduled" ? (
-                  <th scope="col" className="w-1/4 px-4 py-6 text-center  ">
-                    <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Not Completed</span>
-                  </th>
-                ) : (
-                  <th scope="col" className="w-1/4 px-4 py-6 text-center  ">
-                    <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Completed</span>
-                  </th>
-                )}
+       </th>
+       <th scope="col" className="w-1/4 px-4 py-6 text-center">
+         {/* {!extendRequests.some(item => item.currentWeek === "week6" && item.requestCount === 1 || item.requestCount === 2) ? ( */}
+         <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer" onClick={() => { handleExtend(studentReview[0]?.response?.coordinatorId, studentReview[0]?.response?.reviews._id) }}>Request</span>
+         {/* ) : "---"} */}
+       </th>
 
 
-              </tr>
-            </thead>
-          </table>
-        </div>
-        {/* ):(
+       {studentReview[0]?.response?.reviews?.reviewStatus === "scheduled" ? (
+         <th scope="col" className="w-1/4 px-4 py-6 text-center  ">
+           <span className="inline-flex items-center rounded-md bg-pink-50 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Not Completed</span>
+         </th>
+       ) : (
+         <th scope="col" className="w-1/4 px-4 py-6 text-center  ">
+           <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-pink-700/10 cursor-pointer">Completed</span>
+         </th>
+       )}
+
+
+     </tr>
+   </thead>
+ </table>
+</div>
+        ):(
           <div className="m-4">
-          <h1 className="item text-center font-roboto">No Scheduled Review Data</h1>
+          <h1 className="item text-center font-roboto">No Scheduled Review</h1>
           </div>
         )}
-        */}
+       
+     
 
 
 

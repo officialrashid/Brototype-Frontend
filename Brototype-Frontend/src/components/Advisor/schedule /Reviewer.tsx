@@ -143,8 +143,8 @@ console.log(data[0].bookedEvents,'data');
          reviewerId==reviewer.reviewerId?events.map((timeEvent)=>{
             {count}
             return (
-          <div className="border border-gray-400 m-10 rounded-sm w-1/2 bg-gray-300 w-1/4  " onClick={()=>{handleSlotModal(timeEvent._id)}}>
-            <div className="border border-gray-400  bg-white rounded-md ml-2 mr-2 text-center py-1.5 bg-white shadow-lg mt-2 font-bold ">
+          <div className="border border-gray-400 m-10 rounded-sm w-1/2 bg-gray-300 w-1/4  font-roboto" onClick={()=>{handleSlotModal(timeEvent._id)}}>
+            <div className="border border-gray-400  bg-white rounded-md ml-2 mr-2 text-center py-1.5 bg-white shadow-lg mt-2 font-bold font-roboto">
             {/* {timeEvent.date[count]
             
             } */}

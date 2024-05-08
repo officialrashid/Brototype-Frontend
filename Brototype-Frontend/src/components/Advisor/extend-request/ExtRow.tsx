@@ -46,7 +46,7 @@ const ExtRow=({extData,handleToast})=>{
 
     return (
         <>
-             <div className='mx-auto pt-2 mb-2 mt-2' >
+             <div className='mx-auto pt-2 mb-2 mt-2 font-roboto' >
   <table className="w-full text-sm text-left divide-y divide-y-8 table-fixed  rounded-full">
     <thead className="text-md text-gray-700 bg-gray-100  dark:text-gray-800 " >
       <tr className="   ">

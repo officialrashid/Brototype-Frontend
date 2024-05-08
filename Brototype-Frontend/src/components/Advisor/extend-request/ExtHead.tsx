@@ -2,7 +2,7 @@
 const ExtHead=()=>{
     return (
         <>
-      <div className='mx-auto '>
+      <div className='mx-auto font-roboto'>
   <table className="w-full text-sm text-left divide-y divide-y-8  table-auto table-fixed">
     <thead className="text-xs text-gray-700 uppercase bg-gray-300  dark:text-gray">
       <tr>

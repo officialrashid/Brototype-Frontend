@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getTasks } from "../../../redux-toolkit/reviewSlice"
 
 
-const TaskView = ({ isVisible, onClose, currentWeek }) => {
+const TaskView = ({ isVisible, onClose, currentWeek,studentId,domain }) => {
   const dispatch:any=useDispatch()
   const taskData:any = useSelector(state => state?.review?.tasks)
     console.log(taskData,'taskData');
@@ -13,13 +13,15 @@ const TaskView = ({ isVisible, onClose, currentWeek }) => {
   
     
     const fetchTask = async () => {
+      console.log(currentWeek,studentId,domain,'dfwfwfw');
+      
       try {
-         const response:any = await Api.get(`/api/task/get-student-week-task?studentId=657aaa012a15acfff364bb5a&weekName=week1&domain=Mern Stack`)
+         const response:any = await Api.get(`/api/task/get-student-week-task?studentId=${studentId}&weekName=week${currentWeek}&domain=${domain}`)
          console.log(response.data.response.data
           ,'fsfs');
 
          dispatch(getTasks([response.data.response.data]))
-
+        
          
       } catch (error) {
         
