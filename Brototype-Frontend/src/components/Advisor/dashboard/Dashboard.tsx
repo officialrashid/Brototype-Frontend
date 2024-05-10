@@ -16,7 +16,8 @@ import { useDispatch, useSelector } from "react-redux"
 
 
 const Dashboard=()=>{
-
+  const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+  console.log(advisorId,"advisorId get successfullyy ysssrrr in reduxxxxx");
   const dispatch=useDispatch()
 const coordinatorData=useSelector(state=>state.coordinator.coordinatorData)
 const percentData=()=>{

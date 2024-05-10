@@ -3,7 +3,7 @@ import logo from '../../../../public/brototype logo.png';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { advisorLogin, invigilatorGoogleLogin} from '../../../utils/methods/post';
+import { advisorGoogleLogin, advisorLogin, invigilatorGoogleLogin} from '../../../utils/methods/post';
 
 import { setAdvisorData } from "../../../redux-toolkit/advisorReducer"
 import { useDispatch } from 'react-redux';
@@ -95,13 +95,47 @@ const SignIn = () => {
       .then(async (result) => {
         if (result.user?.email) {
           let email: string = result.user.email;
-          const response: any = await invigilatorGoogleLogin(email);
-
-          if (response?.data?.status === true) {
-            toast.success("SUCCESSFULLY LOGIN");
-            navigate('/fumigation');
-          } else {
+          const response: any = await advisorGoogleLogin(email);
+          console.log(response,"response in google login fornenedd");
+          
+          if (response?.data?.status === false) {
             toast.error("Email Not Found");
+         
+          } else {
+            signInWithCustomToken(auth, response?.data?.response?.customToken)
+            .then(async(userCredential) => {
+              const user = await userCredential.user;
+              console.log(user,"usr comingggggg");
+              const idToken = await user.getIdToken()
+              console.log(idToken,"id Token comuing  tatadsdgs");
+        
+              if (user) {
+                const advisorData: any = {
+                  advisorId: response?.data?.response?.advisor._id,
+                  firstName : response?.data?.response?.advisor.firstName,
+                  lastName : response?.data?.response?.advisor.lastName,
+                  phone : response?.data?.response?.advisor.phone,
+                  accessToken: response?.data?.response?.accessToken,
+                  customToken: response?.data?.response?.customToken
+              }
+              let advisor = "advisor"
+              localStorage.setItem('advisorIdToken',idToken)
+              localStorage.setItem(`advisorAccessToken`, advisorData?.accessToken)
+              localStorage.setItem("advisorCustomToken", advisorData?.customToken)
+              localStorage.setItem('role', advisor)
+              dispatch(setAdvisorData(advisorData))
+              toast.success("SUCCESSFULLY LOGIN");
+              navigate("/advisor/dashboard/")
+              }
+            })
+            .catch((err) => {
+              console.log(err, 'invalid Firebase token');
+            })
+            .finally(() => {
+              setIsLoading(false);
+            });
+           
+           
           }
         } else {
           toast.error("Some Issues In Google SignIn");
@@ -192,18 +226,18 @@ const SignIn = () => {
                       {isLoading ? 'Signing In...' : 'Sign In'}
                     </button>
                   </div>
-                  {/* <div>
+                  <div>
 
                     <button
                       onClick={handleGoogleSignIn}
                       type="submit"
-                      className="flex w-full justify-center rounded-sm bg-black px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="flex w-full font-roboto justify-center rounded-sm bg-black px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 
                     >
                       <img src="/google.png" alt="" className='w-4 mr-3 mt-1' />
                       Google With SignIn
                     </button>
-                  </div> */}
+                  </div>
                   <div className='ml-2'>
                     <span className='text-sm text-gray-400 ml-2 font-roboto'>This site is protected by reCAPTCHA and the </span>
                     <div>

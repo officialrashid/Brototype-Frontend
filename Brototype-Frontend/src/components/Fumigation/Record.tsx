@@ -92,11 +92,11 @@ const Record = () => {
 
 
 
-
+        {pendingStudents.map((student: any, index: number) => (
         <div className=' mx-auto p-2 mb-2'>
 
           <table className="w-full text-sm text-left divide-y divide-y-8 border border-gray-400 transition duration-700 ease-in-out transform hover:scale-101.5">
-          {pendingStudents.map((student: any, index: number) => (
+        
             <thead className="text-md text-gray-700  bg-gray-100 shadow-2xl dark:text-gray-800">
              
                
@@ -120,10 +120,10 @@ const Record = () => {
            
 
             </thead>
-               ))}
+     
           </table>
         </div>
-
+          ))}
 
 
         {/* <MarkModal isVisible={markModal} onClose={() => { setMarkModal(false) }} /> */}

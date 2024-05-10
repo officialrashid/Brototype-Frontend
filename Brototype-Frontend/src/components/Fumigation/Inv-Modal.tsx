@@ -31,7 +31,7 @@ const Modal=({isVisible,onClose})=>{
     return (
         <>
 
-<div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
+<div className="fixed inset-0 font-roboto bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center   overflow-y-scroll overflow-hidden z-40">
   <div className="w-[600px] flex flex-col max-h-[80vh]  " >
    <div className="self-end">
     <button className="text-xl text-white justify-between" onClick={() => onClose()}>
@@ -127,7 +127,7 @@ console.log(values);
         <div className="flex justify-end">
           <button
             type="submit"
-            className="shadow-xl text-white bg-gray-400 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
+            className="shadow-xl text-white bg-black hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-md px-5 py-2.5 text-center dark:bg-black dark:hover-bg-gray-500 dark:focus:ring-gray-500"
           >
             Submit
           </button>

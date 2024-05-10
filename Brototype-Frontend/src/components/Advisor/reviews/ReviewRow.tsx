@@ -18,6 +18,8 @@ const ReviewRow = ({ reviewData }: { reviewData: any }) => {
   const navigate=useNavigate()
   const dispatch = useDispatch()
   const advisorId:any = useSelector((state: RootState) => state?.advisor?.advisorData?.advisorId)
+  console.log(advisorId,"advisorId get successfullyy ysssrrr in reduxxxxx");
+  
   const [taskView, setTaskView] = useState(false)
   const [taskModal, setTaskModal] = useState(false)
   const [frame, setFrame] = useState(false)

@@ -465,6 +465,20 @@ export const advisorLogin = async (data: any) => {
 
 
 }
+export const advisorGoogleLogin = async (email: any) => {
+  try {
+    const data = {
+      email : email
+    }
+    const resposne = await authenticationApi.post('/api/auth/advisor-google-login',data)
+    return resposne
+  } catch (err) {
+    return { status: false, message: "some issue in the Address details update" }
+  }
+
+
+}
+
 export const addReviewResult = async (data: any) => {
   try {
     const resposne = await studentApi.post('/api/student/add-student-review-result', data)

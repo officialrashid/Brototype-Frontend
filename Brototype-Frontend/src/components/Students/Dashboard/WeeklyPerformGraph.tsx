@@ -16,6 +16,7 @@ const WeeklyPerformGraph = () => {
   const [loading, setLoading] = useState(true);
   const studentId = useSelector((state: RootState) => state?.student?.studentData?.studentId);
   const batchId:any = useSelector((state: RootState) => state?.student?.studentData?.batchId);
+  
   useEffect(() => {
     fetchData();
   }, [selectWeek, studentId]);
@@ -30,17 +31,16 @@ const WeeklyPerformGraph = () => {
     try {
       setLoading(true);
       const response = await getWeeklyPerformance(data);
-      console.log(response.response.data, "resposne weekly graph");
+      console.log(response.response.data, "response weekly graph");
 
       const responseData = response.response.data;
-console.log(responseData,"response dataaaa coming weekly grapheee");
+      console.log(responseData, "response data coming weekly graph");
 
-      // Check if responseData is an array with more than one data point
       if (Array.isArray(responseData) && responseData.length >= 1) {
         setReviewPerformance(responseData);
         setLoading(false);
       } else {
-        console.error('Invalid data format or less than 2 data points.');
+        console.error('Invalid data format or less than 1 data point.');
         setLoading(false);
       }
     } catch (error) {
@@ -127,19 +127,6 @@ console.log(responseData,"response dataaaa coming weekly grapheee");
       <div className="flex">
         <h1 className="text-md ml-5 font-roboto font-semibold mt-5">Performance</h1>
         <div className="relative group ml-33rem mt-3">
-          {/* <button
-            className="border border-gray-350 text-black px-2 py-2 rounded flex items-center top-3 right-3 text-sm font-roboto font-semibold"
-          >
-            Weekly
-            <svg
-              className="ml-2 w-4 h-4 fill-current text-gray-600 mt-1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-            >
-              <path d="M10 12l-5-5 1.5-1.5L10 9l3.5-3.5L16 7z" />
-            </svg>
-          </button> */}
-
           <div className="absolute hidden bg-white shadow-md rounded-md group-hover:block z-10">
             {weekOptions.map((option) => (
               <a
@@ -160,30 +147,31 @@ console.log(responseData,"response dataaaa coming weekly grapheee");
       <div className="mt-8">
         {loading ? (
           <p>Loading...</p>
-        ) : reviewPerformance.length > 0 ? (
-          <ReactApexChart
-            options={weekChartOptions}
-            series={[
-              {
-                name: 'ReviewPerformance',
-                data: reviewPerformance.map((element: { reviewScore: any }) => element.reviewScore),
-              },
-              {
-                name: 'TaskPerformance',
-                data: reviewPerformance.map((element: { reviewScore: any, communicationScore: any, miscellaneousWorkouts: any, personalWorkoutsScore: any }) => element.communicationScore + element.miscellaneousWorkouts + element.personalWorkoutsScore),
-              },
-            ]}
-            type="area"
-            height={250}
-          />
         ) : (
-          <div className="flex items-center justify-center mb-0">
-          <img src="/noBestStudent.jpg" alt="" className="w-64 h-22rem mb-0" />
-          <p className="text-center text-sm font-roboto">No Weekly Performance.</p>
-        </div>
-        
-        
-
+          <React.Fragment>
+            {reviewPerformance.length > 0 ? (
+              <ReactApexChart
+                options={weekChartOptions}
+                series={[
+                  {
+                    name: 'ReviewPerformance',
+                    data: reviewPerformance.map((element: any) => element.reviewScore),
+                  },
+                  {
+                    name: 'TaskPerformance',
+                    data: reviewPerformance.map((element: any) => element.communicationScore + element.miscellaneousWorkouts + element.personalWorkoutsScore),
+                  },
+                ]}
+                type="area"
+                height={250}
+              />
+            ) : (
+              <div className="flex items-center justify-center mb-0">
+                <img src="/noBestStudent.jpg" alt="" className="w-64 h-22rem mb-0" />
+                <p className="text-center text-sm font-roboto">No Weekly Performance.</p>
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
     </div>
